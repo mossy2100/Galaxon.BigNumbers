@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Galaxon.Numerics.Types</RootNamespace>
+        <Company>Astro Multimedia</Company>
+        <AssemblyName>Galaxon.Numerics.Types.BigDecimal</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="Galaxon.Core.Exceptions">
+        <HintPath>..\..\Core\Exceptions\bin\Debug\net7.0\Galaxon.Core.Exceptions.dll</HintPath>
+      </Reference>
+      <Reference Include="Galaxon.Core.Numbers">
+        <HintPath>..\..\Core\Numbers\bin\Debug\net7.0\Galaxon.Core.Numbers.dll</HintPath>
+      </Reference>
+      <Reference Include="Galaxon.Core.Strings">
+        <HintPath>..\..\Core\Strings\bin\Debug\net7.0\Galaxon.Core.Strings.dll</HintPath>
+      </Reference>
+      <Reference Include="Galaxon.Numerics.Types">
+        <HintPath>..\..\Numerics\Types\bin\Debug\net7.0\Galaxon.Numerics.Types.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

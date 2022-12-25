@@ -1,0 +1,8 @@
+Check all methods to see if there are any that take BigInteger or BigDecimal parameters, but that
+don't mutate those parameters. Then I can use "in" to pass by reference and improve efficiency.
+
+Test these methods thoroughly:
+* RootN()
+* Exp()
+* Log()
+* Pow()
