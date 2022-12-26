@@ -229,12 +229,6 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
             return One;
         }
 
-        // Only return the built-in constant if it has enough significant figures.
-        if (x == One && E.NumSigFigs >= MaxSigFigs)
-        {
-            return RoundSigFigsMax(E);
-        }
-
         BigDecimal result;
 
         // If the exponent is negative, inverse the result of the positive exponent.
@@ -309,22 +303,10 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
                 "Logarithm of a negative value is a complex number, which cannot be expressed using a BigDecimal.");
         }
 
-        // Optimizations.
+        // Optimization.
         if (a == One)
         {
             return 0;
-        }
-        if (a == Two)
-        {
-            return Ln2;
-        }
-        if (a == Ten)
-        {
-            return Ln10;
-        }
-        if (a == E)
-        {
-            return 1;
         }
 
         // Scale the value to the range (0..1) so the Taylor series converges quickly and to avoid
@@ -367,7 +349,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         MaxSigFigs -= 2;
 
         // Scale back.
-        return result + scale * Ln10;
+        return result + scale * Log(10);
     }
 
     /// <inheritdoc />

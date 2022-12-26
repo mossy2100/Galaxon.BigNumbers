@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Numerics;
+using Galaxon.Core.Exceptions;
 
 namespace Galaxon.Numerics.Types;
 
@@ -39,6 +40,9 @@ public partial struct BigDecimal
 
     public static implicit operator BigDecimal(BigInteger n) =>
         new (n);
+
+    public static implicit operator BigDecimal(Half n) =>
+        Parse(n.ToString("G", NumberFormatInfo.InvariantInfo));
 
     public static implicit operator BigDecimal(float n) =>
         Parse(n.ToString("G", NumberFormatInfo.InvariantInfo));
@@ -86,6 +90,19 @@ public partial struct BigDecimal
             return i;
         }
         throw new OverflowException("Value is outside the int range.");
+    }
+
+    /// <summary>
+    /// Explicit cast of a BigDecimal to a Half.
+    /// TODO Update to not use strings.
+    /// </summary>
+    public static explicit operator Half(BigDecimal bd)
+    {
+        if (Half.TryParse(bd.ToString("G17"), out Half d))
+        {
+            return d;
+        }
+        throw new OverflowException("Value is outside the Half range.");
     }
 
     /// <summary>
@@ -158,7 +175,7 @@ public partial struct BigDecimal
 
         if (!tmp.HasValue)
         {
-            // Failure.
+            // Unsupported type.
             result = Zero;
             return false;
         }
@@ -178,20 +195,196 @@ public partial struct BigDecimal
         where TOther : INumberBase<TOther> =>
         TryConvertFromChecked(value, out result);
 
+    private static (BigDecimal? min, BigDecimal? max) GetRange<TOther>(TOther n)
+        where TOther : INumberBase<TOther>
+    {
+        // Declare a temporary variable for use in the switch expressions.
+        BigDecimal? min = n switch
+        {
+            sbyte => sbyte.MinValue,
+            byte => byte.MinValue,
+            short => short.MinValue,
+            ushort => ushort.MinValue,
+            int => int.MinValue,
+            uint => uint.MinValue,
+            long => long.MinValue,
+            ulong => ulong.MinValue,
+            Int128 => Int128.MinValue,
+            UInt128 => UInt128.MinValue,
+            Half => Half.MinValue,
+            float => float.MinValue,
+            double => double.MinValue,
+            decimal => decimal.MinValue,
+            _ => null
+        };
+        BigDecimal? max = n switch
+        {
+            sbyte => sbyte.MaxValue,
+            byte => byte.MaxValue,
+            short => short.MaxValue,
+            ushort => ushort.MaxValue,
+            int => int.MaxValue,
+            uint => uint.MaxValue,
+            long => long.MaxValue,
+            ulong => ulong.MaxValue,
+            Int128 => Int128.MaxValue,
+            UInt128 => UInt128.MaxValue,
+            float => float.MaxValue,
+            double => double.MaxValue,
+            decimal => decimal.MaxValue,
+            _ => null
+        };
+        return (min, max);
+    }
+
     /// <inheritdoc />
     public static bool TryConvertToChecked<TOther>(BigDecimal value, out TOther result)
-        where TOther : INumberBase<TOther> =>
-        throw new NotImplementedException();
+        where TOther : INumberBase<TOther>
+    {
+        // Set a default result.
+        result = TOther.Zero;
+
+        // Check types with unlimited range.
+        if (result is BigDecimal or BigInteger or BigRational)
+        {
+            result = (TOther)(object)value;
+            return true;
+        }
+
+        // Get the min and max values for the result type.
+        (BigDecimal? min, BigDecimal? max) = GetRange(result);
+
+        // Check for unsupported type.
+        if (!min.HasValue || !max.HasValue)
+        {
+            return false;
+        }
+
+        // Check for underflow.
+        if (value < min.Value)
+        {
+            switch (result)
+            {
+                case Half:
+                    result = (TOther)(object)Half.NegativeInfinity;
+                    return true;
+
+                case float:
+                    result = (TOther)(object)float.NegativeInfinity;
+                    return true;
+
+                case double:
+                    result = (TOther)(object)double.NegativeInfinity;
+                    return true;
+
+                default:
+                    throw new OverflowException(
+                        $"Value {value} is less than the minimum value for {result.GetType()}");
+            }
+        }
+
+        // Check for overflow.
+        if (value > max.Value)
+        {
+            switch (result)
+            {
+                case Half:
+                    result = (TOther)(object)Half.PositiveInfinity;
+                    return true;
+
+                case float:
+                    result = (TOther)(object)float.PositiveInfinity;
+                    return true;
+
+                case double:
+                    result = (TOther)(object)double.PositiveInfinity;
+                    return true;
+
+                default:
+                    throw new OverflowException(
+                        $"Value {value} is greater than the maximum value for {result.GetType()}");
+            }
+        }
+
+        // Value is within range for the type.
+        result = (TOther)(object)value;
+        return true;
+    }
 
     /// <inheritdoc />
     public static bool TryConvertToSaturating<TOther>(BigDecimal value, out TOther result)
-        where TOther : INumberBase<TOther> =>
-        throw new NotImplementedException();
+        where TOther : INumberBase<TOther>
+    {
+        // Set a default result.
+        result = TOther.Zero;
+
+        // Check types with unlimited range.
+        if (result is BigDecimal or BigInteger or BigRational)
+        {
+            result = (TOther)(object)value;
+            return true;
+        }
+
+        // Get the min and max values for the result type.
+        (BigDecimal? min, BigDecimal? max) = GetRange(result);
+
+        // Check for unsupported type.
+        if (!min.HasValue || !max.HasValue)
+        {
+            return false;
+        }
+
+        if (value < min.Value)
+        {
+            // Value is less than the minimum value for TOther.
+            result = (TOther)(object)min.Value;
+        }
+        else if (value > max.Value)
+        {
+            // Value is greater than the maximum value for TOther.
+            result = (TOther)(object)max.Value;
+        }
+        else
+        {
+            // Value is within range for the type.
+            result = (TOther)(object)value;
+        }
+
+        return true;
+    }
 
     /// <inheritdoc />
     public static bool TryConvertToTruncating<TOther>(BigDecimal value, out TOther result)
-        where TOther : INumberBase<TOther> =>
-        throw new NotImplementedException();
+        where TOther : INumberBase<TOther>
+    {
+        // Set a default result.
+        result = TOther.Zero;
+
+        // Check types with unlimited range.
+        if (result is BigDecimal or BigInteger or BigRational)
+        {
+            result = (TOther)(object)value;
+            return true;
+        }
+
+        (BigDecimal? min, BigDecimal? max) = GetRange(result);
+
+        // Signed types.
+        if (min < 0)
+        {
+            result = (TOther)(object)(value % -min);
+            return true;
+        }
+
+        // Unsigned types.
+        if (max != null)
+        {
+            result = (TOther)(object)(value % max + 1);
+            return true;
+        }
+
+        return false;
+    }
 
     #endregion Conversion methods
 }

@@ -337,22 +337,20 @@ public partial struct BigDecimal
     #region Methods for computing constants
 
     /// <summary>
-    /// Compute π up to a specified number of decimal places.
+    /// Compute e.
+    /// </summary>
+    public static BigDecimal ComputeE() =>
+        Exp(1);
+
+    /// <summary>
+    /// Compute π.
     /// <see href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" />
     /// </summary>
-    public static BigDecimal ComputePi(int nDecimalPlaces)
+    public static BigDecimal ComputePi()
     {
-        int nSigFigs = nDecimalPlaces + 1;
-
-        // Use the built-in constant if possible.
-        if (nSigFigs <= Pi.NumSigFigs)
-        {
-            return RoundSigFigs(Pi, nSigFigs);
-        }
-
         // Set the max sig figs for the calculation.
         int prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs = nSigFigs + 2;
+        MaxSigFigs += 2;
 
         // Chudnovsky algorithm.
         int q = 0;
@@ -390,77 +388,35 @@ public partial struct BigDecimal
         // Restore significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundSigFigs(pi, nSigFigs);
+        return RoundSigFigsMax(pi);
     }
 
     /// <summary>
-    /// Compute τ up to a specified number of decimal places.
+    /// Compute τ.
     /// </summary>
-    public static BigDecimal ComputeTau(int nDecimalPlaces)
+    public static BigDecimal ComputeTau()
     {
-        int nSigFigs = nDecimalPlaces + 1;
-
-        // Use the built-in constant if possible.
-        if (nSigFigs <= Tau.NumSigFigs)
-        {
-            return RoundSigFigs(Tau, nSigFigs);
-        }
-
         // Set the max sig figs for the calculation.
         int prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs = nSigFigs + 2;
+        MaxSigFigs += 2;
 
         // Do the computation.
-        BigDecimal tau = 2 * ComputePi(nDecimalPlaces + 2);
+        BigDecimal tau = 2 * ComputePi();
 
         // Restore significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundSigFigs(tau, nSigFigs);
+        return RoundSigFigsMax(tau);
     }
 
     /// <summary>
-    /// Compute e up to a specified number of decimal places.
+    /// Compute φ.
     /// </summary>
-    public static BigDecimal ComputeE(int nDecimalPlaces)
+    public static BigDecimal ComputePhi()
     {
-        int nSigFigs = nDecimalPlaces + 1;
-
-        // Use the built-in constant if possible.
-        if (nSigFigs <= E.NumSigFigs)
-        {
-            return RoundSigFigs(E, nSigFigs);
-        }
-
         // Set the max sig figs for the calculation.
         int prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs = nSigFigs + 2;
-
-        // Compute e.
-        BigDecimal e = Exp(1);
-
-        // Restore significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(e, nSigFigs);
-    }
-
-    /// <summary>
-    /// Compute φ up to a specified number of decimal places.
-    /// </summary>
-    public static BigDecimal ComputePhi(int nDecimalPlaces)
-    {
-        int nSigFigs = nDecimalPlaces + 1;
-
-        // Use the built-in constant if possible.
-        if (nSigFigs <= Phi.NumSigFigs)
-        {
-            return RoundSigFigs(Phi, nSigFigs);
-        }
-
-        // Set the max sig figs for the calculation.
-        int prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs = nSigFigs + 2;
+        MaxSigFigs += 2;
 
         // Do the computation.
         BigDecimal phi = (1 + Sqrt(5)) / 2;
@@ -468,7 +424,7 @@ public partial struct BigDecimal
         // Restore significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundSigFigs(phi, nSigFigs);
+        return RoundSigFigsMax(phi);
     }
 
     #endregion Methods for computing constants

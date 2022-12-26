@@ -73,11 +73,8 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     /// If the value is modified, only new objects and calculations are affected by it.
     /// If you want to reduce the number of significant figures in an existing value, use
     /// RoundSigFigs().
-    ///
-    /// I've made the default 101 to support the constants (Pi, E, etc.) that are provided to 100
-    /// decimal places, i.e. 101 significant figures.
     /// </summary>
-    private static int s_maxSigFigs = 101;
+    private static int s_maxSigFigs = 100;
     public static int MaxSigFigs {
         get => s_maxSigFigs;
 
@@ -129,71 +126,83 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
 
     #region Constants
 
-    /// <inheritdoc />
-    /// <remarks>
-    /// Euler's number (e) to 100 decimal places.
-    /// If you need more for testing or whatever, you can get up to 10,000 decimal places here:
-    /// <see href="https://www.math.utah.edu/~pa/math/e" />
-    /// To calculate e to a larger number of significant figures, set MaxSigFigs and call Exp(1).
-    /// </remarks>
-    public static BigDecimal E { get; } = Parse("2."
-        + "7182818284 5904523536 0287471352 6624977572 4709369995 "
-        + "9574966967 6277240766 3035354759 4571382178 5251664274", null);
+    /// <summary>
+    /// Cached value for e.
+    /// </summary>
+    private static BigDecimal _e;
 
     /// <inheritdoc />
-    /// <remarks>
-    /// The circle constant (π) to 100 decimal places.
-    /// If you need more, you can get up to 10,000 decimal places here:
-    /// <see href="https://www.math.utah.edu/~pa/math/pi" />
-    /// </remarks>
-    public static BigDecimal Pi { get; } = Parse("3."
-        + "1415926535 8979323846 2643383279 5028841971 6939937510 "
-        + "5820974944 5923078164 0628620899 8628034825 3421170680", null);
+    public static BigDecimal E
+    {
+        get
+        {
+            if (_e.NumSigFigs <= MaxSigFigs)
+            {
+                return RoundSigFigsMax(_e);
+            }
+            _e = ComputeE();
+            return _e;
+        }
+    }
+
+    /// <summary>
+    /// Cached value for π.
+    /// </summary>
+    private static BigDecimal _pi;
 
     /// <inheritdoc />
-    /// <remarks>
-    /// The other circle constant (τ = 2π) to 100 decimal places.
-    /// If you need more, you can get up to 10,000 decimal places here:
-    /// <see href="https://tauday.com/tau-digits" />
-    /// </remarks>
-    public static BigDecimal Tau { get; } = Parse("6."
-        + "2831853071 7958647692 5286766559 0057683943 3879875021 "
-        + "1641949889 1846156328 1257241799 7256069650 6842341360", null);
+    public static BigDecimal Pi
+    {
+        get
+        {
+            if (_pi.NumSigFigs <= MaxSigFigs)
+            {
+                return RoundSigFigsMax(_pi);
+            }
+            _pi = ComputePi();
+            return _pi;
+        }
+    }
 
     /// <summary>
-    /// The golden ratio (φ) to 100 decimal places.
+    /// Cached value for τ.
     /// </summary>
-    public static BigDecimal Phi { get; } = Parse("1."
-        + "6180339887 4989484820 4586834365 6381177203 0917980576 "
-        + "2862135448 6227052604 6281890244 9707207204 1893911375", null);
+    private static BigDecimal _tau;
+
+    /// <inheritdoc />
+    public static BigDecimal Tau
+    {
+        get
+        {
+            if (_tau.NumSigFigs <= MaxSigFigs)
+            {
+                return RoundSigFigsMax(_tau);
+            }
+            _tau = ComputeTau();
+            return _tau;
+        }
+    }
 
     /// <summary>
-    /// The square root of 2 to 100 decimal places.
+    /// Cached value for φ.
     /// </summary>
-    public static BigDecimal Sqrt2 { get; } = Parse("1."
-        + "4142135623 7309504880 1688724209 6980785696 7187537694 "
-        + "8073176679 7379907324 7846210703 8850387534 3276415727", null);
+    private static BigDecimal _phi;
 
     /// <summary>
-    /// The square root of 10 to 100 decimal places.
+    /// The golden ratio (φ).
     /// </summary>
-    public static BigDecimal Sqrt10 { get; } = Parse("3."
-        + "1622776601 6837933199 8893544432 7185337195 5513932521 "
-        + "6826857504 8527925944 3863923822 1344248108 3793002952", null);
-
-    /// <summary>
-    /// The natural logarithm of 2 to 100 decimal places.
-    /// </summary>
-    public static BigDecimal Ln2 { get; } = Parse("0."
-        + "6931471805 5994530941 7232121458 1765680755 0013436025 "
-        + "5254120680 0094933936 2196969471 5605863326 9964186875", null);
-
-    /// <summary>
-    /// The natural logarithm of 10 to 100 decimal places.
-    /// </summary>
-    public static BigDecimal Ln10 { get; } = Parse("2."
-        + "3025850929 9404568401 7991454684 3642076011 0148862877 "
-        + "2976033327 9009675726 0967735248 0235997205 0895982983", null);
+    public static BigDecimal Phi
+    {
+        get
+        {
+            if (_phi.NumSigFigs <= MaxSigFigs)
+            {
+                return RoundSigFigsMax(_phi);
+            }
+            _phi = ComputePhi();
+            return _phi;
+        }
+    }
 
     #endregion Constants
 
