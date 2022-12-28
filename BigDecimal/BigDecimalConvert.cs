@@ -1,12 +1,11 @@
 using System.Globalization;
 using System.Numerics;
-using Galaxon.Core.Exceptions;
 
 namespace Galaxon.Numerics.Types;
 
-public partial struct BigDecimal
+public partial struct BigDecimal : IConvertible
 {
-    #region Implicit cast operators to BigDecimal
+    #region Cast operators to BigDecimal
 
     public static implicit operator BigDecimal(sbyte n) =>
         new (n);
@@ -32,30 +31,65 @@ public partial struct BigDecimal
     public static implicit operator BigDecimal(ulong n) =>
         new (n);
 
-    public static implicit operator BigDecimal(Int128 n) =>
-        new (n);
-
-    public static implicit operator BigDecimal(UInt128 n) =>
-        new (n);
-
     public static implicit operator BigDecimal(BigInteger n) =>
         new (n);
 
-    public static implicit operator BigDecimal(Half n) =>
-        Parse(n.ToString("G", NumberFormatInfo.InvariantInfo));
+    /// <summary>
+    /// See operator BigDecimal(double) below for notes.
+    /// </summary>
+    public static implicit operator BigDecimal(float n)
+    {
+        if (float.IsInfinity(n) || float.IsNaN(n))
+        {
+            throw new InvalidCastException("Cannot convert ±∞ or NaN to BigDecimal.");
+        }
 
-    public static implicit operator BigDecimal(float n) =>
-        Parse(n.ToString("G", NumberFormatInfo.InvariantInfo));
+        return Parse(n.ToString("G", NumberFormatInfo.InvariantInfo));
+    }
 
-    public static implicit operator BigDecimal(double n) =>
-        Parse(n.ToString("G", NumberFormatInfo.InvariantInfo));
+    /// <summary>
+    /// For the floating point types I've found that using Parse(ToString()) is much simpler
+    /// than attempting to decompose the values into bits and calculate a decimal value.
+    /// Besides, because the division operation currently uses a cast to double in order to find
+    /// an initial estimate, infinite recursion occurs. And division is needed to calculate a
+    /// decimal value from the bits in a floating point.
+    /// </summary>
+    public static implicit operator BigDecimal(double n)
+    {
+        if (double.IsInfinity(n) || double.IsNaN(n))
+        {
+            throw new InvalidCastException("Cannot convert ±∞ or NaN to BigDecimal.");
+        }
 
-    public static implicit operator BigDecimal(decimal n) =>
-        Parse(n.ToString("G", NumberFormatInfo.InvariantInfo));
+        return Parse(n.ToString("G", NumberFormatInfo.InvariantInfo));
+    }
 
-    #endregion Implicit cast operators to BigDecimal
+    /// <summary>
+    /// Cast a decimal to a BigDecimal.
+    /// Any decimal value can be cast to a BigDecimal precisely, without loss of information.
+    /// We don't need to use Parse() or division operations here, because the base is decimal.
+    /// We can just extract the parts of the decimal from the bits and construct a BigDecimal from
+    /// those. This method should be faster than using ToString() and Parse().
+    /// </summary>
+    public static implicit operator BigDecimal(decimal n)
+    {
+        int[] parts = decimal.GetBits(n);
 
-    #region Explicit cast operators to BigDecimal
+        // Get the sign and scale from the bits.
+        int sign = (parts[3] & 0x80000000) == 0 ? 1 : -1;
+        byte scale = (byte)((parts[3] >> 16) & 0x7F);
+
+        // Calculate the significand.
+        BigInteger sig = 0;
+        BigInteger mult = 1;
+        for (int i = 0; i < 3; i++)
+        {
+            sig += (uint)parts[i] * mult;
+            mult *= 0x100000000;
+        }
+
+        return new BigDecimal(sign * sig, -scale);
+    }
 
     /// <summary>
     /// Explicit cast of a BigRational to a BigDecimal.
@@ -65,9 +99,70 @@ public partial struct BigDecimal
     public static explicit operator BigDecimal(BigRational n) =>
         (BigDecimal)n.Numerator / n.Denominator;
 
-    #endregion Explicit cast operators to BigDecimal
+    /// <summary>
+    /// Explicit cast of a Complex to a BigDecimal.
+    /// </summary>
+    public static explicit operator BigDecimal(Complex n)
+    {
+        if (n.Imaginary != 0)
+        {
+            throw new InvalidCastException();
+        }
 
-    #region Explicit cast operators from BigDecimal
+        return (BigDecimal)n.Real;
+    }
+
+    #endregion Cast operators to BigDecimal
+
+    #region Cast operators from BigDecimal
+
+    /// <summary>
+    /// Explicit cast of a BigDecimal to an sbyte.
+    /// </summary>
+    public static explicit operator sbyte(BigDecimal bd) =>
+        (sbyte)(BigInteger)bd;
+
+    /// <summary>
+    /// Explicit cast of a BigDecimal to a byte.
+    /// </summary>
+    public static explicit operator byte(BigDecimal bd) =>
+        (byte)(BigInteger)bd;
+
+    /// <summary>
+    /// Explicit cast of a BigDecimal to a short.
+    /// </summary>
+    public static explicit operator short(BigDecimal bd) =>
+        (short)(BigInteger)bd;
+
+    /// <summary>
+    /// Explicit cast of a BigDecimal to a ushort.
+    /// </summary>
+    public static explicit operator ushort(BigDecimal bd) =>
+        (ushort)(BigInteger)bd;
+
+    /// <summary>
+    /// Explicit cast of a BigDecimal to an int.
+    /// </summary>
+    public static explicit operator int(BigDecimal bd) =>
+        (int)(BigInteger)bd;
+
+    /// <summary>
+    /// Explicit cast of a BigDecimal to a uint.
+    /// </summary>
+    public static explicit operator uint(BigDecimal bd) =>
+        (uint)(BigInteger)bd;
+
+    /// <summary>
+    /// Explicit cast of a BigDecimal to a long.
+    /// </summary>
+    public static explicit operator long(BigDecimal bd) =>
+        (long)(BigInteger)bd;
+
+    /// <summary>
+    /// Explicit cast of a BigDecimal to a ulong.
+    /// </summary>
+    public static explicit operator ulong(BigDecimal bd) =>
+        (ulong)(BigInteger)bd;
 
     /// <summary>
     /// Explicit cast of a BigDecimal to a BigInteger.
@@ -80,58 +175,42 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to an int.
-    /// TODO Update to not use strings.
+    /// Explicit cast of a BigDecimal to a float.
     /// </summary>
-    public static explicit operator int(BigDecimal bd)
+    public static explicit operator float(BigDecimal bd)
     {
-        if (int.TryParse(bd.ToString("F0"), out int i))
+        if (float.TryParse(bd.ToString("G27"), out float f))
         {
-            return i;
+            return f;
         }
-        throw new OverflowException("Value is outside the int range.");
-    }
-
-    /// <summary>
-    /// Explicit cast of a BigDecimal to a Half.
-    /// TODO Update to not use strings.
-    /// </summary>
-    public static explicit operator Half(BigDecimal bd)
-    {
-        if (Half.TryParse(bd.ToString("G17"), out Half d))
-        {
-            return d;
-        }
-        throw new OverflowException("Value is outside the Half range.");
+        throw new OverflowException();
     }
 
     /// <summary>
     /// Explicit cast of a BigDecimal to a double.
-    /// TODO Update to not use strings.
     /// </summary>
     public static explicit operator double(BigDecimal bd)
     {
-        if (double.TryParse(bd.ToString("G17"), out double d))
+        if (double.TryParse(bd.ToString("G56"), out double d))
         {
             return d;
         }
-        throw new OverflowException("Value is outside the double range.");
+        throw new OverflowException();
     }
 
     /// <summary>
     /// Explicit cast of a BigDecimal to a decimal.
-    /// TODO Update to not use strings.
     /// </summary>
     public static explicit operator decimal(BigDecimal bd)
     {
-        if (decimal.TryParse(bd.ToString("G29"), out decimal m))
+        if (decimal.TryParse(bd.ToString("G30"), out decimal d))
         {
-            return m;
+            return d;
         }
-        throw new OverflowException("Value is outside the decimal range.");
+        throw new OverflowException();
     }
 
-    public static explicit operator BigRational(BigDecimal n) =>
+    public static implicit operator BigRational(BigDecimal n) =>
         n.Exponent switch
         {
             // Zero exponent.
@@ -144,7 +223,16 @@ public partial struct BigDecimal
             < 0 => new BigRational(n.Significand, BigInteger.Pow(10, -n.Exponent), true)
         };
 
-    #endregion Explicit cast operators from BigDecimal
+    /// <summary>
+    /// Explicit cast of a BigDecimal to a Complex.
+    /// TODO test because it may be that the cast to double returns ±∞ and doesn't throw an
+    /// exception, and this might be accepted by the Complex constructor.
+    /// </summary>
+    /// <exception cref="OverflowException">If the BigDecimal is outside the range for double.</exception>
+    public static explicit operator Complex(BigDecimal bd) =>
+        new ((double)bd, 0);
+
+    #endregion Cast operators from BigDecimal
 
     #region Conversion methods
 
@@ -152,7 +240,6 @@ public partial struct BigDecimal
     public static bool TryConvertFromChecked<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
-        // Attempt to convert to BigDecimal.
         BigDecimal? tmp = value switch
         {
             sbyte n => (BigDecimal)n,
@@ -163,8 +250,6 @@ public partial struct BigDecimal
             uint n => (BigDecimal)n,
             long n => (BigDecimal)n,
             ulong n => (BigDecimal)n,
-            Int128 n => (BigDecimal)n,
-            UInt128 n => (BigDecimal)n,
             float n => (BigDecimal)n,
             double n => (BigDecimal)n,
             decimal n => (BigDecimal)n,
@@ -209,9 +294,6 @@ public partial struct BigDecimal
             uint => uint.MinValue,
             long => long.MinValue,
             ulong => ulong.MinValue,
-            Int128 => Int128.MinValue,
-            UInt128 => UInt128.MinValue,
-            Half => Half.MinValue,
             float => float.MinValue,
             double => double.MinValue,
             decimal => decimal.MinValue,
@@ -227,8 +309,6 @@ public partial struct BigDecimal
             uint => uint.MaxValue,
             long => long.MaxValue,
             ulong => ulong.MaxValue,
-            Int128 => Int128.MaxValue,
-            UInt128 => UInt128.MaxValue,
             float => float.MaxValue,
             double => double.MaxValue,
             decimal => decimal.MaxValue,
@@ -265,10 +345,6 @@ public partial struct BigDecimal
         {
             switch (result)
             {
-                case Half:
-                    result = (TOther)(object)Half.NegativeInfinity;
-                    return true;
-
                 case float:
                     result = (TOther)(object)float.NegativeInfinity;
                     return true;
@@ -288,10 +364,6 @@ public partial struct BigDecimal
         {
             switch (result)
             {
-                case Half:
-                    result = (TOther)(object)Half.PositiveInfinity;
-                    return true;
-
                 case float:
                     result = (TOther)(object)float.PositiveInfinity;
                     return true;
@@ -387,4 +459,77 @@ public partial struct BigDecimal
     }
 
     #endregion Conversion methods
+
+    #region IConvertible methods
+
+    /// <inheritdoc />
+    public TypeCode GetTypeCode() =>
+        TypeCode.Object;
+
+    /// <inheritdoc />
+    public bool ToBoolean(IFormatProvider? provider) =>
+        Significand != 0;
+
+    /// <inheritdoc />
+    public sbyte ToSByte(IFormatProvider? provider) =>
+        (sbyte)this;
+
+    /// <inheritdoc />
+    public byte ToByte(IFormatProvider? provider) =>
+        (byte)this;
+
+    /// <inheritdoc />
+    public short ToInt16(IFormatProvider? provider) =>
+        (short)this;
+
+    /// <inheritdoc />
+    public ushort ToUInt16(IFormatProvider? provider) =>
+        (ushort)this;
+
+    /// <inheritdoc />
+    public int ToInt32(IFormatProvider? provider) =>
+        (int)this;
+
+    /// <inheritdoc />
+    public uint ToUInt32(IFormatProvider? provider) =>
+        (uint)this;
+
+    /// <inheritdoc />
+    public long ToInt64(IFormatProvider? provider) =>
+        (long)this;
+
+    /// <inheritdoc />
+    public ulong ToUInt64(IFormatProvider? provider) =>
+        (ulong)this;
+
+    /// <inheritdoc />
+    public float ToSingle(IFormatProvider? provider) =>
+        (float)this;
+
+    /// <inheritdoc />
+    public double ToDouble(IFormatProvider? provider) =>
+        (double)this;
+
+    /// <inheritdoc />
+    public decimal ToDecimal(IFormatProvider? provider) =>
+        (decimal)this;
+
+    /// <inheritdoc />
+    public char ToChar(IFormatProvider? provider) =>
+        (char)(ushort)this;
+
+    /// <inheritdoc />
+    public string ToString(IFormatProvider? provider) =>
+        ToString("G", provider);
+
+    /// <inheritdoc />
+    public DateTime ToDateTime(IFormatProvider? provider) =>
+        throw new InvalidCastException("Converting from BigDecimal to DateTime is unsupported.");
+
+    /// <inheritdoc />
+    public object ToType(Type conversionType, IFormatProvider? provider) =>
+        throw new InvalidCastException(
+            $"Converting from BigDecimal to {conversionType.Name} is unsupported.");
+
+    #endregion IConvertible methods
 }
