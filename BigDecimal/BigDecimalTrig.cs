@@ -5,43 +5,156 @@ namespace Galaxon.Numerics.Types;
 /// <summary>
 /// Trigonometric methods for BigDecimal.
 /// </summary>
-public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>
+/// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions" />
+/// <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions" />
+public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
+    IHyperbolicFunctions<BigDecimal>
 {
-    /// <inheritdoc />
-    public static BigDecimal Acos(BigDecimal x) =>
-        throw new NotImplementedException();
+    /// <summary>
+    /// Add or subtract multiples of τ so the angle fits within the interval [-π, π)
+    /// </summary>
+    public static BigDecimal Normalize(in BigDecimal rad)
+    {
+        BigDecimal x = rad - Floor(rad / Tau) * Tau;
+        if (x >= Pi)
+        {
+            x -= Tau;
+        }
+        return x;
+    }
+
+    #region Trigonometric functions
 
     /// <inheritdoc />
-    public static BigDecimal AcosPi(BigDecimal x) =>
-        Acos(x) / Pi;
+    public static BigDecimal Sin(BigDecimal x)
+    {
+        // Find the equivalent angle in the interval [-π, π).
+        x = Normalize(in x);
+
+        // Optimizations.
+        if (x == Zero || x == Pi)
+        {
+            return Zero;
+        }
+        BigDecimal HalfPi = Pi / 2;
+        if (x == HalfPi)
+        {
+            return One;
+        }
+        if (x == 3 * HalfPi)
+        {
+            return NegativeOne;
+        }
+
+        // Taylor series.
+        int sign = 1;
+        BigInteger m = 1; // m = 2n + 1
+        BigDecimal xm = x;
+        BigDecimal x2 = x * x;
+        BigInteger mf = 1;
+        BigDecimal sum = 0;
+
+        // Temporarily increase precision to ensure a correct result.
+        MaxSigFigs += 2;
+
+        // Add terms until the process ceases to affect the result.
+        // The more significant figures wanted, the longer the process will take.
+        while (true)
+        {
+            // Add the next term in the series.
+            BigDecimal newSum = sum + sign * xm / mf;
+
+            // If adding the new term hasn't affected the result, we're done.
+            if (sum == newSum)
+            {
+                break;
+            }
+
+            // Prepare for next iteration.
+            sum = newSum;
+            sign = -sign;
+            m += 2;
+            xm *= x2;
+            mf *= m * (m - 1);
+        }
+
+        // Restore significant figures.
+        MaxSigFigs -= 2;
+
+        return RoundMaxSigFigs(sum);
+    }
 
     /// <inheritdoc />
-    public static BigDecimal Asin(BigDecimal x) =>
-        throw new NotImplementedException();
+    public static BigDecimal SinPi(BigDecimal x) =>
+        Sin(x * Pi);
 
     /// <inheritdoc />
-    public static BigDecimal AsinPi(BigDecimal x) =>
-        Asin(x) / Pi;
+    /// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions" />
+    /// <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions" />
+    public static BigDecimal Cos(BigDecimal x)
+    {
+        // Find the equivalent angle in the interval [-π, π).
+        x = Normalize(in x);
 
-    /// <inheritdoc />
-    public static BigDecimal Atan(BigDecimal x) =>
-        throw new NotImplementedException();
+        // Optimizations.
+        if (x == Zero)
+        {
+            return One;
+        }
 
-    /// <inheritdoc />
-    public static BigDecimal AtanPi(BigDecimal x) =>
-        Atan(x) / Pi;
+        if (x == Pi)
+        {
+            return NegativeOne;
+        }
 
-    /// <inheritdoc />
-    public static BigDecimal Cos(BigDecimal x) =>
-        throw new NotImplementedException();
+        BigDecimal HalfPi = Pi / 2;
+        if (x == HalfPi || x == 3 * HalfPi)
+        {
+            return Zero;
+        }
+
+        // Taylor series.
+        // https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
+        int sign = 1;
+        BigInteger m = 0; // m = 2n
+        BigDecimal xm = 1;
+        BigDecimal x2 = x * x;
+        BigInteger mf = 1;
+        BigDecimal sum = 0;
+
+        // Temporarily increase precision to ensure a correct result.
+        MaxSigFigs += 2;
+
+        // Add terms until the process ceases to affect the result.
+        // The more significant figures wanted, the longer the process will take.
+        while (true)
+        {
+            // Add the next term in the series.
+            BigDecimal newSum = sum + sign * xm / mf;
+
+            // If adding the new term hasn't affected the result, we're done.
+            if (sum == newSum)
+            {
+                break;
+            }
+
+            // Prepare for next iteration.
+            sum = newSum;
+            sign = -sign;
+            m += 2;
+            xm *= x2;
+            mf *= m * (m - 1);
+        }
+
+        // Restore significant figures.
+        MaxSigFigs -= 2;
+
+        return RoundMaxSigFigs(sum);
+    }
 
     /// <inheritdoc />
     public static BigDecimal CosPi(BigDecimal x) =>
         Cos(x * Pi);
-
-    /// <inheritdoc />
-    public static BigDecimal Sin(BigDecimal x) =>
-        throw new NotImplementedException();
 
     /// <inheritdoc />
     public static (BigDecimal Sin, BigDecimal Cos) SinCos(BigDecimal x) =>
@@ -52,14 +165,441 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>
         (SinPi(x), CosPi(x));
 
     /// <inheritdoc />
-    public static BigDecimal SinPi(BigDecimal x) =>
-        Sin(x * Pi);
+    public static BigDecimal Tan(BigDecimal x)
+    {
+        // Find the equivalent angle in the interval [-π, π).
+        x = Normalize(in x);
 
-    /// <inheritdoc />
-    public static BigDecimal Tan(BigDecimal x) =>
-        Sin(x) / Cos(x);
+        // Check for valid argument.
+        if (Abs(x) == Pi / 2)
+        {
+            throw new NotFiniteNumberException($"Tan(x) function is undefined at x={x}");
+        }
+
+        return Sin(x) / Cos(x);
+    }
 
     /// <inheritdoc />
     public static BigDecimal TanPi(BigDecimal x) =>
         Tan(x * Pi);
+
+    /// <summary>
+    /// Cotangent function.
+    /// </summary>
+    public static BigDecimal Cot(BigDecimal x)
+    {
+        // Guard.
+        if (x % Pi == Zero)
+        {
+            throw new NotFiniteNumberException($"Cot(x) function is undefined at x={x}");
+        }
+
+        return 1 / Tan(x);
+    }
+
+    /// <summary>
+    /// Secant function.
+    /// </summary>
+    public static BigDecimal Sec(BigDecimal x)
+    {
+        // Handle negative values.
+        if (x < Zero)
+        {
+            return Sec(-x);
+        }
+
+        // Find the equivalent angle in the interval [-π, π).
+        BigDecimal x0 = x;
+        x = Normalize(in x);
+
+        // Guard.
+        if (x == Pi / 2)
+        {
+            throw new NotFiniteNumberException(
+                $"The secant function Sec(x) is undefined at x={x0}");
+        }
+
+        return 1 / Cos(x);
+    }
+
+    /// <summary>
+    /// Cosecant function.
+    /// </summary>
+    public static BigDecimal Csc(BigDecimal x)
+    {
+        // Guard.
+        if (x % Pi == Zero)
+        {
+            throw new NotFiniteNumberException(
+                $"The cosecant function Csc(x) is undefined at x={x}");
+        }
+
+        return 1 / Sin(x);
+    }
+
+    #endregion Trigonometric functions
+
+    #region Inverse trigonometric functions
+
+    /// <inheritdoc />
+    public static BigDecimal Asin(BigDecimal x)
+    {
+        // Optimization.
+        if (x == Zero)
+        {
+            return Zero;
+        }
+
+        // Handle negative arguments.
+        if (x < Zero)
+        {
+            return -Asin(-x);
+        }
+
+        // Guard.
+        if (x > One)
+        {
+            throw new ArgumentOutOfRangeException(nameof(x), "Must be in the range -1..1.");
+        }
+
+        // Optimization.
+        BigDecimal halfPi = Pi / 2;
+        if (x == One)
+        {
+            return halfPi;
+        }
+
+        // The Taylor series is slow to converge near x = ±1, but we can use an identity
+        // relationship and calculate Asin() accurately and quickly for a smaller value.
+        BigDecimal x2 = x * x;
+        if (x > 0.75)
+        {
+            return halfPi - Asin(Sqrt(1 - x2));
+        }
+
+        // Taylor series.
+        BigInteger n = 1;
+        BigInteger a = 1;
+        BigInteger b = 2;
+        BigInteger c = 3;
+        BigDecimal xc = Cube(x); // x^c
+        BigDecimal sum = x;
+
+        // Temporarily increase precision to ensure a correct result.
+        MaxSigFigs += 2;
+
+        // Add terms until the process ceases to affect the result.
+        // The more significant figures wanted, the longer the process will take.
+        while (true)
+        {
+            // Add the next term in the series.
+            BigDecimal term = (BigDecimal)a / b * xc / c;
+            BigDecimal newSum = sum + term;
+
+            // If adding the new term hasn't affected the result, we're done.
+            if (sum == newSum)
+            {
+                break;
+            }
+
+            // Prepare for next iteration.
+            sum = newSum;
+            n++;
+            a *= 2 * n - 1;
+            b *= 2 * n;
+            c += 2;
+            xc *= x2;
+        }
+
+        // Restore significant figures.
+        MaxSigFigs -= 2;
+
+        return RoundMaxSigFigs(sum);
+    }
+
+    /// <inheritdoc />
+    public static BigDecimal AsinPi(BigDecimal x) =>
+        Asin(x) / Pi;
+
+    /// <inheritdoc />
+    public static BigDecimal Acos(BigDecimal x) =>
+        Pi / 2 - Asin(x);
+
+    /// <inheritdoc />
+    public static BigDecimal AcosPi(BigDecimal x) =>
+        Acos(x) / Pi;
+
+    /// <inheritdoc />
+    public static BigDecimal Atan(BigDecimal x)
+    {
+        // Optimization.
+        if (x == Zero)
+        {
+            return Zero;
+        }
+
+        // Handle negative arguments.
+        if (x < Zero)
+        {
+            return -Atan(-x);
+        }
+
+        // Optimization.
+        if (x == One)
+        {
+            return Pi / 4;
+        }
+
+        // Taylor series.
+        int m = 1;
+        BigDecimal xm = x;
+        BigDecimal x2 = x * x;
+        bool xIsSmall = x < One;
+        int sign = xIsSmall ? 1 : -1;
+        BigDecimal sum = xIsSmall ? 0 : Pi / 2;
+
+        // Temporarily increase precision to ensure a correct result.
+        MaxSigFigs += 2;
+
+        // Add terms until the process ceases to affect the result.
+        // The more significant figures wanted, the longer the process will take.
+        while (true)
+        {
+            // Add the next term in the series.
+            BigDecimal term = (BigDecimal)sign / m * (xIsSmall ? xm : 1 / xm);
+            BigDecimal newSum = sum + term;
+
+            // If adding the new term hasn't affected the result, we're done.
+            if (sum == newSum)
+            {
+                break;
+            }
+
+            // Prepare for next iteration.
+            sum = newSum;
+            sign = -sign;
+            m += 2;
+            xm *= x2;
+        }
+
+        // Restore significant figures.
+        MaxSigFigs -= 2;
+
+        return RoundMaxSigFigs(sum);
+    }
+
+    /// <inheritdoc />
+    public static BigDecimal AtanPi(BigDecimal x) =>
+        Atan(x) / Pi;
+
+    /// <summary>
+    /// Inverse cotangent function.
+    /// </summary>
+    public static BigDecimal Acot(BigDecimal x)
+    {
+        // Optimization.
+        if (x == Zero)
+        {
+            return Zero;
+        }
+
+        return Atan(1 / x);
+    }
+
+    /// <summary>
+    /// Inverse secant function.
+    /// </summary>
+    public static BigDecimal Asec(BigDecimal x)
+    {
+        if (Abs(x) < One)
+        {
+            throw new NotFiniteNumberException(
+                "The inverse secant function Asec(x) is undefined for |x| < 1.");
+        }
+
+        return Acos(1 / x);
+    }
+
+    /// <summary>
+    /// Inverse cosecant function.
+    /// </summary>
+    public static BigDecimal Acsc(BigDecimal x)
+    {
+        if (Abs(x) < One)
+        {
+            throw new NotFiniteNumberException(
+                "The inverse cosecant function Acsc(x) is undefined for |x| < 1.");
+        }
+
+        return Asin(1 / x);
+    }
+
+    #endregion Inverse trigonometric functions
+
+    #region Hyperbolic functions
+
+    /// <inheritdoc />
+    public static BigDecimal Sinh(BigDecimal x)
+    {
+        // Optimization.
+        if (x == Zero)
+        {
+            return Zero;
+        }
+
+        // Taylor series.
+        int m = 1;
+        BigDecimal xm = x;
+        BigInteger mf = 1;
+        BigDecimal sum = 0;
+
+        // Temporarily increase precision to ensure a correct result.
+        MaxSigFigs += 2;
+
+        // Add terms until the process ceases to affect the result.
+        // The more significant figures wanted, the longer the process will take.
+        while (true)
+        {
+            // Add the next term in the series.
+            BigDecimal newSum = sum + xm / mf;
+
+            // If adding the new term hasn't affected the result, we're done.
+            if (sum == newSum)
+            {
+                break;
+            }
+
+            // Prepare for next iteration.
+            m += 2;
+            xm *= x * x;
+            mf *= m * (m - 1);
+            sum = newSum;
+        }
+
+        // Restore significant figures.
+        MaxSigFigs -= 2;
+
+        return RoundMaxSigFigs(sum);
+    }
+
+    /// <inheritdoc />
+    public static BigDecimal Cosh(BigDecimal x)
+    {
+        // Optimization.
+        if (x == Zero)
+        {
+            return One;
+        }
+
+        // Taylor series.
+        int m = 0;
+        BigDecimal xm = 1;
+        BigDecimal x2 = x * x;
+        BigInteger mf = 1;
+        BigDecimal sum = 0;
+
+        // Temporarily increase precision to ensure a correct result.
+        MaxSigFigs += 2;
+
+        // Add terms until the process ceases to affect the result.
+        // The more significant figures wanted, the longer the process will take.
+        while (true)
+        {
+            // Add the next term in the series.
+            BigDecimal newSum = sum + xm / mf;
+
+            // If adding the new term hasn't affected the result, we're done.
+            if (sum == newSum)
+            {
+                break;
+            }
+
+            // Prepare for next iteration.
+            m += 2;
+            xm *= x2;
+            mf *= m * (m - 1);
+            sum = newSum;
+        }
+
+        // Restore significant figures.
+        MaxSigFigs -= 2;
+
+        return RoundMaxSigFigs(sum);
+    }
+
+    /// <inheritdoc />
+    public static BigDecimal Tanh(BigDecimal x) =>
+        Sinh(x) / Cosh(x);
+
+    /// <summary>
+    /// Hyperbolic cotangent function.
+    /// </summary>
+    public static BigDecimal Coth(BigDecimal x)
+    {
+        // Guard.
+        if (x == Zero)
+        {
+            throw new NotFiniteNumberException(
+                "The hyperbolic cotangent function Coth(x) is undefined at x=0");
+        }
+
+        return Cosh(x) / Sinh(x);
+    }
+
+    /// <summary>
+    /// Hyperbolic secant function.
+    /// </summary>
+    public static BigDecimal Sech(BigDecimal x) =>
+        1 / Cosh(x);
+
+    /// <summary>
+    /// Hyperbolic cosecant function.
+    /// </summary>
+    public static BigDecimal Csch(BigDecimal x)
+    {
+        // Guard.
+        if (x == Zero)
+        {
+            throw new NotFiniteNumberException(
+                "The hyperbolic cosecant function Csch(x) is undefined at x=0");
+        }
+
+        return 1 / Sinh(x);
+    }
+
+    #endregion Hyperbolic functions
+
+    #region Inverse hyperbolic functions
+
+    /// <inheritdoc />
+    public static BigDecimal Asinh(BigDecimal x) =>
+        Log(x + Sqrt(x * x + 1));
+
+    /// <inheritdoc />
+    public static BigDecimal Acosh(BigDecimal x) =>
+        Log(x + Sqrt(x * x - 1));
+
+    /// <inheritdoc />
+    public static BigDecimal Atanh(BigDecimal x) =>
+        Log((1 + x) / (1 - x)) / 2;
+
+    /// <summary>
+    /// Inverse hyperbolic cotangent function.
+    /// </summary>
+    public static BigDecimal Acoth(BigDecimal x) =>
+        Log((x + 1) / (x - 1)) / 2;
+
+    /// <summary>
+    /// Inverse hyperbolic secant function.
+    /// </summary>
+    public static BigDecimal Asech(BigDecimal x) =>
+        Log(1 / x + Sqrt(1 / (x * x) - 1));
+
+    /// <summary>
+    /// Inverse hyperbolic cosecant function.
+    /// </summary>
+    public static BigDecimal Acsch(BigDecimal x) =>
+        Log(1 / x + Sqrt(1 / (x * x) + 1));
+
+    #endregion Inverse hyperbolic functions
 }

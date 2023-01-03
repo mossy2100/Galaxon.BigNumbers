@@ -89,7 +89,7 @@ public partial struct BigDecimal
             case "G":
             {
                 // Get the format using E with 2-digit exponent.
-                string strFormatE = FormatScientific(format, precision, unicode, 2, provider);
+                string strFormatE = FormatScientific(format, precision - 1, unicode, 2, provider);
 
                 // Get the fixed point format, specifying the maximum number of significant figures.
                 string strFormatF = FormatFixedSigFigs(precision, provider);
@@ -304,7 +304,14 @@ public partial struct BigDecimal
             strFrac = nfi.NumberDecimalSeparator + strFrac;
         }
 
-        return strSign + strInt + strFrac;
+        // If zero, omit sign. We don't want to render -0.0000...
+        string strAbs = strInt + strFrac;
+        // if (decimal.Parse(strAbs) == 0m)
+        // {
+        //     return strAbs;
+        // }
+
+        return strSign + strAbs;
     }
 
     /// <summary>
@@ -315,33 +322,19 @@ public partial struct BigDecimal
     /// </summary>
     private string FormatFixedSigFigs(int? nSigFigs, IFormatProvider? provider = null)
     {
-        // Get a NumberFormatInfo we can use for special characters.
-        NumberFormatInfo nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
-
-        // Get the significant figures.
-        string strAbsSig = BigInteger.Abs(Significand).ToString();
-        int sigLen = strAbsSig.Length;
-
-        // Get the sign.
-        string strSign = Significand < 0 ? nfi.NegativeSign : "";
-
         // If we don't have to remove any digits, use default fixed-point format.
-        if (nSigFigs is null or 0 || sigLen <= nSigFigs.Value)
+        int nDigitsToCut = (nSigFigs is null or 0) ? 0 : (NumSigFigs - nSigFigs.Value);
+        if (nDigitsToCut <= 0)
         {
             return FormatFixed("F", null, provider);
         }
 
-        // Shift the decimal point so we have the requested number of significant digits
-        // before it. Any digits to the right will be discarded, but with rounding.
-        string strInt = strAbsSig[..nSigFigs.Value];
-        string strFrac = strAbsSig[nSigFigs.Value..];
+        // Cut the digits we don't want and create a rounded value.
+        BigInteger newSig = (BigInteger)Round(Significand / Exp10(nDigitsToCut));
+        int newExp = Exponent + nDigitsToCut;
+        BigDecimal rounded = new (newSig, newExp);
 
-        // Get the new value and round it off.
-        BigDecimal rounded = Round(Parse(strSign + strInt + "." + strFrac));
-
-        // Shifting the decimal point left a certain number of places means incrementing
-        // the exponent that many times.
-        rounded.Exponent = Exponent + sigLen - nSigFigs.Value;
+        // Format as fixed-point.
         return rounded.FormatFixed("F", null, provider);
     }
 
@@ -351,50 +344,49 @@ public partial struct BigDecimal
     private string FormatScientific(string format, int? precision, bool unicode, int expWidth,
         IFormatProvider? provider = null)
     {
-        // Get the significand as a fixed point number with one digit preceding the decimal point,
-        // and the adjusted exponent.
-        (string strSig, int exp) = PreformatScientific();
-
-        // Round it off if necessary.
-        if (precision is > 0)
-        {
-            strSig = Parse(strSig).FormatFixed("F", precision - 1, provider);
-        }
+        // Format the significand.
+        int nDecimalPlacesToShift = NumSigFigs - 1;
+        BigDecimal sig = new (Significand, -nDecimalPlacesToShift);
+        string strSig = sig.FormatFixed("F", precision, provider);
 
         // Format the exponent.
+        int exp = Exponent + nDecimalPlacesToShift;
         string strExp = FormatExponent(format, exp, unicode, expWidth, provider);
 
         return strSig + strExp;
     }
 
+    /// <summary>
+    /// Format the exponent part of scientific notation.
+    /// </summary>
+    /// <param name="format">
+    /// The original format code (e.g. E, e, G, or g). We need to know this to determine whether to
+    /// use an upper- or lower-case 'E'.
+    /// </param>
+    /// <param name="exp">The exponent value.</param>
+    /// <param name="unicode">Whether to use Unicode or standard format.</param>
+    /// <param name="expWidth">
+    /// The minimum number of digits in the exponent (typically 3 for E and 2 for G).
+    /// Relevant for standard (non-Unicode) format only.
+    /// </param>
+    /// <param name="provider">The format provider.</param>
+    /// <returns>The formatted exponent.</returns>
     private static string FormatExponent(string format, int exp, bool unicode, int expWidth,
         IFormatProvider? provider = null)
     {
         // Get a NumberFormatInfo we can use for special characters.
         NumberFormatInfo nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
 
-        // Get the exponent digits as a string, which may include a negative sign.
-        string strExp = exp.ToString("D", provider);
-
         // Use Unicode format if requested.
         if (unicode)
         {
-            // Prepend the 10x part and superscript the exponent.
-            return "×10" + strExp.ToSuperscript();
+            // Prepend the x10 part and superscript the exponent.
+            return "×10" + exp.ToString("D", provider).ToSuperscript();
         }
 
         // Standard format.
-        // Add a plus sign if necessary.
-        if (exp >= 0)
-        {
-            strExp = nfi.PositiveSign + strExp;
-        }
-        // Pad digits if requested.
-        if (expWidth > 1)
-        {
-            strExp = strExp.PadLeft(expWidth + 1, '0');
-        }
-        // Prepend 'E' or 'e' depending on whether the requested format is upper or lower case.
-        return (char.IsLower(format[0]) ? 'e' : 'E') + strExp;
+        return (char.IsLower(format[0]) ? 'e' : 'E')
+            + (exp < 0 ? nfi.NegativeSign : nfi.PositiveSign)
+            + int.Abs(exp).ToString("D", provider).PadLeft(expWidth, '0');
     }
 }

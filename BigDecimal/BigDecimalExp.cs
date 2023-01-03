@@ -134,7 +134,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
 
         // Get an initial estimate using double, which should be pretty fast.
         // Reduce operand to the maximum number of significant digits supported by the double type.
-        BigDecimal aRound = RoundSigFigsDouble(a);
+        BigDecimal aRound = RoundSigFigs(a, DoubleMaxSigFigs);
         BigDecimal x0 = double.RootN((double)aRound.Significand, n)
             * Exp10((double)aRound.Exponent / n);
 
@@ -237,7 +237,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
             MaxSigFigs += 2;
             result = One / Exp(-x);
             MaxSigFigs -= 2;
-            return RoundSigFigsMax(result);
+            return RoundMaxSigFigs(result);
         }
 
         // Taylor/Maclaurin series.
@@ -273,7 +273,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         // Restore significant figures.
         MaxSigFigs -= 2;
 
-        return RoundSigFigsMax(result);
+        return RoundMaxSigFigs(result);
     }
 
     /// <inheritdoc />

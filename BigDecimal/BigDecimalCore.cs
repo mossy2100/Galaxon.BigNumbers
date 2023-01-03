@@ -73,8 +73,10 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     /// If the value is modified, only new objects and calculations are affected by it.
     /// If you want to reduce the number of significant figures in an existing value, use
     /// RoundSigFigs().
+    ///
+    /// The default is 101 to match e, π, etc. to 100 decimal places, as used in my tests.
     /// </summary>
-    private static int s_maxSigFigs = 100;
+    private static int s_maxSigFigs = 101;
     public static int MaxSigFigs {
         get => s_maxSigFigs;
 
@@ -118,9 +120,14 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     public static BigDecimal MultiplicativeIdentity => One;
 
     /// <summary>
-    /// Maximum number of significant figures in a double value.
+    /// Maximum number of significant figures supported by the double type.
     /// </summary>
-    private const int _DoubleMaxSigFigs = 17;
+    public const int DoubleMaxSigFigs = 16;
+
+    /// <summary>
+    /// Maximum number of significant figures supported by the decimal type.
+    /// </summary>
+    public const int DecimalMaxSigFigs = 29;
 
     #endregion Static properties
 
@@ -136,9 +143,9 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     {
         get
         {
-            if (_e.NumSigFigs <= MaxSigFigs)
+            if (_e.NumSigFigs >= MaxSigFigs)
             {
-                return RoundSigFigsMax(_e);
+                return RoundMaxSigFigs(_e);
             }
             _e = ComputeE();
             return _e;
@@ -155,9 +162,9 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     {
         get
         {
-            if (_pi.NumSigFigs <= MaxSigFigs)
+            if (_pi.NumSigFigs >= MaxSigFigs)
             {
-                return RoundSigFigsMax(_pi);
+                return RoundMaxSigFigs(_pi);
             }
             _pi = ComputePi();
             return _pi;
@@ -174,9 +181,9 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     {
         get
         {
-            if (_tau.NumSigFigs <= MaxSigFigs)
+            if (_tau.NumSigFigs >= MaxSigFigs)
             {
-                return RoundSigFigsMax(_tau);
+                return RoundMaxSigFigs(_tau);
             }
             _tau = ComputeTau();
             return _tau;
@@ -195,9 +202,9 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     {
         get
         {
-            if (_phi.NumSigFigs <= MaxSigFigs)
+            if (_phi.NumSigFigs >= MaxSigFigs)
             {
-                return RoundSigFigsMax(_phi);
+                return RoundMaxSigFigs(_phi);
             }
             _phi = ComputePhi();
             return _phi;

@@ -191,7 +191,7 @@ public class TestExpLog
     {
         // Use the built-in value.
         BigDecimal.MaxSigFigs = 50;
-        BigDecimal expected = BigDecimal.RoundSigFigsMax(BigDecimal.E);
+        BigDecimal expected = BigDecimal.RoundMaxSigFigs(BigDecimal.E);
         Trace.WriteLine(expected);
         BigDecimal actual = BigDecimal.Exp(1);
         Trace.WriteLine(actual);

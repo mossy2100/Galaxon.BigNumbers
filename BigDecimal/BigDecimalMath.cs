@@ -131,14 +131,8 @@ public partial struct BigDecimal
     /// <summary>
     /// Round off a value to the maximum number of significant figures.
     /// </summary>
-    public static BigDecimal RoundSigFigsMax(BigDecimal x) =>
+    public static BigDecimal RoundMaxSigFigs(BigDecimal x) =>
         RoundSigFigs(x, MaxSigFigs);
-
-    /// <summary>
-    /// Round off a value to the maximum number of significant figures.
-    /// </summary>
-    public static BigDecimal RoundSigFigsDouble(BigDecimal x) =>
-        RoundSigFigs(x, _DoubleMaxSigFigs);
 
     /// <summary>
     /// Multiply the significand by 10 and decrement the exponent to maintain the same value,
@@ -294,14 +288,11 @@ public partial struct BigDecimal
             return One;
         }
 
-        // Find f, a good initial estimate of the multiplication factor. Approximately 1/b.
-        // The fastest way is by using doubles.
-
-        // Get the first 17 digits of the significand. This matches the maximum precision of double.
-        BigDecimal bRound = RoundSigFigsDouble(b);
-
-        // Calculate f.
-        BigDecimal f = 1 / (double)bRound.Significand;
+        // Find f ~= 1/b as an initial estimate of the multiplication factor.
+        // We can get a very good initial estimate using the double type.
+        BigDecimal bRound = RoundSigFigs(b, DoubleMaxSigFigs);
+        double bDouble = (double)bRound.Significand;
+        BigDecimal f = 1 / bDouble;
         f.Exponent -= bRound.Exponent;
 
         while (true)
@@ -388,7 +379,7 @@ public partial struct BigDecimal
         // Restore significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundSigFigsMax(pi);
+        return RoundMaxSigFigs(pi);
     }
 
     /// <summary>
@@ -406,7 +397,7 @@ public partial struct BigDecimal
         // Restore significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundSigFigsMax(tau);
+        return RoundMaxSigFigs(tau);
     }
 
     /// <summary>
@@ -424,7 +415,7 @@ public partial struct BigDecimal
         // Restore significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundSigFigsMax(phi);
+        return RoundMaxSigFigs(phi);
     }
 
     #endregion Methods for computing constants

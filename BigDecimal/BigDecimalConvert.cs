@@ -44,15 +44,14 @@ public partial struct BigDecimal : IConvertible
             throw new InvalidCastException("Cannot convert ±∞ or NaN to BigDecimal.");
         }
 
-        return Parse(n.ToString("G", NumberFormatInfo.InvariantInfo));
+        return Parse(n.ToString("E8", NumberFormatInfo.InvariantInfo));
     }
 
     /// <summary>
-    /// For the floating point types I've found that using Parse(ToString()) is much simpler
-    /// than attempting to decompose the values into bits and calculate a decimal value.
-    /// Besides, because the division operation currently uses a cast to double in order to find
-    /// an initial estimate, infinite recursion occurs. And division is needed to calculate a
-    /// decimal value from the bits in a floating point.
+    /// Convert double to BigDecimal.
+    /// Using ToString() and Parse() is simpler than converting the actual bits.
+    /// The bits in the floating point value give the false impression of encoding a much higher
+    /// precision value than is actually meant.
     /// </summary>
     public static implicit operator BigDecimal(double n)
     {
@@ -61,7 +60,7 @@ public partial struct BigDecimal : IConvertible
             throw new InvalidCastException("Cannot convert ±∞ or NaN to BigDecimal.");
         }
 
-        return Parse(n.ToString("G", NumberFormatInfo.InvariantInfo));
+        return Parse(n.ToString("E16", NumberFormatInfo.InvariantInfo));
     }
 
     /// <summary>
