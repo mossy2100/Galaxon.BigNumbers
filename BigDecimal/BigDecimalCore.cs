@@ -1,5 +1,4 @@
 using System.Numerics;
-using Galaxon.Core.Exceptions;
 using Galaxon.Core.Numbers;
 
 namespace Galaxon.Numerics.Types;
@@ -73,10 +72,8 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     /// If the value is modified, only new objects and calculations are affected by it.
     /// If you want to reduce the number of significant figures in an existing value, use
     /// RoundSigFigs().
-    ///
-    /// The default is 101 to match e, π, etc. to 100 decimal places, as used in my tests.
     /// </summary>
-    private static int s_maxSigFigs = 101;
+    private static int s_maxSigFigs = 100;
     public static int MaxSigFigs {
         get => s_maxSigFigs;
 
@@ -100,16 +97,6 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     /// <inheritdoc />
     public static BigDecimal NegativeOne { get; } = new (-1);
 
-    /// <summary>
-    /// Useful in division and square root operations.
-    /// </summary>
-    public static BigDecimal Two { get; } = new (2);
-
-    /// <summary>
-    /// Useful in various calculations.
-    /// </summary>
-    public static BigDecimal Ten { get; } = new (10);
-
     /// <inheritdoc />
     public static int Radix => 10;
 
@@ -122,7 +109,7 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     /// <summary>
     /// Maximum number of significant figures supported by the double type.
     /// </summary>
-    public const int DoubleMaxSigFigs = 16;
+    public const int DoubleMaxSigFigs = 17;
 
     /// <summary>
     /// Maximum number of significant figures supported by the decimal type.
@@ -130,178 +117,6 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     public const int DecimalMaxSigFigs = 29;
 
     #endregion Static properties
-
-    #region Constants
-
-    /// <summary>
-    /// Cached value for e.
-    /// </summary>
-    private static BigDecimal _e;
-
-    /// <inheritdoc />
-    public static BigDecimal E
-    {
-        get
-        {
-            if (_e.NumSigFigs >= MaxSigFigs)
-            {
-                return RoundMaxSigFigs(_e);
-            }
-            _e = ComputeE();
-            return _e;
-        }
-    }
-
-    /// <summary>
-    /// Cached value for π.
-    /// </summary>
-    private static BigDecimal _pi;
-
-    /// <inheritdoc />
-    public static BigDecimal Pi
-    {
-        get
-        {
-            if (_pi.NumSigFigs >= MaxSigFigs)
-            {
-                return RoundMaxSigFigs(_pi);
-            }
-            _pi = ComputePi();
-            return _pi;
-        }
-    }
-
-    /// <summary>
-    /// Cached value for τ.
-    /// </summary>
-    private static BigDecimal _tau;
-
-    /// <inheritdoc />
-    public static BigDecimal Tau
-    {
-        get
-        {
-            if (_tau.NumSigFigs >= MaxSigFigs)
-            {
-                return RoundMaxSigFigs(_tau);
-            }
-            _tau = ComputeTau();
-            return _tau;
-        }
-    }
-
-    /// <summary>
-    /// Cached value for φ.
-    /// </summary>
-    private static BigDecimal _phi;
-
-    /// <summary>
-    /// The golden ratio (φ).
-    /// </summary>
-    public static BigDecimal Phi
-    {
-        get
-        {
-            if (_phi.NumSigFigs >= MaxSigFigs)
-            {
-                return RoundMaxSigFigs(_phi);
-            }
-            _phi = ComputePhi();
-            return _phi;
-        }
-    }
-
-    #endregion Constants
-
-    #region Methods related to data transfer
-
-    /// <inheritdoc />
-    public int GetSignificandByteCount() =>
-        Significand.GetByteCount();
-
-    /// <inheritdoc />
-    public int GetSignificandBitLength() =>
-        GetSignificandByteCount() * 8;
-
-    /// <inheritdoc />
-    public int GetExponentByteCount() =>
-        4;
-
-    /// <inheritdoc />
-    public int GetExponentShortestBitLength() =>
-        32;
-
-    /// <inheritdoc />
-    public bool TryWriteSignificandBigEndian(Span<byte> destination, out int bytesWritten) =>
-        TryWriteBigInteger(Significand, destination, out bytesWritten, true);
-
-    /// <inheritdoc />
-    public bool TryWriteSignificandLittleEndian(Span<byte> destination, out int bytesWritten) =>
-        TryWriteBigInteger(Significand, destination, out bytesWritten, false);
-
-    /// <inheritdoc />
-    public bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten) =>
-        TryWriteInt(Exponent, destination, out bytesWritten, true);
-
-    /// <inheritdoc />
-    public bool TryWriteExponentLittleEndian(Span<byte> destination, out int bytesWritten) =>
-        TryWriteInt(Exponent, destination, out bytesWritten, false);
-
-    /// <summary>
-    /// Shared logic for:
-    /// <see cref="TryWriteBigInteger" />
-    /// <see cref="TryWriteInt" />
-    /// </summary>
-    private static bool TryWrite(byte[] bytes, Span<byte> destination, out int bytesWritten)
-    {
-        try
-        {
-            bytes.CopyTo(destination);
-            bytesWritten = bytes.Length;
-            return true;
-        }
-        catch
-        {
-            bytesWritten = 0;
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// Shared logic for:
-    /// <see cref="TryWriteSignificandBigEndian" />
-    /// <see cref="TryWriteSignificandLittleEndian" />
-    /// </summary>
-    private static bool TryWriteBigInteger(BigInteger bi, Span<byte> destination,
-        out int bytesWritten,
-        bool isBigEndian)
-    {
-        byte[] bytes = bi.ToByteArray(false, isBigEndian);
-        return TryWrite(bytes, destination, out bytesWritten);
-    }
-
-    /// <summary>
-    /// Shared logic for:
-    /// <see cref="TryWriteExponentBigEndian" />
-    /// <see cref="TryWriteExponentLittleEndian" />
-    /// </summary>
-    private static bool TryWriteInt(int i, Span<byte> destination, out int bytesWritten,
-        bool isBigEndian)
-    {
-        // Get the bytes.
-        byte[] bytes = BitConverter.GetBytes(i);
-
-        // Check if the requested endianness matches the architecture. If not, reverse the array.
-        if (BitConverter.IsLittleEndian && isBigEndian
-            || !BitConverter.IsLittleEndian && !isBigEndian)
-        {
-            bytes = bytes.Reverse().ToArray();
-        }
-
-        return TryWrite(bytes, destination, out bytesWritten);
-    }
-
-    #endregion Methods related to data transfer
 
     #region Inspection methods
 
@@ -413,102 +228,93 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
 
     #endregion Inspection methods
 
-    #region Comparison methods
+    #region Methods related to data transfer
 
     /// <inheritdoc />
-    public int CompareTo(BigDecimal other)
+    public int GetSignificandByteCount() =>
+        Significand.GetByteCount();
+
+    /// <inheritdoc />
+    public int GetSignificandBitLength() =>
+        GetSignificandByteCount() * 8;
+
+    /// <inheritdoc />
+    public int GetExponentByteCount() =>
+        4;
+
+    /// <inheritdoc />
+    public int GetExponentShortestBitLength() =>
+        32;
+
+    /// <inheritdoc />
+    public bool TryWriteSignificandBigEndian(Span<byte> destination, out int bytesWritten) =>
+        TryWriteBigInteger(Significand, destination, out bytesWritten, true);
+
+    /// <inheritdoc />
+    public bool TryWriteSignificandLittleEndian(Span<byte> destination, out int bytesWritten) =>
+        TryWriteBigInteger(Significand, destination, out bytesWritten, false);
+
+    /// <inheritdoc />
+    public bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten) =>
+        TryWriteInt(Exponent, destination, out bytesWritten, true);
+
+    /// <inheritdoc />
+    public bool TryWriteExponentLittleEndian(Span<byte> destination, out int bytesWritten) =>
+        TryWriteInt(Exponent, destination, out bytesWritten, false);
+
+    /// <summary>
+    /// Shared logic for:
+    /// <see cref="TryWriteBigInteger" />
+    /// <see cref="TryWriteInt" />
+    /// </summary>
+    private static bool TryWrite(byte[] bytes, Span<byte> destination, out int bytesWritten)
     {
-        if (Sign < other.Sign)
+        try
         {
-            return -1;
+            bytes.CopyTo(destination);
+            bytesWritten = bytes.Length;
+            return true;
         }
-        if (Sign > other.Sign)
+        catch
         {
-            return 1;
+            bytesWritten = 0;
+            return false;
         }
-        (BigDecimal x, BigDecimal y) = Align(this, other);
-        if (x.Significand < y.Significand)
-        {
-            return -1;
-        }
-        if (x.Significand > y.Significand)
-        {
-            return 1;
-        }
-        return 0;
     }
 
-    /// <inheritdoc />
-    public int CompareTo(object? obj)
+    /// <summary>
+    /// Shared logic for:
+    /// <see cref="TryWriteSignificandBigEndian" />
+    /// <see cref="TryWriteSignificandLittleEndian" />
+    /// </summary>
+    private static bool TryWriteBigInteger(BigInteger bi, Span<byte> destination,
+        out int bytesWritten,
+        bool isBigEndian)
     {
-        if (obj is not BigDecimal other)
-        {
-            throw new ArgumentInvalidException(nameof(obj), "Must be a BigDecimal.");
-        }
-        return CompareTo(other);
+        byte[] bytes = bi.ToByteArray(false, isBigEndian);
+        return TryWrite(bytes, destination, out bytesWritten);
     }
 
-    /// <inheritdoc />
-    public bool Equals(BigDecimal other) =>
-        CompareTo(other) == 0;
-
-    /// <inheritdoc />
-    public override bool Equals(object? obj)
+    /// <summary>
+    /// Shared logic for:
+    /// <see cref="TryWriteExponentBigEndian" />
+    /// <see cref="TryWriteExponentLittleEndian" />
+    /// </summary>
+    private static bool TryWriteInt(int i, Span<byte> destination, out int bytesWritten,
+        bool isBigEndian)
     {
-        if (obj is BigDecimal bd)
+        // Get the bytes.
+        byte[] bytes = BitConverter.GetBytes(i);
+
+        // Check if the requested endianness matches the architecture. If not, reverse the array.
+        if (BitConverter.IsLittleEndian && isBigEndian
+            || !BitConverter.IsLittleEndian && !isBigEndian)
         {
-            return Equals(bd);
+            bytes = bytes.Reverse().ToArray();
         }
-        return false;
+
+        return TryWrite(bytes, destination, out bytesWritten);
     }
 
-    /// <inheritdoc />
-    public override int GetHashCode() =>
-        HashCode.Combine(Significand, Exponent);
-
-    /// <inheritdoc />
-    public static BigDecimal MaxMagnitude(BigDecimal x, BigDecimal y) =>
-        x > y ? x : y;
-
-    /// <inheritdoc />
-    public static BigDecimal MaxMagnitudeNumber(BigDecimal x, BigDecimal y) =>
-        MaxMagnitude(x, y);
-
-    /// <inheritdoc />
-    public static BigDecimal MinMagnitude(BigDecimal x, BigDecimal y) =>
-        x < y ? x : y;
-
-    /// <inheritdoc />
-    public static BigDecimal MinMagnitudeNumber(BigDecimal x, BigDecimal y) =>
-        MinMagnitude(x, y);
-
-    #endregion Comparison methods
-
-    #region Comparison operators
-
-    /// <inheritdoc />
-    public static bool operator ==(BigDecimal x, BigDecimal y) =>
-        x.Equals(y);
-
-    /// <inheritdoc />
-    public static bool operator !=(BigDecimal x, BigDecimal y) =>
-        !x.Equals(y);
-
-    /// <inheritdoc />
-    public static bool operator <(BigDecimal x, BigDecimal y) =>
-        x.CompareTo(y) < 0;
-
-    /// <inheritdoc />
-    public static bool operator <=(BigDecimal x, BigDecimal y) =>
-        x.CompareTo(y) <= 0;
-
-    /// <inheritdoc />
-    public static bool operator >(BigDecimal x, BigDecimal y) =>
-        x.CompareTo(y) > 0;
-
-    /// <inheritdoc />
-    public static bool operator >=(BigDecimal x, BigDecimal y) =>
-        x.CompareTo(y) >= 0;
-
-    #endregion Comparison operators
+    #endregion Methods related to data transfer
 }

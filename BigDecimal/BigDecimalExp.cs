@@ -15,27 +15,27 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     public static BigDecimal Pow(BigDecimal x, BigDecimal y)
     {
         // Handle negative powers.
-        if (y < Zero)
+        if (y < 0)
         {
-            return One / Pow(x, -y);
+            return 1 / Pow(x, -y);
         }
 
         // Anything to the power of 0 (including 0) is 1.
-        if (y == Zero)
+        if (y == 0)
         {
-            return One;
+            return 1;
         }
 
         // Anything to the power of 1 is itself.
-        if (y == One)
+        if (y == 1)
         {
             return x;
         }
 
         // 0 to any power other than 0 is 0.
-        if (x == Zero)
+        if (x == 0)
         {
-            return Zero;
+            return 0;
         }
 
         // If the exponent is an integer we can computer a result quickly with exponentiation by
@@ -45,15 +45,15 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
             // Even integer powers.
             if (IsEvenInteger(y))
             {
-                return Pow(Sqr(x), y / Two);
+                return Pow(Sqr(x), y / 2);
             }
 
             // Odd integer powers.
-            return x * Pow(Sqr(x), (y - One) / Two);
+            return x * Pow(Sqr(x), (y - 1) / 2);
         }
 
         // For positive x with non-integer exponent, compute the result using Exp() and Ln().
-        if (x > Zero)
+        if (x > 0)
         {
             return Exp(y * Log(x));
         }
@@ -65,20 +65,20 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         // The only issue here is if the exponent does not exactly represent the intended value.
         // e.g. 1/3 cannot be stored exactly using a BigDecimal.
         // Thus Pow(-27, 1/3), for example, will not work. You have to use Cbrt().
-        BigRational br = (BigRational)y;
+        BigRational br = y;
         // To compute the result using RootN() the denominator of the fraction must be odd and in
         // the range of int.
         if (br.Denominator > int.MaxValue)
         {
             // Can't compute a real result.
-            throw new ArgumentInvalidException(nameof(y),
+            throw new ArithmeticException(
                 $"Cannot compute a result as the exponent denominator ({br.Denominator}) is "
                 + $"greater than {int.MaxValue}.");
         }
         if (BigInteger.IsEvenInteger(br.Denominator))
         {
             // Can't compute a real result.
-            throw new ArgumentInvalidException(nameof(y),
+            throw new ArithmeticException(
                 $"Cannot compute a result as the exponent denominator ({br.Denominator}) is even.");
         }
         return Pow(RootN(x, (int)br.Denominator), br.Numerator);
@@ -97,46 +97,44 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     /// <inheritdoc />
     public static BigDecimal RootN(BigDecimal a, int n)
     {
-        // Check a.
         // If n is even, a negative value for a is unsupported as there will be no real results,
         // only complex ones.
-        if (a < Zero && int.IsEvenInteger(n))
+        if (a < 0 && int.IsEvenInteger(n))
         {
-            throw new ArgumentInvalidException(nameof(n),
-                "Negative numbers have no real even roots.");
-        }
-        if (a == Zero)
-        {
-            return Zero;
-        }
-        if (a == One)
-        {
-            return One;
+            throw new ArithmeticException("Negative numbers have no real even roots.");
         }
 
-        // Check n.
-        // A negative root is the inverse of the positive root.
-        if (n < 0)
+        if (a == 0)
         {
-            return One / RootN(a, -n);
+            return 0;
         }
-        // 0th root unsolvable.
-        if (n == 0)
+
+        if (a == 1)
         {
-            throw new ArgumentInvalidException(nameof(n),
-                "The 0th root is unsolvable since any number to the power of 0 is 1.");
+            return 1;
         }
-        // The 1st root of a number is itself.
-        if (n == 1)
+
+        switch (n)
         {
-            return a;
+            // A negative root is the inverse of the positive root.
+            case < 0:
+                return 1 / RootN(a, -n);
+
+            // 0th root unsolvable.
+            case 0:
+                throw new ArgumentInvalidException(nameof(n),
+                    "The 0th root is unsolvable since any number to the power of 0 is 1.");
+
+            // The 1st root of a number is itself.
+            case 1:
+                return a;
         }
 
         // Get an initial estimate using double, which should be pretty fast.
         // Reduce operand to the maximum number of significant digits supported by the double type.
         BigDecimal aRound = RoundSigFigs(a, DoubleMaxSigFigs);
-        BigDecimal x0 = double.RootN((double)aRound.Significand, n)
-            * Exp10((double)aRound.Exponent / n);
+        BigDecimal x0 = (BigDecimal)double.RootN((double)aRound.Significand, n)
+            * Exp10((BigDecimal)aRound.Exponent / n);
 
         // Check if our estimate is already our result.
         if (Pow(x0, n) == a)
@@ -144,22 +142,20 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
             return x0;
         }
 
-        // Increase the maximum number of significant figures for the duration of the loop.
-        // This ensures an accurate result despite loss of precision due to rounding when generating
-        // next values in the loop.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
         int prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs++;
+        MaxSigFigs += 2;
 
         BigDecimal result;
 
         // Newton's method. Iterate until we get the result.
-        // int nLoops = 0;
+        int nLoops = 0;
         while (true)
         {
             // Get the next value of y.
-            BigDecimal x0ToThePowerOfNMinus1 = Pow(x0, n - 1);
-            BigDecimal x0ToThePowerOfN = x0ToThePowerOfNMinus1 * x0;
-            BigDecimal x1 = x0 - (x0ToThePowerOfN - a) / (n * x0ToThePowerOfNMinus1);
+            BigDecimal xm = Pow(x0, n - 1);
+            BigDecimal xn = xm * x0;
+            BigDecimal x1 = x0 - (xn - a) / (n * xm);
 
             // Test for equality.
             if (x0 == x1)
@@ -179,8 +175,8 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
 
             // Compare two results that differ by the smallest possible amount.
             // We need this check to prevent infinite loops that alternate between adjacent values.
-            x0Round.ShiftTo(prevMaxSigFigs);
-            x1Round.ShiftTo(prevMaxSigFigs);
+            x0Round.ShiftToSigFigs(prevMaxSigFigs);
+            x1Round.ShiftToSigFigs(prevMaxSigFigs);
             if (BigInteger.Abs(x0Round.Significand - x1Round.Significand) == 1)
             {
                 // Test both and pick the best one.
@@ -194,11 +190,11 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
             x0 = x1;
 
             // Prevent infinite loops. Remove later, after testing.
-            // nLoops++;
-            // if (nLoops == 10)
-            // {
-            //     throw new Exception($"Problem with RootN({a}, {n}).");
-            // }
+            nLoops++;
+            if (nLoops == 10)
+            {
+                throw new Exception($"Problem with RootN({a}, {n}).");
+            }
         }
 
         // Restore the maximum number of significant figures.
@@ -224,20 +220,17 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     public static BigDecimal Exp(BigDecimal x)
     {
         // Optimizations.
-        if (x == Zero)
+        if (x == 0)
         {
-            return One;
+            return 1;
         }
 
         BigDecimal result;
 
         // If the exponent is negative, inverse the result of the positive exponent.
-        if (x < Zero)
+        if (x < 0)
         {
-            MaxSigFigs += 2;
-            result = One / Exp(-x);
-            MaxSigFigs -= 2;
-            return RoundMaxSigFigs(result);
+            return RoundMaxSigFigs(1 / Exp(-x));
         }
 
         // Taylor/Maclaurin series.
@@ -247,7 +240,8 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         BigInteger nFactorial = 1;
         result = 0;
 
-        // Temporarily increase precision to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        int prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -270,19 +264,19 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
             nFactorial *= n;
         }
 
-        // Restore significant figures.
-        MaxSigFigs -= 2;
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
 
         return RoundMaxSigFigs(result);
     }
 
     /// <inheritdoc />
     public static BigDecimal Exp2(BigDecimal x) =>
-        Pow(Two, x);
+        Pow(2, x);
 
     /// <inheritdoc />
     public static BigDecimal Exp10(BigDecimal x) =>
-        Pow(Ten, x);
+        Pow(10, x);
 
     #endregion IExponentialFunctions
 
@@ -292,19 +286,19 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     public static BigDecimal Log(BigDecimal a)
     {
         // Guards.
-        if (a == Zero)
+        if (a == 0)
         {
             throw new ArgumentOutOfRangeException(nameof(a),
                 "Logarithm of 0 is -∞, which cannot be expressed using a BigDecimal.");
         }
-        if (a < Zero)
+        if (a < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(a),
                 "Logarithm of a negative value is a complex number, which cannot be expressed using a BigDecimal.");
         }
 
         // Optimization.
-        if (a == One)
+        if (a == 1)
         {
             return 0;
         }
@@ -322,7 +316,8 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         BigDecimal xToThePowerOfN = x;
         BigDecimal result = 0;
 
-        // Temporarily increase precision to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        int prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -345,26 +340,26 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
             xToThePowerOfN *= x;
         }
 
-        // Restore significant figures.
-        MaxSigFigs -= 2;
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
 
         // Scale back.
-        return result + scale * Log(10);
+        return RoundMaxSigFigs(result + scale * Log(10));
     }
 
     /// <inheritdoc />
     public static BigDecimal Log(BigDecimal x, BigDecimal b)
     {
-        if (b == One)
+        if (b == 1)
         {
             throw new ArgumentOutOfRangeException(nameof(b),
                 "Logarithms are undefined for a base of 1.");
         }
 
         // 0^0 == 1. Mimics Math.Log().
-        if (x == One && b == Zero)
+        if (x == 1 && b == 0)
         {
-            return Zero;
+            return 0;
         }
 
         // This will throw if x <= 0 || b <= 0.
@@ -373,11 +368,11 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
 
     /// <inheritdoc />
     public static BigDecimal Log2(BigDecimal x) =>
-        Log(x, Two);
+        Log(x, 2);
 
     /// <inheritdoc />
     public static BigDecimal Log10(BigDecimal x) =>
-        Log(x, Ten);
+        Log(x, 10);
 
     #endregion ILogarithmicFunctions
 }

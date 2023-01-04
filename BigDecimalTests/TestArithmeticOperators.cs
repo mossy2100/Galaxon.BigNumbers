@@ -42,7 +42,7 @@ public class TestArithmeticOperators
     [TestMethod]
     public void TestDivisionFloats()
     {
-        BigDecimal c = 40075016.6855785;
+        BigDecimal c = 40075016.6855785m;
         BigDecimal r = c / BigDecimal.Tau;
         r = BigDecimal.RoundSigFigs(r, 7);
         Assert.AreEqual(6378137, r.Significand);

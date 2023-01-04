@@ -18,7 +18,7 @@ public partial struct BigDecimal
         // Check for 0.
         if (expBits == 0 && fracBits == 0)
         {
-            return Zero;
+            return 0;
         }
 
         // Get the value's structure.

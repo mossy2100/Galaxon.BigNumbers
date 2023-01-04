@@ -189,7 +189,7 @@ public partial struct BigDecimal
     {
         if (str == null)
         {
-            result = Zero;
+            result = 0;
             return false;
         }
 
@@ -200,7 +200,7 @@ public partial struct BigDecimal
         }
         catch (Exception)
         {
-            result = Zero;
+            result = 0;
             return false;
         }
     }

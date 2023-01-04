@@ -18,8 +18,8 @@ public class TestMultiply
     [TestMethod]
     public void TestMultiplySmallFloats()
     {
-        BigDecimal a = 1.2345;
-        BigDecimal b = 6.789;
+        BigDecimal a = 1.2345m;
+        BigDecimal b = 6.789m;
         BigDecimal c = a * b;
         Assert.AreEqual(83810205, c.Significand);
         Assert.AreEqual(-7, c.Exponent);
@@ -39,8 +39,8 @@ public class TestMultiply
     [TestMethod]
     public void TestMultiplyNegatives()
     {
-        BigDecimal a = -1.23456789;
-        BigDecimal b = 9.87654321;
+        BigDecimal a = -1.23456789m;
+        BigDecimal b = 9.87654321m;
         BigDecimal c = a * b;
         Assert.AreEqual(-121932631112635269, c.Significand);
         Assert.AreEqual(-16, c.Exponent);

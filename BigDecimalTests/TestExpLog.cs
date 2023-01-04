@@ -20,20 +20,6 @@ public class TestExpLog
         Assert.AreEqual(BigDecimal.One, BigDecimal.Sqrt(1));
     }
 
-    // [TestMethod]
-    // public void TestSqrt2()
-    // {
-    //     BigDecimal bd = BigDecimal.Sqrt(2);
-    //     Assert.AreEqual(BigDecimal.Sqrt2, bd);
-    // }
-    //
-    // [TestMethod]
-    // public void TestSqrt10()
-    // {
-    //     BigDecimal bd = BigDecimal.Sqrt(10);
-    //     Assert.AreEqual(BigDecimal.Sqrt10, bd);
-    // }
-
     [TestMethod]
     public void TestSqrtPiSquared()
     {
@@ -59,13 +45,13 @@ public class TestExpLog
     [TestMethod]
     public void TestSqrtBig()
     {
-        Trace.WriteLine(BigDecimal.Sqrt(6.02214076E23).ToString());
+        Trace.WriteLine(BigDecimal.Sqrt((BigDecimal)6.02214076E23).ToString());
     }
 
     [TestMethod]
     public void TestSqrtSmall()
     {
-        Trace.WriteLine(BigDecimal.Sqrt(1.602176634E-19).ToString());
+        Trace.WriteLine(BigDecimal.Sqrt((BigDecimal)1.602176634E-19).ToString());
     }
 
     [TestMethod]
@@ -132,29 +118,54 @@ public class TestExpLog
         Assert.AreEqual(a, BigDecimal.RootN(c, b));
     }
 
+    // Useful high-precision online calculator for finding what should be the right result.
+    // https://keisan.casio.com/calculator
     [TestMethod]
     public void TestExp()
     {
         BigDecimal.MaxSigFigs = 50;
-        Assert.AreEqual(1, BigDecimal.Exp(0));
-        Assert.AreEqual(BigDecimal.E, BigDecimal.Exp(1));
-        Assert.AreEqual(BigDecimal.Parse("1.64872127070012814684865078781416357165377610071014801"),
-            BigDecimal.Exp(0.5));
-        Assert.AreEqual(BigDecimal.Parse("7.38905609893065022723042746057500781318031557055184732"),
-            BigDecimal.Exp(2));
-        Assert.AreEqual(BigDecimal.Parse("20.0855369231876677409285296545817178969879078385541501"),
-            BigDecimal.Exp(3));
-        Assert.AreEqual(BigDecimal.Parse("22026.4657948067165169579006452842443663535126185567811"),
-            BigDecimal.Exp(10));
-        Assert.AreEqual(BigDecimal.Parse("0.135335283236612691893999494972484403407631545909575882"),
-            BigDecimal.Exp(-2));
+
+        BigDecimal expected;
+        BigDecimal actual;
+
+        expected = 1;
+        actual = BigDecimal.Exp(0);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.E;
+        actual = BigDecimal.Exp(1);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.Parse("1.6487212707001281468486507878141635716537761007101");
+        actual = BigDecimal.Exp(0.5m);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.Parse("7.3890560989306502272304274605750078131803155705518");
+        actual = BigDecimal.Exp(2);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.Parse("20.085536923187667740928529654581717896987907838554");
+        actual = BigDecimal.Exp(3);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.Parse("22026.465794806716516957900645284244366353512618557");
+        actual = BigDecimal.Exp(10);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.Parse("0.13533528323661269189399949497248440340763154590958");
+        actual = BigDecimal.Exp(-2);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.Parse("4.5399929762484851535591515560550610237918088866565E-5");
+        actual = BigDecimal.Exp(-10);
+        Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void TestPowNegativeBaseFractionalExp()
     {
         BigDecimal x = -32;
-        BigDecimal y = 0.2;
+        BigDecimal y = 0.2m;
         Assert.AreEqual(-2, BigDecimal.Pow(x, y));
     }
 

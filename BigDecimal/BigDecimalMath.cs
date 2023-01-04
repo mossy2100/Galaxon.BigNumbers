@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Numerics;
 using Galaxon.Core.Numbers;
 
@@ -16,8 +17,8 @@ public partial struct BigDecimal
         new (BigInteger.Abs(bd.Significand), bd.Exponent);
 
     /// <inheritdoc />
-    public static BigDecimal Round(BigDecimal x, int nDecimalPlaces = 0,
-        MidpointRounding mode = MidpointRounding.AwayFromZero)
+    public static BigDecimal Round(BigDecimal x, int digits = 0,
+        MidpointRounding mode = MidpointRounding.ToEven)
     {
         // If it's an integer, no rounding required.
         if (x.Exponent >= 0)
@@ -26,7 +27,7 @@ public partial struct BigDecimal
         }
 
         // Find out how many digits to discard.
-        int nDigitsToCut = -nDecimalPlaces - x.Exponent;
+        int nDigitsToCut = -digits - x.Exponent;
 
         // Anything to do?
         if (nDigitsToCut <= 0)
@@ -37,29 +38,47 @@ public partial struct BigDecimal
         // Round off the significand.
         BigInteger newSig = RoundSignificand(x.Significand, nDigitsToCut, mode);
 
-        return new BigDecimal(newSig, -nDecimalPlaces);
+        return new BigDecimal(newSig, -digits);
     }
 
-    /// <summary>
-    /// Remove fraction part.
-    /// </summary>
-    public static BigDecimal Trunc(BigDecimal x) =>
+    /// <inheritdoc />
+    /// <remarks>
+    /// This method should not need to be implemented because it's a static virtual method and the
+    /// default implementation is what we want. However, static virtual methods are not yet
+    /// supported by Rider so we need this here for now.
+    /// </remarks>
+    public static BigDecimal Round(BigDecimal x, MidpointRounding mode) =>
+        Round(x, 0, mode);
+
+    /// <inheritdoc />
+    /// <remarks>
+    /// This method should not need to be implemented because it's a static virtual method and the
+    /// default implementation is what we want. However, static virtual methods are not yet
+    /// supported by Rider so we need this here for now.
+    /// </remarks>
+    public static BigDecimal Truncate(BigDecimal x) =>
         Round(x, 0, MidpointRounding.ToZero);
 
-    /// <summary>
-    /// Round to nearest integer less than or equal to the argument.
-    /// </summary>
+    /// <inheritdoc />
+    /// <remarks>
+    /// This method should not need to be implemented because it's a static virtual method and the
+    /// default implementation is what we want. However, static virtual methods are not yet
+    /// supported by Rider so we need this here for now.
+    /// </remarks>
     public static BigDecimal Floor(BigDecimal x) =>
         Round(x, 0, MidpointRounding.ToNegativeInfinity);
 
-    /// <summary>
-    /// Round to nearest integer less than or equal to the argument.
-    /// </summary>
+    /// <inheritdoc />
+    /// <remarks>
+    /// This method should not need to be implemented because it's a static virtual method and the
+    /// default implementation is what we want. However, static virtual methods are not yet
+    /// supported by Rider so we need this here for now.
+    /// </remarks>
     public static BigDecimal Ceiling(BigDecimal x) =>
         Round(x, 0, MidpointRounding.ToPositiveInfinity);
 
     private static BigInteger RoundSignificand(BigInteger sig, int nDigitsToCut,
-        MidpointRounding mode = MidpointRounding.AwayFromZero)
+        MidpointRounding mode = MidpointRounding.ToEven)
     {
         BigInteger pow = BigInteger.Pow(10, nDigitsToCut);
         BigInteger absSig = BigInteger.Abs(sig);
@@ -91,7 +110,7 @@ public partial struct BigDecimal
     /// the new significand and exponent.
     /// </summary>
     private static (BigInteger newSig, int newExp) RoundSigFigs(BigInteger sig,
-        int exp, int maxSigFigs, MidpointRounding mode = MidpointRounding.AwayFromZero)
+        int exp, int maxSigFigs, MidpointRounding mode = MidpointRounding.ToEven)
     {
         // Guard.
         if (maxSigFigs <= 0)
@@ -121,7 +140,7 @@ public partial struct BigDecimal
     /// Round off a value to a certain number of significant figures.
     /// </summary>
     public static BigDecimal RoundSigFigs(BigDecimal x, int maxSigFigs,
-        MidpointRounding mode = MidpointRounding.AwayFromZero)
+        MidpointRounding mode = MidpointRounding.ToEven)
     {
         (BigInteger newSig, int newExp) = RoundSigFigs(x.Significand, x.Exponent, maxSigFigs,
             mode);
@@ -157,11 +176,17 @@ public partial struct BigDecimal
         Exponent -= nPlaces;
     }
 
-    private void ShiftTo(int? nSigFigs = null)
-    {
-        nSigFigs ??= MaxSigFigs;
-        ShiftBy(nSigFigs.Value - Significand.NumDigits());
-    }
+    /// <summary>
+    /// Shift such that the significand has a certain number of significant digits.
+    /// </summary>
+    private void ShiftToSigFigs(int? nSigFigs = null) =>
+        ShiftBy(nSigFigs ?? MaxSigFigs - Significand.NumDigits());
+
+    /// <summary>
+    /// Shift such that the exponent has a certain value.
+    /// </summary>
+    private void ShiftToExp(int exp) =>
+        ShiftBy(Exponent - exp);
 
     /// <summary>
     /// Adjust the parts of one of the values so both have the same exponent.
@@ -244,7 +269,7 @@ public partial struct BigDecimal
 
     /// <inheritdoc />
     public static BigDecimal operator ++(BigDecimal bd) =>
-        bd + One;
+        bd + 1;
 
     /// <inheritdoc />
     public static BigDecimal operator -(BigDecimal bd) =>
@@ -259,7 +284,7 @@ public partial struct BigDecimal
 
     /// <inheritdoc />
     public static BigDecimal operator --(BigDecimal bd) =>
-        bd - One;
+        bd - 1;
 
     /// <inheritdoc />
     public static BigDecimal operator *(BigDecimal a, BigDecimal b) =>
@@ -273,27 +298,30 @@ public partial struct BigDecimal
     public static BigDecimal operator /(BigDecimal a, BigDecimal b)
     {
         // Guard.
-        if (b == Zero)
+        if (b == 0)
         {
             throw new DivideByZeroException("Division by 0 is undefined.");
         }
 
         // Optimizations.
-        if (b == One)
+        if (b == 1)
         {
             return a;
         }
         if (a == b)
         {
-            return One;
+            return 1;
         }
 
         // Find f ~= 1/b as an initial estimate of the multiplication factor.
-        // We can get a very good initial estimate using the double type.
+        // We can quickly get a very good initial estimate by leveraging the double type.
         BigDecimal bRound = RoundSigFigs(b, DoubleMaxSigFigs);
-        double bDouble = (double)bRound.Significand;
-        BigDecimal f = 1 / bDouble;
+        BigDecimal f = (BigDecimal)(1 / (double)bRound.Significand);
         f.Exponent -= bRound.Exponent;
+
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        int prevMaxSigFigs = MaxSigFigs;
+        MaxSigFigs += 2;
 
         while (true)
         {
@@ -301,122 +329,30 @@ public partial struct BigDecimal
             b *= f;
 
             // If y is 1, then n is the result.
-            if (b == One)
+            if (b == 1)
             {
                 break;
             }
 
-            f = Two - b;
+            f = 2 - b;
 
             // If y is not 1, but is close to 1, then f can be 1 due to rounding after the
             // subtraction. If it is, there's no point continuing.
-            if (f == One)
+            if (f == 1)
             {
                 break;
             }
         }
 
-        return a;
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
+
+        return RoundMaxSigFigs(a);
     }
 
     /// <inheritdoc />
     public static BigDecimal operator %(BigDecimal a, BigDecimal b) =>
-        a - Trunc(a / b) * b;
+        a - Truncate(a / b) * b;
 
     #endregion Arithmetic operators
-
-    #region Methods for computing constants
-
-    /// <summary>
-    /// Compute e.
-    /// </summary>
-    public static BigDecimal ComputeE() =>
-        Exp(1);
-
-    /// <summary>
-    /// Compute π.
-    /// <see href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" />
-    /// </summary>
-    public static BigDecimal ComputePi()
-    {
-        // Set the max sig figs for the calculation.
-        int prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
-
-        // Chudnovsky algorithm.
-        int q = 0;
-        BigInteger L = 13_591_409;
-        BigInteger X = 1;
-        BigInteger K = -6;
-        BigDecimal M = 1;
-
-        // Add terms in the series until doing so ceases to affect the result.
-        // The more significant figures wanted, the longer the process will take.
-        BigDecimal sum = 0;
-        while (true)
-        {
-            // Add the next term.
-            BigDecimal newSum = sum + (M * L / X);
-
-            // If adding the new term hasn't affected the sum, we're done.
-            if (sum == newSum)
-            {
-                break;
-            }
-
-            // Prepare for next iteration.
-            sum = newSum;
-            L += 545_140_134;
-            X *= -262_537_412_640_768_000;
-            K += 12;
-            M *= (Cube(K) - 16 * K) / Cube(q + 1);
-            q++;
-        }
-
-        // Calculate pi.
-        BigDecimal pi = 426_880 * Sqrt(10_005) / sum;
-
-        // Restore significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundMaxSigFigs(pi);
-    }
-
-    /// <summary>
-    /// Compute τ.
-    /// </summary>
-    public static BigDecimal ComputeTau()
-    {
-        // Set the max sig figs for the calculation.
-        int prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
-
-        // Do the computation.
-        BigDecimal tau = 2 * ComputePi();
-
-        // Restore significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundMaxSigFigs(tau);
-    }
-
-    /// <summary>
-    /// Compute φ.
-    /// </summary>
-    public static BigDecimal ComputePhi()
-    {
-        // Set the max sig figs for the calculation.
-        int prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
-
-        // Do the computation.
-        BigDecimal phi = (1 + Sqrt(5)) / 2;
-
-        // Restore significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundMaxSigFigs(phi);
-    }
-
-    #endregion Methods for computing constants
 }

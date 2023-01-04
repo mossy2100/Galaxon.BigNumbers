@@ -11,12 +11,20 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     IHyperbolicFunctions<BigDecimal>
 {
     /// <summary>
-    /// Add or subtract multiples of τ so the angle fits within the interval [-π, π)
+    /// Add or subtract multiples of τ to find an equivalent angle in the interval [-π, π)
     /// </summary>
-    public static BigDecimal Normalize(in BigDecimal rad)
+    public static BigDecimal NormalizeAngle(in BigDecimal radians)
     {
-        BigDecimal x = rad - Floor(rad / Tau) * Tau;
-        if (x >= Pi)
+        BigDecimal x = radians % Tau;
+        // The result of the modulo operator can be anywhere in the interval (-τ, τ) because
+        // the default behaviour of modulo is to assign the sign of the dividend (the left-hand
+        // operand) to the result. So if radians is negative, the result will be, too.
+        // Therefore, we may need to shift the value once more to place it in the desired range.
+        if (x < -Pi)
+        {
+            x += Tau;
+        }
+        else if (x >= Pi)
         {
             x -= Tau;
         }
@@ -29,17 +37,17 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Sin(BigDecimal x)
     {
         // Find the equivalent angle in the interval [-π, π).
-        x = Normalize(in x);
+        x = NormalizeAngle(in x);
 
         // Optimizations.
-        if (x == Zero || x == Pi)
+        if (x == 0 || x == Pi)
         {
-            return Zero;
+            return 0;
         }
         BigDecimal HalfPi = Pi / 2;
         if (x == HalfPi)
         {
-            return One;
+            return 1;
         }
         if (x == 3 * HalfPi)
         {
@@ -54,7 +62,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         BigInteger mf = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase precision to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        int prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -78,8 +87,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
             mf *= m * (m - 1);
         }
 
-        // Restore significant figures.
-        MaxSigFigs -= 2;
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
 
         return RoundMaxSigFigs(sum);
     }
@@ -94,12 +103,12 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Cos(BigDecimal x)
     {
         // Find the equivalent angle in the interval [-π, π).
-        x = Normalize(in x);
+        x = NormalizeAngle(in x);
 
         // Optimizations.
-        if (x == Zero)
+        if (x == 0)
         {
-            return One;
+            return 1;
         }
 
         if (x == Pi)
@@ -110,7 +119,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         BigDecimal HalfPi = Pi / 2;
         if (x == HalfPi || x == 3 * HalfPi)
         {
-            return Zero;
+            return 0;
         }
 
         // Taylor series.
@@ -122,7 +131,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         BigInteger mf = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase precision to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        int prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -146,8 +156,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
             mf *= m * (m - 1);
         }
 
-        // Restore significant figures.
-        MaxSigFigs -= 2;
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
 
         return RoundMaxSigFigs(sum);
     }
@@ -168,7 +178,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Tan(BigDecimal x)
     {
         // Find the equivalent angle in the interval [-π, π).
-        x = Normalize(in x);
+        x = NormalizeAngle(in x);
 
         // Check for valid argument.
         if (Abs(x) == Pi / 2)
@@ -189,7 +199,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Cot(BigDecimal x)
     {
         // Guard.
-        if (x % Pi == Zero)
+        if (x % Pi == 0)
         {
             throw new NotFiniteNumberException($"Cot(x) function is undefined at x={x}");
         }
@@ -203,14 +213,14 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Sec(BigDecimal x)
     {
         // Handle negative values.
-        if (x < Zero)
+        if (x < 0)
         {
             return Sec(-x);
         }
 
         // Find the equivalent angle in the interval [-π, π).
         BigDecimal x0 = x;
-        x = Normalize(in x);
+        x = NormalizeAngle(in x);
 
         // Guard.
         if (x == Pi / 2)
@@ -228,7 +238,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Csc(BigDecimal x)
     {
         // Guard.
-        if (x % Pi == Zero)
+        if (x % Pi == 0)
         {
             throw new NotFiniteNumberException(
                 $"The cosecant function Csc(x) is undefined at x={x}");
@@ -245,34 +255,35 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Asin(BigDecimal x)
     {
         // Optimization.
-        if (x == Zero)
+        if (x == 0)
         {
-            return Zero;
+            return 0;
         }
 
         // Handle negative arguments.
-        if (x < Zero)
+        if (x < 0)
         {
             return -Asin(-x);
         }
 
         // Guard.
-        if (x > One)
+        if (x > 1)
         {
             throw new ArgumentOutOfRangeException(nameof(x), "Must be in the range -1..1.");
         }
 
         // Optimization.
         BigDecimal halfPi = Pi / 2;
-        if (x == One)
+        if (x == 1)
         {
             return halfPi;
         }
 
-        // The Taylor series is slow to converge near x = ±1, but we can use an identity
-        // relationship and calculate Asin() accurately and quickly for a smaller value.
+        // The Taylor series is slow to converge near x = ±1, but we can the following identity
+        // relationship and calculate Asin() accurately and quickly for a smaller value:
+        // Asin(x) = π/2 - Asin(√(1-x²))
         BigDecimal x2 = x * x;
-        if (x > 0.75)
+        if (x > (BigDecimal)0.75)
         {
             return halfPi - Asin(Sqrt(1 - x2));
         }
@@ -285,7 +296,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         BigDecimal xc = Cube(x); // x^c
         BigDecimal sum = x;
 
-        // Temporarily increase precision to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        int prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -311,8 +323,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
             xc *= x2;
         }
 
-        // Restore significant figures.
-        MaxSigFigs -= 2;
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
 
         return RoundMaxSigFigs(sum);
     }
@@ -333,19 +345,19 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Atan(BigDecimal x)
     {
         // Optimization.
-        if (x == Zero)
+        if (x == 0)
         {
-            return Zero;
+            return 0;
         }
 
         // Handle negative arguments.
-        if (x < Zero)
+        if (x < 0)
         {
             return -Atan(-x);
         }
 
         // Optimization.
-        if (x == One)
+        if (x == 1)
         {
             return Pi / 4;
         }
@@ -354,11 +366,12 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         int m = 1;
         BigDecimal xm = x;
         BigDecimal x2 = x * x;
-        bool xIsSmall = x < One;
+        bool xIsSmall = x < 1;
         int sign = xIsSmall ? 1 : -1;
         BigDecimal sum = xIsSmall ? 0 : Pi / 2;
 
-        // Temporarily increase precision to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        int prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -382,8 +395,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
             xm *= x2;
         }
 
-        // Restore significant figures.
-        MaxSigFigs -= 2;
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
 
         return RoundMaxSigFigs(sum);
     }
@@ -398,9 +411,9 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Acot(BigDecimal x)
     {
         // Optimization.
-        if (x == Zero)
+        if (x == 0)
         {
-            return Zero;
+            return 0;
         }
 
         return Atan(1 / x);
@@ -411,7 +424,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     /// </summary>
     public static BigDecimal Asec(BigDecimal x)
     {
-        if (Abs(x) < One)
+        if (Abs(x) < 1)
         {
             throw new NotFiniteNumberException(
                 "The inverse secant function Asec(x) is undefined for |x| < 1.");
@@ -425,7 +438,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     /// </summary>
     public static BigDecimal Acsc(BigDecimal x)
     {
-        if (Abs(x) < One)
+        if (Abs(x) < 1)
         {
             throw new NotFiniteNumberException(
                 "The inverse cosecant function Acsc(x) is undefined for |x| < 1.");
@@ -442,9 +455,9 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Sinh(BigDecimal x)
     {
         // Optimization.
-        if (x == Zero)
+        if (x == 0)
         {
-            return Zero;
+            return 0;
         }
 
         // Taylor series.
@@ -453,7 +466,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         BigInteger mf = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase precision to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        int prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -476,8 +490,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
             sum = newSum;
         }
 
-        // Restore significant figures.
-        MaxSigFigs -= 2;
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
 
         return RoundMaxSigFigs(sum);
     }
@@ -486,9 +500,9 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Cosh(BigDecimal x)
     {
         // Optimization.
-        if (x == Zero)
+        if (x == 0)
         {
-            return One;
+            return 1;
         }
 
         // Taylor series.
@@ -498,7 +512,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         BigInteger mf = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase precision to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        int prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -521,8 +536,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
             sum = newSum;
         }
 
-        // Restore significant figures.
-        MaxSigFigs -= 2;
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
 
         return RoundMaxSigFigs(sum);
     }
@@ -537,7 +552,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Coth(BigDecimal x)
     {
         // Guard.
-        if (x == Zero)
+        if (x == 0)
         {
             throw new NotFiniteNumberException(
                 "The hyperbolic cotangent function Coth(x) is undefined at x=0");
@@ -558,7 +573,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Csch(BigDecimal x)
     {
         // Guard.
-        if (x == Zero)
+        if (x == 0)
         {
             throw new NotFiniteNumberException(
                 "The hyperbolic cosecant function Csch(x) is undefined at x=0");
