@@ -10,7 +10,7 @@ namespace Galaxon.Numerics.Types;
 public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<BigDecimal>,
     IExponentialFunctions<BigDecimal>, ILogarithmicFunctions<BigDecimal>
 {
-    #region IPowerFunctions
+    #region Power functions
 
     public static BigDecimal Pow(BigDecimal x, BigDecimal y)
     {
@@ -42,6 +42,12 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         // squaring.
         if (IsInteger(y))
         {
+            // 10 to any power of an integer is easy.
+            if (x == 10 && y >= int.MinValue && y <= int.MaxValue)
+            {
+                return new BigDecimal(1, (int)y);
+            }
+
             // Even integer powers.
             if (IsEvenInteger(y))
             {
@@ -90,9 +96,9 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     public static BigDecimal Cube(BigDecimal x) =>
         x * x * x;
 
-    #endregion IPowerFunctions
+    #endregion Power functions
 
-    #region IRootFunctions
+    #region Root functions
 
     /// <inheritdoc />
     public static BigDecimal RootN(BigDecimal a, int n)
@@ -133,8 +139,9 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         // Get an initial estimate using double, which should be pretty fast.
         // Reduce operand to the maximum number of significant digits supported by the double type.
         BigDecimal aRound = RoundSigFigs(a, DoubleMaxSigFigs);
-        BigDecimal x0 = (BigDecimal)double.RootN((double)aRound.Significand, n)
-            * Exp10((BigDecimal)aRound.Exponent / n);
+        double sig = double.RootN((double)aRound.Significand, n);
+        BigDecimal exp = (BigDecimal)aRound.Exponent / n;
+        BigDecimal x0 = (BigDecimal)sig * Exp10(exp);
 
         // Check if our estimate is already our result.
         if (Pow(x0, n) == a)
@@ -148,8 +155,8 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
 
         BigDecimal result;
 
-        // Newton's method. Iterate until we get the result.
-        int nLoops = 0;
+        // Newton's method.
+        // int nLoops = 0;
         while (true)
         {
             // Get the next value of y.
@@ -190,11 +197,11 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
             x0 = x1;
 
             // Prevent infinite loops. Remove later, after testing.
-            nLoops++;
-            if (nLoops == 10)
-            {
-                throw new Exception($"Problem with RootN({a}, {n}).");
-            }
+            // nLoops++;
+            // if (nLoops == 100)
+            // {
+            //     throw new Exception($"Problem with RootN({a}, {n}).");
+            // }
         }
 
         // Restore the maximum number of significant figures.
@@ -212,9 +219,9 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     public static BigDecimal Hypot(BigDecimal x, BigDecimal y) =>
         Sqrt(Sqr(x) + Sqr(y));
 
-    #endregion IRootFunctions
+    #endregion Root functions
 
-    #region IExponentialFunctions
+    #region Exponential functions
 
     /// <inheritdoc />
     public static BigDecimal Exp(BigDecimal x)
@@ -225,20 +232,20 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
             return 1;
         }
 
-        BigDecimal result;
+        BigDecimal sum;
 
         // If the exponent is negative, inverse the result of the positive exponent.
         if (x < 0)
         {
-            return RoundMaxSigFigs(1 / Exp(-x));
+            return 1 / Exp(-x);
         }
 
         // Taylor/Maclaurin series.
         // https://en.wikipedia.org/wiki/Taylor_series#Exponential_function
         BigInteger n = 0;
-        BigDecimal xToThePowerOfN = 1;
-        BigInteger nFactorial = 1;
-        result = 0;
+        BigDecimal xn = 1; // x^n
+        BigInteger nf = 1; // n!
+        sum = 0;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
         int prevMaxSigFigs = MaxSigFigs;
@@ -249,25 +256,25 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         while (true)
         {
             // Add the next term in the series.
-            BigDecimal newResult = result + xToThePowerOfN / nFactorial;
+            BigDecimal newSum = sum + xn / nf;
 
             // If adding the new term hasn't affected the result, we're done.
-            if (result == newResult)
+            if (sum == newSum)
             {
                 break;
             }
 
             // Prepare for next iteration.
-            result = newResult;
+            sum = newSum;
             n++;
-            xToThePowerOfN *= x;
-            nFactorial *= n;
+            xn *= x;
+            nf *= n;
         }
 
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundMaxSigFigs(result);
+        return RoundSigFigs(sum);
     }
 
     /// <inheritdoc />
@@ -278,9 +285,9 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     public static BigDecimal Exp10(BigDecimal x) =>
         Pow(10, x);
 
-    #endregion IExponentialFunctions
+    #endregion Exponential functions
 
-    #region ILogarithmicFunctions
+    #region Logarithmic functions
 
     /// <inheritdoc />
     public static BigDecimal Log(BigDecimal a)
@@ -303,18 +310,28 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
             return 0;
         }
 
+        // Shortcut for Log(10).
+        if (a == 10 && _ln10.NumSigFigs >= MaxSigFigs)
+        {
+            return RoundSigFigs(_ln10);
+        }
+
         // Scale the value to the range (0..1) so the Taylor series converges quickly and to avoid
         // overflow.
-        BigInteger scale = a.Significand.NumDigits() + a.Exponent;
-        BigDecimal x = a / Exp10(scale);
+        int nDigits = a.Significand.NumDigits();
+        int scale = nDigits + a.Exponent;
+        BigDecimal x = a;
+        x.Exponent = -nDigits;
 
         // Taylor/Newton-Mercator series.
         // https://en.wikipedia.org/wiki/Mercator_series
         x--;
+        // Console.WriteLine($"a = {a}");
+        // Console.WriteLine($"x = {x}");
         int n = 1;
         int sign = 1;
-        BigDecimal xToThePowerOfN = x;
-        BigDecimal result = 0;
+        BigDecimal xn = x;
+        BigDecimal sum = 0;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
         int prevMaxSigFigs = MaxSigFigs;
@@ -322,29 +339,43 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
 
         // Add terms until the process ceases to affect the result.
         // The more significant figures wanted, the longer the process will take.
+        int nLoops = 0;
         while (true)
         {
             // Add the next term in the series
-            BigDecimal newResult = result + (sign * xToThePowerOfN / n);
+            BigDecimal newSum = sum + (sign * xn / n);
+
+            // Console.WriteLine(newSum);
 
             // If adding the new term hasn't affected the result, we're done.
-            if (newResult == result)
+            if (newSum == sum)
             {
                 break;
             }
 
             // Prepare for next iteration.
-            result = newResult;
+            sum = newSum;
             n++;
             sign = -sign;
-            xToThePowerOfN *= x;
+            xn *= x;
+
+            nLoops++;
+            if (nLoops == 5000)
+            {
+                Console.WriteLine("Too many loops");
+                break;
+            }
         }
+        // Console.WriteLine($"nLoops = {nLoops}");
+
+        // Special handling for Log(10) to avoid infinite recursion.
+        BigDecimal result = a == 10 ? -sum : sum + scale * Ln10;
 
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
         // Scale back.
-        return RoundMaxSigFigs(result + scale * Log(10));
+        return RoundSigFigs(result);
     }
 
     /// <inheritdoc />
@@ -374,5 +405,5 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     public static BigDecimal Log10(BigDecimal x) =>
         Log(x, 10);
 
-    #endregion ILogarithmicFunctions
+    #endregion Logarithmic functions
 }

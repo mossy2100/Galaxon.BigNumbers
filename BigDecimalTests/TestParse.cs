@@ -82,12 +82,13 @@ public class TestParse
     [TestMethod]
     public void TestParsePi()
     {
+        BigDecimal.MaxSigFigs = 101;
         BigDecimal bd = BigDecimal.Pi;
         BigInteger expectedSignificand = BigInteger.Parse("3"
             + "14159265358979323846264338327950288419716939937510"
-            + "58209749445923078164062862089986280348253421170679");
+            + "5820974944592307816406286208998628034825342117068");
         Assert.AreEqual(expectedSignificand, bd.Significand);
-        Assert.AreEqual(-100, bd.Exponent);
+        Assert.AreEqual(-99, bd.Exponent);
     }
 
     [TestMethod]

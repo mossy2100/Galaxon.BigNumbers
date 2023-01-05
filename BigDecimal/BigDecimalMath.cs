@@ -139,25 +139,22 @@ public partial struct BigDecimal
     /// <summary>
     /// Round off a value to a certain number of significant figures.
     /// </summary>
-    public static BigDecimal RoundSigFigs(BigDecimal x, int maxSigFigs,
+    public static BigDecimal RoundSigFigs(BigDecimal x, int? maxSigFigs = null,
         MidpointRounding mode = MidpointRounding.ToEven)
     {
-        (BigInteger newSig, int newExp) = RoundSigFigs(x.Significand, x.Exponent, maxSigFigs,
+        maxSigFigs ??= MaxSigFigs;
+        (BigInteger newSig, int newExp) = RoundSigFigs(x.Significand, x.Exponent, maxSigFigs.Value,
             mode);
         return new BigDecimal(newSig, newExp);
     }
 
     /// <summary>
-    /// Round off a value to the maximum number of significant figures.
+    /// Move the decimal point to the right by the specified number of places.
+    /// This will effectively multiply the significand by 10 and decrement the exponent to maintain
+    /// the same value, the specified number of times.
+    /// NB: The value will probably not be canonical after calling this method, so it should only
+    /// be used on temporary variables.
     /// </summary>
-    public static BigDecimal RoundMaxSigFigs(BigDecimal x) =>
-        RoundSigFigs(x, MaxSigFigs);
-
-    /// <summary>
-    /// Multiply the significand by 10 and decrement the exponent to maintain the same value,
-    /// <paramref name="nPlaces"/> times.
-    /// </summary>
-    /// <param name="nPlaces"></param>
     private void ShiftBy(int nPlaces)
     {
         // Guard.
@@ -178,12 +175,16 @@ public partial struct BigDecimal
 
     /// <summary>
     /// Shift such that the significand has a certain number of significant digits.
+    /// NB: The value will probably not be canonical after calling this method, so it should only
+    /// be used on temporary variables.
     /// </summary>
     private void ShiftToSigFigs(int? nSigFigs = null) =>
-        ShiftBy(nSigFigs ?? MaxSigFigs - Significand.NumDigits());
+        ShiftBy((nSigFigs ?? MaxSigFigs) - Significand.NumDigits());
 
     /// <summary>
     /// Shift such that the exponent has a certain value.
+    /// NB: The value will probably not be canonical after calling this method, so it should only
+    /// be used on temporary variables.
     /// </summary>
     private void ShiftToExp(int exp) =>
         ShiftBy(Exponent - exp);
@@ -347,7 +348,7 @@ public partial struct BigDecimal
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundMaxSigFigs(a);
+        return RoundSigFigs(a);
     }
 
     /// <inheritdoc />
@@ -355,4 +356,62 @@ public partial struct BigDecimal
         a - Truncate(a / b) * b;
 
     #endregion Arithmetic operators
+
+    #region Arithmetic methods
+
+    /// <summary>
+    /// Compute the arithmetic-geometric mean of two values.
+    /// </summary>
+    public static BigDecimal ArithmeticGeometricMean(BigDecimal x, BigDecimal y)
+    {
+        // Guards.
+        if (x <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(x), "Must be positive.");
+        }
+        if (y <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(y), "Must be positive.");
+        }
+
+        BigDecimal a0 = x;
+        BigDecimal g0 = y;
+        BigDecimal result;
+
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        int prevMaxSigFigs = MaxSigFigs;
+        MaxSigFigs += 2;
+
+        while (true)
+        {
+            BigDecimal a1 = (a0 + g0) / 2;
+            BigDecimal g1 = Sqrt(a0 * g0);
+
+            // Test for equality.
+            if (a1 == g1)
+            {
+                result = RoundSigFigs(a1, prevMaxSigFigs);
+                break;
+            }
+
+            // Test for equality post-rounding.
+            BigDecimal a1Round = RoundSigFigs(a1, prevMaxSigFigs);
+            BigDecimal g1Round = RoundSigFigs(g1, prevMaxSigFigs);
+            if (a1Round == g1Round)
+            {
+                result = a1Round;
+                break;
+            }
+
+            a0 = a1;
+            g0 = g1;
+        }
+
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
+
+        return result;
+    }
+
+    #endregion Arithmetic methods
 }

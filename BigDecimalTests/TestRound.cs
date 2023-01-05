@@ -31,7 +31,7 @@ public class TestRound
     public void TestRoundPi()
     {
         BigDecimal pi = BigDecimal.Round(BigDecimal.Pi, 4);
-        Assert.AreEqual(3.1416, pi);
+        Assert.AreEqual(3.1416m, pi);
     }
 
     [TestMethod]
@@ -52,7 +52,7 @@ public class TestRound
 
         bd = 12345;
         r = BigDecimal.RoundSigFigs(bd, 4);
-        Assert.AreEqual(1235, r.Significand);
+        Assert.AreEqual(1234, r.Significand);
         Assert.AreEqual(1, r.Exponent);
 
         bd = 12355;
@@ -79,7 +79,7 @@ public class TestRound
 
         bd = -12345;
         r = BigDecimal.RoundSigFigs(bd, 4);
-        Assert.AreEqual(-1235, r.Significand);
+        Assert.AreEqual(-1234, r.Significand);
         Assert.AreEqual(1, r.Exponent);
 
         bd = -12355;

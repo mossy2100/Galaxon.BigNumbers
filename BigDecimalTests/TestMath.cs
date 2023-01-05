@@ -8,6 +8,57 @@ namespace Galaxon.Numerics.BigDecimalTests;
 public class TestArithmeticOperators
 {
     [TestMethod]
+    public void TestMultiplySmallInts()
+    {
+        BigDecimal a = 2;
+        BigDecimal b = 3;
+        BigDecimal c = a * b;
+        Assert.AreEqual(6, c.Significand);
+        Assert.AreEqual(0, c.Exponent);
+    }
+
+    [TestMethod]
+    public void TestMultiplySmallFloats()
+    {
+        BigDecimal a = 1.2345m;
+        BigDecimal b = 6.789m;
+        BigDecimal c = a * b;
+        Assert.AreEqual(83810205, c.Significand);
+        Assert.AreEqual(-7, c.Exponent);
+    }
+
+    [TestMethod]
+    public void TestMultiplyLargeValues()
+    {
+        // Calculate radius of Earth.
+        BigDecimal r = 6378137; // meters
+        BigDecimal c = BigDecimal.RoundSigFigs(BigDecimal.Tau * r, 15);
+        // Should be 40075016.6855785
+        Assert.AreEqual(400750166855785, c.Significand);
+        Assert.AreEqual(-7, c.Exponent);
+    }
+
+    [TestMethod]
+    public void TestMultiplyNegatives()
+    {
+        BigDecimal a = -1.23456789m;
+        BigDecimal b = 9.87654321m;
+        BigDecimal c = a * b;
+        Assert.AreEqual(-121932631112635269, c.Significand);
+        Assert.AreEqual(-16, c.Exponent);
+
+        b = -b;
+        c = a * b;
+        Assert.AreEqual(121932631112635269, c.Significand);
+        Assert.AreEqual(-16, c.Exponent);
+
+        a = -a;
+        c = a * b;
+        Assert.AreEqual(-121932631112635269, c.Significand);
+        Assert.AreEqual(-16, c.Exponent);
+    }
+
+    [TestMethod]
     public void TestDivisionSmall()
     {
         BigDecimal a = 1;
@@ -30,13 +81,14 @@ public class TestArithmeticOperators
     [TestMethod]
     public void TestDivisionFraction()
     {
+        BigDecimal.MaxSigFigs = 50;
         BigDecimal a = 2;
         BigDecimal b = 3;
         BigDecimal c = a / b;
         Assert.AreEqual(
-            BigInteger.Parse("66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666667"),
+            BigInteger.Parse("66666666666666666666666666666666666666666666666667"),
             c.Significand);
-        Assert.AreEqual(-101, c.Exponent);
+        Assert.AreEqual(-50, c.Exponent);
     }
 
     [TestMethod]
@@ -100,5 +152,29 @@ public class TestArithmeticOperators
             c += BigDecimal.Tau;
         }
         Trace.WriteLine(c);
+    }
+
+    [TestMethod]
+    public void TestAgm1()
+    {
+        BigDecimal a;
+        BigDecimal b;
+        BigDecimal expected;
+        BigDecimal actual;
+
+        BigDecimal.MaxSigFigs = 8;
+        a = 4;
+        b = 5;
+        expected = 4.4860572m;
+        actual = BigDecimal.ArithmeticGeometricMean(a, b);
+        Assert.AreEqual(expected, actual);
+
+        BigDecimal.MaxSigFigs = 9;
+        a = 7;
+        b = 100;
+        expected = 38.7918476m;
+        actual = BigDecimal.ArithmeticGeometricMean(a, b);
+        Assert.AreEqual(expected, actual);
+        Assert.AreEqual(expected, actual);
     }
 }

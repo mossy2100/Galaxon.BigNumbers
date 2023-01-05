@@ -1,8 +1,1 @@
 Test and improve (where necessary) all conversion methods.
-
-Check all methods to see if there are any that take BigInteger or BigDecimal parameters, but that
-don't mutate those parameters. Then I can use "in" to pass by reference and improve efficiency.
-
-Test and debug Sqrt().
-
-Update conversion functions to not use strings.

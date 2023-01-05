@@ -76,7 +76,7 @@ public partial struct BigDecimal : IConvertible
             throw new InvalidCastException("Cannot convert ±∞ or NaN to BigDecimal.");
         }
 
-        return Parse(n.ToString("G", NumberFormatInfo.InvariantInfo));
+        return Parse(n.ToString("G9", NumberFormatInfo.InvariantInfo));
     }
 
     /// <summary>
@@ -94,7 +94,7 @@ public partial struct BigDecimal : IConvertible
             throw new InvalidCastException("Cannot convert ±∞ or NaN to BigDecimal.");
         }
 
-        return Parse(n.ToString("G", NumberFormatInfo.InvariantInfo));
+        return Parse(n.ToString("G17", NumberFormatInfo.InvariantInfo));
     }
 
     /// <summary>

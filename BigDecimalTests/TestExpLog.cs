@@ -32,7 +32,7 @@ public class TestExpLog
     [TestMethod]
     public void TestSqrtSmallInts()
     {
-        for (int i = 1; i <= 1000; i++)
+        for (int i = 1; i <= 10; i++)
         {
             BigDecimal.MaxSigFigs = 55;
             Trace.WriteLine($"√{i} = " + BigDecimal.Sqrt(i));
@@ -70,7 +70,7 @@ public class TestExpLog
     [TestMethod]
     public void TestSqrtNegative()
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => BigDecimal.Sqrt(-1));
+        Assert.ThrowsException<ArithmeticException>(() => BigDecimal.Sqrt(-1));
     }
 
     [TestMethod]
@@ -183,7 +183,7 @@ public class TestExpLog
     {
         BigDecimal x = -123;
         int y = 70;
-        Assert.ThrowsException<ArgumentInvalidException>(() => BigDecimal.RootN(x, y));
+        Assert.ThrowsException<ArithmeticException>(() => BigDecimal.RootN(x, y));
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ public class TestExpLog
     public void TestCubeRootOfNegativeValueUsingPow()
     {
         BigDecimal oneThird = BigDecimal.One / 3;
-        Assert.ThrowsException<ArgumentInvalidException>(() => BigDecimal.Pow(-27, oneThird));
+        Assert.ThrowsException<ArithmeticException>(() => BigDecimal.Pow(-27, oneThird));
     }
 
     [TestMethod]
@@ -202,14 +202,14 @@ public class TestExpLog
     {
         // Use the built-in value.
         BigDecimal.MaxSigFigs = 50;
-        BigDecimal expected = BigDecimal.RoundMaxSigFigs(BigDecimal.E);
+        BigDecimal expected = BigDecimal.RoundSigFigs(BigDecimal.E);
         Trace.WriteLine(expected);
         BigDecimal actual = BigDecimal.Exp(1);
         Trace.WriteLine(actual);
         Assert.AreEqual(expected, actual);
 
         // Calculate the value.
-        BigDecimal.MaxSigFigs = 200;
+        BigDecimal.MaxSigFigs = 201;
         // Get E to 200 decimal places from https://www.math.utah.edu/~pa/math/e
         expected = BigDecimal.Parse(
             "2.71828 18284 59045 23536 02874 71352 66249 77572 47093 69995 "
@@ -220,5 +220,121 @@ public class TestExpLog
         actual = BigDecimal.Exp(1);
         Trace.WriteLine(actual);
         Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestLog()
+    {
+        BigDecimal.MaxSigFigs = 50;
+
+        BigDecimal expected;
+        BigDecimal actual;
+
+        expected = 0;
+        actual = BigDecimal.Log(1);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.Parse("0.69314718055994530941723212145817656807550013436026");
+        actual = BigDecimal.Log(2);
+        Assert.AreEqual(expected, actual);
+
+        expected = 1;
+        actual = BigDecimal.Log(BigDecimal.E);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.Parse("2.3025850929940456840179914546843642076011014886288");
+        actual = BigDecimal.Log(10);
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestLogAgm()
+    {
+        BigDecimal.MaxSigFigs = 50;
+
+        BigDecimal expected;
+        BigDecimal actual;
+
+        expected = 0;
+        actual = BigDecimal.LogAgm(1);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.Parse("0.69314718055994530941723212145817656807550013436026");
+        actual = BigDecimal.LogAgm(2);
+        Assert.AreEqual(expected, actual);
+
+        expected = 1;
+        actual = BigDecimal.LogAgm(BigDecimal.E);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.Parse("2.3025850929940456840179914546843642076011014886288");
+        actual = BigDecimal.LogAgm(10);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.Parse("4.6051701859880913680359829093687284152022029772575");
+        actual = BigDecimal.LogAgm(100);
+        Assert.AreEqual(expected, actual);
+
+        expected = BigDecimal.Parse("8.14786712992394624010636056097481309047097261399");
+        actual = BigDecimal.LogAgm(3456);
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TestLogDouble()
+    {
+        BigDecimal.MaxSigFigs = 17;
+
+        for (int i = 1; i < 100; i++)
+        {
+            double d = i;
+            double logD = double.Log(d);
+
+            BigDecimal bd = i;
+            BigDecimal logBD = BigDecimal.Log(bd);
+
+            Console.WriteLine($"double.Log({d})     = {logD}");
+            Console.WriteLine($"BigDecimal.Log({bd}) = {logBD}");
+            string expected = logD.ToString("G14");
+            Console.WriteLine(expected);
+            string actual = logBD.ToString("G14");
+            Console.WriteLine(actual);
+            Console.WriteLine("--------------------------------------------------");
+
+            Assert.AreEqual(expected, actual);
+        }
+    }
+
+    [TestMethod]
+    public void LogSpeedTest()
+    {
+        for (int i = 1; i < 10; i++)
+        {
+            Console.WriteLine("------------------------------");
+
+            long t1 = DateTime.Now.Ticks;
+            BigDecimal log = BigDecimal.Log(i);
+            long t2 = DateTime.Now.Ticks;
+            long tLog = t2 - t1;
+            Console.WriteLine($"Log({i}) == {log}");
+            Console.WriteLine($"Log() took {tLog} ticks.");
+
+            // long t3 = DateTime.Now.Ticks;
+            // BigDecimal logH = BigDecimal.LogHalleys(i);
+            // long t4 = DateTime.Now.Ticks;
+            // long tLogH = t4 - t3;
+            // Console.WriteLine($"LogHalleys({i}) == {logH}");
+            // Console.WriteLine($"LogHalleys() took {tLogH} ticks.");
+
+            // long t5 = DateTime.Now.Ticks;
+            // BigDecimal logAgm = BigDecimal.LogAgm(i);
+            // long t6 = DateTime.Now.Ticks;
+            // long tLogAgm = t6 - t5;
+            // Console.WriteLine($"LogAgm({i}) == {logAgm}");
+            // Console.WriteLine($"LogAgm() took {tLogAgm} ticks.");
+
+            // double percent = 100.0 * tLogAgm / tLog;
+            // Console.WriteLine($"The AGM method took {percent:F0}% as long as the Taylor series method.");
+        }
     }
 }

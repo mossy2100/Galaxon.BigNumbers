@@ -90,7 +90,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundMaxSigFigs(sum);
+        return RoundSigFigs(sum);
     }
 
     /// <inheritdoc />
@@ -159,7 +159,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundMaxSigFigs(sum);
+        return RoundSigFigs(sum);
     }
 
     /// <inheritdoc />
@@ -326,7 +326,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundMaxSigFigs(sum);
+        return RoundSigFigs(sum);
     }
 
     /// <inheritdoc />
@@ -398,7 +398,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundMaxSigFigs(sum);
+        return RoundSigFigs(sum);
     }
 
     /// <inheritdoc />
@@ -493,7 +493,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundMaxSigFigs(sum);
+        return RoundSigFigs(sum);
     }
 
     /// <inheritdoc />
@@ -539,7 +539,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundMaxSigFigs(sum);
+        return RoundSigFigs(sum);
     }
 
     /// <inheritdoc />

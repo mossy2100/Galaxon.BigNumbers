@@ -2,8 +2,23 @@
 
 Console.WriteLine("Hello, World.");
 
-BigDecimal pi2 = BigDecimal.Pi * BigDecimal.Pi;
-Console.WriteLine(pi2);
-BigDecimal bd = BigDecimal.Sqrt(pi2);
-Console.WriteLine(bd);
-Console.WriteLine(BigDecimal.Pi);
+// BigDecimal x = BigDecimal.Pi * BigDecimal.Pi;
+// BigDecimal x = 10;
+// Console.WriteLine(x);
+// BigDecimal y = BigDecimal.Sqrt(x);
+// Console.WriteLine(y);
+// Console.WriteLine(x);
+
+BigDecimal ln;
+ln = BigDecimal.Log(10);
+Console.WriteLine(ln);
+Console.WriteLine("--------------------------------------------------------------------------");
+ln = BigDecimal.Log(1);
+Console.WriteLine(ln);
+Console.WriteLine("--------------------------------------------------------------------------");
+ln = BigDecimal.Log(1000);
+Console.WriteLine(ln);
+Console.WriteLine("--------------------------------------------------------------------------");
+ln = BigDecimal.Log(2);
+Console.WriteLine(ln);
+Console.WriteLine("--------------------------------------------------------------------------");

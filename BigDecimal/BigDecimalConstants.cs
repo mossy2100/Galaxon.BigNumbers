@@ -19,18 +19,13 @@ public partial struct BigDecimal
         {
             if (_e.NumSigFigs >= MaxSigFigs)
             {
-                return RoundMaxSigFigs(_e);
+                return RoundSigFigs(_e);
             }
-            _e = ComputeE();
+
+            _e = Exp(1);
             return _e;
         }
     }
-
-    /// <summary>
-    /// Compute e.
-    /// </summary>
-    public static BigDecimal ComputeE() =>
-        Exp(1);
 
     /// <summary>
     /// Cached value for π.
@@ -44,8 +39,9 @@ public partial struct BigDecimal
         {
             if (_pi.NumSigFigs >= MaxSigFigs)
             {
-                return RoundMaxSigFigs(_pi);
+                return RoundSigFigs(_pi);
             }
+
             _pi = ComputePi();
             return _pi;
         }
@@ -97,7 +93,7 @@ public partial struct BigDecimal
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundMaxSigFigs(pi);
+        return RoundSigFigs(pi);
     }
 
     /// <summary>
@@ -112,18 +108,28 @@ public partial struct BigDecimal
         {
             if (_tau.NumSigFigs >= MaxSigFigs)
             {
-                return RoundMaxSigFigs(_tau);
+                return RoundSigFigs(_tau);
             }
+
             _tau = ComputeTau();
             return _tau;
         }
     }
 
-    /// <summary>
-    /// Compute τ.
-    /// </summary>
     public static BigDecimal ComputeTau()
-        => 2 * Pi;
+    {
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        int prevMaxSigFigs = MaxSigFigs;
+        MaxSigFigs += 2;
+
+        // τ = 2π
+        BigDecimal tau = 2 * Pi;
+
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
+
+        return RoundSigFigs(tau);
+    }
 
     /// <summary>
     /// Cached value for φ, the golden ratio.
@@ -139,16 +145,50 @@ public partial struct BigDecimal
         {
             if (_phi.NumSigFigs >= MaxSigFigs)
             {
-                return RoundMaxSigFigs(_phi);
+                return RoundSigFigs(_phi);
             }
+
             _phi = ComputePhi();
             return _phi;
         }
     }
 
+    public static BigDecimal ComputePhi()
+    {
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        int prevMaxSigFigs = MaxSigFigs;
+        MaxSigFigs += 2;
+
+        // Calculate phi.
+        BigDecimal phi = (1 + Sqrt(5)) / 2;
+
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
+
+        return RoundSigFigs(phi);
+    }
+
     /// <summary>
-    /// Compute φ.
+    /// Cached value for Log(10), the natural logarithm of 10.
+    /// This value is cached because of it's use in the Log() method. We don't want to have to
+    /// recompute Log(10) every time we call Log().
     /// </summary>
-    public static BigDecimal ComputePhi() =>
-        (1 + Sqrt(5)) / 2;
+    private static BigDecimal _ln10;
+
+    /// <summary>
+    /// The natural logarithm of 10.
+    /// </summary>
+    public static BigDecimal Ln10
+    {
+        get
+        {
+            if (_ln10.NumSigFigs >= MaxSigFigs)
+            {
+                return RoundSigFigs(_ln10);
+            }
+
+            _ln10 = Log(10);
+            return _ln10;
+        }
+    }
 }

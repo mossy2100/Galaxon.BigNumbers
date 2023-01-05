@@ -17,13 +17,14 @@ public partial struct BigDecimal
     /// Although "D" is normally only used by integral types, in this case both the significand and
     /// exponent will be formatted as integers.
     ///
-    /// An secondary code "U" is provided.
+    /// An secondary code "U" is provided, which follows the precision (if given).
     ///   - If omitted, the exponent (if present) will be formatted with the usual E[-+]999 format.
     ///   - If present, the exponent is formatted with "×10" instead of "E" and the exponent digits
-    ///     will be rendered as superscript. Also, a "+" sign is not used for positive exponents.
+    ///     will be rendered as superscript. Also, a "+" sign is not used for positive exponents,
+    ///     and the exponent digits are not zero-padded.
     ///
-    /// In either case, unlike with "E" and "G" when used with float, double, and decimal, exponent
-    /// digits are not left-padded with 0s. I don't see this as necessary.
+    /// Example: "E7U" will format as per usual (E with 7 decimal digits), except using Unicode
+    /// characters for the exponent part.
     ///
     /// Codes "R" and "D" will produce the same output. However, the Unicode flag is undefined with
     /// "R", because Parse() doesn't support superscript exponents.
@@ -329,12 +330,11 @@ public partial struct BigDecimal
             return FormatFixed("F", null, provider);
         }
 
-        // Cut the digits we don't want and create a rounded value.
-        BigInteger newSig = (BigInteger)Round(Significand / Exp10(nDigitsToCut));
-        int newExp = Exponent + nDigitsToCut;
-        BigDecimal rounded = new (newSig, newExp);
+        // Round the value.
+        BigDecimal rounded = Round(new BigDecimal(Significand, -nDigitsToCut));
+        rounded.Exponent += Exponent + nDigitsToCut;
 
-        // Format as fixed-point.
+        // Format as fixed-point without trailing zeros.
         return rounded.FormatFixed("F", null, provider);
     }
 
