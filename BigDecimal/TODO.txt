@@ -1,1 +1,3 @@
 Test and improve (where necessary) all conversion methods.
+
+Write tests for IsEvenInteger() and IsOddInteger().

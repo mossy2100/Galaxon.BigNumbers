@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Numerics;
 using Galaxon.Core.Numbers;
 
@@ -157,20 +156,21 @@ public partial struct BigDecimal
     /// </summary>
     private void ShiftBy(int nPlaces)
     {
-        // Guard.
-        if (nPlaces < 0)
+        switch (nPlaces)
         {
-            throw new ArgumentOutOfRangeException(nameof(nPlaces), "Cannot be negative.");
-        }
+            // Guard.
+            case < 0:
+                throw new ArgumentOutOfRangeException(nameof(nPlaces), "Cannot be negative.");
 
-        // See if there's anything to do.
-        if (nPlaces == 0)
-        {
-            return;
-        }
+            // See if there's anything to do.
+            case 0:
+                return;
 
-        Significand *= BigInteger.Pow(10, nPlaces);
-        Exponent -= nPlaces;
+            default:
+                Significand *= BigInteger.Pow(10, nPlaces);
+                Exponent -= nPlaces;
+                break;
+        }
     }
 
     /// <summary>
@@ -316,9 +316,9 @@ public partial struct BigDecimal
 
         // Find f ~= 1/b as an initial estimate of the multiplication factor.
         // We can quickly get a very good initial estimate by leveraging the double type.
-        BigDecimal bRound = RoundSigFigs(b, DoubleMaxSigFigs);
-        BigDecimal f = (BigDecimal)(1 / (double)bRound.Significand);
-        f.Exponent -= bRound.Exponent;
+        BigDecimal bR = RoundSigFigs(b, DoubleMaxSigFigs);
+        BigDecimal f = (BigDecimal)(1 / (double)bR.Significand);
+        f.Exponent -= bR.Exponent;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
         int prevMaxSigFigs = MaxSigFigs;
@@ -360,6 +360,20 @@ public partial struct BigDecimal
     #region Arithmetic methods
 
     /// <summary>
+    /// Compute the arithmetic mean (average) of the given values.
+    /// If you have a collection, you can use the extension method directly instead.
+    /// </summary>
+    public static BigDecimal Average(params BigDecimal[] nums) =>
+        nums.Average();
+
+    /// <summary>
+    /// Compute the geometric mean of the given values.
+    /// If you have a collection, you can use the extension method directly instead.
+    /// </summary>
+    public static BigDecimal GeometricMean(params BigDecimal[] nums) =>
+        nums.GeometricMean();
+
+    /// <summary>
     /// Compute the arithmetic-geometric mean of two values.
     /// </summary>
     public static BigDecimal ArithmeticGeometricMean(BigDecimal x, BigDecimal y)
@@ -395,11 +409,11 @@ public partial struct BigDecimal
             }
 
             // Test for equality post-rounding.
-            BigDecimal a1Round = RoundSigFigs(a1, prevMaxSigFigs);
-            BigDecimal g1Round = RoundSigFigs(g1, prevMaxSigFigs);
-            if (a1Round == g1Round)
+            BigDecimal a1R = RoundSigFigs(a1, prevMaxSigFigs);
+            BigDecimal g1R = RoundSigFigs(g1, prevMaxSigFigs);
+            if (a1R == g1R)
             {
-                result = a1Round;
+                result = a1R;
                 break;
             }
 

@@ -44,12 +44,12 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     /// <summary>
     /// The sign of the value. Same as for BigInteger.
     ///   -1 for negative
-    ///   0 for zero
-    ///   1 for positive
+    ///    0 for zero
+    ///    1 for positive
     /// <see cref="BigInteger.Sign" />
     /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
     /// </summary>
-    public int Sign => Significand.Sign;
+    public sbyte Sign => (sbyte)Significand.Sign;
 
     /// <summary>
     /// Get the number of significant figures.
@@ -111,11 +111,6 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     /// </summary>
     public const int DoubleMaxSigFigs = 17;
 
-    /// <summary>
-    /// Maximum number of significant figures supported by the decimal type.
-    /// </summary>
-    public const int DecimalMaxSigFigs = 29;
-
     #endregion Static properties
 
     #region Inspection methods
@@ -143,40 +138,12 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
         value.MakeCanonical().Exponent >= 0;
 
     /// <inheritdoc />
-    public static bool IsOddInteger(BigDecimal value)
-    {
-        if (!IsInteger(value))
-        {
-            return false;
-        }
-
-        // If the exponent is > 0 then it's a multiple of 10, and therefore even.
-        if (value.Exponent > 0)
-        {
-            return false;
-        }
-
-        // If the exponent is 0, check if it's odd.
-        return BigInteger.IsOddInteger(value.Significand);
-    }
+    public static bool IsOddInteger(BigDecimal value) =>
+        IsInteger(value) && value.Exponent == 0 && BigInteger.IsOddInteger(value.Significand);
 
     /// <inheritdoc />
-    public static bool IsEvenInteger(BigDecimal value)
-    {
-        if (!IsInteger(value))
-        {
-            return false;
-        }
-
-        // If the exponent is > 0 then it's a multiple of 10, and therefore even.
-        if (value.Exponent > 0)
-        {
-            return true;
-        }
-
-        // If the exponent is 0, check if it's even.
-        return BigInteger.IsEvenInteger(value.Significand);
-    }
+    public static bool IsEvenInteger(BigDecimal value) =>
+        IsInteger(value) && (value.Exponent > 0 || BigInteger.IsEvenInteger(value.Significand));
 
     /// <inheritdoc />
     public static bool IsZero(BigDecimal value) =>

@@ -44,8 +44,7 @@ public partial struct BigDecimal
         // Parse the format specifier.
         if (!string.IsNullOrEmpty(specifier))
         {
-            Match match = Regex.Match(specifier,
-                @"^(?<format>[DEFGNPR])(?<precision>\d*)(?<unicode>U?)$", RegexOptions.IgnoreCase);
+            Match match = FormatRegex().Match(specifier);
 
             // Check format is valid.
             if (!match.Success)
@@ -261,22 +260,22 @@ public partial struct BigDecimal
         return (strAbsSig[..^-Exponent], strAbsSig[^-Exponent..]);
     }
 
-    /// <summary>
-    /// From a BigDecimal, extract the significand and the exponent needed to write the number using
-    /// scientific notation.
-    /// Sign is ignored.
-    /// </summary>
-    private (string strSig, int exp) PreformatScientific()
-    {
-        string strAbsSig = BigInteger.Abs(Significand).ToString();
-        if (strAbsSig.Length == 1)
-        {
-            return (strAbsSig, Exponent);
-        }
-        string strSig = strAbsSig[..1] + '.' + strAbsSig[1..];
-        int exp = Exponent + strAbsSig.Length - 1;
-        return (strSig, exp);
-    }
+    // /// <summary>
+    // /// From a BigDecimal, extract the significand and the exponent needed to write the number using
+    // /// scientific notation.
+    // /// Sign is ignored.
+    // /// </summary>
+    // private (string strSig, int exp) PreformatScientific()
+    // {
+    //     string strAbsSig = BigInteger.Abs(Significand).ToString();
+    //     if (strAbsSig.Length == 1)
+    //     {
+    //         return (strAbsSig, Exponent);
+    //     }
+    //     string strSig = strAbsSig[..1] + '.' + strAbsSig[1..];
+    //     int exp = Exponent + strAbsSig.Length - 1;
+    //     return (strSig, exp);
+    // }
 
     private string FormatFixed(string format, int? precision, IFormatProvider? provider = null)
     {
@@ -389,4 +388,8 @@ public partial struct BigDecimal
             + (exp < 0 ? nfi.NegativeSign : nfi.PositiveSign)
             + int.Abs(exp).ToString("D", provider).PadLeft(expWidth, '0');
     }
+
+    [GeneratedRegex("^(?<format>[DEFGNPR])(?<precision>\\d*)(?<unicode>U?)$",
+        RegexOptions.IgnoreCase, "en-AU")]
+    private static partial Regex FormatRegex();
 }

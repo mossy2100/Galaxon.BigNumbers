@@ -82,9 +82,9 @@ public partial struct BigDecimal
         }
 
         // Shortcut for Log(10).
-        if (a == 10 && _ln10.NumSigFigs >= MaxSigFigs)
+        if (a == 10 && s_ln10.NumSigFigs >= MaxSigFigs)
         {
-            return RoundSigFigs(_ln10);
+            return RoundSigFigs(s_ln10);
         }
 
         // Scale the value to the range (0..1).
@@ -118,24 +118,24 @@ public partial struct BigDecimal
             }
 
             // Test for equality post-rounding.
-            BigDecimal y0Round = RoundSigFigs(y0, prevMaxSigFigs);
-            BigDecimal y1Round = RoundSigFigs(y1, prevMaxSigFigs);
-            if (y0Round == y1Round)
+            BigDecimal y0R = RoundSigFigs(y0, prevMaxSigFigs);
+            BigDecimal y1R = RoundSigFigs(y1, prevMaxSigFigs);
+            if (y0R == y1R)
             {
-                result = y0Round;
+                result = y0R;
                 break;
             }
 
             // Compare two results that differ by the smallest possible amount.
             // We need this check to prevent infinite loops that alternate between adjacent values.
-            y0Round.ShiftToSigFigs(prevMaxSigFigs);
-            y1Round.ShiftToSigFigs(prevMaxSigFigs);
-            if (BigInteger.Abs(y0Round.Significand - y1Round.Significand) == 1)
+            y0R.ShiftToSigFigs(prevMaxSigFigs);
+            y1R.ShiftToSigFigs(prevMaxSigFigs);
+            if (BigInteger.Abs(y0R.Significand - y1R.Significand) == 1)
             {
                 // Test both and pick the best one.
-                BigDecimal diff0 = Abs(a - Exp(y0Round));
-                BigDecimal diff1 = Abs(a - Exp(y1Round));
-                result = diff0 < diff1 ? y0Round : y1Round;
+                BigDecimal diff0 = Abs(a - Exp(y0R));
+                BigDecimal diff1 = Abs(a - Exp(y1R));
+                result = diff0 < diff1 ? y0R : y1R;
                 break;
             }
 

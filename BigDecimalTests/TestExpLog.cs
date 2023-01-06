@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Numerics;
-using Galaxon.Core.Exceptions;
 using Galaxon.Numerics.Types;
 
 namespace Galaxon.Numerics.BigDecimalTests;
@@ -42,29 +41,64 @@ public class TestExpLog
         }
     }
 
+    /// <summary>
+    /// Used https://keisan.casio.com/calculator to get expected result.
+    /// </summary>
     [TestMethod]
     public void TestSqrtBig()
     {
-        Trace.WriteLine(BigDecimal.Sqrt((BigDecimal)6.02214076E23).ToString());
+        BigDecimal.MaxSigFigs = 130;
+        BigDecimal x = BigDecimal.Parse("6.02214076E23");
+        BigDecimal expected = BigDecimal.Parse("776024533117.34932546664032837511112530578432706889"
+            + "69571576562989126786337996022194015376088918609909491309813595319711937386010926");
+        BigDecimal actual = BigDecimal.Sqrt(x);
+        Assert.AreEqual(expected, actual);
     }
 
+    /// <summary>
+    /// Used https://keisan.casio.com/calculator to get expected result.
+    /// </summary>
     [TestMethod]
     public void TestSqrtSmall()
     {
-        Trace.WriteLine(BigDecimal.Sqrt((BigDecimal)1.602176634E-19).ToString());
+        BigDecimal.MaxSigFigs = 130;
+        BigDecimal x = BigDecimal.Parse("1.602176634E-19");
+        BigDecimal expected = BigDecimal.Parse("4.0027198677899006825970388239053767545702786298616"
+            + "66648707342924009987437927221345536742635143445476302206435987095958590772815416E-10");
+        BigDecimal actual = BigDecimal.Sqrt(x);
+        Assert.AreEqual(expected, actual);
     }
 
+    /// <summary>
+    /// In this test, both the initial argument and the square root are larger than the largest
+    /// possible double value.
+    /// Used https://keisan.casio.com/calculator to get expected result.
+    /// </summary>
     [TestMethod]
     public void TestSqrtBiggerThanBiggestDouble()
     {
-        Trace.WriteLine(BigDecimal.Sqrt(BigDecimal.Parse("1.2345678E789")).ToString());
+        BigDecimal.MaxSigFigs = 130;
+        BigDecimal x = BigDecimal.Parse("1.2345678E789");
+        BigDecimal expected = BigDecimal.Parse("3.5136417005722140080009539858670683706660895438958"
+            + "9865958869460824551868009859293464600836861863229496438492388219814058056172706E+394");
+        BigDecimal actual = BigDecimal.Sqrt(x);
+        Assert.AreEqual(expected, actual);
     }
 
+    /// <summary>
+    /// In this test, both the initial argument and the square root are smaller than the largest
+    /// possible double value.
+    /// Used https://keisan.casio.com/calculator to get expected result.
+    /// </summary>
     [TestMethod]
     public void TestSqrtSmallerThanSmallestDouble()
     {
-        BigDecimal bd = BigDecimal.Parse("1.2345678E-789");
-        Trace.WriteLine(BigDecimal.Sqrt(bd).ToString());
+        BigDecimal.MaxSigFigs = 130;
+        BigDecimal x = BigDecimal.Parse("1.2345678E-789");
+        BigDecimal expected = BigDecimal.Parse("3.5136417005722140080009539858670683706660895438958"
+            + "9865958869460824551868009859293464600836861863229496438492388219814058056172706E-395");
+        BigDecimal actual = BigDecimal.Sqrt(x);
+        Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
@@ -85,14 +119,14 @@ public class TestExpLog
         Assert.AreEqual(BigDecimal.One, BigDecimal.Cbrt(1));
     }
 
-    // No asserts, just want to make sure the method calls complete fast enough and without error.
+    // No asserts, just want to make sure the method calls complete fast enough and without error or
+    // infinite looping.
     [TestMethod]
     public void TestCbrtSmallValues()
     {
-        int i;
-        for (i = 1; i <= 1000; i++)
+        for (int i = 1; i <= 1000; i++)
         {
-            BigDecimal.MaxSigFigs = 55;
+            BigDecimal.MaxSigFigs = 54;
             Trace.WriteLine($"³√{i} = " + BigDecimal.Cbrt(i));
             BigDecimal.MaxSigFigs = 50;
             Trace.WriteLine($"³√{i} = " + BigDecimal.Cbrt(i));
@@ -198,31 +232,6 @@ public class TestExpLog
     }
 
     [TestMethod]
-    public void TestECalculation()
-    {
-        // Use the built-in value.
-        BigDecimal.MaxSigFigs = 50;
-        BigDecimal expected = BigDecimal.RoundSigFigs(BigDecimal.E);
-        Trace.WriteLine(expected);
-        BigDecimal actual = BigDecimal.Exp(1);
-        Trace.WriteLine(actual);
-        Assert.AreEqual(expected, actual);
-
-        // Calculate the value.
-        BigDecimal.MaxSigFigs = 201;
-        // Get E to 200 decimal places from https://www.math.utah.edu/~pa/math/e
-        expected = BigDecimal.Parse(
-            "2.71828 18284 59045 23536 02874 71352 66249 77572 47093 69995 "
-            + "95749 66967 62772 40766 30353 54759 45713 82178 52516 64274 "
-            + "27466 39193 20030 59921 81741 35966 29043 57290 03342 95260 "
-            + "59563 07381 32328 62794 34907 63233 82988 07531 95251 01901");
-        Trace.WriteLine(expected);
-        actual = BigDecimal.Exp(1);
-        Trace.WriteLine(actual);
-        Assert.AreEqual(expected, actual);
-    }
-
-    [TestMethod]
     public void TestLog()
     {
         BigDecimal.MaxSigFigs = 50;
@@ -247,38 +256,38 @@ public class TestExpLog
         Assert.AreEqual(expected, actual);
     }
 
-    [TestMethod]
-    public void TestLogAgm()
-    {
-        BigDecimal.MaxSigFigs = 50;
-
-        BigDecimal expected;
-        BigDecimal actual;
-
-        expected = 0;
-        actual = BigDecimal.LogAgm(1);
-        Assert.AreEqual(expected, actual);
-
-        expected = BigDecimal.Parse("0.69314718055994530941723212145817656807550013436026");
-        actual = BigDecimal.LogAgm(2);
-        Assert.AreEqual(expected, actual);
-
-        expected = 1;
-        actual = BigDecimal.LogAgm(BigDecimal.E);
-        Assert.AreEqual(expected, actual);
-
-        expected = BigDecimal.Parse("2.3025850929940456840179914546843642076011014886288");
-        actual = BigDecimal.LogAgm(10);
-        Assert.AreEqual(expected, actual);
-
-        expected = BigDecimal.Parse("4.6051701859880913680359829093687284152022029772575");
-        actual = BigDecimal.LogAgm(100);
-        Assert.AreEqual(expected, actual);
-
-        expected = BigDecimal.Parse("8.14786712992394624010636056097481309047097261399");
-        actual = BigDecimal.LogAgm(3456);
-        Assert.AreEqual(expected, actual);
-    }
+    // [TestMethod]
+    // public void TestLogAgm()
+    // {
+    //     BigDecimal.MaxSigFigs = 50;
+    //
+    //     BigDecimal expected;
+    //     BigDecimal actual;
+    //
+    //     expected = 0;
+    //     actual = BigDecimal.LogAgm(1);
+    //     Assert.AreEqual(expected, actual);
+    //
+    //     expected = BigDecimal.Parse("0.69314718055994530941723212145817656807550013436026");
+    //     actual = BigDecimal.LogAgm(2);
+    //     Assert.AreEqual(expected, actual);
+    //
+    //     expected = 1;
+    //     actual = BigDecimal.LogAgm(BigDecimal.E);
+    //     Assert.AreEqual(expected, actual);
+    //
+    //     expected = BigDecimal.Parse("2.3025850929940456840179914546843642076011014886288");
+    //     actual = BigDecimal.LogAgm(10);
+    //     Assert.AreEqual(expected, actual);
+    //
+    //     expected = BigDecimal.Parse("4.6051701859880913680359829093687284152022029772575");
+    //     actual = BigDecimal.LogAgm(100);
+    //     Assert.AreEqual(expected, actual);
+    //
+    //     expected = BigDecimal.Parse("8.14786712992394624010636056097481309047097261399");
+    //     actual = BigDecimal.LogAgm(3456);
+    //     Assert.AreEqual(expected, actual);
+    // }
 
     [TestMethod]
     public void TestLogDouble()

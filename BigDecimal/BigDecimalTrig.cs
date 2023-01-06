@@ -11,7 +11,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     IHyperbolicFunctions<BigDecimal>
 {
     /// <summary>
-    /// Add or subtract multiples of τ to find an equivalent angle in the interval [-π, π)
+    /// Shift given angle to the equivalent angle in the interval [-π, π).
     /// </summary>
     public static BigDecimal NormalizeAngle(in BigDecimal radians)
     {
@@ -44,12 +44,12 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         {
             return 0;
         }
-        BigDecimal HalfPi = Pi / 2;
-        if (x == HalfPi)
+        BigDecimal halfPi = Pi / 2;
+        if (x == halfPi)
         {
             return 1;
         }
-        if (x == 3 * HalfPi)
+        if (x == 3 * halfPi)
         {
             return NegativeOne;
         }
@@ -116,8 +116,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
             return NegativeOne;
         }
 
-        BigDecimal HalfPi = Pi / 2;
-        if (x == HalfPi || x == 3 * HalfPi)
+        BigDecimal halfPi = Pi / 2;
+        if (x == halfPi || x == 3 * halfPi)
         {
             return 0;
         }
@@ -305,8 +305,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         while (true)
         {
             // Add the next term in the series.
-            BigDecimal term = (BigDecimal)a / b * xc / c;
-            BigDecimal newSum = sum + term;
+            BigDecimal newSum = sum + a * xc / (b * c);
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum)
@@ -379,8 +378,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         while (true)
         {
             // Add the next term in the series.
-            BigDecimal term = (BigDecimal)sign / m * (xIsSmall ? xm : 1 / xm);
-            BigDecimal newSum = sum + term;
+            BigDecimal newSum = sum + sign * (xIsSmall ? (xm / m) : 1 / (m * xm));
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum)
@@ -408,16 +406,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     /// <summary>
     /// Inverse cotangent function.
     /// </summary>
-    public static BigDecimal Acot(BigDecimal x)
-    {
-        // Optimization.
-        if (x == 0)
-        {
-            return 0;
-        }
-
-        return Atan(1 / x);
-    }
+    public static BigDecimal Acot(BigDecimal x) =>
+        x == 0 ? 0 : Atan(1 / x);
 
     /// <summary>
     /// Inverse secant function.

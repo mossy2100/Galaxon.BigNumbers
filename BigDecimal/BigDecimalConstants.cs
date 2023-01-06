@@ -10,40 +10,40 @@ public partial struct BigDecimal
     /// <summary>
     /// Cached value for e.
     /// </summary>
-    private static BigDecimal _e;
+    private static BigDecimal s_e;
 
     /// <inheritdoc />
     public static BigDecimal E
     {
         get
         {
-            if (_e.NumSigFigs >= MaxSigFigs)
+            if (s_e.NumSigFigs >= MaxSigFigs)
             {
-                return RoundSigFigs(_e);
+                return RoundSigFigs(s_e);
             }
 
-            _e = Exp(1);
-            return _e;
+            s_e = Exp(1);
+            return s_e;
         }
     }
 
     /// <summary>
     /// Cached value for π.
     /// </summary>
-    private static BigDecimal _pi;
+    private static BigDecimal s_pi;
 
     /// <inheritdoc />
     public static BigDecimal Pi
     {
         get
         {
-            if (_pi.NumSigFigs >= MaxSigFigs)
+            if (s_pi.NumSigFigs >= MaxSigFigs)
             {
-                return RoundSigFigs(_pi);
+                return RoundSigFigs(s_pi);
             }
 
-            _pi = ComputePi();
-            return _pi;
+            s_pi = ComputePi();
+            return s_pi;
         }
     }
 
@@ -99,20 +99,20 @@ public partial struct BigDecimal
     /// <summary>
     /// Cached value for τ.
     /// </summary>
-    private static BigDecimal _tau;
+    private static BigDecimal s_tau;
 
     /// <inheritdoc />
     public static BigDecimal Tau
     {
         get
         {
-            if (_tau.NumSigFigs >= MaxSigFigs)
+            if (s_tau.NumSigFigs >= MaxSigFigs)
             {
-                return RoundSigFigs(_tau);
+                return RoundSigFigs(s_tau);
             }
 
-            _tau = ComputeTau();
-            return _tau;
+            s_tau = ComputeTau();
+            return s_tau;
         }
     }
 
@@ -134,7 +134,7 @@ public partial struct BigDecimal
     /// <summary>
     /// Cached value for φ, the golden ratio.
     /// </summary>
-    private static BigDecimal _phi;
+    private static BigDecimal s_phi;
 
     /// <summary>
     /// The golden ratio (φ).
@@ -143,13 +143,13 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_phi.NumSigFigs >= MaxSigFigs)
+            if (s_phi.NumSigFigs >= MaxSigFigs)
             {
-                return RoundSigFigs(_phi);
+                return RoundSigFigs(s_phi);
             }
 
-            _phi = ComputePhi();
-            return _phi;
+            s_phi = ComputePhi();
+            return s_phi;
         }
     }
 
@@ -173,7 +173,7 @@ public partial struct BigDecimal
     /// This value is cached because of it's use in the Log() method. We don't want to have to
     /// recompute Log(10) every time we call Log().
     /// </summary>
-    private static BigDecimal _ln10;
+    private static BigDecimal s_ln10;
 
     /// <summary>
     /// The natural logarithm of 10.
@@ -182,13 +182,13 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_ln10.NumSigFigs >= MaxSigFigs)
+            if (s_ln10.NumSigFigs >= MaxSigFigs)
             {
-                return RoundSigFigs(_ln10);
+                return RoundSigFigs(s_ln10);
             }
 
-            _ln10 = Log(10);
-            return _ln10;
+            s_ln10 = Log(10);
+            return s_ln10;
         }
     }
 }
