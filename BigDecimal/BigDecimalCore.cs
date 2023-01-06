@@ -3,7 +3,7 @@ using Galaxon.Core.Numbers;
 
 namespace Galaxon.Numerics.Types;
 
-public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
+public partial struct BigDecimal : IFloatingPoint<BigDecimal>
 {
     #region Constructors
 

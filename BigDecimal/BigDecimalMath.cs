@@ -3,7 +3,7 @@ using Galaxon.Core.Numbers;
 
 namespace Galaxon.Numerics.Types;
 
-public partial struct BigDecimal
+public partial struct BigDecimal : ICloneable
 {
     #region Adjustment methods
 
