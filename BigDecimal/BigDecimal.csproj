@@ -24,4 +24,9 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="BigDecimalOld.cs" />
+      <None Include="BigDecimalOld.cs" />
+    </ItemGroup>
+
 </Project>
