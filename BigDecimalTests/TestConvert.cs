@@ -261,6 +261,7 @@ public class TestConvert
         double x = 123.456789;
         bool ok = BigDecimal.TryConvertFromChecked(x, out BigDecimal bd);
         Assert.IsTrue(ok);
+        bd = BigDecimal.RoundSigFigs(bd, BigDecimal.DoubleMaxSigFigs);
         Assert.AreEqual(123456789, (int)bd.Significand);
         Assert.AreEqual(-6, bd.Exponent);
     }

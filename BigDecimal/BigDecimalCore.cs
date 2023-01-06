@@ -72,17 +72,21 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>, ICloneable
     /// If the value is modified, only new objects and calculations are affected by it.
     /// If you want to reduce the number of significant figures in an existing value, use
     /// RoundSigFigs().
+    ///
+    /// The minimum value for MaxSigFigs is 30 so that a BigDecimal can be constructed from any
+    /// decimal value without loss of precision.
     /// </summary>
+    private static int s_minMaxSigFigs = 30;
     private static int s_maxSigFigs = 100;
     public static int MaxSigFigs {
         get => s_maxSigFigs;
 
         set
         {
-            if (value < 1)
+            if (value < s_minMaxSigFigs)
             {
                 throw new ArgumentOutOfRangeException(nameof(MaxSigFigs),
-                    "Must be at least 1.");
+                    $"Must be at least {s_minMaxSigFigs}.");
             }
             s_maxSigFigs = value;
         }

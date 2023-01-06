@@ -1,5 +1,5 @@
-using System.Globalization;
 using System.Numerics;
+using Galaxon.Core.Numbers;
 
 namespace Galaxon.Numerics.Types;
 
@@ -36,7 +36,10 @@ public partial struct BigDecimal : IConvertible
 
     /// <summary>
     /// Cast a decimal to a BigDecimal.
-    /// Any decimal value can be cast to a BigDecimal exactly, without loss of information.
+    ///
+    /// Any decimal value can be cast to a BigDecimal exactly, without loss of information,
+    /// because of the constraint that MaxSigFigs be at least 30. Hence, the cast can be implicit.
+    ///
     /// We don't need to use Parse() or division operations here, because the base is decimal.
     /// We can just extract the parts of the decimal from the bits and construct a BigDecimal from
     /// those. This method should be faster than using ToString() and Parse().
@@ -62,40 +65,82 @@ public partial struct BigDecimal : IConvertible
     }
 
     /// <summary>
-    /// Convert float to BigDecimal.
-    /// Using ToString() and Parse() is simpler than converting the actual bits.
-    /// The bits in the float value give the false impression of encoding a much higher precision
-    /// value than is actually meant, when really it's a binary approximation of a decimal value.
-    /// The cast must be explicit because the value represented by the BigDecimal might not exactly
-    /// match the value represented by the float.
+    /// Private method to convert a floating point value (float or double) to a BigDecimal.
     /// </summary>
-    public static explicit operator BigDecimal(float n)
+    /// <exception cref="InvalidCastException"></exception>
+    private static BigDecimal ConvertFromFloatingPoint<T>(T n) where T : IFloatingPoint<T>
     {
-        if (!float.IsFinite(n))
+        // Guard.
+        if (!T.IsFinite(n))
         {
             throw new InvalidCastException("Cannot convert ±∞ or NaN to BigDecimal.");
         }
 
-        return Parse(n.ToString("G9", NumberFormatInfo.InvariantInfo));
+        // Get the value's parts.
+        (byte signBit, ushort expBits, ulong fracBits) = n.Disassemble();
+
+        // Check for ±0.
+        if (expBits == 0 && fracBits == 0)
+        {
+            return 0;
+        }
+
+        // Get the value's structure.
+        (byte nExpBits, byte nFracBits, ushort expOffset) = n.GetStructure();
+
+        // Check if the number is normal or subnormal.
+        bool isSubnormal = expBits == 0;
+
+        // Get sign.
+        int sign = signBit == 1 ? -1 : 1;
+
+        // Get the significand.
+        // The bit values are taken to have the value 1..2^(nFracBits - 1) and the exponent is
+        // correspondingly shifted. Doing this avoids division operations.
+        BigDecimal sig = 0;
+        BigDecimal pow = 1;
+        for (int i = 0; i < nFracBits; i++)
+        {
+            bool set = (fracBits & (1ul << i)) != 0;
+            if (set)
+            {
+                sig += pow;
+            }
+            pow *= 2;
+        }
+
+        // One more addition for normal numbers.
+        if (!isSubnormal)
+        {
+            sig += pow;
+        }
+
+        // Get the exponent.
+        int exp = (isSubnormal ? 1 : expBits) - expOffset - nFracBits;
+
+        // Calculate the result.
+        return sign * sig * Exp2(exp);
     }
 
     /// <summary>
     /// Convert float to BigDecimal.
-    /// Using ToString() and Parse() is simpler than converting the actual bits.
-    /// The bits in the double value give the false impression of encoding a much higher precision
-    /// value than is actually meant, when really it's a binary approximation of a decimal value.
-    /// The cast must be explicit because the value represented by the BigDecimal might not exactly
-    /// match the value represented by the double.
+    /// NB: The resulting BigDecimal value is exactly the value encoded by the float.
+    /// However, floats often only approximately encode decimal values.
+    /// The cast is explicit because some information can be lost if the number of significant
+    /// figures is too low.
     /// </summary>
-    public static explicit operator BigDecimal(double n)
-    {
-        if (!double.IsFinite(n))
-        {
-            throw new InvalidCastException("Cannot convert ±∞ or NaN to BigDecimal.");
-        }
+    public static explicit operator BigDecimal(float n) =>
+        ConvertFromFloatingPoint(n);
 
-        return Parse(n.ToString("G17", NumberFormatInfo.InvariantInfo));
-    }
+    /// <summary>
+    /// Convert double to BigDecimal.
+    /// NB: The resulting BigDecimal value is exactly the value encoded by the double.
+    /// However, floats often only approximately encode decimal values.
+    /// The cast is explicit because some information can be lost if the number of significant
+    /// figures is too low.
+    /// </summary>
+    public static explicit operator BigDecimal(double n) =>
+        ConvertFromFloatingPoint(n);
 
     /// <summary>
     /// Cast of a BigRational to a BigDecimal.

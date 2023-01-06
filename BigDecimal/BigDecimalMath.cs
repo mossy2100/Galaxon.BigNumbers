@@ -315,9 +315,9 @@ public partial struct BigDecimal
         }
 
         // Find f ~= 1/b as an initial estimate of the multiplication factor.
-        // We can quickly get a very good initial estimate by leveraging the double type.
-        BigDecimal bR = RoundSigFigs(b, DoubleMaxSigFigs);
-        BigDecimal f = (BigDecimal)(1 / (double)bR.Significand);
+        // We can quickly get a very good initial estimate by leveraging the decimal type.
+        BigDecimal bR = RoundSigFigs(b, 28);
+        BigDecimal f = 1 / (decimal)bR.Significand;
         f.Exponent -= bR.Exponent;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
