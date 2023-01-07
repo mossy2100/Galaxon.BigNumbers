@@ -71,7 +71,7 @@ This package depends on:
 
 ## Feedback
 
-Please let me know if you find any bugs, if you would like so see any new features added to the
-type, or if you can see ways it can be made more efficient or otherwise improved.
+Please let me know if you find any bugs, would like to see new features added, or can see ways the
+type can be made more performant or otherwise improved.
 
 Shaun Moss (<shaun@astromultimedia.com>)
