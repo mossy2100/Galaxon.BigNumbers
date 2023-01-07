@@ -315,7 +315,14 @@ public partial struct BigDecimal : ICloneable
         }
 
         // Find f ~= 1/b as an initial estimate of the multiplication factor.
+
         // We can quickly get a very good initial estimate by leveraging the decimal type.
+        // In other places we've used the double type for calculating estimates, both for speed and
+        // to access methods that the decimal type doesn't provide. However, because division may be
+        // needed when casting from double to BigDecimal, using double here causes infinite
+        // recursion. Casting from decimal to BigDecimal doesn't require division so it doesn't have
+        // that problem.
+
         BigDecimal bR = RoundSigFigs(b, 28);
         BigDecimal f = 1 / (decimal)bR.Significand;
         f.Exponent -= bR.Exponent;

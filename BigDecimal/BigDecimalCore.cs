@@ -42,13 +42,14 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     public int Exponent { get; set; }
 
     /// <summary>
-    /// The sign of the value. Same as for BigInteger.
+    /// The sign of the value. The same convention is used as for BigInteger except sbyte is used
+    /// instead of an int.
     ///   -1 for negative
     ///    0 for zero
     ///    1 for positive
+    /// </summary>
     /// <see cref="BigInteger.Sign" />
     /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
-    /// </summary>
     public sbyte Sign => (sbyte)Significand.Sign;
 
     /// <summary>
@@ -61,39 +62,46 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     #region Static properties
 
     /// <summary>
-    /// This value determines the maximum number of significant figures to store for a BigDecimal
+    /// This property determines the maximum number of significant figures to keep in a BigDecimal
     /// value.
     ///
     /// After any calculation, the result will be rounded to this many significant figures.
-    /// This not only helps control memory usage by controlling the scale of the significand, but
+    /// This not only helps control memory usage by controlling the size of the significand, but
     /// also determines when to halt numerical methods, e.g. for calculating a square root or
     /// logarithm.
     ///
-    /// If the value is modified, only new objects and calculations are affected by it.
+    /// If this property is modified, only new objects and calculations are affected by it.
     /// If you want to reduce the number of significant figures in an existing value, use
     /// RoundSigFigs().
-    ///
-    /// The minimum value for MaxSigFigs is 30 so that a BigDecimal can be constructed from any
-    /// decimal value without loss of precision.
     /// </summary>
-    private static int s_minMaxSigFigs = 30;
-    private static int s_maxSigFigs = 100;
     public static int MaxSigFigs {
         get => s_maxSigFigs;
 
         set
         {
-            if (value < s_minMaxSigFigs)
+            if (value < _MinMaxSigFigs)
             {
                 throw new ArgumentOutOfRangeException(nameof(MaxSigFigs),
-                    $"Must be at least {s_minMaxSigFigs}.");
+                    $"Must be at least {_MinMaxSigFigs}.");
             }
             s_maxSigFigs = value;
         }
     }
 
+    /// <summary>
+    /// Private backing field for MaxSigFigs.
+    /// </summary>
+    private static int s_maxSigFigs = 100;
+
+    /// <summary>
+    /// The minimum value MaxSigFigs can be set to.
+    /// This is 30 so that any decimal value (which provides up to 29 significant figures) can be
+    /// converted to a BigDecimal without loss of information.
+    /// </summary>
+    private const int _MinMaxSigFigs = 30;
+
     /// <inheritdoc />
-    public static BigDecimal Zero { get; } = new (0);
+    public static BigDecimal Zero { get; } = new ();
 
     /// <inheritdoc />
     public static BigDecimal One { get; } = new (1);
