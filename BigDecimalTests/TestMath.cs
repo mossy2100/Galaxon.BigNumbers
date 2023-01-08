@@ -162,18 +162,18 @@ public class TestArithmeticOperators
         BigDecimal expected;
         BigDecimal actual;
 
-        BigDecimal.MaxSigFigs = 8;
+        BigDecimal.MaxSigFigs = 30;
+
         a = 4;
         b = 5;
         expected = 4.4860572m;
-        actual = BigDecimal.ArithmeticGeometricMean(a, b);
+        actual = BigDecimal.RoundSigFigs(BigDecimal.ArithmeticGeometricMean(a, b), 8);
         Assert.AreEqual(expected, actual);
 
-        BigDecimal.MaxSigFigs = 9;
         a = 7;
         b = 100;
         expected = 38.7918476m;
-        actual = BigDecimal.ArithmeticGeometricMean(a, b);
+        actual = BigDecimal.RoundSigFigs(BigDecimal.ArithmeticGeometricMean(a, b), 9);
         Assert.AreEqual(expected, actual);
         Assert.AreEqual(expected, actual);
     }

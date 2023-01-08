@@ -24,6 +24,12 @@ public static class XEnumerableBigDecimal
             throw new ArithmeticException("At least one value must be provided.");
         }
 
+        // Optimization.
+        if (nums.Count == 1)
+        {
+            return nums[0];
+        }
+
         return nums.Sum() / nums.Count;
     }
 
@@ -44,6 +50,12 @@ public static class XEnumerableBigDecimal
         if (nums.Count == 0)
         {
             throw new ArithmeticException("At least one value must be provided.");
+        }
+
+        // Optimization.
+        if (nums.Count == 1)
+        {
+            return nums[0];
         }
 
         return BigDecimal.RootN(nums.Product(), nums.Count);

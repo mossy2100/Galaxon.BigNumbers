@@ -73,7 +73,7 @@ public partial struct BigDecimal
         switch (ucFormat)
         {
             case "D" or "R":
-                string strSig = Significand.ToString("D", provider);
+                string strSig = Significand.ToString($"D{precision}", provider);
                 if (exp == 0)
                 {
                     return strSig;
@@ -81,17 +81,23 @@ public partial struct BigDecimal
                 return strSig + FormatExponent(format, exp, unicode, 1, provider);
 
             case "E":
+                precision ??= 6;
                 return FormatScientific(format, precision, unicode, 3, provider);
 
             case "F" or "N":
+                precision ??= 3;
                 return FormatFixed(format, precision, provider);
 
             case "G":
             {
+                // Default precision is unlimited, same as for BigInteger.
+                // See: https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#GFormatString
+
                 // Get the format using E with 2-digit exponent.
                 string strFormatE = FormatScientific(format, precision - 1, unicode, 2, provider);
 
-                // Get the fixed point format, specifying the maximum number of significant figures.
+                // Get the fixed point format, specifying the precision as the maximum number of
+                // significant figures.
                 string strFormatF = FormatFixedSigFigs(precision, provider);
 
                 // Return the shorter, preferring F.
@@ -99,7 +105,9 @@ public partial struct BigDecimal
             }
 
             case "P":
-                return (this * 100).FormatFixed("F", precision, provider) + "%";
+                NumberFormatInfo nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
+                precision ??= nfi.PercentDecimalDigits;
+                return (this * 100).FormatFixed("F", precision, provider) + nfi.PercentSymbol;
 
             default:
                 return "";
@@ -133,30 +141,36 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc />
-    public static BigDecimal Parse(string str, IFormatProvider? provider)
+    public static BigDecimal Parse(string strBigDecimal, IFormatProvider? provider)
     {
         // Get a NumberFormatInfo object so we know what characters to look for.
         NumberFormatInfo nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
 
-        // Remove any whitespace, underscore, or group separator characters from the string.
-        str = Regex.Replace(str, $@"[\s_{nfi.NumberGroupSeparator}]", "");
+        // Remove whitespace and group separator characters from the string. This includes:
+        //   - commas or periods (depending on locale)
+        //   - underscores
+        //   - thin spaces
+        strBigDecimal = Regex.Replace(strBigDecimal, $@"[\s{nfi.NumberGroupSeparator}_\u2009]", "");
 
         // Check the string format and extract salient info.
-        string strSign = $"[{nfi.NegativeSign}{nfi.PositiveSign}]?";
-        Match match = Regex.Match(str, $@"^(?<integer>{strSign}\d+)"
-            + $@"({nfi.NumberDecimalSeparator}(?<fraction>\d+))?(e(?<exponent>{strSign}\d+))?$",
-            RegexOptions.IgnoreCase);
+        string strRxSign = $"[{nfi.NegativeSign}{nfi.PositiveSign}]?";
+        string strRxInt = $@"(?<int>{strRxSign}\d+)";
+        string strRxFrac = $@"(\{nfi.NumberDecimalSeparator}(?<frac>\d+))?";
+        string strRxExp = $@"(e(?<exp>{strRxSign}\d+))?";
+        string strRx = $"^{strRxInt}{strRxFrac}{strRxExp}$";
+        Match match = Regex.Match(strBigDecimal, strRx, RegexOptions.IgnoreCase);
+
         if (!match.Success)
         {
-            throw new ArgumentFormatException(nameof(str), "Invalid format.");
+            throw new ArgumentFormatException(nameof(strBigDecimal), "Invalid BigDecimal format.");
         }
 
-        // Get the parts.
-        string strInt = match.Groups["integer"].Value;
-        string strFrac = match.Groups["fraction"].Value;
-        string strExp = match.Groups["exponent"].Value;
+        // Get the digits.
+        string strInt = match.Groups["int"].Value;
+        string strFrac = match.Groups["frac"].Value;
+        string strExp = match.Groups["exp"].Value;
 
-        // Construct the result object.
+        // Construct the result.
         BigInteger sig = BigInteger.Parse(strInt + strFrac, provider);
         int exp = strExp == "" ? 0 : int.Parse(strExp, provider);
         exp -= strFrac.Length;
@@ -290,7 +304,7 @@ public partial struct BigDecimal
         // Add group separators to the integer part if necessary.
         if (format == "N")
         {
-            strInt = BigInteger.Parse(strInt).ToString("N", provider);
+            strInt = BigInteger.Parse(strInt).ToString("N0", provider);
         }
 
         // Format the fractional part.

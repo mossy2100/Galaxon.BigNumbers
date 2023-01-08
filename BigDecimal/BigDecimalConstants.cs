@@ -49,13 +49,16 @@ public partial struct BigDecimal
 
     /// <summary>
     /// Compute π.
-    /// <see href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" />
+    /// The Chudnovsky algorithm used was the one used to generate π to 6.2 trillion decimal places,
+    /// the current world record.
     /// </summary>
+    /// <see href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" />
     public static BigDecimal ComputePi()
     {
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct
+        // result. Tests have revealed 3 extra decimal places are needed.
         int prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
+        MaxSigFigs += 3;
 
         // Chudnovsky algorithm.
         int q = 0;

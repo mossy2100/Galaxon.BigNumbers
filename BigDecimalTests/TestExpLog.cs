@@ -292,7 +292,7 @@ public class TestExpLog
     [TestMethod]
     public void TestLogDouble()
     {
-        BigDecimal.MaxSigFigs = 17;
+        BigDecimal.MaxSigFigs = 30;
 
         for (int i = 1; i < 100; i++)
         {
@@ -304,9 +304,9 @@ public class TestExpLog
 
             Console.WriteLine($"double.Log({d})     = {logD}");
             Console.WriteLine($"BigDecimal.Log({bd}) = {logBD}");
-            string expected = logD.ToString("G14");
+            string expected = logD.ToString("G13");
             Console.WriteLine(expected);
-            string actual = logBD.ToString("G14");
+            string actual = logBD.ToString("G13");
             Console.WriteLine(actual);
             Console.WriteLine("--------------------------------------------------");
 

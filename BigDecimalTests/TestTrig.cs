@@ -8,7 +8,7 @@ public class TestTrig
     [TestMethod]
     public void TestSin()
     {
-        BigDecimal.MaxSigFigs = 19;
+        BigDecimal.MaxSigFigs = 30;
         for (int i = -360; i <= 360; i += 15)
         {
             double d = i * double.Pi / 180.0;
@@ -30,7 +30,7 @@ public class TestTrig
     [TestMethod]
     public void TestCos()
     {
-        BigDecimal.MaxSigFigs = 19;
+        BigDecimal.MaxSigFigs = 30;
         for (int i = -360; i <= 360; i += 15)
         {
             double d = i * double.Pi / 180.0;
@@ -52,7 +52,7 @@ public class TestTrig
     [TestMethod]
     public void TestTan()
     {
-        BigDecimal.MaxSigFigs = 19;
+        BigDecimal.MaxSigFigs = 30;
         for (int i = -360; i <= 360; i += 15)
         {
             // Skip values for which tan is undefined.
@@ -80,7 +80,7 @@ public class TestTrig
     [TestMethod]
     public void TestAsin()
     {
-        BigDecimal.MaxSigFigs = 19;
+        BigDecimal.MaxSigFigs = 30;
         for (int i = -10; i <= 10; i++)
         {
             double d = i / 10.0;
@@ -102,7 +102,7 @@ public class TestTrig
     // [TestMethod]
     // public void TestAsin2()
     // {
-    //     BigDecimal.MaxSigFigs = 19;
+    //     BigDecimal.MaxSigFigs = 30;
     //     for (int i = 2; i <= 10; i++)
     //     {
     //         double d = i / 10.0;
@@ -145,7 +145,7 @@ public class TestTrig
     [TestMethod]
     public void TestAcos()
     {
-        BigDecimal.MaxSigFigs = 19;
+        BigDecimal.MaxSigFigs = 30;
         for (int i = -10; i <= 10; i++)
         {
             double d = i / 10.0;
@@ -167,7 +167,7 @@ public class TestTrig
     [TestMethod]
     public void TestAtan()
     {
-        BigDecimal.MaxSigFigs = 19;
+        BigDecimal.MaxSigFigs = 30;
         for (int i = -50; i <= 50; i++)
         {
             double d = i / 10.0;
@@ -189,7 +189,7 @@ public class TestTrig
     [TestMethod]
     public void TestSinh()
     {
-        BigDecimal.MaxSigFigs = 19;
+        BigDecimal.MaxSigFigs = 30;
         for (int i = -10; i <= 10; i++)
         {
             double d = i;
@@ -211,7 +211,7 @@ public class TestTrig
     [TestMethod]
     public void TestCosh()
     {
-        BigDecimal.MaxSigFigs = 19;
+        BigDecimal.MaxSigFigs = 30;
         for (int i = -10; i <= 10; i++)
         {
             double d = i;

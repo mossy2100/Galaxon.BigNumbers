@@ -208,7 +208,7 @@ public partial struct BigDecimal : IConvertible
     public static explicit operator BigInteger(BigDecimal bd)
     {
         BigDecimal trunc = Truncate(bd);
-        trunc.ShiftBy(trunc.Exponent);
+        trunc.ShiftToExp(0);
         return trunc.Significand;
     }
 

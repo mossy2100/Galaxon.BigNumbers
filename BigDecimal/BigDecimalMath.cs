@@ -49,6 +49,18 @@ public partial struct BigDecimal : ICloneable
     public static BigDecimal Round(BigDecimal x, MidpointRounding mode) =>
         Round(x, 0, mode);
 
+    /// <summary>
+    /// Round off a value to a certain number of significant figures.
+    /// </summary>
+    public static BigDecimal RoundSigFigs(BigDecimal x, int? maxSigFigs = null,
+        MidpointRounding mode = MidpointRounding.ToEven)
+    {
+        maxSigFigs ??= MaxSigFigs;
+        (BigInteger newSig, int newExp) = RoundSigFigs(x.Significand, x.Exponent, maxSigFigs.Value,
+            mode);
+        return new BigDecimal(newSig, newExp);
+    }
+
     /// <inheritdoc />
     /// <remarks>
     /// This method should not need to be implemented because it's a static virtual method and the
@@ -57,6 +69,25 @@ public partial struct BigDecimal : ICloneable
     /// </remarks>
     public static BigDecimal Truncate(BigDecimal x) =>
         Round(x, 0, MidpointRounding.ToZero);
+
+    /// <summary>
+    /// Return the fractional part of the value.
+    ///
+    /// There are multiple ways to define the frac() function for negative numbers.
+    /// (Refer to the Wikipedia link below.)
+    /// The definition used in this implementation simply takes the digits to the right of the
+    /// decimal point, with the sign matching the argument.
+    ///
+    /// e.g.
+    /// Frac(12.345) => 0.345
+    /// Frac(-12.345) => -0.345
+    ///
+    /// The following expression will be true for both positive and negative numbers:
+    ///     x == Truncate(x) + Frac(x)
+    /// </summary>
+    /// <see href="https://en.wikipedia.org/wiki/Fractional_part" />
+    public static BigDecimal Frac(BigDecimal x) =>
+        x - Truncate(x);
 
     /// <inheritdoc />
     /// <remarks>
@@ -75,6 +106,10 @@ public partial struct BigDecimal : ICloneable
     /// </remarks>
     public static BigDecimal Ceiling(BigDecimal x) =>
         Round(x, 0, MidpointRounding.ToPositiveInfinity);
+
+    #endregion Adjustment methods
+
+    #region Helper methods
 
     private static BigInteger RoundSignificand(BigInteger sig, int nDigitsToCut,
         MidpointRounding mode = MidpointRounding.ToEven)
@@ -133,18 +168,6 @@ public partial struct BigDecimal : ICloneable
         BigInteger newSig = RoundSignificand(sig, nDigitsToCut, mode);
 
         return (newSig, exp + nDigitsToCut);
-    }
-
-    /// <summary>
-    /// Round off a value to a certain number of significant figures.
-    /// </summary>
-    public static BigDecimal RoundSigFigs(BigDecimal x, int? maxSigFigs = null,
-        MidpointRounding mode = MidpointRounding.ToEven)
-    {
-        maxSigFigs ??= MaxSigFigs;
-        (BigInteger newSig, int newExp) = RoundSigFigs(x.Significand, x.Exponent, maxSigFigs.Value,
-            mode);
-        return new BigDecimal(newSig, newExp);
     }
 
     /// <summary>
@@ -253,7 +276,7 @@ public partial struct BigDecimal : ICloneable
         return this;
     }
 
-    #endregion Adjustment methods
+    #endregion Helper methods
 
     #region Arithmetic operators
 

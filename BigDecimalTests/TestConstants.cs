@@ -131,6 +131,21 @@ public class TestComputeConstants
         Assert.AreEqual(expected, actual);
     }
 
+    /// <remarks>
+    /// This takes a few minutes (about 7 on my computer), so sit back, relax, sip your coffee,
+    /// and enjoy the relentless march of time.
+    /// </remarks>
+    /// <see href="http://newton.ex.ac.uk/research/qsystems/collabs/pi/pi5.txt" />
+    [TestMethod]
+    public void TestComputePi10000()
+    {
+        BigDecimal.MaxSigFigs = 10001;
+        string strPi = File.ReadAllText("../../../pi10000.txt");
+        BigDecimal expected = BigDecimal.Parse(strPi);
+        BigDecimal actual = BigDecimal.Pi;
+        Assert.AreEqual(expected, actual);
+    }
+
     [TestMethod]
     public void TestComputeTau50()
     {
