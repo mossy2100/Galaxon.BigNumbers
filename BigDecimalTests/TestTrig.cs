@@ -1,5 +1,3 @@
-using Galaxon.Numerics.Types;
-
 namespace Galaxon.Numerics.BigDecimalTests;
 
 [TestClass]
@@ -91,7 +89,7 @@ public class TestTrig
                 strAsinD = "0.00000000000000";
             }
 
-            BigDecimal bd = (BigDecimal)d;
+            BigDecimal bd = d;
             BigDecimal asinBD = BigDecimal.Asin(bd);
             string strAsinBD = asinBD.ToString("F14");
 
@@ -156,7 +154,7 @@ public class TestTrig
                 strAcosD = "0.00000000000000";
             }
 
-            BigDecimal bd = (BigDecimal)d;
+            BigDecimal bd = d;
             BigDecimal acosBD = BigDecimal.Acos(bd);
             string strAcosBD = acosBD.ToString("F14");
 
@@ -178,7 +176,7 @@ public class TestTrig
                 strAtanD = "0.00000000000000";
             }
 
-            BigDecimal bd = (BigDecimal)d;
+            BigDecimal bd = d;
             BigDecimal atanBD = BigDecimal.Atan(bd);
             string strAtanBD = atanBD.ToString("F14");
 

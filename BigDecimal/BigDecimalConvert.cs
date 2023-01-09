@@ -1,7 +1,8 @@
 using System.Numerics;
 using Galaxon.Core.Numbers;
+using Galaxon.Numerics.Types;
 
-namespace Galaxon.Numerics.Types;
+namespace Galaxon.Numerics;
 
 public partial struct BigDecimal : IConvertible
 {
@@ -37,8 +38,9 @@ public partial struct BigDecimal : IConvertible
     /// <summary>
     /// Cast a decimal to a BigDecimal.
     ///
-    /// Any decimal value can be cast to a BigDecimal exactly, without loss of information,
-    /// because of the constraint that MaxSigFigs be at least 30. Hence, the cast can be implicit.
+    /// The cast is implicit because any decimal value can be cast to a BigDecimal exactly, without
+    /// loss of information. However, rounding off using Round() or RoundSigFigs() can cause
+    /// information loss.
     ///
     /// We don't need to use Parse() or division operations here, because the base is decimal.
     /// We can just extract the parts of the decimal from the bits and construct a BigDecimal from
@@ -85,14 +87,14 @@ public partial struct BigDecimal : IConvertible
             return 0;
         }
 
-        // Get the value's structure.
-        (byte nExpBits, byte nFracBits, ushort expOffset) = n.GetStructure();
-
         // Check if the number is normal or subnormal.
         bool isSubnormal = expBits == 0;
 
         // Get sign.
         int sign = signBit == 1 ? -1 : 1;
+
+        // Get the value's structure.
+        (byte nExpBits, byte nFracBits, ushort expOffset) = n.GetStructure();
 
         // Get the significand.
         // The bit values are taken to have the value 1..2^(nFracBits - 1) and the exponent is
@@ -115,7 +117,7 @@ public partial struct BigDecimal : IConvertible
             sig += pow;
         }
 
-        // Get the exponent.
+        // Get the power of 2.
         int exp = (isSubnormal ? 1 : expBits) - expOffset - nFracBits;
 
         // Calculate the result.
@@ -125,26 +127,32 @@ public partial struct BigDecimal : IConvertible
     /// <summary>
     /// Convert float to BigDecimal.
     /// NB: The resulting BigDecimal value is exactly the value encoded by the float.
-    /// However, floats often only approximately encode decimal values.
-    /// The cast is explicit because some information can be lost if the number of significant
-    /// figures is too low.
+    /// However, floats only approximate decimal values and it's possible that only the first 6-9
+    /// digits are valid in terms of the intended value.
+    /// So, you may need to use RoundSigFigs() to get the value you really want, e.g.
+    /// <code>
+    /// BigDecimal bd = BigDecimal.RoundSigFigs(1.2345f, FloatMaxSigFigs);
+    /// </code>
     /// </summary>
-    public static explicit operator BigDecimal(float n) =>
+    public static implicit operator BigDecimal(float n) =>
         ConvertFromFloatingPoint(n);
 
     /// <summary>
     /// Convert double to BigDecimal.
     /// NB: The resulting BigDecimal value is exactly the value encoded by the double.
-    /// However, floats often only approximately encode decimal values.
-    /// The cast is explicit because some information can be lost if the number of significant
-    /// figures is too low.
+    /// However, doubles only approximate decimal values and it's possible that only the first 15-17
+    /// digits are valid in terms of the intended value.
+    /// So, you may need to use RoundSigFigs() to get the value you really want, e.g.
+    /// <code>
+    /// BigDecimal bd = BigDecimal.RoundSigFigs(1.2345, DoubleMaxSigFigs);
+    /// </code>
     /// </summary>
-    public static explicit operator BigDecimal(double n) =>
+    public static implicit operator BigDecimal(double n) =>
         ConvertFromFloatingPoint(n);
 
     /// <summary>
     /// Cast of a BigRational to a BigDecimal.
-    /// This case operation has to be explicit as there could be loss of information due to the
+    /// This cast operation has to be explicit as there could be loss of information due to the
     /// limit on the number of significant figures in the result of the division.
     /// </summary>
     public static explicit operator BigDecimal(BigRational n) =>
@@ -231,7 +239,7 @@ public partial struct BigDecimal : IConvertible
 
         // Get the scale and check it's within the valid range for decimal.
         int iScale = -bd.Exponent;
-        if (iScale is < 0 or > 28)
+        if (iScale is < 0 or > DecimalMinSigFigs)
         {
             throw new OverflowException();
         }

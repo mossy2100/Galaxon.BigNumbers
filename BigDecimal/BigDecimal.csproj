@@ -4,9 +4,9 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Galaxon.Numerics.Types</RootNamespace>
+        <RootNamespace>Galaxon.Numerics</RootNamespace>
         <Company>Astro Multimedia</Company>
-        <AssemblyName>Galaxon.Numerics.Types.BigDecimal</AssemblyName>
+        <AssemblyName>Galaxon.Numerics.BigDecimal</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>

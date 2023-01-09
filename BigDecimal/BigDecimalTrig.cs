@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Galaxon.Numerics.Types;
+namespace Galaxon.Numerics;
 
 /// <summary>
 /// Trigonometric methods for BigDecimal.
@@ -283,7 +283,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         // relationship and calculate Asin() accurately and quickly for a smaller value:
         // Asin(x) = π/2 - Asin(√(1-x²))
         BigDecimal x2 = x * x;
-        if (x > (BigDecimal)0.75)
+        if (x > 0.75m)
         {
             return halfPi - Asin(Sqrt(1 - x2));
         }

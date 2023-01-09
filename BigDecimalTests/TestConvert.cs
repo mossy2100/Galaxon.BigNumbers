@@ -1,5 +1,3 @@
-using Galaxon.Numerics.Types;
-
 namespace Galaxon.Numerics.BigDecimalTests;
 
 [TestClass]
@@ -198,7 +196,7 @@ public class TestConvert
 
         // Ordinary value.
         x = 123.456789;
-        bd = (BigDecimal)x;
+        bd = x;
         Assert.AreEqual(x.ToString("E16"), bd.ToString("E16"));
         bd = BigDecimal.RoundSigFigs(bd, 9);
         Assert.AreEqual(123456789, (int)bd.Significand);
@@ -206,7 +204,7 @@ public class TestConvert
 
         // Integer value.
         x = 12345;
-        bd = (BigDecimal)x;
+        bd = x;
         Assert.AreEqual(x.ToString("E16"), bd.ToString("E16"));
         bd = BigDecimal.RoundSigFigs(bd, 5);
         Assert.AreEqual(12345, (int)bd.Significand);
@@ -214,7 +212,7 @@ public class TestConvert
 
         // Approximate minimum positive subnormal value.
         x = 4.94e-324;
-        bd = (BigDecimal)x;
+        bd = x;
         Assert.AreEqual(x.ToString("E16"), bd.ToString("E16"));
         bd = BigDecimal.RoundSigFigs(bd, 3);
         Assert.AreEqual(494, (int)bd.Significand);
@@ -222,7 +220,7 @@ public class TestConvert
 
         // Approximate maximum positive subnormal value.
         x = 2.225e-308;
-        bd = (BigDecimal)x;
+        bd = x;
         Assert.AreEqual(x.ToString("E16"), bd.ToString("E16"));
         bd = BigDecimal.RoundSigFigs(bd, 4);
         Assert.AreEqual(2225, (int)bd.Significand);
@@ -230,7 +228,7 @@ public class TestConvert
 
         // Approximate minimum positive normal value.
         x = 2.226e-308;
-        bd = (BigDecimal)x;
+        bd = x;
         Assert.AreEqual(x.ToString("E16"), bd.ToString("E16"));
         bd = BigDecimal.RoundSigFigs(bd, 4);
         Assert.AreEqual(2226, (int)bd.Significand);
@@ -238,7 +236,7 @@ public class TestConvert
 
         // Maximum positive normal value.
         x = double.MaxValue;
-        bd = (BigDecimal)x;
+        bd = x;
         Assert.AreEqual(x.ToString("E16"), bd.ToString("E16"));
         bd = BigDecimal.RoundSigFigs(bd, BigDecimal.DoubleMaxSigFigs);
         Assert.AreEqual(17976931348623157, (long)bd.Significand);

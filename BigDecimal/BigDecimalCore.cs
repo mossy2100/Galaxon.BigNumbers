@@ -1,7 +1,7 @@
 using System.Numerics;
 using Galaxon.Core.Numbers;
 
-namespace Galaxon.Numerics.Types;
+namespace Galaxon.Numerics;
 
 public partial struct BigDecimal : IFloatingPoint<BigDecimal>
 {
@@ -79,10 +79,10 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
 
         set
         {
-            if (value < _MinMaxSigFigs)
+            if (value < 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(MaxSigFigs),
-                    $"Must be at least {_MinMaxSigFigs}.");
+                    "Must be at least 1.");
             }
             s_maxSigFigs = value;
         }
@@ -92,13 +92,6 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// Private backing field for MaxSigFigs.
     /// </summary>
     private static int s_maxSigFigs = 100;
-
-    /// <summary>
-    /// The minimum value MaxSigFigs can be set to.
-    /// This is 30 so that any decimal value (which provides up to 29 significant figures) can be
-    /// converted to a BigDecimal without loss of information.
-    /// </summary>
-    private const int _MinMaxSigFigs = 30;
 
     /// <inheritdoc />
     public static BigDecimal Zero { get; } = new ();
@@ -119,9 +112,22 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     public static BigDecimal MultiplicativeIdentity => One;
 
     /// <summary>
-    /// Maximum number of significant figures supported by the double type.
+    /// Minimum and maximum precision supported by the float type.
     /// </summary>
+    public const int FloatMinSigFigs = 6;
+    public const int FloatMaxSigFigs = 9;
+
+    /// <summary>
+    /// Minimum and maximum precision supported by the double type.
+    /// </summary>
+    public const int DoubleMinSigFigs = 15;
     public const int DoubleMaxSigFigs = 17;
+
+    /// <summary>
+    /// Minimum and maximum precision supported by the decimal type.
+    /// </summary>
+    public const int DecimalMinSigFigs = 28;
+    public const int DecimalMaxSigFigs = 29;
 
     #endregion Static properties
 

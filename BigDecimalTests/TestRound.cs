@@ -1,5 +1,3 @@
-using Galaxon.Numerics.Types;
-
 namespace Galaxon.Numerics.BigDecimalTests;
 
 [TestClass]

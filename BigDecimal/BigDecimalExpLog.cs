@@ -1,8 +1,9 @@
 using System.Numerics;
 using Galaxon.Core.Exceptions;
 using Galaxon.Core.Numbers;
+using Galaxon.Numerics.Types;
 
-namespace Galaxon.Numerics.Types;
+namespace Galaxon.Numerics;
 
 /// <summary>
 /// Power, root, exponential, and logarithm methods for BigDecimal.
@@ -134,7 +135,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         BigDecimal xR = RoundSigFigs(x, DoubleMaxSigFigs);
         double sig = double.RootN((double)xR.Significand, n);
         BigDecimal exp = (BigDecimal)xR.Exponent / n;
-        BigDecimal y0 = (BigDecimal)sig * Exp10(exp);
+        BigDecimal y0 = sig * Exp10(exp);
 
         // Check if our estimate is already our result.
         if (Pow(y0, n) == x)

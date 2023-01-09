@@ -1,5 +1,4 @@
 using Galaxon.Core.Strings;
-using Galaxon.Numerics.Types;
 
 namespace Galaxon.Numerics.BigDecimalTests;
 
@@ -108,7 +107,7 @@ public class TestToString
         BigDecimal bd;
         string str;
 
-        bd = (BigDecimal)1.2345;
+        bd = 1.2345;
         str = bd.ToString("E2");
         Assert.AreEqual("1.23E+000", str);
 
@@ -116,19 +115,19 @@ public class TestToString
         str = bd.ToString("E2");
         Assert.AreEqual("1.23E+004", str);
 
-        bd = (BigDecimal)(12345e67);
+        bd = 12345e67;
         str = bd.ToString("E2");
         Assert.AreEqual("1.23E+071", str);
 
-        bd = (BigDecimal)(12345e-67);
+        bd = 12345e-67;
         str = bd.ToString("E2");
         Assert.AreEqual("1.23E-063", str);
 
-        bd = (BigDecimal)(-12345e67);
+        bd = -12345e67;
         str = bd.ToString("E2");
         Assert.AreEqual("-1.23E+071", str);
 
-        bd = (BigDecimal)(-12345e-67);
+        bd = -12345e-67;
         str = bd.ToString("E2");
         Assert.AreEqual("-1.23E-063", str);
 
@@ -174,7 +173,7 @@ public class TestToString
         BigDecimal bd;
         string str;
 
-        bd = (BigDecimal)1.2345;
+        bd = 1.2345;
         str = bd.ToString("E2U");
         Assert.AreEqual("1.23×10" + "0".ToSuperscript(), str);
 
@@ -182,19 +181,19 @@ public class TestToString
         str = bd.ToString("E2U");
         Assert.AreEqual("1.23×10" + "4".ToSuperscript(), str);
 
-        bd = (BigDecimal)12345e67;
+        bd = 12345e67;
         str = bd.ToString("E2U");
         Assert.AreEqual("1.23×10" + "71".ToSuperscript(), str);
 
-        bd = (BigDecimal)12345e-67;
+        bd = 12345e-67;
         str = bd.ToString("E2U");
         Assert.AreEqual("1.23×10" + "-63".ToSuperscript(), str);
 
-        bd = (BigDecimal)(-12345e67);
+        bd = -12345e67;
         str = bd.ToString("E2U");
         Assert.AreEqual("-1.23×10" + "71".ToSuperscript(), str);
 
-        bd = (BigDecimal)(-12345e-67);
+        bd = -12345e-67;
         str = bd.ToString("E2U");
         Assert.AreEqual("-1.23×10" + "-63".ToSuperscript(), str);
 
@@ -252,15 +251,15 @@ public class TestToString
         BigDecimal bd;
         string str;
 
-        bd = (BigDecimal)1.2345;
+        bd = 1.2345;
         str = bd.ToString("F0");
         Assert.AreEqual("1", str);
 
-        bd = (BigDecimal)12345.5;
+        bd = 12345.5;
         str = bd.ToString("F0");
         Assert.AreEqual("12346", str);
 
-        bd = (BigDecimal)123.45;
+        bd = 123.45;
         str = bd.ToString("F0");
         Assert.AreEqual("123", str);
 
@@ -268,27 +267,27 @@ public class TestToString
         str = bd.ToString("F0");
         Assert.AreEqual("12345", str);
 
-        bd = (BigDecimal)12345e2;
+        bd = 12345e2;
         str = bd.ToString("F0");
         Assert.AreEqual("1234500", str);
 
-        bd = (BigDecimal)1.2345e7;
+        bd = 1.2345e7;
         str = bd.ToString("F0");
         Assert.AreEqual("12345000", str);
 
-        bd = (BigDecimal)1.2345e-2;
+        bd = 1.2345e-2;
         str = bd.ToString("F0");
         Assert.AreEqual("0", str);
 
-        bd = (BigDecimal)12345e-6;
+        bd = 12345e-6;
         str = bd.ToString("F0");
         Assert.AreEqual("0", str);
 
-        bd = (BigDecimal)(-12345e2);
+        bd = -12345e2;
         str = bd.ToString("F0");
         Assert.AreEqual("-1234500", str);
 
-        bd = (BigDecimal)(-12345e-6);
+        bd = -12345e-6;
         str = bd.ToString("F0");
         Assert.AreEqual("0", str);
 
@@ -307,11 +306,11 @@ public class TestToString
         BigDecimal bd;
         string str;
 
-        bd = (BigDecimal)1.2345;
+        bd = 1.2345;
         str = bd.ToString("F2");
         Assert.AreEqual("1.23", str);
 
-        bd = (BigDecimal)123.45;
+        bd = 123.45;
         str = bd.ToString("F2");
         Assert.AreEqual("123.45", str);
 
@@ -319,27 +318,27 @@ public class TestToString
         str = bd.ToString("F2");
         Assert.AreEqual("12345.00", str);
 
-        bd = (BigDecimal)12345e2;
+        bd = 12345e2;
         str = bd.ToString("F2");
         Assert.AreEqual("1234500.00", str);
 
-        bd = (BigDecimal)1.2345e7;
+        bd = 1.2345e7;
         str = bd.ToString("F2");
         Assert.AreEqual("12345000.00", str);
 
-        bd = (BigDecimal)1.2345e-2;
+        bd = 1.2345e-2;
         str = bd.ToString("F2");
         Assert.AreEqual("0.01", str);
 
-        bd = (BigDecimal)12345e-6;
+        bd = 12345e-6;
         str = bd.ToString("F2");
         Assert.AreEqual("0.01", str);
 
-        bd = (BigDecimal)(-12345e2);
+        bd = -12345e2;
         str = bd.ToString("F2");
         Assert.AreEqual("-1234500.00", str);
 
-        bd = (BigDecimal)(-12345e-6);
+        bd = -12345e-6;
         str = bd.ToString("F2");
         Assert.AreEqual("-0.01", str);
 
@@ -419,11 +418,11 @@ public class TestToString
         str = bd.ToString("G3");
         Assert.AreEqual("123", str);
 
-        bd = (BigDecimal)123.45;
+        bd = 123.45;
         str = bd.ToString("G3");
         Assert.AreEqual("123", str);
 
-        bd = (BigDecimal)1.2345;
+        bd = 1.2345;
         str = bd.ToString("G3");
         Assert.AreEqual("1.23", str);
 
@@ -431,43 +430,43 @@ public class TestToString
         str = bd.ToString("G3");
         Assert.AreEqual("12300", str);
 
-        bd = (BigDecimal)12345e2;
+        bd = 12345e2;
         str = bd.ToString("G3");
         Assert.AreEqual("1230000", str);
 
-        bd = (BigDecimal)1.2345e7;
+        bd = 1.2345e7;
         str = bd.ToString("G3");
         Assert.AreEqual("12300000", str);
 
-        bd = (BigDecimal)1.2345e-2;
+        bd = 1.2345e-2;
         str = bd.ToString("G3");
         Assert.AreEqual("0.0123", str);
 
-        bd = (BigDecimal)12345e-6;
+        bd = 12345e-6;
         str = bd.ToString("G3");
         Assert.AreEqual("0.0123", str);
 
-        bd = (BigDecimal)(-12345e2);
+        bd = -12345e2;
         str = bd.ToString("G3");
         Assert.AreEqual("-1230000", str);
 
-        bd = (BigDecimal)(-12345e-6);
+        bd = -12345e-6;
         str = bd.ToString("G3");
         Assert.AreEqual("-0.0123", str);
 
-        bd = (BigDecimal)12345e67;
+        bd = 12345e67;
         str = bd.ToString("G3");
         Assert.AreEqual("1.23E+71", str);
 
-        bd = (BigDecimal)12345e-67;
+        bd = 12345e-67;
         str = bd.ToString("G3");
         Assert.AreEqual("1.23E-63", str);
 
-        bd = (BigDecimal)(-12345e67);
+        bd = -12345e67;
         str = bd.ToString("G3");
         Assert.AreEqual("-1.23E+71", str);
 
-        bd = (BigDecimal)(-12345e-67);
+        bd = -12345e-67;
         str = bd.ToString("G3");
         Assert.AreEqual("-1.23E-63", str);
 
@@ -613,11 +612,11 @@ public class TestToString
         BigDecimal bd;
         string str;
 
-        bd = (BigDecimal)1.2345;
+        bd = 1.2345;
         str = bd.ToString("N2");
         Assert.AreEqual("1.23", str);
 
-        bd = (BigDecimal)123.45;
+        bd = 123.45;
         str = bd.ToString("N2");
         Assert.AreEqual("123.45", str);
 
@@ -625,27 +624,27 @@ public class TestToString
         str = bd.ToString("N2");
         Assert.AreEqual("12,345.00", str);
 
-        bd = (BigDecimal)12345e2;
+        bd = 12345e2;
         str = bd.ToString("N2");
         Assert.AreEqual("1,234,500.00", str);
 
-        bd = (BigDecimal)1.2345e7;
+        bd = 1.2345e7;
         str = bd.ToString("N2");
         Assert.AreEqual("12,345,000.00", str);
 
-        bd = (BigDecimal)1.2345e-2;
+        bd = 1.2345e-2;
         str = bd.ToString("N2");
         Assert.AreEqual("0.01", str);
 
-        bd = (BigDecimal)12345e-6;
+        bd = 12345e-6;
         str = bd.ToString("N2");
         Assert.AreEqual("0.01", str);
 
-        bd = (BigDecimal)(-12345e2);
+        bd = -12345e2;
         str = bd.ToString("N2");
         Assert.AreEqual("-1,234,500.00", str);
 
-        bd = (BigDecimal)(-12345e-6);
+        bd = -12345e-6;
         str = bd.ToString("N2");
         Assert.AreEqual("-0.01", str);
 

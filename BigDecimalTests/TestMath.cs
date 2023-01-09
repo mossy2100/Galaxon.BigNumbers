@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Numerics;
-using Galaxon.Numerics.Types;
 
 namespace Galaxon.Numerics.BigDecimalTests;
 
