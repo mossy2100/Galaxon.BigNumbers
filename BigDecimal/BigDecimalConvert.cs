@@ -1,6 +1,5 @@
 using System.Numerics;
 using Galaxon.Core.Numbers;
-using Galaxon.Numerics.Types;
 
 namespace Galaxon.Numerics;
 
@@ -93,8 +92,9 @@ public partial struct BigDecimal : IConvertible
         // Get sign.
         int sign = signBit == 1 ? -1 : 1;
 
-        // Get the value's structure.
-        (byte nExpBits, byte nFracBits, ushort expOffset) = n.GetStructure();
+        // Get some information about the type.
+        byte nFracBits = XFloatingPoint.GetNumFracBits<T>();
+        short maxExp = XFloatingPoint.GetMaxExp<T>();
 
         // Get the significand.
         // The bit values are taken to have the value 1..2^(nFracBits - 1) and the exponent is
@@ -118,7 +118,7 @@ public partial struct BigDecimal : IConvertible
         }
 
         // Get the power of 2.
-        int exp = (isSubnormal ? 1 : expBits) - expOffset - nFracBits;
+        int exp = (isSubnormal ? 1 : expBits) - maxExp - nFracBits;
 
         // Calculate the result.
         return sign * sig * Exp2(exp);
@@ -249,11 +249,10 @@ public partial struct BigDecimal : IConvertible
         bool isNegative = bd.Significand < 0;
 
         // Get the bytes for the absolute value of the significand.
-        byte[] sigBytes = BigInteger.Abs(bd.Significand).ToByteArray();
+        byte[] sigBytes = BigInteger.Abs(bd.Significand).ToByteArray(true);
 
-        // Check we have at most 12 bytes, or 13 bytes with the most significant being 0 (for some
-        // reason BigInteger.ToByteArray() will do this).
-        if (sigBytes.Length > 12 && !(sigBytes.Length == 13 && sigBytes[12] == 0))
+        // Check we have at most 12 bytes.
+        if (sigBytes.Length > 12)
         {
             throw new OverflowException();
         }
@@ -270,34 +269,43 @@ public partial struct BigDecimal : IConvertible
     }
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a float.
+    /// Explicit cast of a BigDecimal to a Half.
+    /// BigDecimal doesn't use a default precision for 'E', so all digits will be rendered in the
+    /// call to ToString(), to produce the closest matching Half possible.
     /// </summary>
-    public static explicit operator float(BigDecimal bd)
-    {
-        if (float.TryParse(bd.ToString("G27"), out float f))
-        {
-            return f;
-        }
+    /// <exception cref="OverflowException">
+    /// The BigDecimal is outside the supported range for Half.
+    /// </exception>
+    public static explicit operator Half(BigDecimal bd) =>
+        Half.Parse(bd.ToString("E"));
 
-        throw new OverflowException();
-    }
+    /// <summary>
+    /// Explicit cast of a BigDecimal to a float.
+    /// I implemented a method to do this using maths and bits, but it takes much longer.
+    /// BigDecimal doesn't use a default precision for 'E', so all digits will be rendered in the
+    /// call to ToString(), to produce the closest matching float possible.
+    /// </summary>
+    /// <exception cref="OverflowException">
+    /// The BigDecimal is outside the supported range for float.
+    /// </exception>
+    public static explicit operator float(BigDecimal bd) =>
+        float.Parse(bd.ToString("E"));
 
     /// <summary>
     /// Explicit cast of a BigDecimal to a double.
+    /// BigDecimal doesn't use a default precision for 'E', so all digits will be rendered in the
+    /// call to ToString(), to produce the closest matching double possible.
     /// </summary>
-    public static explicit operator double(BigDecimal bd)
-    {
-        if (double.TryParse(bd.ToString("G56"), out double d))
-        {
-            return d;
-        }
-
-        throw new OverflowException();
-    }
+    /// <exception cref="OverflowException">
+    /// The BigDecimal is outside the supported range for double.
+    /// </exception>
+    public static explicit operator double(BigDecimal bd) =>
+        double.Parse(bd.ToString("E"));
 
     /// <summary>
     /// Cast from BigDecimal to BigRational.
-    /// This cast can be implicit because it can be done exactly, without loss of information.
+    /// This cast can be implicit because it can be done exactly, without loss of information, due
+    /// to the use of BigIntegers inside BigRational.
     /// </summary>
     public static implicit operator BigRational(BigDecimal n) =>
         n.Exponent switch

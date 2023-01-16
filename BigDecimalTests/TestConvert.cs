@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using Galaxon.Core.Numbers;
+
 namespace Galaxon.Numerics.BigDecimalTests;
 
 [TestClass]
@@ -149,6 +152,144 @@ public class TestConvert
     {
         BigDecimal bd = (BigDecimal)decimal.MinValue - 1;
         Assert.ThrowsException<OverflowException>(() => (decimal)bd);
+    }
+
+    [TestMethod]
+    public void TestCastToFloatPosNormal()
+    {
+        BigDecimal bd;
+        float x, y;
+
+        x = 123.456789f;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+
+        x = float.MaxValue;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+
+        x = XFloat.MinPosNormalValue;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+    }
+
+    [TestMethod]
+    public void TestCastToFloatNegNormal()
+    {
+        BigDecimal bd;
+        float x, y;
+
+        x = -123.456789f;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+
+        x = float.MinValue;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+
+        x = -XFloat.MinPosNormalValue;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+    }
+
+    [TestMethod]
+    public void TestCastToFloatPosSubnormal()
+    {
+        BigDecimal bd;
+        float x, y;
+
+        x = 1.2345e-40f;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+
+        x = 9.87654e-41f;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+
+        x = float.Epsilon;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+
+        x = XFloat.MaxPosSubnormalValue;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+    }
+
+    [TestMethod]
+    public void TestCastToFloatNegSubnormal()
+    {
+        BigDecimal bd;
+        float x, y;
+
+        x = -1.2345e-40f;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+
+        x = -9.87654e-41f;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+
+        x = -float.Epsilon;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+
+        x = -XFloat.MaxPosSubnormalValue;
+        bd = x;
+        y = (float)bd;
+        Assert.AreEqual(x, y);
+    }
+
+    [TestMethod]
+    public void SpeedTestConvertToFloatMethods()
+    {
+        Random rnd = new ();
+        long totalTimeStringsMethod = 0;
+        long totalTimeMathsMethod = 0;
+        int nValues = 2;
+        long t1, t2;
+
+        for (int i = 0; i < nValues; i++)
+        {
+            // Get a random float.
+            float f = rnd.NextSingle();
+            BigDecimal bd = f;
+            // Trace.WriteLine($"Testing value {f}...");
+
+            // Test strings method.
+            t1 = DateTime.Now.Ticks;
+            // float f1 = BigDecimal.ConvertToFloatUsingStrings(bd);
+            t2 = DateTime.Now.Ticks;
+            totalTimeStringsMethod += t2 - t1;
+
+            // Test maths method.
+            t1 = DateTime.Now.Ticks;
+            // float f2 = BigDecimal.ConvertToFloatUsingMaths(bd);
+            t2 = DateTime.Now.Ticks;
+            totalTimeMathsMethod += t2 - t1;
+
+            // Check for equality.
+            // Assert.AreEqual(f, f1);
+            // Assert.AreEqual(f, f2);
+        }
+
+        // Trace.WriteLine("");
+        long avgTimeStringsMethod = totalTimeStringsMethod / nValues;
+        long avgTimeMathsMethod = totalTimeMathsMethod / nValues;
+        Trace.WriteLine($"Average time for strings method {avgTimeStringsMethod} ticks.");
+        Trace.WriteLine($"Average time for maths method {avgTimeMathsMethod} ticks.");
     }
 
     [TestMethod]

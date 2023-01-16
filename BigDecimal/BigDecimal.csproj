@@ -19,8 +19,8 @@
       <Reference Include="Galaxon.Core.Strings">
         <HintPath>..\..\Core\Strings\bin\Debug\net7.0\Galaxon.Core.Strings.dll</HintPath>
       </Reference>
-      <Reference Include="Galaxon.Numerics.Types">
-        <HintPath>..\..\Numerics\Types\bin\Debug\net7.0\Galaxon.Numerics.Types.dll</HintPath>
+      <Reference Include="Galaxon.Numerics.BigRational">
+        <HintPath>..\..\BigRational\BigRational\bin\Debug\net7.0\Galaxon.Numerics.BigRational.dll</HintPath>
       </Reference>
     </ItemGroup>
 

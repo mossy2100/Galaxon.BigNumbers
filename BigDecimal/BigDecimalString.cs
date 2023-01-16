@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using Galaxon.Core.Exceptions;
+using Galaxon.Core.Numbers;
 using Galaxon.Core.Strings;
 
 namespace Galaxon.Numerics;
@@ -81,11 +82,9 @@ public partial struct BigDecimal
                 return strSig + FormatExponent(format, exp, unicode, 1, provider);
 
             case "E":
-                precision ??= 6;
                 return FormatScientific(format, precision, unicode, 3, provider);
 
             case "F" or "N":
-                precision ??= 3;
                 return FormatFixed(format, precision, provider);
 
             case "G":
@@ -400,7 +399,7 @@ public partial struct BigDecimal
         // Standard format.
         return (char.IsLower(format[0]) ? 'e' : 'E')
             + (exp < 0 ? nfi.NegativeSign : nfi.PositiveSign)
-            + int.Abs(exp).ToString("D", provider).PadLeft(expWidth, '0');
+            + int.Abs(exp).ToString("D", provider).ZeroPad(expWidth);
     }
 
     [GeneratedRegex("^(?<format>[DEFGNPR])(?<precision>\\d*)(?<unicode>U?)$",

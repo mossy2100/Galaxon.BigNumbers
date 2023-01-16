@@ -73,32 +73,34 @@ public class TestToString
     [TestMethod]
     public void TestToStringE()
     {
+        BigDecimal.MaxSigFigs = 100;
         BigDecimal bd;
         string str;
 
         bd = 12345;
         str = bd.ToString("E");
-        Assert.AreEqual("1.234500E+004", str);
+        Assert.AreEqual("1.2345E+004", str);
 
         bd = BigDecimal.Parse("12345e67");
         str = bd.ToString("E");
-        Assert.AreEqual("1.234500E+071", str);
+        Assert.AreEqual("1.2345E+071", str);
 
         bd = BigDecimal.Parse("12345e-67");
         str = bd.ToString("E");
-        Assert.AreEqual("1.234500E-063", str);
+        Assert.AreEqual("1.2345E-063", str);
 
         bd = BigDecimal.Parse("-12345e67");
         str = bd.ToString("E");
-        Assert.AreEqual("-1.234500E+071", str);
+        Assert.AreEqual("-1.2345E+071", str);
 
         bd = BigDecimal.Parse("-12345e-67");
         str = bd.ToString("E");
-        Assert.AreEqual("-1.234500E-063", str);
+        Assert.AreEqual("-1.2345E-063", str);
 
         bd = BigDecimal.Pi;
         str = bd.ToString("E");
-        Assert.AreEqual("3.141593E+000", str);
+        Assert.AreEqual("3.141592653589793238462643383279502884197169399375105820974944592307816406"
+            + "286208998628034825342117068E+000", str);
     }
 
     [TestMethod]
@@ -139,32 +141,34 @@ public class TestToString
     [TestMethod]
     public void TestToStringEU()
     {
+        BigDecimal.MaxSigFigs = 100;
         BigDecimal bd;
         string str;
 
         bd = 12345;
         str = bd.ToString("EU");
-        Assert.AreEqual("1.234500×10" + "4".ToSuperscript(), str);
+        Assert.AreEqual("1.2345×10" + "4".ToSuperscript(), str);
 
         bd = BigDecimal.Parse("12345e67");
         str = bd.ToString("EU");
-        Assert.AreEqual("1.234500×10" + "71".ToSuperscript(), str);
+        Assert.AreEqual("1.2345×10" + "71".ToSuperscript(), str);
 
         bd = BigDecimal.Parse("12345e-67");
         str = bd.ToString("EU");
-        Assert.AreEqual("1.234500×10" + "-63".ToSuperscript(), str);
+        Assert.AreEqual("1.2345×10" + "-63".ToSuperscript(), str);
 
         bd = BigDecimal.Parse("-12345e67");
         str = bd.ToString("EU");
-        Assert.AreEqual("-1.234500×10" + "71".ToSuperscript(), str);
+        Assert.AreEqual("-1.2345×10" + "71".ToSuperscript(), str);
 
         bd = BigDecimal.Parse("-12345e-67");
         str = bd.ToString("EU");
-        Assert.AreEqual("-1.234500×10" + "-63".ToSuperscript(), str);
+        Assert.AreEqual("-1.2345×10" + "-63".ToSuperscript(), str);
 
         bd = BigDecimal.Pi;
         str = bd.ToString("EU");
-        Assert.AreEqual("3.141593×10" + "0".ToSuperscript(), str);
+        Assert.AreEqual("3.141592653589793238462643383279502884197169399375105820974944592307816406"
+            + "286208998628034825342117068×10" + "0".ToSuperscript(), str);
     }
 
     [TestMethod]
@@ -205,44 +209,46 @@ public class TestToString
     [TestMethod]
     public void TestToStringF()
     {
+        BigDecimal.MaxSigFigs = 100;
         BigDecimal bd;
         string str;
 
         bd = 1.2345m;
         str = bd.ToString("F");
-        Assert.AreEqual("1.234", str);
+        Assert.AreEqual("1.2345", str);
 
         bd = 12345;
         str = bd.ToString("F");
-        Assert.AreEqual("12345.000", str);
+        Assert.AreEqual("12345", str);
 
         bd = BigDecimal.Parse("12345e2");
         str = bd.ToString("F");
-        Assert.AreEqual("1234500.000", str);
+        Assert.AreEqual("1234500", str);
 
         bd = BigDecimal.Parse("1.2345e7");
         str = bd.ToString("F");
-        Assert.AreEqual("12345000.000", str);
+        Assert.AreEqual("12345000", str);
 
         bd = BigDecimal.Parse("1.2345e-2");
         str = bd.ToString("F");
-        Assert.AreEqual("0.012", str);
+        Assert.AreEqual("0.012345", str);
 
         bd = BigDecimal.Parse("12345e-6");
         str = bd.ToString("F");
-        Assert.AreEqual("0.012", str);
+        Assert.AreEqual("0.012345", str);
 
         bd = BigDecimal.Parse("-12345e2");
         str = bd.ToString("F");
-        Assert.AreEqual("-1234500.000", str);
+        Assert.AreEqual("-1234500", str);
 
         bd = BigDecimal.Parse("-12345e-6");
         str = bd.ToString("F");
-        Assert.AreEqual("-0.012", str);
+        Assert.AreEqual("-0.012345", str);
 
         bd = BigDecimal.Pi;
         str = bd.ToString("F");
-        Assert.AreEqual("3.142", str);
+        Assert.AreEqual("3.141592653589793238462643383279502884197169399375105820974944592307816406"
+            + "286208998628034825342117068", str);
     }
 
     [TestMethod]
@@ -350,6 +356,7 @@ public class TestToString
     [TestMethod]
     public void TestToStringG()
     {
+        BigDecimal.MaxSigFigs = 100;
         BigDecimal bd;
         string str;
 
@@ -403,9 +410,8 @@ public class TestToString
 
         bd = BigDecimal.Pi;
         str = bd.ToString("G");
-        Assert.AreEqual(
-            "3.14159265358979323846264338327950288419716939937510"
-            + "5820974944592307816406286208998628034825342117068", str);
+        Assert.AreEqual("3.141592653589793238462643383279502884197169399375105820974944592307816406"
+            + "286208998628034825342117068", str);
     }
 
     [TestMethod]
@@ -478,6 +484,7 @@ public class TestToString
     [TestMethod]
     public void TestToStringGU()
     {
+        BigDecimal.MaxSigFigs = 100;
         BigDecimal bd;
         string str;
 
@@ -531,52 +538,53 @@ public class TestToString
 
         bd = BigDecimal.Pi;
         str = bd.ToString("GU");
-        Assert.AreEqual(
-            "3.14159265358979323846264338327950288419716939937510"
-            + "5820974944592307816406286208998628034825342117068", str);
+        Assert.AreEqual("3.141592653589793238462643383279502884197169399375105820974944592307816406"
+            + "286208998628034825342117068", str);
     }
 
     [TestMethod]
     public void TestToStringN()
     {
+        BigDecimal.MaxSigFigs = 100;
         BigDecimal bd;
         string str;
 
         bd = 1.2345m;
         str = bd.ToString("N");
-        Assert.AreEqual("1.234", str);
+        Assert.AreEqual("1.2345", str);
 
         bd = 12345;
         str = bd.ToString("N");
-        Assert.AreEqual("12,345.000", str);
+        Assert.AreEqual("12,345", str);
 
         bd = BigDecimal.Parse("12345e2");
         str = bd.ToString("N");
-        Assert.AreEqual("1,234,500.000", str);
+        Assert.AreEqual("1,234,500", str);
 
         bd = BigDecimal.Parse("1.2345e7");
         str = bd.ToString("N");
-        Assert.AreEqual("12,345,000.000", str);
+        Assert.AreEqual("12,345,000", str);
 
         bd = BigDecimal.Parse("1.2345e-2");
         str = bd.ToString("N");
-        Assert.AreEqual("0.012", str);
+        Assert.AreEqual("0.012345", str);
 
         bd = BigDecimal.Parse("12345e-6");
         str = bd.ToString("N");
-        Assert.AreEqual("0.012", str);
+        Assert.AreEqual("0.012345", str);
 
         bd = BigDecimal.Parse("-12345e2");
         str = bd.ToString("N");
-        Assert.AreEqual("-1,234,500.000", str);
+        Assert.AreEqual("-1,234,500", str);
 
         bd = BigDecimal.Parse("-12345e-6");
         str = bd.ToString("N");
-        Assert.AreEqual("-0.012", str);
+        Assert.AreEqual("-0.012345", str);
 
         bd = BigDecimal.Pi;
         str = bd.ToString("N");
-        Assert.AreEqual("3.142", str);
+        Assert.AreEqual("3.141592653589793238462643383279502884197169399375105820974944592307816406"
+            + "286208998628034825342117068", str);
     }
 
     [TestMethod]
