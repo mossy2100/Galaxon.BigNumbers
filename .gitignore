@@ -352,3 +352,9 @@ MigrationBackup/
 .idea
 riderModule.iml
 /_ReSharper.Caches/
+
+# macOS files
+.DS_Store
+
+# Test program
+Program/
