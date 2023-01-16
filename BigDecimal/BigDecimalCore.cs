@@ -94,7 +94,7 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     private static int s_maxSigFigs = 100;
 
     /// <inheritdoc />
-    public static BigDecimal Zero { get; } = new ();
+    public static BigDecimal Zero { get; } = new (0);
 
     /// <inheritdoc />
     public static BigDecimal One { get; } = new (1);
@@ -111,23 +111,20 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// <inheritdoc />
     public static BigDecimal MultiplicativeIdentity => One;
 
-    /// <summary>
-    /// Minimum and maximum precision supported by the float type.
-    /// </summary>
-    public const int FloatMinSigFigs = 6;
-    public const int FloatMaxSigFigs = 9;
+    /// <summary>Precision supported by the Half type.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation" />
+    public const int HalfPrecision = 5;
 
-    /// <summary>
-    /// Minimum and maximum precision supported by the double type.
-    /// </summary>
-    public const int DoubleMinSigFigs = 15;
-    public const int DoubleMaxSigFigs = 17;
+    /// <summary>Precision supported by the float type.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation" />
+    public const int FloatPrecision = 9;
 
-    /// <summary>
-    /// Minimum and maximum precision supported by the decimal type.
-    /// </summary>
-    public const int DecimalMinSigFigs = 28;
-    public const int DecimalMaxSigFigs = 29;
+    /// <summary>Precision supported by the double type.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation" />
+    public const int DoublePrecision = 17;
+
+    /// <summary>Precision supported by the decimal type.</summary>
+    public const int DecimalPrecision = 28;
 
     #endregion Static properties
 
@@ -139,7 +136,7 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// multiple of 10 should be shortened and the exponent increased.
     /// </summary>
     public static bool IsCanonical(BigDecimal value) =>
-        value.Significand % 10 != 0;
+        value == Zero || value.Significand % 10 != 0;
 
     /// <summary>
     /// Check if the value is a complex number.

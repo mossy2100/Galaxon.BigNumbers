@@ -131,7 +131,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
 
         // Get an initial estimate using double, which should be pretty fast.
         // Reduce operand to the maximum number of significant digits supported by the double type.
-        BigDecimal xR = RoundSigFigs(x, DoubleMaxSigFigs);
+        BigDecimal xR = RoundSigFigs(x, DoublePrecision);
         double sig = double.RootN((double)xR.Significand, n);
         BigDecimal exp = (BigDecimal)xR.Exponent / n;
         BigDecimal y0 = sig * Exp10(exp);

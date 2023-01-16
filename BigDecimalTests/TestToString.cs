@@ -1,4 +1,4 @@
-using Galaxon.Core.Strings;
+using Galaxon.Core.Numbers;
 
 namespace Galaxon.Numerics.BigDecimalTests;
 

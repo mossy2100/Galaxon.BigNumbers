@@ -346,7 +346,7 @@ public partial struct BigDecimal : ICloneable
         // recursion. Casting from decimal to BigDecimal doesn't require division so it doesn't have
         // that problem.
 
-        BigDecimal bR = RoundSigFigs(b, DecimalMinSigFigs);
+        BigDecimal bR = RoundSigFigs(b, DecimalPrecision);
         BigDecimal f = 1 / (decimal)bR.Significand;
         f.Exponent -= bR.Exponent;
 

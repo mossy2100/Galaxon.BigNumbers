@@ -379,7 +379,7 @@ public class TestConvert
         x = double.MaxValue;
         bd = x;
         Assert.AreEqual(x.ToString("E16"), bd.ToString("E16"));
-        bd = BigDecimal.RoundSigFigs(bd, BigDecimal.DoubleMaxSigFigs);
+        bd = BigDecimal.RoundSigFigs(bd, BigDecimal.DoublePrecision);
         Assert.AreEqual(17976931348623157, (long)bd.Significand);
         Assert.AreEqual(292, bd.Exponent);
     }
@@ -400,7 +400,7 @@ public class TestConvert
         double x = 123.456789;
         bool ok = BigDecimal.TryConvertFromChecked(x, out BigDecimal bd);
         Assert.IsTrue(ok);
-        bd = BigDecimal.RoundSigFigs(bd, BigDecimal.DoubleMaxSigFigs);
+        bd = BigDecimal.RoundSigFigs(bd, BigDecimal.DoublePrecision);
         Assert.AreEqual(123456789, (int)bd.Significand);
         Assert.AreEqual(-6, bd.Exponent);
     }
