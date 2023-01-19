@@ -1,4 +1,4 @@
-# BigDecimal
+# Galaxon.BigDecimal
 
 This is a full-featured, .NET 7-compatible value type for working with high-precision decimal
 numbers. It's well-tested, fast, and supports new interfaces for numeric types provided in .NET 7.
