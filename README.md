@@ -48,9 +48,7 @@ For example:
 BigDecimal.MaxSigFigs = 200;
 BigDecimal s = BigDecimal.Sqrt(2);
 ```
-The default is 100, and the minimum is 30. The reason for this minimum is so that any decimal value
-can be converted to a BigDecimal using an implicit cast, without loss of information. Presumably if
-you want to use BigDecimal instead of decimal you want at least 30 significant figures anyway.
+The default is 100.
 
 ## Techniques
 
@@ -65,13 +63,11 @@ achieved using numerical methods such as:
 
 This package depends on:
 - [Galaxon.Core](https://github.com/mossy2100/Galaxon.Core)
-- [Galaxon.Numerics](https://github.com/mossy2100/Galaxon.Numerics)
-
-(TODO: Separate out BigRational from Galaxon.Numerics and change the dependency to just that.)
+- [Galaxon.BigRational](https://github.com/mossy2100/Galaxon.BigRational)
 
 ## Feedback
 
 Please let me know if you find any bugs, would like to see new features added, or can see ways the
 type can be made more performant or otherwise improved.
 
-Shaun Moss (<shaun@astromultimedia.com>)
+Shaun Moss <[shaun@astromultimedia.com](mailto:shaun@astromultimedia.com)>
