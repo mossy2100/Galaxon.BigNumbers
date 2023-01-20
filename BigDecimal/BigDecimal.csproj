@@ -10,23 +10,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Reference Include="Galaxon.Core.Exceptions">
-        <HintPath>..\..\Core\Exceptions\bin\Debug\net7.0\Galaxon.Core.Exceptions.dll</HintPath>
-      </Reference>
-      <Reference Include="Galaxon.Core.Numbers">
-        <HintPath>..\..\Core\Numbers\bin\Debug\net7.0\Galaxon.Core.Numbers.dll</HintPath>
-      </Reference>
-      <Reference Include="Galaxon.Core.Strings">
-        <HintPath>..\..\Core\Strings\bin\Debug\net7.0\Galaxon.Core.Strings.dll</HintPath>
+      <Compile Remove="BigDecimalOld.cs" />
+      <None Include="BigDecimalOld.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Galaxon.Core">
+        <HintPath>..\..\Core\Core\bin\Debug\net7.0\Galaxon.Core.dll</HintPath>
       </Reference>
       <Reference Include="Galaxon.Numerics.BigRational">
         <HintPath>..\..\BigRational\BigRational\bin\Debug\net7.0\Galaxon.Numerics.BigRational.dll</HintPath>
       </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="BigDecimalOld.cs" />
-      <None Include="BigDecimalOld.cs" />
     </ItemGroup>
 
 </Project>
