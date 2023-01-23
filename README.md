@@ -24,7 +24,7 @@ And therefore includes:
 * **Parse()** and **ToString()**
 * **Clone()**, **Abs()**, **Round()**, **Truncate()**, **Floor()**, and **Ceiling()**
 * Exponentiation, root, and logarithm functions
-* Trigonometric and hyperbolic functions (including bonus ones for cotangent, secant, and cosecant)
+* Trigonometric and hyperbolic functions
 
 It also includes some bonus methods like **ArithmeticGeometricMean()**, and a few handy LINQ
 methods for **IEnumerable\<BigDecimal\>** like **Sum()** and **Average()**.

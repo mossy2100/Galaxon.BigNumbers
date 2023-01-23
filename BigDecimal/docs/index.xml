@@ -1073,21 +1073,6 @@
         <member name="M:Galaxon.Numerics.BigDecimal.TanPi(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
         </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Cot(Galaxon.Numerics.BigDecimal)">
-            <summary>
-            Cotangent function.
-            </summary>
-        </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Sec(Galaxon.Numerics.BigDecimal)">
-            <summary>
-            Secant function.
-            </summary>
-        </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Csc(Galaxon.Numerics.BigDecimal)">
-            <summary>
-            Cosecant function.
-            </summary>
-        </member>
         <member name="M:Galaxon.Numerics.BigDecimal.Asin(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
         </member>
@@ -1106,21 +1091,6 @@
         <member name="M:Galaxon.Numerics.BigDecimal.AtanPi(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
         </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Acot(Galaxon.Numerics.BigDecimal)">
-            <summary>
-            Inverse cotangent function.
-            </summary>
-        </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Asec(Galaxon.Numerics.BigDecimal)">
-            <summary>
-            Inverse secant function.
-            </summary>
-        </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Acsc(Galaxon.Numerics.BigDecimal)">
-            <summary>
-            Inverse cosecant function.
-            </summary>
-        </member>
         <member name="M:Galaxon.Numerics.BigDecimal.Sinh(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
         </member>
@@ -1130,21 +1100,6 @@
         <member name="M:Galaxon.Numerics.BigDecimal.Tanh(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
         </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Coth(Galaxon.Numerics.BigDecimal)">
-            <summary>
-            Hyperbolic cotangent function.
-            </summary>
-        </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Sech(Galaxon.Numerics.BigDecimal)">
-            <summary>
-            Hyperbolic secant function.
-            </summary>
-        </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Csch(Galaxon.Numerics.BigDecimal)">
-            <summary>
-            Hyperbolic cosecant function.
-            </summary>
-        </member>
         <member name="M:Galaxon.Numerics.BigDecimal.Asinh(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
         </member>
@@ -1153,21 +1108,6 @@
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.Atanh(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
-        </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Acoth(Galaxon.Numerics.BigDecimal)">
-            <summary>
-            Inverse hyperbolic cotangent function.
-            </summary>
-        </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Asech(Galaxon.Numerics.BigDecimal)">
-            <summary>
-            Inverse hyperbolic secant function.
-            </summary>
-        </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Acsch(Galaxon.Numerics.BigDecimal)">
-            <summary>
-            Inverse hyperbolic cosecant function.
-            </summary>
         </member>
         <member name="T:Galaxon.Numerics.XEnumerableBigDecimal">
             <summary>

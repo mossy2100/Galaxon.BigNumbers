@@ -193,60 +193,6 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal TanPi(BigDecimal x) =>
         Tan(x * Pi);
 
-    /// <summary>
-    /// Cotangent function.
-    /// </summary>
-    public static BigDecimal Cot(BigDecimal x)
-    {
-        // Guard.
-        if (x % Pi == 0)
-        {
-            throw new NotFiniteNumberException($"Cot(x) function is undefined at x={x}");
-        }
-
-        return 1 / Tan(x);
-    }
-
-    /// <summary>
-    /// Secant function.
-    /// </summary>
-    public static BigDecimal Sec(BigDecimal x)
-    {
-        // Handle negative values.
-        if (x < 0)
-        {
-            return Sec(-x);
-        }
-
-        // Find the equivalent angle in the interval [-π, π).
-        BigDecimal x0 = x;
-        x = NormalizeAngle(in x);
-
-        // Guard.
-        if (x == Pi / 2)
-        {
-            throw new NotFiniteNumberException(
-                $"The secant function Sec(x) is undefined at x={x0}");
-        }
-
-        return 1 / Cos(x);
-    }
-
-    /// <summary>
-    /// Cosecant function.
-    /// </summary>
-    public static BigDecimal Csc(BigDecimal x)
-    {
-        // Guard.
-        if (x % Pi == 0)
-        {
-            throw new NotFiniteNumberException(
-                $"The cosecant function Csc(x) is undefined at x={x}");
-        }
-
-        return 1 / Sin(x);
-    }
-
     #endregion Trigonometric functions
 
     #region Inverse trigonometric functions
@@ -403,40 +349,6 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal AtanPi(BigDecimal x) =>
         Atan(x) / Pi;
 
-    /// <summary>
-    /// Inverse cotangent function.
-    /// </summary>
-    public static BigDecimal Acot(BigDecimal x) =>
-        x == 0 ? 0 : Atan(1 / x);
-
-    /// <summary>
-    /// Inverse secant function.
-    /// </summary>
-    public static BigDecimal Asec(BigDecimal x)
-    {
-        if (Abs(x) < 1)
-        {
-            throw new NotFiniteNumberException(
-                "The inverse secant function Asec(x) is undefined for |x| < 1.");
-        }
-
-        return Acos(1 / x);
-    }
-
-    /// <summary>
-    /// Inverse cosecant function.
-    /// </summary>
-    public static BigDecimal Acsc(BigDecimal x)
-    {
-        if (Abs(x) < 1)
-        {
-            throw new NotFiniteNumberException(
-                "The inverse cosecant function Acsc(x) is undefined for |x| < 1.");
-        }
-
-        return Asin(1 / x);
-    }
-
     #endregion Inverse trigonometric functions
 
     #region Hyperbolic functions
@@ -536,42 +448,6 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Tanh(BigDecimal x) =>
         Sinh(x) / Cosh(x);
 
-    /// <summary>
-    /// Hyperbolic cotangent function.
-    /// </summary>
-    public static BigDecimal Coth(BigDecimal x)
-    {
-        // Guard.
-        if (x == 0)
-        {
-            throw new NotFiniteNumberException(
-                "The hyperbolic cotangent function Coth(x) is undefined at x=0");
-        }
-
-        return Cosh(x) / Sinh(x);
-    }
-
-    /// <summary>
-    /// Hyperbolic secant function.
-    /// </summary>
-    public static BigDecimal Sech(BigDecimal x) =>
-        1 / Cosh(x);
-
-    /// <summary>
-    /// Hyperbolic cosecant function.
-    /// </summary>
-    public static BigDecimal Csch(BigDecimal x)
-    {
-        // Guard.
-        if (x == 0)
-        {
-            throw new NotFiniteNumberException(
-                "The hyperbolic cosecant function Csch(x) is undefined at x=0");
-        }
-
-        return 1 / Sinh(x);
-    }
-
     #endregion Hyperbolic functions
 
     #region Inverse hyperbolic functions
@@ -587,24 +463,6 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     /// <inheritdoc />
     public static BigDecimal Atanh(BigDecimal x) =>
         Log((1 + x) / (1 - x)) / 2;
-
-    /// <summary>
-    /// Inverse hyperbolic cotangent function.
-    /// </summary>
-    public static BigDecimal Acoth(BigDecimal x) =>
-        Log((x + 1) / (x - 1)) / 2;
-
-    /// <summary>
-    /// Inverse hyperbolic secant function.
-    /// </summary>
-    public static BigDecimal Asech(BigDecimal x) =>
-        Log(1 / x + Sqrt(1 / (x * x) - 1));
-
-    /// <summary>
-    /// Inverse hyperbolic cosecant function.
-    /// </summary>
-    public static BigDecimal Acsch(BigDecimal x) =>
-        Log(1 / x + Sqrt(1 / (x * x) + 1));
 
     #endregion Inverse hyperbolic functions
 }
