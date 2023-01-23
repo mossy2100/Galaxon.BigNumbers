@@ -49,10 +49,11 @@ public partial struct BigDecimal
 
     /// <summary>
     /// Compute π.
-    /// The Chudnovsky algorithm used was the one used to generate π to 6.2 trillion decimal places,
-    /// the current world record.
+    ///
+    /// The Chudnovsky algorithm used here was the one used to generate π to 6.2 trillion decimal
+    /// places, the current world record.
+    /// See: <see href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" />
     /// </summary>
-    /// <see href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" />
     public static BigDecimal ComputePi()
     {
         // Temporarily increase the maximum number of significant figures to ensure a correct
@@ -119,6 +120,10 @@ public partial struct BigDecimal
         }
     }
 
+    /// <summary>
+    /// Compute the value of tau (τ), equal to 2 * pi (2π).
+    /// </summary>
+    /// <returns>The value of τ to the current number of significant figures.</returns>
     public static BigDecimal ComputeTau()
     {
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
@@ -156,6 +161,10 @@ public partial struct BigDecimal
         }
     }
 
+    /// <summary>
+    /// Compute the value of phi (φ), the golden ration.
+    /// </summary>
+    /// <returns>The value of φ to the current number of significant figures.</returns>
     public static BigDecimal ComputePhi()
     {
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
@@ -173,6 +182,7 @@ public partial struct BigDecimal
 
     /// <summary>
     /// Cached value for Log(10), the natural logarithm of 10.
+    ///
     /// This value is cached because of it's use in the Log() method. We don't want to have to
     /// recompute Log(10) every time we call Log().
     /// </summary>

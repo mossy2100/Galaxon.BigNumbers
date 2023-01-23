@@ -7,6 +7,13 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
 {
     #region Constructors
 
+    /// <summary>
+    /// Main constructor.
+    /// </summary>
+    /// <param name="significand">The significand or mantissa.</param>
+    /// <param name="exponent">The exponent.</param>
+    /// <param name="roundSigFigs">If the value should be rounded off to the current value of
+    /// MaxSigFigs.</param>
     public BigDecimal(BigInteger significand, int exponent = 0, bool roundSigFigs = false)
     {
         // Round off to the maximum number of significant figures if requested.
@@ -23,6 +30,9 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
         Exponent = exponent;
     }
 
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
     public BigDecimal() : this(0)
     {
     }

@@ -12,6 +12,15 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
 {
     #region Power functions
 
+    /// <summary>
+    /// Calculate the value of x^y where x and y are both BigDecimal values.
+    /// </summary>
+    /// <param name="x">The base.</param>
+    /// <param name="y">The exponent.</param>
+    /// <returns>The result of the calculation, rounded off to the current value of
+    /// MaxSigFigs.</returns>
+    /// <exception cref="ArithmeticException">If there is no real result or a real result cannot
+    /// otherwise be computed.</exception>
     public static BigDecimal Pow(BigDecimal x, BigDecimal y)
     {
         // Handle negative powers.
@@ -83,9 +92,19 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         return Pow(RootN(x, (int)r.Denominator), r.Numerator);
     }
 
+    /// <summary>
+    /// Calculate the square of a number.
+    /// </summary>
+    /// <param name="x">A real value.</param>
+    /// <returns>The square of the argument.</returns>
     public static BigDecimal Sqr(BigDecimal x) =>
         x * x;
 
+    /// <summary>
+    /// Calculate the cube of a number.
+    /// </summary>
+    /// <param name="x">A real value.</param>
+    /// <returns>The cube of the argument.</returns>
     public static BigDecimal Cube(BigDecimal x) =>
         x * x * x;
 
@@ -208,12 +227,29 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         return RoundSigFigs(result);
     }
 
+    /// <summary>
+    /// Calculate the square root of a real number.
+    /// </summary>
+    /// <param name="x">The number.</param>
+    /// <returns>The square root of the number.</returns>
+    /// <exception cref="ArithmeticException">If the argument is negative.</exception>
     public static BigDecimal Sqrt(BigDecimal x) =>
         RootN(x, 2);
 
+    /// <summary>
+    /// Calculate the cube root of a real number.
+    /// </summary>
+    /// <param name="x">The number.</param>
+    /// <returns>The cube root of the number.</returns>
     public static BigDecimal Cbrt(BigDecimal x) =>
         RootN(x, 3);
 
+    /// <summary>
+    /// Calculate the length of the hypotenuse of a right triangle.
+    /// </summary>
+    /// <param name="x">The length of one of the short sides of the triangle.</param>
+    /// <param name="y">The length of the other short side of the triangle.</param>
+    /// <returns>The length of the hypotenuse.</returns>
     public static BigDecimal Hypot(BigDecimal x, BigDecimal y) =>
         Sqrt(Sqr(x) + Sqr(y));
 

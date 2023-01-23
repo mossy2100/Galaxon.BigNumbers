@@ -7,41 +7,96 @@ public partial struct BigDecimal : IConvertible
 {
     #region Cast operators to BigDecimal
 
+    /// <summary>
+    /// Implicit cast from sbyte to BigDecimal.
+    /// </summary>
+    /// <param name="n">The sbyte value.</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(sbyte n) =>
         new (n);
 
+    /// <summary>
+    /// Implicit cast from byte to BigDecimal.
+    /// </summary>
+    /// <param name="n">The byte value.</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(byte n) =>
         new (n);
 
+    /// <summary>
+    /// Implicit cast from short to BigDecimal.
+    /// </summary>
+    /// <param name="n">The short value.</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(short n) =>
         new (n);
 
+    /// <summary>
+    /// Implicit cast from ushort to BigDecimal.
+    /// </summary>
+    /// <param name="n">The ushort value.</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(ushort n) =>
         new (n);
 
+    /// <summary>
+    /// Implicit cast from int to BigDecimal.
+    /// </summary>
+    /// <param name="n">The int value.</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(int n) =>
         new (n);
 
+    /// <summary>
+    /// Implicit cast from uint to BigDecimal.
+    /// </summary>
+    /// <param name="n">The uint value.</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(uint n) =>
         new (n);
 
+    /// <summary>
+    /// Implicit cast from long to BigDecimal.
+    /// </summary>
+    /// <param name="n">The long value.</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(long n) =>
         new (n);
 
+    /// <summary>
+    /// Implicit cast from ulong to BigDecimal.
+    /// </summary>
+    /// <param name="n">The ulong value.</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(ulong n) =>
         new (n);
 
+    /// <summary>
+    /// Implicit cast from Int128 to BigDecimal.
+    /// </summary>
+    /// <param name="n">The Int128 value.</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(Int128 n) =>
         new (n);
 
+    /// <summary>
+    /// Implicit cast from UInt128 to BigDecimal.
+    /// </summary>
+    /// <param name="n">The UInt128 value.</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(UInt128 n) =>
         new (n);
 
+    /// <summary>
+    /// Implicit cast from BigInteger to BigDecimal.
+    /// </summary>
+    /// <param name="n">The BigInteger value.</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(BigInteger n) =>
         new (n);
 
     /// <summary>
-    /// Cast a decimal to a BigDecimal.
+    /// Implicit cast from decimal to BigDecimal.
     ///
     /// The cast is implicit because any decimal value can be cast to a BigDecimal exactly, without
     /// loss of information. However, rounding off using Round() or RoundSigFigs() can cause
@@ -131,9 +186,10 @@ public partial struct BigDecimal : IConvertible
     }
 
     /// <summary>
-    /// Convert Half to BigDecimal.
+    /// Implicit cast from Half to BigDecimal.
+    ///
     /// NB: The resulting BigDecimal value is exactly the value encoded by the Half.
-    /// However, Halfs only approximate decimal values and it's possible that only the first few
+    /// However, since Halfs only approximate decimal values, it's possible that only the first few
     /// digits are valid in terms of the intended value.
     /// Therefore, you may need to use RoundSigFigs() to get the value you really want.
     /// </summary>
@@ -141,9 +197,10 @@ public partial struct BigDecimal : IConvertible
         ConvertFromFloatingPoint(n);
 
     /// <summary>
-    /// Convert float to BigDecimal.
+    /// Implicit cast from float to BigDecimal.
+    ///
     /// NB: The resulting BigDecimal value is exactly the value encoded by the float.
-    /// However, floats only approximate decimal values and it's possible that only the first 6-9
+    /// However, since floats only approximate decimal values, it's possible that only the first 6-9
     /// digits are valid in terms of the intended value.
     /// Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
     /// <code>
@@ -154,10 +211,11 @@ public partial struct BigDecimal : IConvertible
         ConvertFromFloatingPoint(n);
 
     /// <summary>
-    /// Convert double to BigDecimal.
+    /// Implicit cast from double to BigDecimal.
+    ///
     /// NB: The resulting BigDecimal value is exactly the value encoded by the double.
-    /// However, doubles only approximate decimal values and it's possible that only the first 15-17
-    /// digits are valid in terms of the intended value.
+    /// However, since doubles only approximate decimal values, it's possible that only the first
+    /// 15-17 digits are valid in terms of the intended value.
     /// Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
     /// <code>
     /// BigDecimal bd = BigDecimal.RoundSigFigs(1.2345, DoubleMaxSigFigs);
@@ -167,7 +225,8 @@ public partial struct BigDecimal : IConvertible
         ConvertFromFloatingPoint(n);
 
     /// <summary>
-    /// Cast of a BigRational to a BigDecimal.
+    /// Explicit cast from BigRational to BigDecimal.
+    ///
     /// This cast operation has to be explicit as there could be loss of information due to the
     /// limit on the number of significant figures in the result of the division.
     /// </summary>
@@ -179,67 +238,97 @@ public partial struct BigDecimal : IConvertible
     #region Cast operators from BigDecimal
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to an sbyte.
+    /// Explicit cast from BigDecimal to sbyte.
     /// </summary>
+    /// <exception cref="OverflowException">
+    /// If the value is outside the valid range for sbyte.
+    /// </exception>
     public static explicit operator sbyte(BigDecimal bd) =>
         (sbyte)(BigInteger)bd;
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a byte.
+    /// Explicit cast from BigDecimal to byte.
     /// </summary>
+    /// <exception cref="OverflowException">
+    /// If the value is outside the valid range for byte.
+    /// </exception>
     public static explicit operator byte(BigDecimal bd) =>
         (byte)(BigInteger)bd;
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a short.
+    /// Explicit cast from BigDecimal to short.
     /// </summary>
+    /// <exception cref="OverflowException">
+    /// If the value is outside the valid range for short.
+    /// </exception>
     public static explicit operator short(BigDecimal bd) =>
         (short)(BigInteger)bd;
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a ushort.
+    /// Explicit cast from BigDecimal to ushort.
     /// </summary>
+    /// <exception cref="OverflowException">
+    /// If the value is outside the valid range for ushort.
+    /// </exception>
     public static explicit operator ushort(BigDecimal bd) =>
         (ushort)(BigInteger)bd;
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to an int.
+    /// Explicit cast from BigDecimal to int.
     /// </summary>
+    /// <exception cref="OverflowException">
+    /// If the value is outside the valid range for int.
+    /// </exception>
     public static explicit operator int(BigDecimal bd) =>
         (int)(BigInteger)bd;
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a uint.
+    /// Explicit cast from BigDecimal to uint.
     /// </summary>
+    /// <exception cref="OverflowException">
+    /// If the value is outside the valid range for uint.
+    /// </exception>
     public static explicit operator uint(BigDecimal bd) =>
         (uint)(BigInteger)bd;
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a long.
+    /// Explicit cast from BigDecimal to long.
     /// </summary>
+    /// <exception cref="OverflowException">
+    /// If the value is outside the valid range for long.
+    /// </exception>
     public static explicit operator long(BigDecimal bd) =>
         (long)(BigInteger)bd;
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a ulong.
+    /// Explicit cast from BigDecimal to ulong.
     /// </summary>
+    /// <exception cref="OverflowException">
+    /// If the value is outside the valid range for ulong.
+    /// </exception>
     public static explicit operator ulong(BigDecimal bd) =>
         (ulong)(BigInteger)bd;
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a Int128.
+    /// Explicit cast from BigDecimal to Int128.
     /// </summary>
+    /// <exception cref="OverflowException">
+    /// If the value is outside the valid range for Int128.
+    /// </exception>
     public static explicit operator Int128(BigDecimal bd) =>
         (Int128)(BigInteger)bd;
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a UInt128.
+    /// Explicit cast from BigDecimal to UInt128.
     /// </summary>
+    /// <exception cref="OverflowException">
+    /// If the value is outside the valid range for uInt128.
+    /// </exception>
     public static explicit operator UInt128(BigDecimal bd) =>
         (UInt128)(BigInteger)bd;
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a BigInteger.
+    /// Explicit cast from BigDecimal to BigInteger.
     /// </summary>
     public static explicit operator BigInteger(BigDecimal bd)
     {
@@ -248,7 +337,9 @@ public partial struct BigDecimal : IConvertible
         return trunc.Significand;
     }
 
-    /// <summary>Explicit cast of a BigDecimal to a decimal.</summary>
+    /// <summary>
+    /// Explicit cast from BigDecimal to decimal.
+    /// </summary>
     /// <exception cref="OverflowException">
     /// If the value is outside the valid range for decimal.
     /// </exception>
@@ -294,9 +385,11 @@ public partial struct BigDecimal : IConvertible
     }
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a Half.
-    /// BigDecimal doesn't use a default precision for 'E', so all digits will be rendered in the
-    /// call to ToString(), to produce the closest matching Half possible.
+    /// Explicit cast from BigDecimal to Half.
+    ///
+    /// BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
+    /// be rendered in the call to ToString(). This will produce the closest matching Half possible.
+    ///
     /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
     /// valid range for Half.
     /// </summary>
@@ -304,10 +397,14 @@ public partial struct BigDecimal : IConvertible
         Half.Parse(bd.ToString("E"));
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a float.
-    /// I implemented a method to do this using maths and bits, but it takes much longer.
-    /// BigDecimal doesn't use a default precision for 'E', so all digits will be rendered in the
-    /// call to ToString(), to produce the closest matching float possible.
+    /// Explicit cast from BigDecimal to float.
+    ///
+    /// (I implemented a method to do this using maths and bits, but it takes much longer.)
+    ///
+    /// BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
+    /// be rendered in the call to ToString(). This will produce the closest matching float
+    /// possible.
+    ///
     /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
     /// valid range for float.
     /// </summary>
@@ -315,9 +412,12 @@ public partial struct BigDecimal : IConvertible
         float.Parse(bd.ToString("E"));
 
     /// <summary>
-    /// Explicit cast of a BigDecimal to a double.
-    /// BigDecimal doesn't use a default precision for 'E', so all digits will be rendered in the
-    /// call to ToString(), to produce the closest matching double possible.
+    /// Explicit cast from BigDecimal to double.
+    ///
+    /// BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
+    /// be rendered in the call to ToString(). This will produce the closest matching double
+    /// possible.
+    ///
     /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
     /// valid range for double.
     /// </summary>
@@ -325,9 +425,10 @@ public partial struct BigDecimal : IConvertible
         double.Parse(bd.ToString("E"));
 
     /// <summary>
-    /// Cast from BigDecimal to BigRational.
-    /// This cast can be implicit because it can be done exactly, without loss of information, due
-    /// to the use of BigIntegers inside BigRational.
+    /// Implicit cast from BigDecimal to BigRational.
+    ///
+    /// This cast operation can be implicit because it can be done exactly, without loss of
+    /// information, due to the use of BigIntegers inside BigRational.
     /// </summary>
     public static implicit operator BigRational(BigDecimal n) =>
         n.Exponent switch
