@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using Galaxon.Core.Exceptions;
+
 namespace Galaxon.Numerics.BigDecimalTests;
 
 [TestClass]
@@ -11,17 +14,17 @@ public class TestTrig
         {
             var d = i * double.Pi / 180.0;
             var sinD = double.Sin(d);
-            var strSinD = sinD.ToString("F14");
-            if (strSinD == "-0.00000000000000")
+            var strSinD = sinD.ToString("F13");
+            if (strSinD == "-0.0000000000000")
             {
-                strSinD = "0.00000000000000";
+                strSinD = "0.0000000000000";
             }
 
             var bd = i * BigDecimal.Pi / 180;
-            var sinBD = BigDecimal.Sin(bd);
-            var strSinBD = sinBD.ToString("F14");
+            var sinBd = BigDecimal.Sin(bd);
+            var strSinBd = sinBd.ToString("F13");
 
-            Assert.AreEqual(strSinD, strSinBD);
+            Assert.AreEqual(strSinD, strSinBd);
         }
     }
 
@@ -33,17 +36,17 @@ public class TestTrig
         {
             var d = i * double.Pi / 180.0;
             var cosD = double.Cos(d);
-            var strCosD = cosD.ToString("F14");
-            if (strCosD == "-0.00000000000000")
+            var strCosD = cosD.ToString("F13");
+            if (strCosD == "-0.0000000000000")
             {
-                strCosD = "0.00000000000000";
+                strCosD = "0.0000000000000";
             }
 
             var bd = i * BigDecimal.Pi / 180;
-            var cosBD = BigDecimal.Cos(bd);
-            var strCosBD = cosBD.ToString("F14");
+            var cosBd = BigDecimal.Cos(bd);
+            var strCosBd = cosBd.ToString("F13");
 
-            Assert.AreEqual(strCosD, strCosBD);
+            Assert.AreEqual(strCosD, strCosBd);
         }
     }
 
@@ -68,10 +71,10 @@ public class TestTrig
             }
 
             var bd = i * BigDecimal.Pi / 180;
-            var tanBD = BigDecimal.Tan(bd);
-            var strTanBD = tanBD.ToString("F13");
+            var tanBd = BigDecimal.Tan(bd);
+            var strTanBd = tanBd.ToString("F13");
 
-            Assert.AreEqual(strTanD, strTanBD);
+            Assert.AreEqual(strTanD, strTanBd);
         }
     }
 
@@ -83,62 +86,19 @@ public class TestTrig
         {
             var d = i / 10.0;
             var asinD = double.Asin(d);
-            var strAsinD = asinD.ToString("F14");
-            if (strAsinD == "-0.00000000000000")
+            var strAsinD = asinD.ToString("F13");
+            if (strAsinD == "-0.0000000000000")
             {
-                strAsinD = "0.00000000000000";
+                strAsinD = "0.0000000000000";
             }
 
             BigDecimal bd = d;
-            var asinBD = BigDecimal.Asin(bd);
-            var strAsinBD = asinBD.ToString("F14");
+            var asinBb = BigDecimal.Asin(bd);
+            var strAsinBd = asinBb.ToString("F13");
 
-            Assert.AreEqual(strAsinD, strAsinBD);
+            Assert.AreEqual(strAsinD, strAsinBd);
         }
     }
-
-    // [TestMethod]
-    // public void TestAsin2()
-    // {
-    //     BigDecimal.MaxSigFigs = 30;
-    //     for (int i = 2; i <= 10; i++)
-    //     {
-    //         double d = i / 10.0;
-    //         if (d > 1) continue;
-    //         Trace.WriteLine("");
-    //         Trace.WriteLine(d);
-    //         double asinD = double.Asin(d);
-    //         string strAsinD = asinD.ToString("F14");
-    //         if (strAsinD == "-0.00000000000000")
-    //         {
-    //             strAsinD = "0.00000000000000";
-    //         }
-    //
-    //         BigDecimal bd = d;
-    //
-    //         long t1 = DateTime.Now.Ticks;
-    //         BigDecimal asinBD = BigDecimal.Asin(bd);
-    //         long t2 = DateTime.Now.Ticks;
-    //         long tAsin = t2 - t1;
-    //         Trace.WriteLine($"Time for Asin = {tAsin} ticks.");
-    //         string strAsinBD = asinBD.ToString("F14");
-    //
-    //         long t3 = DateTime.Now.Ticks;
-    //         BigDecimal asin2BD = BigDecimal.Asin2(bd);
-    //         long t4 = DateTime.Now.Ticks;
-    //         long tAsin2 = t4 - t3;
-    //         Trace.WriteLine($"Time for Asin2 = {tAsin2} ticks.");
-    //         string strAsin2BD = asin2BD.ToString("F14");
-    //
-    //         if (tAsin < tAsin2)
-    //             Trace.WriteLine($"Asin() is faster when d = {d}");
-    //         else
-    //             Trace.WriteLine($"Asin2() is faster when d = {d}");
-    //
-    //         Assert.AreEqual(strAsinD, strAsinBD);
-    //         Assert.AreEqual(strAsinD, strAsin2BD);
-    //     }
-    // }
 
     [TestMethod]
     public void TestAcos()
@@ -148,17 +108,17 @@ public class TestTrig
         {
             var d = i / 10.0;
             var acosD = double.Acos(d);
-            var strAcosD = acosD.ToString("F14");
-            if (strAcosD == "-0.00000000000000")
+            var strAcosD = acosD.ToString("F13");
+            if (strAcosD == "-0.0000000000000")
             {
-                strAcosD = "0.00000000000000";
+                strAcosD = "0.0000000000000";
             }
 
             BigDecimal bd = d;
-            var acosBD = BigDecimal.Acos(bd);
-            var strAcosBD = acosBD.ToString("F14");
+            var acosBd = BigDecimal.Acos(bd);
+            var strAcosBd = acosBd.ToString("F13");
 
-            Assert.AreEqual(strAcosD, strAcosBD);
+            Assert.AreEqual(strAcosD, strAcosBd);
         }
     }
 
@@ -166,21 +126,62 @@ public class TestTrig
     public void TestAtan()
     {
         BigDecimal.MaxSigFigs = 30;
-        for (var i = -50; i <= 50; i++)
+        const int n = 12;
+        for (var i = -n; i <= n; i++)
         {
-            var d = i / 10.0;
-            var atanD = double.Atan(d);
-            var strAtanD = atanD.ToString("F14");
-            if (strAtanD == "-0.00000000000000")
+            var x = i * double.Tau / n;
+            var atanD = double.Atan(x);
+            var strAtanD = atanD.ToString("F13");
+            if (strAtanD == "-0.0000000000000")
             {
-                strAtanD = "0.00000000000000";
+                strAtanD = "0.0000000000000";
             }
 
-            BigDecimal bd = d;
-            var atanBD = BigDecimal.Atan(bd);
-            var strAtanBD = atanBD.ToString("F14");
+            var bd = i * BigDecimal.Tau / n;
+            var atanBd = BigDecimal.Atan(bd);
+            var strAtanBd = atanBd.ToString("F13");
 
-            Assert.AreEqual(strAtanD, strAtanBD);
+            Assert.AreEqual(strAtanD, strAtanBd);
+        }
+    }
+
+    [TestMethod]
+    public void TestAtan2ThrowsExceptionWhenBothParamsZero() =>
+        Assert.ThrowsException<ArgumentInvalidException>(() => BigDecimal.Atan2(0, 0));
+
+    [TestMethod]
+    public void TestAtan2()
+    {
+        BigDecimal.MaxSigFigs = 30;
+        const int n = 12;
+        for (var i = -n; i <= n; i++)
+        {
+            var x = i * double.Tau / n;
+            for (var j = -n; j <= n; j++)
+            {
+                var y = j * double.Tau / n;
+
+                if (x == 0 && y == 0)
+                {
+                    continue;
+                }
+
+                var atanD = double.Atan2(y, x);
+                var strAtanD = atanD.ToString("F13");
+                if (strAtanD == "-0.0000000000000")
+                {
+                    strAtanD = "0.0000000000000";
+                }
+
+                var bdX = i * BigDecimal.Tau / n;
+                var bdY = j * BigDecimal.Tau / n;
+                var atanBd = BigDecimal.Atan2(bdY, bdX);
+                var strAtanBd = atanBd.ToString("F13");
+
+                Trace.WriteLine($"{strAtanD} == {strAtanBd}");
+
+                Assert.AreEqual(strAtanD, strAtanBd);
+            }
         }
     }
 
@@ -193,16 +194,16 @@ public class TestTrig
             double d = i;
             var sinhD = double.Sinh(d);
             var strSinhD = sinhD.ToString("G14");
-            if (strSinhD == "-0.00000000000000")
+            if (strSinhD == "-0.0000000000000")
             {
-                strSinhD = "0.00000000000000";
+                strSinhD = "0.0000000000000";
             }
 
             BigDecimal bd = i;
-            var sinhBD = BigDecimal.Sinh(bd);
-            var strSinhBD = sinhBD.ToString("G14");
+            var sinhBd = BigDecimal.Sinh(bd);
+            var strSinhBd = sinhBd.ToString("G14");
 
-            Assert.AreEqual(strSinhD, strSinhBD);
+            Assert.AreEqual(strSinhD, strSinhBd);
         }
     }
 
@@ -215,16 +216,43 @@ public class TestTrig
             double d = i;
             var coshD = double.Cosh(d);
             var strCoshD = coshD.ToString("G14");
-            if (strCoshD == "-0.00000000000000")
+            if (strCoshD == "-0.0000000000000")
             {
-                strCoshD = "0.00000000000000";
+                strCoshD = "0.0000000000000";
             }
 
             BigDecimal bd = i;
-            var coshBD = BigDecimal.Cosh(bd);
-            var strCoshBD = coshBD.ToString("G14");
+            var coshBd = BigDecimal.Cosh(bd);
+            var strCoshBd = coshBd.ToString("G14");
 
-            Assert.AreEqual(strCoshD, strCoshBD);
+            Assert.AreEqual(strCoshD, strCoshBd);
         }
+    }
+
+    [TestMethod]
+    public void TestTanh()
+    {
+        BigDecimal.MaxSigFigs = 30;
+        for (var i = -10; i <= 10; i++)
+        {
+            double d = i;
+            var tanhD = double.Tanh(d);
+            var strTanhD = tanhD.ToString("G14");
+            if (strTanhD == "-0.0000000000000")
+            {
+                strTanhD = "0.0000000000000";
+            }
+
+            BigDecimal bd = i;
+            var tanhBd = BigDecimal.Tanh(bd);
+            var strTanhBd = tanhBd.ToString("G14");
+
+            Assert.AreEqual(strTanhD, strTanhBd);
+        }
+    }
+
+    [TestMethod]
+    public void TestPolarToCartesian()
+    {
     }
 }

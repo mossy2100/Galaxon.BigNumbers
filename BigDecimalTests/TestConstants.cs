@@ -130,8 +130,8 @@ public class TestConstants
     }
 
     /// <remarks>
-    /// This takes a few minutes (about 7 on my computer), so sit back, relax, sip your coffee,
-    /// and enjoy the relentless march of time.
+    /// This takes a few minutes (about 7 on my computer at the time of typing), so sit back, relax,
+    /// sip your coffee, and enjoy the relentless march of time.
     /// </remarks>
     /// <see href="http://newton.ex.ac.uk/research/qsystems/collabs/pi/pi5.txt" />
     [TestMethod]

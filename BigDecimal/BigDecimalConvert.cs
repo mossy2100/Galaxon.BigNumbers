@@ -342,8 +342,7 @@ public partial struct BigDecimal : IConvertible
         // Check the value is within the supported range for decimal.
         if (bd < decimal.MinValue || bd > decimal.MaxValue)
         {
-            throw new OverflowException(
-                "The BigDecimal value is outside the valid range for decimal.");
+            throw new OverflowException("The value is outside the valid range for decimal.");
         }
 
         // If the exponent is greater than 0, shift to exponent 0 to get the correct scale.
@@ -355,8 +354,12 @@ public partial struct BigDecimal : IConvertible
         // Get the scale.
         var scale = (byte)-bd.Exponent;
 
-        // Get the sign.
-        var isNegative = bd.Significand < 0;
+        // Check the scale is not too large.
+        if (scale > DecimalPrecision)
+        {
+            throw new
+                OverflowException($"The exponent must be in the range -{DecimalPrecision}..0.");
+        }
 
         // Get the bytes for the absolute value of the significand.
         var sigBytes = BigInteger.Abs(bd.Significand).ToByteArray(true);
@@ -364,7 +367,7 @@ public partial struct BigDecimal : IConvertible
         // Check we have at most 12 bytes.
         if (sigBytes.Length > 12)
         {
-            throw new OverflowException();
+            throw new OverflowException("The significand is too large.");
         }
 
         // Convert the bytes to the integers necessary to construct the decimal.
@@ -374,6 +377,9 @@ public partial struct BigDecimal : IConvertible
             var b = i < sigBytes.Length ? sigBytes[i] : (byte)0;
             decInts[i / 4] |= b << i % 4 * 8;
         }
+
+        // Get the sign.
+        var isNegative = bd.Significand < 0;
 
         return new decimal(decInts[0], decInts[1], decInts[2], isNegative, scale);
     }

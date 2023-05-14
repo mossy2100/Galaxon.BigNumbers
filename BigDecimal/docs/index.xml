@@ -1024,11 +1024,6 @@
             </code>
             </remarks>
         </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.NormalizeAngle(Galaxon.Numerics.BigDecimal@)">
-            <summary>
-            Shift given angle to the equivalent angle in the interval [-π, π).
-            </summary>
-        </member>
         <member name="M:Galaxon.Numerics.BigDecimal.Sin(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
         </member>
@@ -1070,6 +1065,21 @@
         <member name="M:Galaxon.Numerics.BigDecimal.Atan(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
         </member>
+        <member name="M:Galaxon.Numerics.BigDecimal.Atan2(Galaxon.Numerics.BigDecimal,Galaxon.Numerics.BigDecimal)">
+            <summary>
+            This two-argument variation of the Atan() method comes originally from FORTRAN.
+            If x is non-negative, it will find the same result as Atan(y / x).
+            If x is negative, the result will be offset by π.
+            The purpose of the method is to produce a correct value for the polar angle when converting
+            from cartesian coordinates to polar coordinates.
+            </summary>
+            <see href="https://en.wikipedia.org/wiki/Atan2" />
+            <see cref="M:Galaxon.Numerics.BigDecimal.CartesianToPolar(Galaxon.Numerics.BigDecimal,Galaxon.Numerics.BigDecimal)" />
+            <param name="y">The y coordinate.</param>
+            <param name="x">The x coordinate.</param>
+            <returns>The polar angle.</returns>
+            <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException">if x and y both equal 0.</exception>
+        </member>
         <member name="M:Galaxon.Numerics.BigDecimal.AtanPi(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
         </member>
@@ -1090,6 +1100,27 @@
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.Atanh(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
+        </member>
+        <member name="M:Galaxon.Numerics.BigDecimal.CartesianToPolar(Galaxon.Numerics.BigDecimal,Galaxon.Numerics.BigDecimal)">
+            <summary>
+            Convert cartesian coordinates to polar coordinates.
+            </summary>
+            <param name="x">The x coordinate.</param>
+            <param name="y">The y coordinate.</param>
+            <returns>A tuple containing the radius (r) and angle (a).</returns>
+        </member>
+        <member name="M:Galaxon.Numerics.BigDecimal.PolarToCartesian(Galaxon.Numerics.BigDecimal,Galaxon.Numerics.BigDecimal)">
+            <summary>
+            Convert polar coordinates to cartesian coordinates.
+            </summary>
+            <param name="r">The radius.</param>
+            <param name="theta">The angle.</param>
+            <returns>A tuple containing the x and y coordinates.</returns>
+        </member>
+        <member name="M:Galaxon.Numerics.BigDecimal.NormalizeAngle(Galaxon.Numerics.BigDecimal@)">
+            <summary>
+            Shift given angle to the equivalent angle in the interval [-π, π).
+            </summary>
         </member>
         <member name="T:Galaxon.Numerics.XEnumerableBigDecimal">
             <summary>

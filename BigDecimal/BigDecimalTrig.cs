@@ -1,4 +1,5 @@
 using System.Numerics;
+using Galaxon.Core.Exceptions;
 
 namespace Galaxon.Numerics;
 
@@ -10,28 +11,7 @@ namespace Galaxon.Numerics;
 public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     IHyperbolicFunctions<BigDecimal>
 {
-    /// <summary>
-    /// Shift given angle to the equivalent angle in the interval [-π, π).
-    /// </summary>
-    public static BigDecimal NormalizeAngle(in BigDecimal radians)
-    {
-        var x = radians % Tau;
-        // The result of the modulo operator can be anywhere in the interval (-τ, τ) because
-        // the default behaviour of modulo is to assign the sign of the dividend (the left-hand
-        // operand) to the result. So if radians is negative, the result will be, too.
-        // Therefore, we may need to shift the value once more to place it in the desired range.
-        if (x < -Pi)
-        {
-            x += Tau;
-        }
-        else if (x >= Pi)
-        {
-            x -= Tau;
-        }
-        return x;
-    }
-
-    #region Trigonometric functions
+    #region Trigonometric methods
 
     /// <inheritdoc />
     public static BigDecimal Sin(BigDecimal x)
@@ -193,54 +173,54 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal TanPi(BigDecimal x) =>
         Tan(x * Pi);
 
-    #endregion Trigonometric functions
+    #endregion Trigonometric methods
 
-    #region Inverse trigonometric functions
+    #region Inverse trigonometric methods
 
     /// <inheritdoc />
-    public static BigDecimal Asin(BigDecimal x)
+    public static BigDecimal Asin(BigDecimal a)
     {
         // Optimization.
-        if (x == 0)
+        if (a == 0)
         {
             return 0;
         }
 
         // Handle negative arguments.
-        if (x < 0)
+        if (a < 0)
         {
-            return -Asin(-x);
+            return -Asin(-a);
         }
 
         // Guard.
-        if (x > 1)
+        if (a > 1)
         {
-            throw new ArgumentOutOfRangeException(nameof(x), "Must be in the range -1..1.");
+            throw new ArgumentOutOfRangeException(nameof(a), "Must be in the range -1..1.");
         }
 
         // Optimization.
         var halfPi = Pi / 2;
-        if (x == 1)
+        if (a == 1)
         {
             return halfPi;
         }
 
         // The Taylor series is slow to converge near x = ±1, but we can the following identity
         // relationship and calculate Asin() accurately and quickly for a smaller value:
-        // Asin(x) = π/2 - Asin(√(1-x²))
-        var x2 = x * x;
-        if (x > 0.75m)
+        // Asin(θ) = π/2 - Asin(√(1-θ²))
+        var a2 = a * a;
+        if (a > 0.75m)
         {
-            return halfPi - Asin(Sqrt(1 - x2));
+            return halfPi - Asin(Sqrt(1 - a2));
         }
 
         // Taylor series.
         BigInteger n = 1;
-        BigInteger a = 1;
-        BigInteger b = 2;
-        BigInteger c = 3;
-        var xc = Cube(x); // x^c
-        var sum = x;
+        BigInteger b = 1;
+        BigInteger c = 2;
+        BigInteger d = 3;
+        var ac = Cube(a); // a^c
+        var sum = a;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
         var prevMaxSigFigs = MaxSigFigs;
@@ -251,7 +231,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         while (true)
         {
             // Add the next term in the series.
-            var newSum = sum + a * xc / (b * c);
+            var newSum = sum + b * ac / (c * d);
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum)
@@ -262,10 +242,10 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
             // Prepare for next iteration.
             sum = newSum;
             n++;
-            a *= 2 * n - 1;
-            b *= 2 * n;
-            c += 2;
-            xc *= x2;
+            b *= 2 * n - 1;
+            c *= 2 * n;
+            d += 2;
+            ac *= a2;
         }
 
         // Restore the maximum number of significant figures.
@@ -275,45 +255,45 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     }
 
     /// <inheritdoc />
-    public static BigDecimal AsinPi(BigDecimal x) =>
-        Asin(x) / Pi;
+    public static BigDecimal AsinPi(BigDecimal a) =>
+        Asin(a) / Pi;
 
     /// <inheritdoc />
-    public static BigDecimal Acos(BigDecimal x) =>
-        Pi / 2 - Asin(x);
+    public static BigDecimal Acos(BigDecimal a) =>
+        Pi / 2 - Asin(a);
 
     /// <inheritdoc />
-    public static BigDecimal AcosPi(BigDecimal x) =>
-        Acos(x) / Pi;
+    public static BigDecimal AcosPi(BigDecimal a) =>
+        Acos(a) / Pi;
 
     /// <inheritdoc />
-    public static BigDecimal Atan(BigDecimal x)
+    public static BigDecimal Atan(BigDecimal a)
     {
         // Optimization.
-        if (x == 0)
+        if (a == 0)
         {
             return 0;
         }
 
         // Handle negative arguments.
-        if (x < 0)
+        if (a < 0)
         {
-            return -Atan(-x);
+            return -Atan(-a);
         }
 
         // Optimization.
-        if (x == 1)
+        if (a == 1)
         {
             return Pi / 4;
         }
 
         // Taylor series.
         var m = 1;
-        var xm = x;
-        var x2 = x * x;
-        var xIsSmall = x < 1;
-        var sign = xIsSmall ? 1 : -1;
-        var sum = xIsSmall ? 0 : Pi / 2;
+        var am = a;
+        var a2 = a * a;
+        var small = a < 1;
+        var sign = small ? 1 : -1;
+        var sum = small ? 0 : Pi / 2;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
         var prevMaxSigFigs = MaxSigFigs;
@@ -324,7 +304,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         while (true)
         {
             // Add the next term in the series.
-            var newSum = sum + sign * (xIsSmall ? xm / m : 1 / (m * xm));
+            var newSum = sum + sign * (small ? am / m : 1 / (m * am));
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum)
@@ -336,7 +316,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
             sum = newSum;
             sign = -sign;
             m += 2;
-            xm *= x2;
+            am *= a2;
         }
 
         // Restore the maximum number of significant figures.
@@ -345,13 +325,50 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         return RoundSigFigs(sum);
     }
 
+    /// <summary>
+    /// This two-argument variation of the Atan() method comes originally from FORTRAN.
+    /// If x is non-negative, it will find the same result as Atan(y / x).
+    /// If x is negative, the result will be offset by π.
+    /// The purpose of the method is to produce a correct value for the polar angle when converting
+    /// from cartesian coordinates to polar coordinates.
+    /// </summary>
+    /// <see href="https://en.wikipedia.org/wiki/Atan2" />
+    /// <see cref="CartesianToPolar" />
+    /// <param name="y">The y coordinate.</param>
+    /// <param name="x">The x coordinate.</param>
+    /// <returns>The polar angle.</returns>
+    /// <exception cref="ArgumentInvalidException">if x and y both equal 0.</exception>
+    public static BigDecimal Atan2(BigDecimal y, BigDecimal x)
+    {
+        BigDecimal result;
+
+        if (x == 0)
+        {
+            if (y == 0)
+            {
+                throw new ArgumentInvalidException(nameof(y), "Atan is undefined for 0/0.");
+            }
+
+            result = Pi / 2;
+            return y > 0 ? result : -result;
+        }
+
+        result = Atan(y / x);
+        if (x > 0)
+        {
+            return result;
+        }
+
+        return result + (y < 0 ? -Pi : Pi);
+    }
+
     /// <inheritdoc />
-    public static BigDecimal AtanPi(BigDecimal x) =>
-        Atan(x) / Pi;
+    public static BigDecimal AtanPi(BigDecimal a) =>
+        Atan(a) / Pi;
 
-    #endregion Inverse trigonometric functions
+    #endregion Inverse trigonometric methods
 
-    #region Hyperbolic functions
+    #region Hyperbolic methods
 
     /// <inheritdoc />
     public static BigDecimal Sinh(BigDecimal x)
@@ -448,21 +465,68 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     public static BigDecimal Tanh(BigDecimal x) =>
         Sinh(x) / Cosh(x);
 
-    #endregion Hyperbolic functions
+    #endregion Hyperbolic methods
 
-    #region Inverse hyperbolic functions
-
-    /// <inheritdoc />
-    public static BigDecimal Asinh(BigDecimal x) =>
-        Log(x + Sqrt(x * x + 1));
+    #region Inverse hyperbolic methods
 
     /// <inheritdoc />
-    public static BigDecimal Acosh(BigDecimal x) =>
-        Log(x + Sqrt(x * x - 1));
+    public static BigDecimal Asinh(BigDecimal a) =>
+        Log(a + Sqrt(a * a + 1));
 
     /// <inheritdoc />
-    public static BigDecimal Atanh(BigDecimal x) =>
-        Log((1 + x) / (1 - x)) / 2;
+    public static BigDecimal Acosh(BigDecimal a) =>
+        Log(a + Sqrt(a * a - 1));
 
-    #endregion Inverse hyperbolic functions
+    /// <inheritdoc />
+    public static BigDecimal Atanh(BigDecimal a) =>
+        Log((1 + a) / (1 - a)) / 2;
+
+    #endregion Inverse hyperbolic methods
+
+    #region Methods for converting coordinates
+
+    /// <summary>
+    /// Convert cartesian coordinates to polar coordinates.
+    /// </summary>
+    /// <param name="x">The x coordinate.</param>
+    /// <param name="y">The y coordinate.</param>
+    /// <returns>A tuple containing the radius (r) and angle (a).</returns>
+    public (BigDecimal r, BigDecimal a) CartesianToPolar(BigDecimal x, BigDecimal y) =>
+        (Hypot(x, y), Atan2(y, x));
+
+    /// <summary>
+    /// Convert polar coordinates to cartesian coordinates.
+    /// </summary>
+    /// <param name="r">The radius.</param>
+    /// <param name="theta">The angle.</param>
+    /// <returns>A tuple containing the x and y coordinates.</returns>
+    public (BigDecimal x, BigDecimal y) PolarToCartesian(BigDecimal r, BigDecimal a) =>
+        (r * Cos(a), r * Sin(a));
+
+    #endregion Methods for converting coordinates
+
+    #region Other methods
+
+    /// <summary>
+    /// Shift given angle to the equivalent angle in the interval [-π, π).
+    /// </summary>
+    public static BigDecimal NormalizeAngle(in BigDecimal radians)
+    {
+        var x = radians % Tau;
+        // The result of the modulo operator can be anywhere in the interval (-τ, τ) because
+        // the default behaviour of modulo is to assign the sign of the dividend (the left-hand
+        // operand) to the result. So if radians is negative, the result will be, too.
+        // Therefore, we may need to shift the value once more to place it in the desired range.
+        if (x < -Pi)
+        {
+            x += Tau;
+        }
+        else if (x >= Pi)
+        {
+            x -= Tau;
+        }
+        return x;
+    }
+
+    #endregion Other methods
 }
