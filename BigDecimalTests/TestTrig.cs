@@ -7,19 +7,19 @@ public class TestTrig
     public void TestSin()
     {
         BigDecimal.MaxSigFigs = 30;
-        for (int i = -360; i <= 360; i += 15)
+        for (var i = -360; i <= 360; i += 15)
         {
-            double d = i * double.Pi / 180.0;
-            double sinD = double.Sin(d);
-            string strSinD = sinD.ToString("F14");
+            var d = i * double.Pi / 180.0;
+            var sinD = double.Sin(d);
+            var strSinD = sinD.ToString("F14");
             if (strSinD == "-0.00000000000000")
             {
                 strSinD = "0.00000000000000";
             }
 
-            BigDecimal bd = i * BigDecimal.Pi / 180;
-            BigDecimal sinBD = BigDecimal.Sin(bd);
-            string strSinBD = sinBD.ToString("F14");
+            var bd = i * BigDecimal.Pi / 180;
+            var sinBD = BigDecimal.Sin(bd);
+            var strSinBD = sinBD.ToString("F14");
 
             Assert.AreEqual(strSinD, strSinBD);
         }
@@ -29,19 +29,19 @@ public class TestTrig
     public void TestCos()
     {
         BigDecimal.MaxSigFigs = 30;
-        for (int i = -360; i <= 360; i += 15)
+        for (var i = -360; i <= 360; i += 15)
         {
-            double d = i * double.Pi / 180.0;
-            double cosD = double.Cos(d);
-            string strCosD = cosD.ToString("F14");
+            var d = i * double.Pi / 180.0;
+            var cosD = double.Cos(d);
+            var strCosD = cosD.ToString("F14");
             if (strCosD == "-0.00000000000000")
             {
                 strCosD = "0.00000000000000";
             }
 
-            BigDecimal bd = i * BigDecimal.Pi / 180;
-            BigDecimal cosBD = BigDecimal.Cos(bd);
-            string strCosBD = cosBD.ToString("F14");
+            var bd = i * BigDecimal.Pi / 180;
+            var cosBD = BigDecimal.Cos(bd);
+            var strCosBD = cosBD.ToString("F14");
 
             Assert.AreEqual(strCosD, strCosBD);
         }
@@ -51,7 +51,7 @@ public class TestTrig
     public void TestTan()
     {
         BigDecimal.MaxSigFigs = 30;
-        for (int i = -360; i <= 360; i += 15)
+        for (var i = -360; i <= 360; i += 15)
         {
             // Skip values for which tan is undefined.
             if (i is -270 or -90 or 90 or 270)
@@ -59,17 +59,17 @@ public class TestTrig
                 continue;
             }
 
-            double d = i * double.Pi / 180.0;
-            double tanD = double.Tan(d);
-            string strTanD = tanD.ToString("F13");
+            var d = i * double.Pi / 180.0;
+            var tanD = double.Tan(d);
+            var strTanD = tanD.ToString("F13");
             if (strTanD == "-0.0000000000000")
             {
                 strTanD = "0.0000000000000";
             }
 
-            BigDecimal bd = i * BigDecimal.Pi / 180;
-            BigDecimal tanBD = BigDecimal.Tan(bd);
-            string strTanBD = tanBD.ToString("F13");
+            var bd = i * BigDecimal.Pi / 180;
+            var tanBD = BigDecimal.Tan(bd);
+            var strTanBD = tanBD.ToString("F13");
 
             Assert.AreEqual(strTanD, strTanBD);
         }
@@ -79,19 +79,19 @@ public class TestTrig
     public void TestAsin()
     {
         BigDecimal.MaxSigFigs = 30;
-        for (int i = -10; i <= 10; i++)
+        for (var i = -10; i <= 10; i++)
         {
-            double d = i / 10.0;
-            double asinD = double.Asin(d);
-            string strAsinD = asinD.ToString("F14");
+            var d = i / 10.0;
+            var asinD = double.Asin(d);
+            var strAsinD = asinD.ToString("F14");
             if (strAsinD == "-0.00000000000000")
             {
                 strAsinD = "0.00000000000000";
             }
 
             BigDecimal bd = d;
-            BigDecimal asinBD = BigDecimal.Asin(bd);
-            string strAsinBD = asinBD.ToString("F14");
+            var asinBD = BigDecimal.Asin(bd);
+            var strAsinBD = asinBD.ToString("F14");
 
             Assert.AreEqual(strAsinD, strAsinBD);
         }
@@ -144,19 +144,19 @@ public class TestTrig
     public void TestAcos()
     {
         BigDecimal.MaxSigFigs = 30;
-        for (int i = -10; i <= 10; i++)
+        for (var i = -10; i <= 10; i++)
         {
-            double d = i / 10.0;
-            double acosD = double.Acos(d);
-            string strAcosD = acosD.ToString("F14");
+            var d = i / 10.0;
+            var acosD = double.Acos(d);
+            var strAcosD = acosD.ToString("F14");
             if (strAcosD == "-0.00000000000000")
             {
                 strAcosD = "0.00000000000000";
             }
 
             BigDecimal bd = d;
-            BigDecimal acosBD = BigDecimal.Acos(bd);
-            string strAcosBD = acosBD.ToString("F14");
+            var acosBD = BigDecimal.Acos(bd);
+            var strAcosBD = acosBD.ToString("F14");
 
             Assert.AreEqual(strAcosD, strAcosBD);
         }
@@ -166,19 +166,19 @@ public class TestTrig
     public void TestAtan()
     {
         BigDecimal.MaxSigFigs = 30;
-        for (int i = -50; i <= 50; i++)
+        for (var i = -50; i <= 50; i++)
         {
-            double d = i / 10.0;
-            double atanD = double.Atan(d);
-            string strAtanD = atanD.ToString("F14");
+            var d = i / 10.0;
+            var atanD = double.Atan(d);
+            var strAtanD = atanD.ToString("F14");
             if (strAtanD == "-0.00000000000000")
             {
                 strAtanD = "0.00000000000000";
             }
 
             BigDecimal bd = d;
-            BigDecimal atanBD = BigDecimal.Atan(bd);
-            string strAtanBD = atanBD.ToString("F14");
+            var atanBD = BigDecimal.Atan(bd);
+            var strAtanBD = atanBD.ToString("F14");
 
             Assert.AreEqual(strAtanD, strAtanBD);
         }
@@ -188,19 +188,19 @@ public class TestTrig
     public void TestSinh()
     {
         BigDecimal.MaxSigFigs = 30;
-        for (int i = -10; i <= 10; i++)
+        for (var i = -10; i <= 10; i++)
         {
             double d = i;
-            double sinhD = double.Sinh(d);
-            string strSinhD = sinhD.ToString("G14");
+            var sinhD = double.Sinh(d);
+            var strSinhD = sinhD.ToString("G14");
             if (strSinhD == "-0.00000000000000")
             {
                 strSinhD = "0.00000000000000";
             }
 
             BigDecimal bd = i;
-            BigDecimal sinhBD = BigDecimal.Sinh(bd);
-            string strSinhBD = sinhBD.ToString("G14");
+            var sinhBD = BigDecimal.Sinh(bd);
+            var strSinhBD = sinhBD.ToString("G14");
 
             Assert.AreEqual(strSinhD, strSinhBD);
         }
@@ -210,19 +210,19 @@ public class TestTrig
     public void TestCosh()
     {
         BigDecimal.MaxSigFigs = 30;
-        for (int i = -10; i <= 10; i++)
+        for (var i = -10; i <= 10; i++)
         {
             double d = i;
-            double coshD = double.Cosh(d);
-            string strCoshD = coshD.ToString("G14");
+            var coshD = double.Cosh(d);
+            var strCoshD = coshD.ToString("G14");
             if (strCoshD == "-0.00000000000000")
             {
                 strCoshD = "0.00000000000000";
             }
 
             BigDecimal bd = i;
-            BigDecimal coshBD = BigDecimal.Cosh(bd);
-            string strCoshBD = coshBD.ToString("G14");
+            var coshBD = BigDecimal.Cosh(bd);
+            var strCoshBD = coshBD.ToString("G14");
 
             Assert.AreEqual(strCoshD, strCoshBD);
         }

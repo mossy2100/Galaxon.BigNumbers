@@ -49,7 +49,6 @@ public partial struct BigDecimal
 
     /// <summary>
     /// Compute π.
-    ///
     /// The Chudnovsky algorithm used here was the one used to generate π to 6.2 trillion decimal
     /// places, the current world record.
     /// See: <see href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" />
@@ -58,11 +57,11 @@ public partial struct BigDecimal
     {
         // Temporarily increase the maximum number of significant figures to ensure a correct
         // result. Tests have revealed 3 extra decimal places are needed.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 3;
 
         // Chudnovsky algorithm.
-        int q = 0;
+        var q = 0;
         BigInteger L = 13_591_409;
         BigInteger X = 1;
         BigInteger K = -6;
@@ -74,7 +73,7 @@ public partial struct BigDecimal
         while (true)
         {
             // Add the next term.
-            BigDecimal newSum = sum + (M * L / X);
+            var newSum = sum + M * L / X;
 
             // If adding the new term hasn't affected the sum, we're done.
             if (sum == newSum)
@@ -92,7 +91,7 @@ public partial struct BigDecimal
         }
 
         // Calculate pi.
-        BigDecimal pi = 426_880 * Sqrt(10_005) / sum;
+        var pi = 426_880 * Sqrt(10_005) / sum;
 
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
@@ -127,11 +126,11 @@ public partial struct BigDecimal
     public static BigDecimal ComputeTau()
     {
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // τ = 2π
-        BigDecimal tau = 2 * Pi;
+        var tau = 2 * Pi;
 
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
@@ -168,11 +167,11 @@ public partial struct BigDecimal
     public static BigDecimal ComputePhi()
     {
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Calculate phi.
-        BigDecimal phi = (1 + Sqrt(5)) / 2;
+        var phi = (1 + Sqrt(5)) / 2;
 
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
@@ -182,7 +181,6 @@ public partial struct BigDecimal
 
     /// <summary>
     /// Cached value for Log(10), the natural logarithm of 10.
-    ///
     /// This value is cached because of it's use in the Log() method. We don't want to have to
     /// recompute Log(10) every time we call Log().
     /// </summary>

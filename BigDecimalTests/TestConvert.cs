@@ -25,14 +25,14 @@ public class TestConvert
     [TestMethod]
     public void TestCastToIntTooBig()
     {
-        BigDecimal bd = (BigDecimal)int.MaxValue + 1;
+        var bd = (BigDecimal)int.MaxValue + 1;
         Assert.ThrowsException<OverflowException>(() => (int)bd);
     }
 
     [TestMethod]
     public void TestCastToIntTooBigNegative()
     {
-        BigDecimal bd = (BigDecimal)int.MinValue - 1;
+        var bd = (BigDecimal)int.MinValue - 1;
         Assert.ThrowsException<OverflowException>(() => (int)bd);
     }
 
@@ -136,7 +136,7 @@ public class TestConvert
     [TestMethod]
     public void TestCastToDecimalTooBig()
     {
-        BigDecimal bd = (BigDecimal)decimal.MaxValue + 1;
+        var bd = (BigDecimal)decimal.MaxValue + 1;
         Assert.ThrowsException<OverflowException>(() => (decimal)bd);
     }
 
@@ -150,7 +150,7 @@ public class TestConvert
     [TestMethod]
     public void TestCastToDecimalTooBigNegative()
     {
-        BigDecimal bd = (BigDecimal)decimal.MinValue - 1;
+        var bd = (BigDecimal)decimal.MinValue - 1;
         Assert.ThrowsException<OverflowException>(() => (decimal)bd);
     }
 
@@ -258,13 +258,13 @@ public class TestConvert
         Random rnd = new ();
         long totalTimeStringsMethod = 0;
         long totalTimeMathsMethod = 0;
-        int nValues = 2;
+        var nValues = 2;
         long t1, t2;
 
-        for (int i = 0; i < nValues; i++)
+        for (var i = 0; i < nValues; i++)
         {
             // Get a random float.
-            float f = rnd.NextSingle();
+            var f = rnd.NextSingle();
             BigDecimal bd = f;
             // Trace.WriteLine($"Testing value {f}...");
 
@@ -286,8 +286,8 @@ public class TestConvert
         }
 
         // Trace.WriteLine("");
-        long avgTimeStringsMethod = totalTimeStringsMethod / nValues;
-        long avgTimeMathsMethod = totalTimeMathsMethod / nValues;
+        var avgTimeStringsMethod = totalTimeStringsMethod / nValues;
+        var avgTimeMathsMethod = totalTimeMathsMethod / nValues;
         Trace.WriteLine($"Average time for strings method {avgTimeStringsMethod} ticks.");
         Trace.WriteLine($"Average time for maths method {avgTimeMathsMethod} ticks.");
     }
@@ -387,8 +387,8 @@ public class TestConvert
     [TestMethod]
     public void TestTryConvertFromCheckedInt()
     {
-        int x = 100;
-        bool ok = BigDecimal.TryConvertFromChecked(x, out BigDecimal bd);
+        var x = 100;
+        var ok = BigDecimal.TryConvertFromChecked(x, out var bd);
         Assert.IsTrue(ok);
         Assert.AreEqual(1, (int)bd.Significand);
         Assert.AreEqual(2, bd.Exponent);
@@ -397,8 +397,8 @@ public class TestConvert
     [TestMethod]
     public void TestTryConvertFromCheckedDouble()
     {
-        double x = 123.456789;
-        bool ok = BigDecimal.TryConvertFromChecked(x, out BigDecimal bd);
+        var x = 123.456789;
+        var ok = BigDecimal.TryConvertFromChecked(x, out var bd);
         Assert.IsTrue(ok);
         bd = BigDecimal.RoundSigFigs(bd, BigDecimal.DoublePrecision);
         Assert.AreEqual(123456789, (int)bd.Significand);

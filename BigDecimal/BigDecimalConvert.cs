@@ -97,27 +97,25 @@ public partial struct BigDecimal : IConvertible
 
     /// <summary>
     /// Implicit cast from decimal to BigDecimal.
-    ///
     /// The cast is implicit because any decimal value can be cast to a BigDecimal exactly, without
     /// loss of information. However, rounding off using Round() or RoundSigFigs() can cause
     /// information loss.
-    ///
     /// We don't need to use Parse() or division operations here, because the base is decimal.
     /// We can just extract the parts of the decimal from the bits and construct a BigDecimal from
     /// those. This method should be faster than using ToString() and Parse().
     /// </summary>
     public static implicit operator BigDecimal(decimal n)
     {
-        int[] parts = decimal.GetBits(n);
+        var parts = decimal.GetBits(n);
 
         // Get the sign and scale from the bits.
-        int sign = (parts[3] & 0x80000000) == 0 ? 1 : -1;
-        byte scale = (byte)((parts[3] >> 16) & 0x7F);
+        var sign = (parts[3] & 0x80000000) == 0 ? 1 : -1;
+        var scale = (byte)(parts[3] >> 16 & 0x7F);
 
         // Calculate the significand.
         BigInteger sig = 0;
         BigInteger mult = 1;
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
         {
             sig += (uint)parts[i] * mult;
             mult *= 0x1_0000_0000;
@@ -139,7 +137,7 @@ public partial struct BigDecimal : IConvertible
         }
 
         // Get the value's parts.
-        (byte signBit, ushort expBits, ulong fracBits) = n.Disassemble();
+        var (signBit, expBits, fracBits) = n.Disassemble();
 
         // Check for ±0.
         if (expBits == 0 && fracBits == 0)
@@ -148,23 +146,23 @@ public partial struct BigDecimal : IConvertible
         }
 
         // Check if the number is normal or subnormal.
-        bool isSubnormal = expBits == 0;
+        var isSubnormal = expBits == 0;
 
         // Get sign.
-        int sign = signBit == 1 ? -1 : 1;
+        var sign = signBit == 1 ? -1 : 1;
 
         // Get some information about the type.
-        byte nFracBits = XFloatingPoint.GetNumFracBits<T>();
-        short maxExp = XFloatingPoint.GetMaxExp<T>();
+        var nFracBits = XFloatingPoint.GetNumFracBits<T>();
+        var maxExp = XFloatingPoint.GetMaxExp<T>();
 
         // Get the significand.
         // The bit values are taken to have the value 1..2^(nFracBits - 1) and the exponent is
         // correspondingly shifted. Doing this avoids division operations.
         BigDecimal sig = 0;
         BigDecimal pow = 1;
-        for (int i = 0; i < nFracBits; i++)
+        for (var i = 0; i < nFracBits; i++)
         {
-            bool set = (fracBits & (1ul << i)) != 0;
+            var set = (fracBits & 1ul << i) != 0;
             if (set)
             {
                 sig += pow;
@@ -179,7 +177,7 @@ public partial struct BigDecimal : IConvertible
         }
 
         // Get the power of 2.
-        int exp = (isSubnormal ? 1 : expBits) - maxExp - nFracBits;
+        var exp = (isSubnormal ? 1 : expBits) - maxExp - nFracBits;
 
         // Calculate the result.
         return sign * sig * Exp2(exp);
@@ -187,7 +185,6 @@ public partial struct BigDecimal : IConvertible
 
     /// <summary>
     /// Implicit cast from Half to BigDecimal.
-    ///
     /// NB: The resulting BigDecimal value is exactly the value encoded by the Half.
     /// However, since Halfs only approximate decimal values, it's possible that only the first few
     /// digits are valid in terms of the intended value.
@@ -198,7 +195,6 @@ public partial struct BigDecimal : IConvertible
 
     /// <summary>
     /// Implicit cast from float to BigDecimal.
-    ///
     /// NB: The resulting BigDecimal value is exactly the value encoded by the float.
     /// However, since floats only approximate decimal values, it's possible that only the first 6-9
     /// digits are valid in terms of the intended value.
@@ -212,7 +208,6 @@ public partial struct BigDecimal : IConvertible
 
     /// <summary>
     /// Implicit cast from double to BigDecimal.
-    ///
     /// NB: The resulting BigDecimal value is exactly the value encoded by the double.
     /// However, since doubles only approximate decimal values, it's possible that only the first
     /// 15-17 digits are valid in terms of the intended value.
@@ -226,7 +221,6 @@ public partial struct BigDecimal : IConvertible
 
     /// <summary>
     /// Explicit cast from BigRational to BigDecimal.
-    ///
     /// This cast operation has to be explicit as there could be loss of information due to the
     /// limit on the number of significant figures in the result of the division.
     /// </summary>
@@ -332,7 +326,7 @@ public partial struct BigDecimal : IConvertible
     /// </summary>
     public static explicit operator BigInteger(BigDecimal bd)
     {
-        BigDecimal trunc = Truncate(bd);
+        var trunc = Truncate(bd);
         trunc.ShiftToExp(0);
         return trunc.Significand;
     }
@@ -359,13 +353,13 @@ public partial struct BigDecimal : IConvertible
         }
 
         // Get the scale.
-        byte scale = (byte)-bd.Exponent;
+        var scale = (byte)-bd.Exponent;
 
         // Get the sign.
-        bool isNegative = bd.Significand < 0;
+        var isNegative = bd.Significand < 0;
 
         // Get the bytes for the absolute value of the significand.
-        byte[] sigBytes = BigInteger.Abs(bd.Significand).ToByteArray(true);
+        var sigBytes = BigInteger.Abs(bd.Significand).ToByteArray(true);
 
         // Check we have at most 12 bytes.
         if (sigBytes.Length > 12)
@@ -374,11 +368,11 @@ public partial struct BigDecimal : IConvertible
         }
 
         // Convert the bytes to the integers necessary to construct the decimal.
-        int[] decInts = new int[3];
-        for (int i = 0; i < 12; i++)
+        var decInts = new int[3];
+        for (var i = 0; i < 12; i++)
         {
-            byte b = (i < sigBytes.Length) ? sigBytes[i] : (byte)0;
-            decInts[i / 4] |= b << ((i % 4) * 8);
+            var b = i < sigBytes.Length ? sigBytes[i] : (byte)0;
+            decInts[i / 4] |= b << i % 4 * 8;
         }
 
         return new decimal(decInts[0], decInts[1], decInts[2], isNegative, scale);
@@ -386,10 +380,8 @@ public partial struct BigDecimal : IConvertible
 
     /// <summary>
     /// Explicit cast from BigDecimal to Half.
-    ///
     /// BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
     /// be rendered in the call to ToString(). This will produce the closest matching Half possible.
-    ///
     /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
     /// valid range for Half.
     /// </summary>
@@ -398,13 +390,10 @@ public partial struct BigDecimal : IConvertible
 
     /// <summary>
     /// Explicit cast from BigDecimal to float.
-    ///
     /// (I implemented a method to do this using maths and bits, but it takes much longer.)
-    ///
     /// BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
     /// be rendered in the call to ToString(). This will produce the closest matching float
     /// possible.
-    ///
     /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
     /// valid range for float.
     /// </summary>
@@ -413,11 +402,9 @@ public partial struct BigDecimal : IConvertible
 
     /// <summary>
     /// Explicit cast from BigDecimal to double.
-    ///
     /// BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
     /// be rendered in the call to ToString(). This will produce the closest matching double
     /// possible.
-    ///
     /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
     /// valid range for double.
     /// </summary>
@@ -426,7 +413,6 @@ public partial struct BigDecimal : IConvertible
 
     /// <summary>
     /// Implicit cast from BigDecimal to BigRational.
-    ///
     /// This cast operation can be implicit because it can be done exactly, without loss of
     /// information, due to the use of BigIntegers inside BigRational.
     /// </summary>
@@ -543,7 +529,7 @@ public partial struct BigDecimal : IConvertible
         }
 
         // Get the min and max values for the result type.
-        (BigDecimal? min, BigDecimal? max) = GetRange(result);
+        var (min, max) = GetRange(result);
 
         // Check for unsupported type.
         if (!min.HasValue || !max.HasValue)
@@ -609,7 +595,7 @@ public partial struct BigDecimal : IConvertible
         }
 
         // Get the min and max values for the result type.
-        (BigDecimal? min, BigDecimal? max) = GetRange(result);
+        var (min, max) = GetRange(result);
 
         // Check for unsupported type.
         if (!min.HasValue || !max.HasValue)
@@ -650,7 +636,7 @@ public partial struct BigDecimal : IConvertible
             return true;
         }
 
-        (BigDecimal? min, BigDecimal? max) = GetRange(result);
+        var (min, max) = GetRange(result);
 
         // Signed types.
         if (min < 0)

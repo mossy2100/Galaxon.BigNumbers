@@ -12,8 +12,10 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// </summary>
     /// <param name="significand">The significand or mantissa.</param>
     /// <param name="exponent">The exponent.</param>
-    /// <param name="roundSigFigs">If the value should be rounded off to the current value of
-    /// MaxSigFigs.</param>
+    /// <param name="roundSigFigs">
+    /// If the value should be rounded off to the current value of
+    /// MaxSigFigs.
+    /// </param>
     public BigDecimal(BigInteger significand, int exponent = 0, bool roundSigFigs = false)
     {
         // Round off to the maximum number of significant figures if requested.
@@ -54,12 +56,13 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// <summary>
     /// The sign of the value. The same convention is used as for BigInteger except sbyte is used
     /// instead of an int.
-    ///   -1 for negative
-    ///    0 for zero
-    ///    1 for positive
+    /// -1 for negative
+    /// 0 for zero
+    /// 1 for positive
     /// </summary>
     /// <see cref="BigInteger.Sign" />
-    /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
+    /// <see
+    ///     href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
     public sbyte Sign => (sbyte)Significand.Sign;
 
     /// <summary>
@@ -74,17 +77,16 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// <summary>
     /// This property determines the maximum number of significant figures to keep in a BigDecimal
     /// value.
-    ///
     /// After any calculation, the result will be rounded to this many significant figures.
     /// This not only helps control memory usage by controlling the size of the significand, but
     /// also determines when to halt numerical methods, e.g. for calculating a square root or
     /// logarithm.
-    ///
     /// If this property is modified, only new objects and calculations are affected by it.
     /// If you want to reduce the number of significant figures in an existing value, use
     /// RoundSigFigs().
     /// </summary>
-    public static int MaxSigFigs {
+    public static int MaxSigFigs
+    {
         get => s_maxSigFigs;
 
         set
@@ -283,7 +285,7 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
         out int bytesWritten,
         bool isBigEndian)
     {
-        byte[] bytes = bi.ToByteArray(false, isBigEndian);
+        var bytes = bi.ToByteArray(false, isBigEndian);
         return TryWrite(bytes, destination, out bytesWritten);
     }
 
@@ -296,7 +298,7 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
         bool isBigEndian)
     {
         // Get the bytes.
-        byte[] bytes = BitConverter.GetBytes(i);
+        var bytes = BitConverter.GetBytes(i);
 
         // Check if the requested endianness matches the architecture. If not, reverse the array.
         if (BitConverter.IsLittleEndian && isBigEndian

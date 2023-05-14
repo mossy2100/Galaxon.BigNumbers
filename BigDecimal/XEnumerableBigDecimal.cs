@@ -16,7 +16,7 @@ public static class XEnumerableBigDecimal
     /// </summary>
     public static BigDecimal Average(this IEnumerable<BigDecimal> source)
     {
-        List<BigDecimal> nums = source.ToList();
+        var nums = source.ToList();
 
         // Guard.
         if (nums.Count == 0)
@@ -44,7 +44,7 @@ public static class XEnumerableBigDecimal
     /// </summary>
     public static BigDecimal GeometricMean(this IEnumerable<BigDecimal> source)
     {
-        List<BigDecimal> nums = source.ToList();
+        var nums = source.ToList();
 
         // Guard.
         if (nums.Count == 0)

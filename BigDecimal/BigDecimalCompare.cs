@@ -20,16 +20,12 @@ public partial struct BigDecimal
         {
             return 1;
         }
-        (BigDecimal x, BigDecimal y) = Align(this, other);
+        var (x, y) = Align(this, other);
         if (x.Significand < y.Significand)
         {
             return -1;
         }
-        if (x.Significand > y.Significand)
-        {
-            return 1;
-        }
-        return 0;
+        return x.Significand > y.Significand ? 1 : 0;
     }
 
     /// <inheritdoc />

@@ -26,7 +26,7 @@ public partial struct BigDecimal : ICloneable
         }
 
         // Find out how many digits to discard.
-        int nDigitsToCut = -digits - x.Exponent;
+        var nDigitsToCut = -digits - x.Exponent;
 
         // Anything to do?
         if (nDigitsToCut <= 0)
@@ -35,7 +35,7 @@ public partial struct BigDecimal : ICloneable
         }
 
         // Round off the significand.
-        BigInteger newSig = RoundSignificand(x.Significand, nDigitsToCut, mode);
+        var newSig = RoundSignificand(x.Significand, nDigitsToCut, mode);
 
         return new BigDecimal(newSig, -digits);
     }
@@ -56,7 +56,7 @@ public partial struct BigDecimal : ICloneable
         MidpointRounding mode = MidpointRounding.ToEven)
     {
         maxSigFigs ??= MaxSigFigs;
-        (BigInteger newSig, int newExp) = RoundSigFigs(x.Significand, x.Exponent, maxSigFigs.Value,
+        (var newSig, var newExp) = RoundSigFigs(x.Significand, x.Exponent, maxSigFigs.Value,
             mode);
         return new BigDecimal(newSig, newExp);
     }
@@ -72,18 +72,15 @@ public partial struct BigDecimal : ICloneable
 
     /// <summary>
     /// Return the fractional part of the value.
-    ///
     /// There are multiple ways to define the frac() function for negative numbers.
     /// (Refer to the Wikipedia link below.)
     /// The definition used in this implementation simply takes the digits to the right of the
     /// decimal point, with the sign matching the argument.
-    ///
     /// e.g.
     /// Frac(12.345) => 0.345
     /// Frac(-12.345) => -0.345
-    ///
     /// The following expression will be true for both positive and negative numbers:
-    ///     x == Truncate(x) + Frac(x)
+    /// x == Truncate(x) + Frac(x)
     /// </summary>
     /// <see href="https://en.wikipedia.org/wiki/Fractional_part" />
     public static BigDecimal Frac(BigDecimal x) =>
@@ -114,14 +111,14 @@ public partial struct BigDecimal : ICloneable
     private static BigInteger RoundSignificand(BigInteger sig, int nDigitsToCut,
         MidpointRounding mode = MidpointRounding.ToEven)
     {
-        BigInteger pow = BigInteger.Pow(10, nDigitsToCut);
-        BigInteger absSig = BigInteger.Abs(sig);
-        int sign = sig.Sign;
-        BigInteger q = absSig / pow;
-        BigInteger twoRem = 2 * (absSig % pow);
+        var pow = BigInteger.Pow(10, nDigitsToCut);
+        var absSig = BigInteger.Abs(sig);
+        var sign = sig.Sign;
+        var q = absSig / pow;
+        var twoRem = 2 * (absSig % pow);
 
         // Check if rounding is necessary.
-        bool increment = mode switch
+        var increment = mode switch
         {
             MidpointRounding.ToEven => twoRem > pow || twoRem == pow && BigInteger.IsOddInteger(q),
             MidpointRounding.AwayFromZero => twoRem >= pow,
@@ -153,10 +150,10 @@ public partial struct BigDecimal : ICloneable
         }
 
         // Get current num sig figs.
-        int nSigFigs = sig.NumDigits();
+        var nSigFigs = sig.NumDigits();
 
         // Find out how many digits to discard.
-        int nDigitsToCut = nSigFigs - maxSigFigs;
+        var nDigitsToCut = nSigFigs - maxSigFigs;
 
         // Anything to do?
         if (nDigitsToCut <= 0)
@@ -165,7 +162,7 @@ public partial struct BigDecimal : ICloneable
         }
 
         // Round off the significand.
-        BigInteger newSig = RoundSignificand(sig, nDigitsToCut, mode);
+        var newSig = RoundSignificand(sig, nDigitsToCut, mode);
 
         return (newSig, exp + nDigitsToCut);
     }
@@ -287,7 +284,7 @@ public partial struct BigDecimal : ICloneable
     /// <inheritdoc />
     public static BigDecimal operator +(BigDecimal a, BigDecimal b)
     {
-        (BigDecimal x, BigDecimal y) = Align(a, b);
+        (var x, var y) = Align(a, b);
         return new BigDecimal(x.Significand + y.Significand, x.Exponent, true);
     }
 
@@ -302,7 +299,7 @@ public partial struct BigDecimal : ICloneable
     /// <inheritdoc />
     public static BigDecimal operator -(BigDecimal a, BigDecimal b)
     {
-        (BigDecimal x, BigDecimal y) = Align(a, b);
+        (var x, var y) = Align(a, b);
         return new BigDecimal(x.Significand - y.Significand, x.Exponent, true);
     }
 
@@ -346,12 +343,12 @@ public partial struct BigDecimal : ICloneable
         // recursion. Casting from decimal to BigDecimal doesn't require division so it doesn't have
         // that problem.
 
-        BigDecimal bR = RoundSigFigs(b, DecimalPrecision);
+        var bR = RoundSigFigs(b, DecimalPrecision);
         BigDecimal f = 1 / (decimal)bR.Significand;
         f.Exponent -= bR.Exponent;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         while (true)
@@ -418,18 +415,18 @@ public partial struct BigDecimal : ICloneable
             throw new ArgumentOutOfRangeException(nameof(y), "Must be positive.");
         }
 
-        BigDecimal a0 = x;
-        BigDecimal g0 = y;
+        var a0 = x;
+        var g0 = y;
         BigDecimal result;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         while (true)
         {
-            BigDecimal a1 = (a0 + g0) / 2;
-            BigDecimal g1 = Sqrt(a0 * g0);
+            var a1 = (a0 + g0) / 2;
+            var g1 = Sqrt(a0 * g0);
 
             // Test for equality.
             if (a1 == g1)
@@ -439,8 +436,8 @@ public partial struct BigDecimal : ICloneable
             }
 
             // Test for equality post-rounding.
-            BigDecimal a1R = RoundSigFigs(a1, prevMaxSigFigs);
-            BigDecimal g1R = RoundSigFigs(g1, prevMaxSigFigs);
+            var a1R = RoundSigFigs(a1, prevMaxSigFigs);
+            var g1R = RoundSigFigs(g1, prevMaxSigFigs);
             if (a1R == g1R)
             {
                 result = a1R;

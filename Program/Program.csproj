@@ -9,13 +9,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BigDecimal\BigDecimal.csproj" />
+        <ProjectReference Include="..\BigDecimal\BigDecimal.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Galaxon.Core">
-        <HintPath>..\..\Core\Core\bin\Debug\net7.0\Galaxon.Core.dll</HintPath>
-      </Reference>
+        <Reference Include="Galaxon.Core">
+            <HintPath>..\..\Core\Core\bin\Debug\net7.0\Galaxon.Core.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
 </Project>

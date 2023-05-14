@@ -7,21 +7,17 @@ namespace Galaxon.Numerics.BigDecimalTests;
 public class TestExpLog
 {
     [TestMethod]
-    public void TestSqrt0()
-    {
+    public void TestSqrt0() =>
         Assert.AreEqual(BigDecimal.Zero, BigDecimal.Sqrt(0));
-    }
 
     [TestMethod]
-    public void TestSqrt1()
-    {
+    public void TestSqrt1() =>
         Assert.AreEqual(BigDecimal.One, BigDecimal.Sqrt(1));
-    }
 
     [TestMethod]
     public void TestSqrtPiSquared()
     {
-        BigDecimal bd = BigDecimal.Sqrt(BigDecimal.Pi * BigDecimal.Pi);
+        var bd = BigDecimal.Sqrt(BigDecimal.Pi * BigDecimal.Pi);
         Assert.AreEqual(BigDecimal.Pi, bd);
     }
 
@@ -30,7 +26,7 @@ public class TestExpLog
     [TestMethod]
     public void TestSqrtSmallInts()
     {
-        for (int i = 1; i <= 10; i++)
+        for (var i = 1; i <= 10; i++)
         {
             BigDecimal.MaxSigFigs = 55;
             Trace.WriteLine($"√{i} = " + BigDecimal.Sqrt(i));
@@ -47,10 +43,10 @@ public class TestExpLog
     public void TestSqrtBig()
     {
         BigDecimal.MaxSigFigs = 130;
-        BigDecimal x = BigDecimal.Parse("6.02214076E23");
-        BigDecimal expected = BigDecimal.Parse("776024533117.34932546664032837511112530578432706889"
+        var x = BigDecimal.Parse("6.02214076E23");
+        var expected = BigDecimal.Parse("776024533117.34932546664032837511112530578432706889"
             + "69571576562989126786337996022194015376088918609909491309813595319711937386010926");
-        BigDecimal actual = BigDecimal.Sqrt(x);
+        var actual = BigDecimal.Sqrt(x);
         Assert.AreEqual(expected, actual);
     }
 
@@ -61,10 +57,10 @@ public class TestExpLog
     public void TestSqrtSmall()
     {
         BigDecimal.MaxSigFigs = 130;
-        BigDecimal x = BigDecimal.Parse("1.602176634E-19");
-        BigDecimal expected = BigDecimal.Parse("4.0027198677899006825970388239053767545702786298616"
+        var x = BigDecimal.Parse("1.602176634E-19");
+        var expected = BigDecimal.Parse("4.0027198677899006825970388239053767545702786298616"
             + "66648707342924009987437927221345536742635143445476302206435987095958590772815416E-10");
-        BigDecimal actual = BigDecimal.Sqrt(x);
+        var actual = BigDecimal.Sqrt(x);
         Assert.AreEqual(expected, actual);
     }
 
@@ -77,10 +73,10 @@ public class TestExpLog
     public void TestSqrtBiggerThanBiggestDouble()
     {
         BigDecimal.MaxSigFigs = 130;
-        BigDecimal x = BigDecimal.Parse("1.2345678E789");
-        BigDecimal expected = BigDecimal.Parse("3.5136417005722140080009539858670683706660895438958"
+        var x = BigDecimal.Parse("1.2345678E789");
+        var expected = BigDecimal.Parse("3.5136417005722140080009539858670683706660895438958"
             + "9865958869460824551868009859293464600836861863229496438492388219814058056172706E+394");
-        BigDecimal actual = BigDecimal.Sqrt(x);
+        var actual = BigDecimal.Sqrt(x);
         Assert.AreEqual(expected, actual);
     }
 
@@ -93,37 +89,31 @@ public class TestExpLog
     public void TestSqrtSmallerThanSmallestDouble()
     {
         BigDecimal.MaxSigFigs = 130;
-        BigDecimal x = BigDecimal.Parse("1.2345678E-789");
-        BigDecimal expected = BigDecimal.Parse("3.5136417005722140080009539858670683706660895438958"
+        var x = BigDecimal.Parse("1.2345678E-789");
+        var expected = BigDecimal.Parse("3.5136417005722140080009539858670683706660895438958"
             + "9865958869460824551868009859293464600836861863229496438492388219814058056172706E-395");
-        BigDecimal actual = BigDecimal.Sqrt(x);
+        var actual = BigDecimal.Sqrt(x);
         Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
-    public void TestSqrtNegative()
-    {
+    public void TestSqrtNegative() =>
         Assert.ThrowsException<ArithmeticException>(() => BigDecimal.Sqrt(-1));
-    }
 
     [TestMethod]
-    public void TestCbrt0()
-    {
+    public void TestCbrt0() =>
         Assert.AreEqual(BigDecimal.Zero, BigDecimal.Cbrt(0));
-    }
 
     [TestMethod]
-    public void TestCbrt1()
-    {
+    public void TestCbrt1() =>
         Assert.AreEqual(BigDecimal.One, BigDecimal.Cbrt(1));
-    }
 
     // No asserts, just want to make sure the method calls complete fast enough and without error or
     // infinite looping.
     [TestMethod]
     public void TestCbrtSmallValues()
     {
-        for (int i = 1; i <= 1000; i++)
+        for (var i = 1; i <= 1000; i++)
         {
             BigDecimal.MaxSigFigs = 54;
             Trace.WriteLine($"³√{i} = " + BigDecimal.Cbrt(i));
@@ -137,17 +127,17 @@ public class TestExpLog
     public void TestRootNLargeNIntegerA()
     {
         BigInteger a = 5;
-        int b = 500;
-        BigInteger c = BigInteger.Pow(a, b);
+        var b = 500;
+        var c = BigInteger.Pow(a, b);
         Assert.AreEqual(a, BigDecimal.RootN(c, b));
     }
 
     [TestMethod]
     public void TestRootNLargeNDecimalA()
     {
-        BigDecimal a = BigDecimal.Pi;
-        int b = 500;
-        BigDecimal c = BigDecimal.Pow(a, b);
+        var a = BigDecimal.Pi;
+        var b = 500;
+        var c = BigDecimal.Pow(a, b);
         Assert.AreEqual(a, BigDecimal.RootN(c, b));
     }
 
@@ -206,8 +196,8 @@ public class TestExpLog
     public void TestRootNWithNegativeArgumentAndOddRoot()
     {
         BigDecimal x = -123;
-        int y = 71;
-        BigDecimal z = BigDecimal.RootN(x, y);
+        var y = 71;
+        var z = BigDecimal.RootN(x, y);
         Assert.IsTrue(z < 0);
     }
 
@@ -215,7 +205,7 @@ public class TestExpLog
     public void TestRootNWithNegativeArgumentAndEvenRoot()
     {
         BigDecimal x = -123;
-        int y = 70;
+        var y = 70;
         Assert.ThrowsException<ArithmeticException>(() => BigDecimal.RootN(x, y));
     }
 
@@ -226,7 +216,7 @@ public class TestExpLog
     [TestMethod]
     public void TestCubeRootOfNegativeValueUsingPow()
     {
-        BigDecimal oneThird = BigDecimal.One / 3;
+        var oneThird = BigDecimal.One / 3;
         Assert.ThrowsException<ArithmeticException>(() => BigDecimal.Pow(-27, oneThird));
     }
 
@@ -293,19 +283,19 @@ public class TestExpLog
     {
         BigDecimal.MaxSigFigs = 30;
 
-        for (int i = 1; i < 100; i++)
+        for (var i = 1; i < 100; i++)
         {
             double d = i;
-            double logD = double.Log(d);
+            var logD = double.Log(d);
 
             BigDecimal bd = i;
-            BigDecimal logBD = BigDecimal.Log(bd);
+            var logBD = BigDecimal.Log(bd);
 
             Console.WriteLine($"double.Log({d})     = {logD}");
             Console.WriteLine($"BigDecimal.Log({bd}) = {logBD}");
-            string expected = logD.ToString("G13");
+            var expected = logD.ToString("G13");
             Console.WriteLine(expected);
-            string actual = logBD.ToString("G13");
+            var actual = logBD.ToString("G13");
             Console.WriteLine(actual);
             Console.WriteLine("--------------------------------------------------");
 
@@ -316,14 +306,14 @@ public class TestExpLog
     [TestMethod]
     public void LogSpeedTest()
     {
-        for (int i = 1; i < 10; i++)
+        for (var i = 1; i < 10; i++)
         {
             Console.WriteLine("------------------------------");
 
-            long t1 = DateTime.Now.Ticks;
-            BigDecimal log = BigDecimal.Log(i);
-            long t2 = DateTime.Now.Ticks;
-            long tLog = t2 - t1;
+            var t1 = DateTime.Now.Ticks;
+            var log = BigDecimal.Log(i);
+            var t2 = DateTime.Now.Ticks;
+            var tLog = t2 - t1;
             Console.WriteLine($"Log({i}) == {log}");
             Console.WriteLine($"Log() took {tLog} ticks.");
 

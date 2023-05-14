@@ -4,14 +4,14 @@ using System.Numerics;
 namespace Galaxon.Numerics.BigDecimalTests;
 
 [TestClass]
-public class TestArithmeticOperators
+public class TestMath
 {
     [TestMethod]
     public void TestMultiplySmallInts()
     {
         BigDecimal a = 2;
         BigDecimal b = 3;
-        BigDecimal c = a * b;
+        var c = a * b;
         Assert.AreEqual(6, c.Significand);
         Assert.AreEqual(0, c.Exponent);
     }
@@ -21,7 +21,7 @@ public class TestArithmeticOperators
     {
         BigDecimal a = 1.2345m;
         BigDecimal b = 6.789m;
-        BigDecimal c = a * b;
+        var c = a * b;
         Assert.AreEqual(83810205, c.Significand);
         Assert.AreEqual(-7, c.Exponent);
     }
@@ -31,7 +31,7 @@ public class TestArithmeticOperators
     {
         // Calculate radius of Earth.
         BigDecimal r = 6378137; // meters
-        BigDecimal c = BigDecimal.RoundSigFigs(BigDecimal.Tau * r, 15);
+        var c = BigDecimal.RoundSigFigs(BigDecimal.Tau * r, 15);
         // Should be 40075016.6855785
         Assert.AreEqual(400750166855785, c.Significand);
         Assert.AreEqual(-7, c.Exponent);
@@ -42,7 +42,7 @@ public class TestArithmeticOperators
     {
         BigDecimal a = -1.23456789m;
         BigDecimal b = 9.87654321m;
-        BigDecimal c = a * b;
+        var c = a * b;
         Assert.AreEqual(-121932631112635269, c.Significand);
         Assert.AreEqual(-16, c.Exponent);
 
@@ -62,7 +62,7 @@ public class TestArithmeticOperators
     {
         BigDecimal a = 1;
         BigDecimal b = 2;
-        BigDecimal c = a / b;
+        var c = a / b;
         Assert.AreEqual(5, c.Significand);
         Assert.AreEqual(-1, c.Exponent);
     }
@@ -72,7 +72,7 @@ public class TestArithmeticOperators
     {
         BigDecimal a = 10;
         BigDecimal b = 2;
-        BigDecimal c = a / b;
+        var c = a / b;
         Assert.AreEqual(5, c.Significand);
         Assert.AreEqual(0, c.Exponent);
     }
@@ -83,7 +83,7 @@ public class TestArithmeticOperators
         BigDecimal.MaxSigFigs = 50;
         BigDecimal a = 2;
         BigDecimal b = 3;
-        BigDecimal c = a / b;
+        var c = a / b;
         Assert.AreEqual(
             BigInteger.Parse("66666666666666666666666666666666666666666666666667"),
             c.Significand);
@@ -94,7 +94,7 @@ public class TestArithmeticOperators
     public void TestDivisionFloats()
     {
         BigDecimal c = 40075016.6855785m;
-        BigDecimal r = c / BigDecimal.Tau;
+        var r = c / BigDecimal.Tau;
         r = BigDecimal.RoundSigFigs(r, 7);
         Assert.AreEqual(6378137, r.Significand);
         Assert.AreEqual(0, r.Exponent);
@@ -105,7 +105,7 @@ public class TestArithmeticOperators
     {
         BigDecimal a = 7;
         BigDecimal b = 2;
-        BigDecimal c = a % b;
+        var c = a % b;
         Assert.AreEqual(1, c.Significand);
         Assert.AreEqual(0, c.Exponent);
     }
@@ -115,7 +115,7 @@ public class TestArithmeticOperators
     {
         BigDecimal a = 7.6543m;
         BigDecimal b = 2.3456m;
-        BigDecimal c = a % b;
+        var c = a % b;
         Assert.AreEqual(6175, c.Significand);
         Assert.AreEqual(-4, c.Exponent);
     }
@@ -125,7 +125,7 @@ public class TestArithmeticOperators
     {
         BigDecimal a = 8;
         BigDecimal b = -3;
-        BigDecimal c = a % b;
+        var c = a % b;
         Assert.AreEqual(2, c.Significand);
         Assert.AreEqual(0, c.Exponent);
     }
@@ -135,7 +135,7 @@ public class TestArithmeticOperators
     {
         BigDecimal a = -8;
         BigDecimal b = 3;
-        BigDecimal c = a % b;
+        var c = a % b;
         Assert.AreEqual(-2, c.Significand);
         Assert.AreEqual(0, c.Exponent);
     }
@@ -143,9 +143,9 @@ public class TestArithmeticOperators
     [TestMethod]
     public void TestModAngle1()
     {
-        BigDecimal a = -BigDecimal.Tau  + 0.1m;
-        BigDecimal b = BigDecimal.Tau;
-        BigDecimal c = a % b;
+        var a = -BigDecimal.Tau + 0.1m;
+        var b = BigDecimal.Tau;
+        var c = a % b;
         if (c < 0)
         {
             c += BigDecimal.Tau;

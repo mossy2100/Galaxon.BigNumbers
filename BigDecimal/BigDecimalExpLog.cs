@@ -17,10 +17,14 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     /// </summary>
     /// <param name="x">The base.</param>
     /// <param name="y">The exponent.</param>
-    /// <returns>The result of the calculation, rounded off to the current value of
-    /// MaxSigFigs.</returns>
-    /// <exception cref="ArithmeticException">If there is no real result or a real result cannot
-    /// otherwise be computed.</exception>
+    /// <returns>
+    /// The result of the calculation, rounded off to the current value of
+    /// MaxSigFigs.
+    /// </returns>
+    /// <exception cref="ArithmeticException">
+    /// If there is no real result or a real result cannot
+    /// otherwise be computed.
+    /// </exception>
     public static BigDecimal Pow(BigDecimal x, BigDecimal y)
     {
         // Handle negative powers.
@@ -150,10 +154,10 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
 
         // Get an initial estimate using double, which should be pretty fast.
         // Reduce operand to the maximum number of significant digits supported by the double type.
-        BigDecimal xR = RoundSigFigs(x, DoublePrecision);
-        double sig = double.RootN((double)xR.Significand, n);
-        BigDecimal exp = (BigDecimal)xR.Exponent / n;
-        BigDecimal y0 = sig * Exp10(exp);
+        var xR = RoundSigFigs(x, DoublePrecision);
+        var sig = double.RootN((double)xR.Significand, n);
+        var exp = (BigDecimal)xR.Exponent / n;
+        var y0 = sig * Exp10(exp);
 
         // Check if our estimate is already our result.
         if (Pow(y0, n) == x)
@@ -162,7 +166,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         }
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         BigDecimal result;
@@ -170,16 +174,16 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         // Calculate the smallest difference between two adjacent values before we stop.
         // Our initial estimate provides the scale.
         y0.ShiftToSigFigs(prevMaxSigFigs);
-        BigDecimal delta = Exp10(y0.Exponent - 1);
+        var delta = Exp10(y0.Exponent - 1);
 
         // Newton's method.
-        int nLoops = 0;
+        var nLoops = 0;
         while (true)
         {
             // Get the next value of y.
-            BigDecimal ym = Pow(y0, n - 1);
-            BigDecimal yn = ym * y0;
-            BigDecimal y1 = y0 - (yn - x) / (n * ym);
+            var ym = Pow(y0, n - 1);
+            var yn = ym * y0;
+            var y1 = y0 - (yn - x) / (n * ym);
 
             // See if the values are close enough.
             // Simply testing for equality doesn't work because this method will sometime alternate
@@ -200,10 +204,10 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
                     // Pick the best value. We have to temporarily increase the number of
                     // significant figures again to get an accurate comparison (otherwise we often
                     // end up comparing 1 and 1, etc.).
-                    int prevMaxSigFigs2 = MaxSigFigs;
+                    var prevMaxSigFigs2 = MaxSigFigs;
                     MaxSigFigs += 2;
-                    BigDecimal diff0 = Abs(x - Pow(y0, n));
-                    BigDecimal diff1 = Abs(x - Pow(y1, n));
+                    var diff0 = Abs(x - Pow(y0, n));
+                    var diff1 = Abs(x - Pow(y1, n));
                     result = diff0 < diff1 ? y0 : y1;
                     MaxSigFigs = prevMaxSigFigs2;
                 }
@@ -280,7 +284,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         BigDecimal sum = 0;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -288,7 +292,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         while (true)
         {
             // Add the next term in the series.
-            BigDecimal newSum = sum + xn / nf;
+            var newSum = sum + xn / nf;
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum)
@@ -350,9 +354,9 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
 
         // Scale the value to the range (0..1) so the Taylor series converges quickly and to avoid
         // overflow.
-        int nDigits = x.Significand.NumDigits();
-        int scale = nDigits + x.Exponent;
-        BigDecimal y = x;
+        var nDigits = x.Significand.NumDigits();
+        var scale = nDigits + x.Exponent;
+        var y = x;
         y.Exponent = -nDigits;
 
         // Taylor/Newton-Mercator series.
@@ -360,13 +364,13 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         y--;
         // Console.WriteLine($"a = {a}");
         // Console.WriteLine($"x = {x}");
-        int n = 1;
-        int sign = 1;
-        BigDecimal yn = y;
+        var n = 1;
+        var sign = 1;
+        var yn = y;
         BigDecimal sum = 0;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -375,7 +379,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         while (true)
         {
             // Add the next term in the series
-            BigDecimal newSum = sum + (sign * yn / n);
+            var newSum = sum + sign * yn / n;
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum)
@@ -399,7 +403,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         // Console.WriteLine($"nLoops = {nLoops}");
 
         // Special handling for Log(10) to avoid infinite recursion.
-        BigDecimal result = x == 10 ? -sum : sum + scale * Ln10;
+        var result = x == 10 ? -sum : sum + scale * Ln10;
 
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;

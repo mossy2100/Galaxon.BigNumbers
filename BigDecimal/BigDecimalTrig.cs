@@ -15,7 +15,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     /// </summary>
     public static BigDecimal NormalizeAngle(in BigDecimal radians)
     {
-        BigDecimal x = radians % Tau;
+        var x = radians % Tau;
         // The result of the modulo operator can be anywhere in the interval (-τ, τ) because
         // the default behaviour of modulo is to assign the sign of the dividend (the left-hand
         // operand) to the result. So if radians is negative, the result will be, too.
@@ -44,7 +44,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         {
             return 0;
         }
-        BigDecimal halfPi = Pi / 2;
+        var halfPi = Pi / 2;
         if (x == halfPi)
         {
             return 1;
@@ -55,15 +55,15 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         }
 
         // Taylor series.
-        int sign = 1;
+        var sign = 1;
         BigInteger m = 1; // m = 2n + 1
-        BigDecimal xm = x;
-        BigDecimal x2 = x * x;
+        var xm = x;
+        var x2 = x * x;
         BigInteger mf = 1;
         BigDecimal sum = 0;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -71,7 +71,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         while (true)
         {
             // Add the next term in the series.
-            BigDecimal newSum = sum + sign * xm / mf;
+            var newSum = sum + sign * xm / mf;
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum)
@@ -116,7 +116,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
             return NegativeOne;
         }
 
-        BigDecimal halfPi = Pi / 2;
+        var halfPi = Pi / 2;
         if (x == halfPi || x == 3 * halfPi)
         {
             return 0;
@@ -124,15 +124,15 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
 
         // Taylor series.
         // https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
-        int sign = 1;
+        var sign = 1;
         BigInteger m = 0; // m = 2n
         BigDecimal xm = 1;
-        BigDecimal x2 = x * x;
+        var x2 = x * x;
         BigInteger mf = 1;
         BigDecimal sum = 0;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -140,7 +140,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         while (true)
         {
             // Add the next term in the series.
-            BigDecimal newSum = sum + sign * xm / mf;
+            var newSum = sum + sign * xm / mf;
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum)
@@ -219,7 +219,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         }
 
         // Optimization.
-        BigDecimal halfPi = Pi / 2;
+        var halfPi = Pi / 2;
         if (x == 1)
         {
             return halfPi;
@@ -228,7 +228,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         // The Taylor series is slow to converge near x = ±1, but we can the following identity
         // relationship and calculate Asin() accurately and quickly for a smaller value:
         // Asin(x) = π/2 - Asin(√(1-x²))
-        BigDecimal x2 = x * x;
+        var x2 = x * x;
         if (x > 0.75m)
         {
             return halfPi - Asin(Sqrt(1 - x2));
@@ -239,11 +239,11 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         BigInteger a = 1;
         BigInteger b = 2;
         BigInteger c = 3;
-        BigDecimal xc = Cube(x); // x^c
-        BigDecimal sum = x;
+        var xc = Cube(x); // x^c
+        var sum = x;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -251,7 +251,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         while (true)
         {
             // Add the next term in the series.
-            BigDecimal newSum = sum + a * xc / (b * c);
+            var newSum = sum + a * xc / (b * c);
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum)
@@ -308,15 +308,15 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         }
 
         // Taylor series.
-        int m = 1;
-        BigDecimal xm = x;
-        BigDecimal x2 = x * x;
-        bool xIsSmall = x < 1;
-        int sign = xIsSmall ? 1 : -1;
-        BigDecimal sum = xIsSmall ? 0 : Pi / 2;
+        var m = 1;
+        var xm = x;
+        var x2 = x * x;
+        var xIsSmall = x < 1;
+        var sign = xIsSmall ? 1 : -1;
+        var sum = xIsSmall ? 0 : Pi / 2;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -324,7 +324,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         while (true)
         {
             // Add the next term in the series.
-            BigDecimal newSum = sum + sign * (xIsSmall ? (xm / m) : 1 / (m * xm));
+            var newSum = sum + sign * (xIsSmall ? xm / m : 1 / (m * xm));
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum)
@@ -363,13 +363,13 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         }
 
         // Taylor series.
-        int m = 1;
-        BigDecimal xm = x;
+        var m = 1;
+        var xm = x;
         BigInteger mf = 1;
         BigDecimal sum = 0;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -377,7 +377,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         while (true)
         {
             // Add the next term in the series.
-            BigDecimal newSum = sum + xm / mf;
+            var newSum = sum + xm / mf;
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum)
@@ -408,14 +408,14 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         }
 
         // Taylor series.
-        int m = 0;
+        var m = 0;
         BigDecimal xm = 1;
-        BigDecimal x2 = x * x;
+        var x2 = x * x;
         BigInteger mf = 1;
         BigDecimal sum = 0;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Add terms until the process ceases to affect the result.
@@ -423,7 +423,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         while (true)
         {
             // Add the next term in the series.
-            BigDecimal newSum = sum + xm / mf;
+            var newSum = sum + xm / mf;
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum)

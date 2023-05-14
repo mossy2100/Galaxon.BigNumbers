@@ -14,12 +14,12 @@ public class TestRound
             -2.6m, -2.51m, -2.5m, -2.49m, -2.4m, -1.6m, -1.51m, -1.5m, -1.49m, -1.4m,
             1.4m, 1.49m, 1.5m, 1.51m, 1.6m, 2.4m, 2.49m, 2.5m, 2.51m, 2.6m
         };
-        foreach (decimal value in values)
+        foreach (var value in values)
         {
-            foreach (MidpointRounding method in Enum.GetValues<MidpointRounding>())
+            foreach (var method in Enum.GetValues<MidpointRounding>())
             {
                 BigDecimal expected = decimal.Round(value, method);
-                BigDecimal actual = BigDecimal.Round(value, 0, method);
+                var actual = BigDecimal.Round(value, 0, method);
                 Assert.AreEqual(expected, actual);
             }
         }
@@ -28,7 +28,7 @@ public class TestRound
     [TestMethod]
     public void TestRoundPi()
     {
-        BigDecimal pi = BigDecimal.Round(BigDecimal.Pi, 4);
+        var pi = BigDecimal.Round(BigDecimal.Pi, 4);
         Assert.AreEqual(3.1416m, pi);
     }
 
@@ -36,7 +36,7 @@ public class TestRound
     public void TestRoundSigFigsToEven()
     {
         BigDecimal bd = 1234567890;
-        BigDecimal r = BigDecimal.RoundSigFigs(bd, 3);
+        var r = BigDecimal.RoundSigFigs(bd, 3);
         Assert.AreEqual(123, r.Significand);
         Assert.AreEqual(7, r.Exponent);
 
@@ -63,7 +63,7 @@ public class TestRound
     public void TestRoundSigFigsToEvenNegatives()
     {
         BigDecimal bd = -1234567890;
-        BigDecimal r = BigDecimal.RoundSigFigs(bd, 3);
+        var r = BigDecimal.RoundSigFigs(bd, 3);
         Assert.AreEqual(-123, r.Significand);
         Assert.AreEqual(7, r.Exponent);
 
@@ -90,7 +90,7 @@ public class TestRound
     public void TestRoundSigFigsAwayFromZero()
     {
         BigDecimal bd = 1234567890;
-        BigDecimal r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.AwayFromZero);
+        var r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.AwayFromZero);
         Assert.AreEqual(123, r.Significand);
         Assert.AreEqual(7, r.Exponent);
 
@@ -117,7 +117,7 @@ public class TestRound
     public void TestRoundSigFigsAwayFromZeroNegatives()
     {
         BigDecimal bd = -1234567890;
-        BigDecimal r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.AwayFromZero);
+        var r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.AwayFromZero);
         Assert.AreEqual(-123, r.Significand);
         Assert.AreEqual(7, r.Exponent);
 
@@ -144,7 +144,7 @@ public class TestRound
     public void TestRoundSigFigsToNegativeInfinity()
     {
         BigDecimal bd = 1234567890;
-        BigDecimal r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.ToNegativeInfinity);
+        var r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.ToNegativeInfinity);
         Assert.AreEqual(123, r.Significand);
         Assert.AreEqual(7, r.Exponent);
 
@@ -171,7 +171,7 @@ public class TestRound
     public void TestRoundSigFigsToNegativeInfinityNegatives()
     {
         BigDecimal bd = -1234567890;
-        BigDecimal r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.ToNegativeInfinity);
+        var r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.ToNegativeInfinity);
         Assert.AreEqual(-124, r.Significand);
         Assert.AreEqual(7, r.Exponent);
 
@@ -198,7 +198,7 @@ public class TestRound
     public void TestRoundSigFigsToPositiveInfinity()
     {
         BigDecimal bd = 1234567890;
-        BigDecimal r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.ToPositiveInfinity);
+        var r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.ToPositiveInfinity);
         Assert.AreEqual(124, r.Significand);
         Assert.AreEqual(7, r.Exponent);
 
@@ -225,7 +225,7 @@ public class TestRound
     public void TestRoundSigFigsToPositiveInfinityPositives()
     {
         BigDecimal bd = -1234567890;
-        BigDecimal r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.ToPositiveInfinity);
+        var r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.ToPositiveInfinity);
         Assert.AreEqual(-123, r.Significand);
         Assert.AreEqual(7, r.Exponent);
 
@@ -252,7 +252,7 @@ public class TestRound
     public void TestRoundSigFigsToZero()
     {
         BigDecimal bd = 1234567890;
-        BigDecimal r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.ToZero);
+        var r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.ToZero);
         Assert.AreEqual(123, r.Significand);
         Assert.AreEqual(7, r.Exponent);
 
@@ -279,7 +279,7 @@ public class TestRound
     public void TestRoundSigFigsToZeroPositives()
     {
         BigDecimal bd = -1234567890;
-        BigDecimal r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.ToZero);
+        var r = BigDecimal.RoundSigFigs(bd, 3, MidpointRounding.ToZero);
         Assert.AreEqual(-123, r.Significand);
         Assert.AreEqual(7, r.Exponent);
 

@@ -82,13 +82,12 @@
             <inheritdoc />
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.ComputePi">
-             <summary>
-             Compute π.
-            
-             The Chudnovsky algorithm used here was the one used to generate π to 6.2 trillion decimal
-             places, the current world record.
-             See: <see href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" />
-             </summary>
+            <summary>
+            Compute π.
+            The Chudnovsky algorithm used here was the one used to generate π to 6.2 trillion decimal
+            places, the current world record.
+            See: <see href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" />
+            </summary>
         </member>
         <member name="F:Galaxon.Numerics.BigDecimal.s_tau">
             <summary>
@@ -121,12 +120,11 @@
             <returns>The value of φ to the current number of significant figures.</returns>
         </member>
         <member name="F:Galaxon.Numerics.BigDecimal.s_ln10">
-             <summary>
-             Cached value for Log(10), the natural logarithm of 10.
-            
-             This value is cached because of it's use in the Log() method. We don't want to have to
-             recompute Log(10) every time we call Log().
-             </summary>
+            <summary>
+            Cached value for Log(10), the natural logarithm of 10.
+            This value is cached because of it's use in the Log() method. We don't want to have to
+            recompute Log(10) every time we call Log().
+            </summary>
         </member>
         <member name="P:Galaxon.Numerics.BigDecimal.Ln10">
             <summary>
@@ -211,17 +209,15 @@
             <returns>The equivalent BigDecimal value.</returns>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.op_Implicit(System.Decimal)~Galaxon.Numerics.BigDecimal">
-             <summary>
-             Implicit cast from decimal to BigDecimal.
-            
-             The cast is implicit because any decimal value can be cast to a BigDecimal exactly, without
-             loss of information. However, rounding off using Round() or RoundSigFigs() can cause
-             information loss.
-            
-             We don't need to use Parse() or division operations here, because the base is decimal.
-             We can just extract the parts of the decimal from the bits and construct a BigDecimal from
-             those. This method should be faster than using ToString() and Parse().
-             </summary>
+            <summary>
+            Implicit cast from decimal to BigDecimal.
+            The cast is implicit because any decimal value can be cast to a BigDecimal exactly, without
+            loss of information. However, rounding off using Round() or RoundSigFigs() can cause
+            information loss.
+            We don't need to use Parse() or division operations here, because the base is decimal.
+            We can just extract the parts of the decimal from the bits and construct a BigDecimal from
+            those. This method should be faster than using ToString() and Parse().
+            </summary>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.ConvertFromFloatingPoint``1(``0)">
             <summary>
@@ -230,48 +226,44 @@
             <exception cref="T:System.InvalidCastException"></exception>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.op_Implicit(System.Half)~Galaxon.Numerics.BigDecimal">
-             <summary>
-             Implicit cast from Half to BigDecimal.
-            
-             NB: The resulting BigDecimal value is exactly the value encoded by the Half.
-             However, since Halfs only approximate decimal values, it's possible that only the first few
-             digits are valid in terms of the intended value.
-             Therefore, you may need to use RoundSigFigs() to get the value you really want.
-             </summary>
+            <summary>
+            Implicit cast from Half to BigDecimal.
+            NB: The resulting BigDecimal value is exactly the value encoded by the Half.
+            However, since Halfs only approximate decimal values, it's possible that only the first few
+            digits are valid in terms of the intended value.
+            Therefore, you may need to use RoundSigFigs() to get the value you really want.
+            </summary>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.op_Implicit(System.Single)~Galaxon.Numerics.BigDecimal">
-             <summary>
-             Implicit cast from float to BigDecimal.
-            
-             NB: The resulting BigDecimal value is exactly the value encoded by the float.
-             However, since floats only approximate decimal values, it's possible that only the first 6-9
-             digits are valid in terms of the intended value.
-             Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
-             <code>
-             BigDecimal bd = BigDecimal.RoundSigFigs(1.2345f, FloatMaxSigFigs);
-             </code>
-             </summary>
+            <summary>
+            Implicit cast from float to BigDecimal.
+            NB: The resulting BigDecimal value is exactly the value encoded by the float.
+            However, since floats only approximate decimal values, it's possible that only the first 6-9
+            digits are valid in terms of the intended value.
+            Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
+            <code>
+            BigDecimal bd = BigDecimal.RoundSigFigs(1.2345f, FloatMaxSigFigs);
+            </code>
+            </summary>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.op_Implicit(System.Double)~Galaxon.Numerics.BigDecimal">
-             <summary>
-             Implicit cast from double to BigDecimal.
-            
-             NB: The resulting BigDecimal value is exactly the value encoded by the double.
-             However, since doubles only approximate decimal values, it's possible that only the first
-             15-17 digits are valid in terms of the intended value.
-             Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
-             <code>
-             BigDecimal bd = BigDecimal.RoundSigFigs(1.2345, DoubleMaxSigFigs);
-             </code>
-             </summary>
+            <summary>
+            Implicit cast from double to BigDecimal.
+            NB: The resulting BigDecimal value is exactly the value encoded by the double.
+            However, since doubles only approximate decimal values, it's possible that only the first
+            15-17 digits are valid in terms of the intended value.
+            Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
+            <code>
+            BigDecimal bd = BigDecimal.RoundSigFigs(1.2345, DoubleMaxSigFigs);
+            </code>
+            </summary>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.op_Explicit(Galaxon.Numerics.BigRational)~Galaxon.Numerics.BigDecimal">
-             <summary>
-             Explicit cast from BigRational to BigDecimal.
-            
-             This cast operation has to be explicit as there could be loss of information due to the
-             limit on the number of significant figures in the result of the division.
-             </summary>
+            <summary>
+            Explicit cast from BigRational to BigDecimal.
+            This cast operation has to be explicit as there could be loss of information due to the
+            limit on the number of significant figures in the result of the division.
+            </summary>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.op_Explicit(Galaxon.Numerics.BigDecimal)~System.SByte">
             <summary>
@@ -367,49 +359,41 @@
             </exception>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.op_Explicit(Galaxon.Numerics.BigDecimal)~System.Half">
-             <summary>
-             Explicit cast from BigDecimal to Half.
-            
-             BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
-             be rendered in the call to ToString(). This will produce the closest matching Half possible.
-            
-             This method will not throw an OverflowException, but will return ±∞ for a value outside the
-             valid range for Half.
-             </summary>
+            <summary>
+            Explicit cast from BigDecimal to Half.
+            BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
+            be rendered in the call to ToString(). This will produce the closest matching Half possible.
+            This method will not throw an OverflowException, but will return ±∞ for a value outside the
+            valid range for Half.
+            </summary>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.op_Explicit(Galaxon.Numerics.BigDecimal)~System.Single">
-             <summary>
-             Explicit cast from BigDecimal to float.
-            
-             (I implemented a method to do this using maths and bits, but it takes much longer.)
-            
-             BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
-             be rendered in the call to ToString(). This will produce the closest matching float
-             possible.
-            
-             This method will not throw an OverflowException, but will return ±∞ for a value outside the
-             valid range for float.
-             </summary>
+            <summary>
+            Explicit cast from BigDecimal to float.
+            (I implemented a method to do this using maths and bits, but it takes much longer.)
+            BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
+            be rendered in the call to ToString(). This will produce the closest matching float
+            possible.
+            This method will not throw an OverflowException, but will return ±∞ for a value outside the
+            valid range for float.
+            </summary>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.op_Explicit(Galaxon.Numerics.BigDecimal)~System.Double">
-             <summary>
-             Explicit cast from BigDecimal to double.
-            
-             BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
-             be rendered in the call to ToString(). This will produce the closest matching double
-             possible.
-            
-             This method will not throw an OverflowException, but will return ±∞ for a value outside the
-             valid range for double.
-             </summary>
+            <summary>
+            Explicit cast from BigDecimal to double.
+            BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
+            be rendered in the call to ToString(). This will produce the closest matching double
+            possible.
+            This method will not throw an OverflowException, but will return ±∞ for a value outside the
+            valid range for double.
+            </summary>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.op_Implicit(Galaxon.Numerics.BigDecimal)~Galaxon.Numerics.BigRational">
-             <summary>
-             Implicit cast from BigDecimal to BigRational.
-            
-             This cast operation can be implicit because it can be done exactly, without loss of
-             information, due to the use of BigIntegers inside BigRational.
-             </summary>
+            <summary>
+            Implicit cast from BigDecimal to BigRational.
+            This cast operation can be implicit because it can be done exactly, without loss of
+            information, due to the use of BigIntegers inside BigRational.
+            </summary>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.TryConvertFromChecked``1(``0,Galaxon.Numerics.BigDecimal@)">
             <inheritdoc />
@@ -486,8 +470,10 @@
             </summary>
             <param name="significand">The significand or mantissa.</param>
             <param name="exponent">The exponent.</param>
-            <param name="roundSigFigs">If the value should be rounded off to the current value of
-            MaxSigFigs.</param>
+            <param name="roundSigFigs">
+            If the value should be rounded off to the current value of
+            MaxSigFigs.
+            </param>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.#ctor">
             <summary>
@@ -508,12 +494,13 @@
             <summary>
             The sign of the value. The same convention is used as for BigInteger except sbyte is used
             instead of an int.
-              -1 for negative
-               0 for zero
-               1 for positive
+            -1 for negative
+            0 for zero
+            1 for positive
             </summary>
             <see cref="P:System.Numerics.BigInteger.Sign" />
-            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
+            <see
+                href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
         </member>
         <member name="P:Galaxon.Numerics.BigDecimal.NumSigFigs">
             <summary>
@@ -521,19 +508,17 @@
             </summary>
         </member>
         <member name="P:Galaxon.Numerics.BigDecimal.MaxSigFigs">
-             <summary>
-             This property determines the maximum number of significant figures to keep in a BigDecimal
-             value.
-            
-             After any calculation, the result will be rounded to this many significant figures.
-             This not only helps control memory usage by controlling the size of the significand, but
-             also determines when to halt numerical methods, e.g. for calculating a square root or
-             logarithm.
-            
-             If this property is modified, only new objects and calculations are affected by it.
-             If you want to reduce the number of significant figures in an existing value, use
-             RoundSigFigs().
-             </summary>
+            <summary>
+            This property determines the maximum number of significant figures to keep in a BigDecimal
+            value.
+            After any calculation, the result will be rounded to this many significant figures.
+            This not only helps control memory usage by controlling the size of the significand, but
+            also determines when to halt numerical methods, e.g. for calculating a square root or
+            logarithm.
+            If this property is modified, only new objects and calculations are affected by it.
+            If you want to reduce the number of significant figures in an existing value, use
+            RoundSigFigs().
+            </summary>
         </member>
         <member name="F:Galaxon.Numerics.BigDecimal.s_maxSigFigs">
             <summary>
@@ -685,10 +670,14 @@
             </summary>
             <param name="x">The base.</param>
             <param name="y">The exponent.</param>
-            <returns>The result of the calculation, rounded off to the current value of
-            MaxSigFigs.</returns>
-            <exception cref="T:System.ArithmeticException">If there is no real result or a real result cannot
-            otherwise be computed.</exception>
+            <returns>
+            The result of the calculation, rounded off to the current value of
+            MaxSigFigs.
+            </returns>
+            <exception cref="T:System.ArithmeticException">
+            If there is no real result or a real result cannot
+            otherwise be computed.
+            </exception>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.Sqr(Galaxon.Numerics.BigDecimal)">
             <summary>
@@ -782,22 +771,19 @@
             </remarks>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.Frac(Galaxon.Numerics.BigDecimal)">
-             <summary>
-             Return the fractional part of the value.
-            
-             There are multiple ways to define the frac() function for negative numbers.
-             (Refer to the Wikipedia link below.)
-             The definition used in this implementation simply takes the digits to the right of the
-             decimal point, with the sign matching the argument.
-            
-             e.g.
-             Frac(12.345) => 0.345
-             Frac(-12.345) => -0.345
-            
-             The following expression will be true for both positive and negative numbers:
-                 x == Truncate(x) + Frac(x)
-             </summary>
-             <see href="https://en.wikipedia.org/wiki/Fractional_part" />
+            <summary>
+            Return the fractional part of the value.
+            There are multiple ways to define the frac() function for negative numbers.
+            (Refer to the Wikipedia link below.)
+            The definition used in this implementation simply takes the digits to the right of the
+            decimal point, with the sign matching the argument.
+            e.g.
+            Frac(12.345) => 0.345
+            Frac(-12.345) => -0.345
+            The following expression will be true for both positive and negative numbers:
+            x == Truncate(x) + Frac(x)
+            </summary>
+            <see href="https://en.wikipedia.org/wiki/Fractional_part" />
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.Floor(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
@@ -916,31 +902,27 @@
             </summary>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.ToString(System.String,System.IFormatProvider)">
-             <summary>
-             Format the BigDecimal as a string.
-            
-             Supported formats are the usual: D, E, F, G, N, P, and R.
-             <see href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings" />
-            
-             Although "D" is normally only used by integral types, in this case both the significand and
-             exponent will be formatted as integers.
-            
-             An secondary code "U" is provided, which follows the precision (if given).
-               - If omitted, the exponent (if present) will be formatted with the usual E[-+]999 format.
-               - If present, the exponent is formatted with "×10" instead of "E" and the exponent digits
-                 will be rendered as superscript. Also, a "+" sign is not used for positive exponents,
-                 and the exponent digits are not zero-padded.
-            
-             Example: "E7U" will format as per usual (E with 7 decimal digits), except using Unicode
-             characters for the exponent part.
-            
-             Codes "R" and "D" will produce the same output. However, the Unicode flag is undefined with
-             "R", because Parse() doesn't support superscript exponents.
-             </summary>
-             <param name="specifier">The format specifier (default "G").</param>
-             <param name="provider">The format provider (default null).</param>
-             <returns>The formatted string.</returns>
-             <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException">If the format specifier is invalid.</exception>
+            <summary>
+            Format the BigDecimal as a string.
+            Supported formats are the usual: D, E, F, G, N, P, and R.
+            <see
+                href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings" />
+            Although "D" is normally only used by integral types, in this case both the significand and
+            exponent will be formatted as integers.
+            An secondary code "U" is provided, which follows the precision (if given).
+            - If omitted, the exponent (if present) will be formatted with the usual E[-+]999 format.
+            - If present, the exponent is formatted with "×10" instead of "E" and the exponent digits
+            will be rendered as superscript. Also, a "+" sign is not used for positive exponents,
+            and the exponent digits are not zero-padded.
+            Example: "E7U" will format as per usual (E with 7 decimal digits), except using Unicode
+            characters for the exponent part.
+            Codes "R" and "D" will produce the same output. However, the Unicode flag is undefined with
+            "R", because Parse() doesn't support superscript exponents.
+            </summary>
+            <param name="specifier">The format specifier (default "G").</param>
+            <param name="provider">The format provider (default null).</param>
+            <returns>The formatted string.</returns>
+            <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException">If the format specifier is invalid.</exception>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.ToString">
             <inheritdoc />

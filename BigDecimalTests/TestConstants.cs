@@ -1,15 +1,15 @@
 namespace Galaxon.Numerics.BigDecimalTests;
 
 [TestClass]
-public class TestComputeConstants
+public class TestConstants
 {
     [TestMethod]
     public void TestComputeE50()
     {
         BigDecimal.MaxSigFigs = 51;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "2.7182818284 5904523536 0287471352 6624977572 4709369996");
-        BigDecimal actual = BigDecimal.E;
+        var actual = BigDecimal.E;
         Assert.AreEqual(expected, actual);
     }
 
@@ -17,10 +17,10 @@ public class TestComputeConstants
     public void TestComputeE100()
     {
         BigDecimal.MaxSigFigs = 101;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "2.7182818284 5904523536 0287471352 6624977572 4709369995 "
             + "9574966967 6277240766 3035354759 4571382178 5251664274");
-        BigDecimal actual = BigDecimal.E;
+        var actual = BigDecimal.E;
         Assert.AreEqual(expected, actual);
     }
 
@@ -28,12 +28,12 @@ public class TestComputeConstants
     public void TestComputeE200()
     {
         BigDecimal.MaxSigFigs = 201;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "2.7182818284 5904523536 0287471352 6624977572 4709369995 "
             + "9574966967 6277240766 3035354759 4571382178 5251664274 "
             + "2746639193 2003059921 8174135966 2904357290 0334295260 "
             + "5956307381 3232862794 3490763233 8298807531 9525101901");
-        BigDecimal actual = BigDecimal.E;
+        var actual = BigDecimal.E;
         Assert.AreEqual(expected, actual);
     }
 
@@ -41,7 +41,7 @@ public class TestComputeConstants
     public void TestComputeE1000()
     {
         BigDecimal.MaxSigFigs = 1001;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "2.7182818284 5904523536 0287471352 6624977572 4709369995 "
             + "9574966967 6277240766 3035354759 4571382178 5251664274 "
             + "2746639193 2003059921 8174135966 2904357290 0334295260 "
@@ -62,7 +62,7 @@ public class TestComputeConstants
             + "4914631409 3431738143 6405462531 5209618369 0888707016 "
             + "7683964243 7814059271 4563549061 3031072085 1038375051 "
             + "0115747704 1718986106 8739696552 1267154688 9570350354");
-        BigDecimal actual = BigDecimal.E;
+        var actual = BigDecimal.E;
         Assert.AreEqual(expected, actual);
     }
 
@@ -70,9 +70,9 @@ public class TestComputeConstants
     public void TestComputePi50()
     {
         BigDecimal.MaxSigFigs = 51;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "3.1415926535 8979323846 2643383279 5028841971 6939937511");
-        BigDecimal actual = BigDecimal.Pi;
+        var actual = BigDecimal.Pi;
         Assert.AreEqual(expected, actual);
     }
 
@@ -80,10 +80,10 @@ public class TestComputeConstants
     public void TestComputePi100()
     {
         BigDecimal.MaxSigFigs = 101;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "3.1415926535 8979323846 2643383279 5028841971 6939937510 "
             + "5820974944 5923078164 0628620899 8628034825 3421170680");
-        BigDecimal actual = BigDecimal.Pi;
+        var actual = BigDecimal.Pi;
         Assert.AreEqual(expected, actual);
     }
 
@@ -91,12 +91,12 @@ public class TestComputeConstants
     public void TestComputePi200()
     {
         BigDecimal.MaxSigFigs = 201;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "3.1415926535 8979323846 2643383279 5028841971 6939937510 "
             + "5820974944 5923078164 0628620899 8628034825 3421170679 "
             + "8214808651 3282306647 0938446095 5058223172 5359408128 "
             + "4811174502 8410270193 8521105559 6446229489 5493038196");
-        BigDecimal actual = BigDecimal.Pi;
+        var actual = BigDecimal.Pi;
         Assert.AreEqual(expected, actual);
     }
 
@@ -104,7 +104,7 @@ public class TestComputeConstants
     public void TestComputePi1000()
     {
         BigDecimal.MaxSigFigs = 1001;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "3.1415926535 8979323846 2643383279 5028841971 6939937510 "
             + "5820974944 5923078164 0628620899 8628034825 3421170679 "
             + "8214808651 3282306647 0938446095 5058223172 5359408128 "
@@ -125,7 +125,7 @@ public class TestComputeConstants
             + "7101000313 7838752886 5875332083 8142061717 7669147303 "
             + "5982534904 2875546873 1159562863 8823537875 9375195778 "
             + "1857780532 1712268066 1300192787 6611195909 2164201989");
-        BigDecimal actual = BigDecimal.Pi;
+        var actual = BigDecimal.Pi;
         Assert.AreEqual(expected, actual);
     }
 
@@ -138,9 +138,9 @@ public class TestComputeConstants
     public void TestComputePi10000()
     {
         BigDecimal.MaxSigFigs = 10001;
-        string strPi = File.ReadAllText("../../../pi10000.txt");
-        BigDecimal expected = BigDecimal.Parse(strPi);
-        BigDecimal actual = BigDecimal.Pi;
+        var strPi = File.ReadAllText("../../../pi10000.txt");
+        var expected = BigDecimal.Parse(strPi);
+        var actual = BigDecimal.Pi;
         Assert.AreEqual(expected, actual);
     }
 
@@ -148,9 +148,9 @@ public class TestComputeConstants
     public void TestComputeTau50()
     {
         BigDecimal.MaxSigFigs = 51;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "6.2831853071 7958647692 5286766559 0057683943 3879875021");
-        BigDecimal actual = BigDecimal.Tau;
+        var actual = BigDecimal.Tau;
         Assert.AreEqual(expected, actual);
     }
 
@@ -158,10 +158,10 @@ public class TestComputeConstants
     public void TestComputeTau100()
     {
         BigDecimal.MaxSigFigs = 101;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "6.2831853071 7958647692 5286766559 0057683943 3879875021"
             + "1641949889 1846156328 1257241799 7256069650 6842341360");
-        BigDecimal actual = BigDecimal.Tau;
+        var actual = BigDecimal.Tau;
         Assert.AreEqual(expected, actual);
     }
 
@@ -169,12 +169,12 @@ public class TestComputeConstants
     public void TestComputeTau200()
     {
         BigDecimal.MaxSigFigs = 201;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "6.2831853071 7958647692 5286766559 0057683943 3879875021"
             + "1641949889 1846156328 1257241799 7256069650 6842341359"
             + "6429617302 6564613294 1876892191 0116446345 0718816256"
             + "9622349005 6820540387 7042211119 2892458979 0986076393");
-        BigDecimal actual = BigDecimal.Tau;
+        var actual = BigDecimal.Tau;
         Assert.AreEqual(expected, actual);
     }
 
@@ -182,7 +182,7 @@ public class TestComputeConstants
     public void TestComputeTau1000()
     {
         BigDecimal.MaxSigFigs = 1001;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "6.2831853071 7958647692 5286766559 0057683943 3879875021 "
             + "1641949889 1846156328 1257241799 7256069650 6842341359 "
             + "6429617302 6564613294 1876892191 0116446345 0718816256 "
@@ -203,7 +203,7 @@ public class TestComputeConstants
             + "4202000627 5677505773 1750664167 6284123435 5338294607 "
             + "1965069808 5751093746 2319125727 7647075751 8750391556 "
             + "3715561064 3424536132 2600385575 3222391818 4328403979");
-        BigDecimal actual = BigDecimal.Tau;
+        var actual = BigDecimal.Tau;
         Assert.AreEqual(expected, actual);
     }
 
@@ -211,9 +211,9 @@ public class TestComputeConstants
     public void TestComputePhi50()
     {
         BigDecimal.MaxSigFigs = 51;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "1.6180339887 4989484820 4586834365 6381177203 0917980576");
-        BigDecimal actual = BigDecimal.Phi;
+        var actual = BigDecimal.Phi;
         Assert.AreEqual(expected, actual);
     }
 
@@ -221,10 +221,10 @@ public class TestComputeConstants
     public void TestComputePhi100()
     {
         BigDecimal.MaxSigFigs = 101;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "1.6180339887 4989484820 4586834365 6381177203 0917980576 "
             + "2862135448 6227052604 6281890244 9707207204 1893911375");
-        BigDecimal actual = BigDecimal.Phi;
+        var actual = BigDecimal.Phi;
         Assert.AreEqual(expected, actual);
     }
 
@@ -232,12 +232,12 @@ public class TestComputeConstants
     public void TestComputePhi200()
     {
         BigDecimal.MaxSigFigs = 201;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "1.6180339887 4989484820 4586834365 6381177203 0917980576 "
             + "2862135448 6227052604 6281890244 9707207204 1893911374 "
             + "8475408807 5386891752 1266338622 2353693179 3180060766 "
             + "7263544333 8908659593 9582905638 3226613199 2829026788");
-        BigDecimal actual = BigDecimal.Phi;
+        var actual = BigDecimal.Phi;
         Assert.AreEqual(expected, actual);
     }
 
@@ -245,7 +245,7 @@ public class TestComputeConstants
     public void TestComputePhi1000()
     {
         BigDecimal.MaxSigFigs = 1001;
-        BigDecimal expected = BigDecimal.Parse(
+        var expected = BigDecimal.Parse(
             "1.6180339887 4989484820 4586834365 6381177203 0917980576 "
             + "2862135448 6227052604 6281890244 9707207204 1893911374 "
             + "8475408807 5386891752 1266338622 2353693179 3180060766 "
@@ -266,7 +266,7 @@ public class TestComputeConstants
             + "9471234145 1702237358 0577278616 0086883829 5230459264 "
             + "7878017889 9219902707 7690389532 1968198615 1437803149 "
             + "9741106926 0886742962 2675756052 3172777520 3536139362");
-        BigDecimal actual = BigDecimal.Phi;
+        var actual = BigDecimal.Phi;
         Assert.AreEqual(expected, actual);
     }
 }

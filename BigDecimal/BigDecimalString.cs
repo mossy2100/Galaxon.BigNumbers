@@ -2,7 +2,6 @@ using System.Globalization;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using Galaxon.Core.Exceptions;
-using Galaxon.Core.Numbers;
 using Galaxon.Core.Strings;
 
 namespace Galaxon.Numerics;
@@ -11,22 +10,18 @@ public partial struct BigDecimal
 {
     /// <summary>
     /// Format the BigDecimal as a string.
-    ///
     /// Supported formats are the usual: D, E, F, G, N, P, and R.
-    /// <see href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings" />
-    ///
+    /// <see
+    ///     href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings" />
     /// Although "D" is normally only used by integral types, in this case both the significand and
     /// exponent will be formatted as integers.
-    ///
     /// An secondary code "U" is provided, which follows the precision (if given).
-    ///   - If omitted, the exponent (if present) will be formatted with the usual E[-+]999 format.
-    ///   - If present, the exponent is formatted with "×10" instead of "E" and the exponent digits
-    ///     will be rendered as superscript. Also, a "+" sign is not used for positive exponents,
-    ///     and the exponent digits are not zero-padded.
-    ///
+    /// - If omitted, the exponent (if present) will be formatted with the usual E[-+]999 format.
+    /// - If present, the exponent is formatted with "×10" instead of "E" and the exponent digits
+    /// will be rendered as superscript. Also, a "+" sign is not used for positive exponents,
+    /// and the exponent digits are not zero-padded.
     /// Example: "E7U" will format as per usual (E with 7 decimal digits), except using Unicode
     /// characters for the exponent part.
-    ///
     /// Codes "R" and "D" will produce the same output. However, the Unicode flag is undefined with
     /// "R", because Parse() doesn't support superscript exponents.
     /// </summary>
@@ -37,15 +32,15 @@ public partial struct BigDecimal
     public string ToString(string? specifier, IFormatProvider? provider = null)
     {
         // Set defaults.
-        string format = "G";
-        string ucFormat = format;
+        var format = "G";
+        var ucFormat = format;
         int? precision = null;
-        bool unicode = false;
+        var unicode = false;
 
         // Parse the format specifier.
         if (!string.IsNullOrEmpty(specifier))
         {
-            Match match = FormatRegex().Match(specifier);
+            var match = FormatRegex().Match(specifier);
 
             // Check format is valid.
             if (!match.Success)
@@ -57,7 +52,7 @@ public partial struct BigDecimal
             // Extract parts.
             format = match.Groups["format"].Value;
             ucFormat = format.ToUpper();
-            string strPrecision = match.Groups["precision"].Value;
+            var strPrecision = match.Groups["precision"].Value;
             precision = strPrecision == "" ? null : int.Parse(strPrecision);
             unicode = match.Groups["unicode"].Value.ToUpper() == "U";
 
@@ -70,11 +65,11 @@ public partial struct BigDecimal
         }
 
         // Format the significand.
-        int exp = Exponent;
+        var exp = Exponent;
         switch (ucFormat)
         {
             case "D" or "R":
-                string strSig = Significand.ToString($"D{precision}", provider);
+                var strSig = Significand.ToString($"D{precision}", provider);
                 if (exp == 0)
                 {
                     return strSig;
@@ -93,18 +88,18 @@ public partial struct BigDecimal
                 // See: https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#GFormatString
 
                 // Get the format using E with 2-digit exponent.
-                string strFormatE = FormatScientific(format, precision - 1, unicode, 2, provider);
+                var strFormatE = FormatScientific(format, precision - 1, unicode, 2, provider);
 
                 // Get the fixed point format, specifying the precision as the maximum number of
                 // significant figures.
-                string strFormatF = FormatFixedSigFigs(precision, provider);
+                var strFormatF = FormatFixedSigFigs(precision, provider);
 
                 // Return the shorter, preferring F.
                 return strFormatF.Length <= strFormatE.Length ? strFormatF : strFormatE;
             }
 
             case "P":
-                NumberFormatInfo nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
+                var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
                 precision ??= nfi.PercentDecimalDigits;
                 return (this * 100).FormatFixed("F", precision, provider) + nfi.PercentSymbol;
 
@@ -125,7 +120,7 @@ public partial struct BigDecimal
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
-        string formattedValue = ToString(new string(format), provider);
+        var formattedValue = ToString(new string(format), provider);
         try
         {
             formattedValue.CopyTo(destination);
@@ -143,7 +138,7 @@ public partial struct BigDecimal
     public static BigDecimal Parse(string strBigDecimal, IFormatProvider? provider)
     {
         // Get a NumberFormatInfo object so we know what characters to look for.
-        NumberFormatInfo nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
+        var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
 
         // Remove whitespace and group separator characters from the string. This includes:
         //   - commas or periods (depending on locale)
@@ -152,12 +147,12 @@ public partial struct BigDecimal
         strBigDecimal = Regex.Replace(strBigDecimal, $@"[\s{nfi.NumberGroupSeparator}_\u2009]", "");
 
         // Check the string format and extract salient info.
-        string strRxSign = $"[{nfi.NegativeSign}{nfi.PositiveSign}]?";
-        string strRxInt = $@"(?<int>{strRxSign}\d+)";
-        string strRxFrac = $@"(\{nfi.NumberDecimalSeparator}(?<frac>\d+))?";
-        string strRxExp = $@"(e(?<exp>{strRxSign}\d+))?";
-        string strRx = $"^{strRxInt}{strRxFrac}{strRxExp}$";
-        Match match = Regex.Match(strBigDecimal, strRx, RegexOptions.IgnoreCase);
+        var strRxSign = $"[{nfi.NegativeSign}{nfi.PositiveSign}]?";
+        var strRxInt = $@"(?<int>{strRxSign}\d+)";
+        var strRxFrac = $@"(\{nfi.NumberDecimalSeparator}(?<frac>\d+))?";
+        var strRxExp = $@"(e(?<exp>{strRxSign}\d+))?";
+        var strRx = $"^{strRxInt}{strRxFrac}{strRxExp}$";
+        var match = Regex.Match(strBigDecimal, strRx, RegexOptions.IgnoreCase);
 
         if (!match.Success)
         {
@@ -165,13 +160,13 @@ public partial struct BigDecimal
         }
 
         // Get the digits.
-        string strInt = match.Groups["int"].Value;
-        string strFrac = match.Groups["frac"].Value;
-        string strExp = match.Groups["exp"].Value;
+        var strInt = match.Groups["int"].Value;
+        var strFrac = match.Groups["frac"].Value;
+        var strExp = match.Groups["exp"].Value;
 
         // Construct the result.
-        BigInteger sig = BigInteger.Parse(strInt + strFrac, provider);
-        int exp = strExp == "" ? 0 : int.Parse(strExp, provider);
+        var sig = BigInteger.Parse(strInt + strFrac, provider);
+        var exp = strExp == "" ? 0 : int.Parse(strExp, provider);
         exp -= strFrac.Length;
         return new BigDecimal(sig, exp);
     }
@@ -237,7 +232,8 @@ public partial struct BigDecimal
 
     /// <inheritdoc />
     /// <remarks>Ignoring style parameter for now.</remarks>
-    public static bool TryParse(ReadOnlySpan<char> span, NumberStyles style, IFormatProvider? provider,
+    public static bool TryParse(ReadOnlySpan<char> span, NumberStyles style,
+        IFormatProvider? provider,
         out BigDecimal result) =>
         TryParse(new string(span), provider, out result);
 
@@ -248,7 +244,7 @@ public partial struct BigDecimal
     /// </summary>
     private (string strInt, string strFrac) PreformatFixed()
     {
-        string strAbsSig = BigInteger.Abs(Significand).ToString();
+        var strAbsSig = BigInteger.Abs(Significand).ToString();
 
         if (Exponent == 0)
         {
@@ -293,12 +289,12 @@ public partial struct BigDecimal
     private string FormatFixed(string format, int? precision, IFormatProvider? provider = null)
     {
         // Get a NumberFormatInfo we can use for special characters.
-        NumberFormatInfo nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
+        var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
 
         // Get the parts of the string.
-        BigDecimal bd = precision.HasValue ? Round(this, precision.Value) : this;
-        string strSign = bd.Significand < 0 ? nfi.NegativeSign : "";
-        (string strInt, string strFrac) = bd.PreformatFixed();
+        var bd = precision.HasValue ? Round(this, precision.Value) : this;
+        var strSign = bd.Significand < 0 ? nfi.NegativeSign : "";
+        (var strInt, var strFrac) = bd.PreformatFixed();
 
         // Add group separators to the integer part if necessary.
         if (format == "N")
@@ -318,7 +314,7 @@ public partial struct BigDecimal
         }
 
         // If zero, omit sign. We don't want to render -0.0000...
-        string strAbs = strInt + strFrac;
+        var strAbs = strInt + strFrac;
         // if (decimal.Parse(strAbs) == 0m)
         // {
         //     return strAbs;
@@ -336,14 +332,14 @@ public partial struct BigDecimal
     private string FormatFixedSigFigs(int? nSigFigs, IFormatProvider? provider = null)
     {
         // If we don't have to remove any digits, use default fixed-point format.
-        int nDigitsToCut = (nSigFigs is null or 0) ? 0 : (NumSigFigs - nSigFigs.Value);
+        var nDigitsToCut = nSigFigs is null or 0 ? 0 : NumSigFigs - nSigFigs.Value;
         if (nDigitsToCut <= 0)
         {
             return FormatFixed("F", null, provider);
         }
 
         // Round the value.
-        BigDecimal rounded = Round(new BigDecimal(Significand, -nDigitsToCut));
+        var rounded = Round(new BigDecimal(Significand, -nDigitsToCut));
         rounded.Exponent += Exponent + nDigitsToCut;
 
         // Format as fixed-point without trailing zeros.
@@ -357,13 +353,13 @@ public partial struct BigDecimal
         IFormatProvider? provider = null)
     {
         // Format the significand.
-        int nDecimalPlacesToShift = NumSigFigs - 1;
+        var nDecimalPlacesToShift = NumSigFigs - 1;
         BigDecimal sig = new (Significand, -nDecimalPlacesToShift);
-        string strSig = sig.FormatFixed("F", precision, provider);
+        var strSig = sig.FormatFixed("F", precision, provider);
 
         // Format the exponent.
-        int exp = Exponent + nDecimalPlacesToShift;
-        string strExp = FormatExponent(format, exp, unicode, expWidth, provider);
+        var exp = Exponent + nDecimalPlacesToShift;
+        var strExp = FormatExponent(format, exp, unicode, expWidth, provider);
 
         return strSig + strExp;
     }
@@ -387,7 +383,7 @@ public partial struct BigDecimal
         IFormatProvider? provider = null)
     {
         // Get a NumberFormatInfo we can use for special characters.
-        NumberFormatInfo nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
+        var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
 
         // Use Unicode format if requested.
         if (unicode)
