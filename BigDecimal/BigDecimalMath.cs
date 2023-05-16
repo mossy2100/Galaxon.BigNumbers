@@ -387,22 +387,9 @@ public partial struct BigDecimal : ICloneable
     #region Arithmetic methods
 
     /// <summary>
-    /// Compute the arithmetic mean (average) of the given values.
-    /// If you have a collection, you can use the extension method directly instead.
-    /// </summary>
-    public static BigDecimal Average(params BigDecimal[] nums) =>
-        nums.Average();
-
-    /// <summary>
-    /// Compute the geometric mean of the given values.
-    /// If you have a collection, you can use the extension method directly instead.
-    /// </summary>
-    public static BigDecimal GeometricMean(params BigDecimal[] nums) =>
-        nums.GeometricMean();
-
-    /// <summary>
     /// Compute the arithmetic-geometric mean of two values.
     /// </summary>
+    /// <see href="https://en.wikipedia.org/wiki/Arithmetic%E2%80%93geometric_mean" />
     public static BigDecimal ArithmeticGeometricMean(BigDecimal x, BigDecimal y)
     {
         // Guards.

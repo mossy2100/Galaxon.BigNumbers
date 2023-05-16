@@ -174,6 +174,5 @@ public class TestMath
         expected = 38.7918476m;
         actual = BigDecimal.RoundSigFigs(BigDecimal.ArithmeticGeometricMean(a, b), 9);
         Assert.AreEqual(expected, actual);
-        Assert.AreEqual(expected, actual);
     }
 }

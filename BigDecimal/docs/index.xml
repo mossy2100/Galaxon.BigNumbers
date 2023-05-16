@@ -884,22 +884,11 @@
         <member name="M:Galaxon.Numerics.BigDecimal.op_Modulus(Galaxon.Numerics.BigDecimal,Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
         </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.Average(Galaxon.Numerics.BigDecimal[])">
-            <summary>
-            Compute the arithmetic mean (average) of the given values.
-            If you have a collection, you can use the extension method directly instead.
-            </summary>
-        </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.GeometricMean(Galaxon.Numerics.BigDecimal[])">
-            <summary>
-            Compute the geometric mean of the given values.
-            If you have a collection, you can use the extension method directly instead.
-            </summary>
-        </member>
         <member name="M:Galaxon.Numerics.BigDecimal.ArithmeticGeometricMean(Galaxon.Numerics.BigDecimal,Galaxon.Numerics.BigDecimal)">
             <summary>
             Compute the arithmetic-geometric mean of two values.
             </summary>
+            <see href="https://en.wikipedia.org/wiki/Arithmetic%E2%80%93geometric_mean" />
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.ToString(System.String,System.IFormatProvider)">
             <summary>
@@ -1065,6 +1054,9 @@
         <member name="M:Galaxon.Numerics.BigDecimal.Atan(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
         </member>
+        <member name="M:Galaxon.Numerics.BigDecimal.AtanPi(Galaxon.Numerics.BigDecimal)">
+            <inheritdoc />
+        </member>
         <member name="M:Galaxon.Numerics.BigDecimal.Atan2(Galaxon.Numerics.BigDecimal,Galaxon.Numerics.BigDecimal)">
             <summary>
             This two-argument variation of the Atan() method comes originally from FORTRAN.
@@ -1079,9 +1071,17 @@
             <param name="x">The x coordinate.</param>
             <returns>The polar angle.</returns>
             <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException">if x and y both equal 0.</exception>
+            <see cref="M:System.Double.AtanPi(System.Double)" />
         </member>
-        <member name="M:Galaxon.Numerics.BigDecimal.AtanPi(Galaxon.Numerics.BigDecimal)">
-            <inheritdoc />
+        <member name="M:Galaxon.Numerics.BigDecimal.Atan2Pi(Galaxon.Numerics.BigDecimal,Galaxon.Numerics.BigDecimal)">
+            <summary>
+            Computes the arc-tangent for the quotient of two values and divides the result by pi.
+            </summary>
+            <param name="y">The y coordinate.</param>
+            <param name="x">The x coordinate.</param>
+            <returns>The polar angle.</returns>
+            <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException">if x and y both equal 0.</exception>
+            <see cref="M:System.Double.Atan2Pi(System.Double,System.Double)" />
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.Sinh(Galaxon.Numerics.BigDecimal)">
             <inheritdoc />
@@ -1114,7 +1114,7 @@
             Convert polar coordinates to cartesian coordinates.
             </summary>
             <param name="r">The radius.</param>
-            <param name="theta">The angle.</param>
+            <param name="a">The angle.</param>
             <returns>A tuple containing the x and y coordinates.</returns>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.NormalizeAngle(Galaxon.Numerics.BigDecimal@)">
@@ -1133,9 +1133,11 @@
             </summary>
         </member>
         <member name="M:Galaxon.Numerics.XEnumerableBigDecimal.Average(System.Collections.Generic.IEnumerable{Galaxon.Numerics.BigDecimal})">
-            <summary>
-            Given a collection of BigDecimal values, get the average.
-            </summary>
+             <summary>
+             Given a collection of BigDecimal values, get the average (i.e. the arithmetic mean).
+             </summary>
+             <see href="https://en.wikipedia.org/wiki/Arithmetic_mean" />
+            
         </member>
         <member name="M:Galaxon.Numerics.XEnumerableBigDecimal.Product(System.Collections.Generic.IEnumerable{Galaxon.Numerics.BigDecimal})">
             <summary>
@@ -1146,6 +1148,7 @@
             <summary>
             Given a collection of BigDecimal values, get the geometric mean.
             </summary>
+            <see href="https://en.wikipedia.org/wiki/Geometric_mean" />
         </member>
         <member name="T:System.Text.RegularExpressions.Generated.FormatRegex_0">
             <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the FormatRegex method.</summary>

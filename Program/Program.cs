@@ -1,8 +1,6 @@
 ﻿using Galaxon.Core.Numbers;
 using Galaxon.Numerics;
 
-Console.WriteLine("Hello, World.");
-
 BigDecimal.MaxSigFigs = 1000;
 long maxlen = 0;
 for (var i = 0; i < 1000; i++)

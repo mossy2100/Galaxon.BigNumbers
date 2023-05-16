@@ -50,7 +50,6 @@ public partial struct BigDecimal
         BigDecimal dY0 = 2 * (x - 1) / (x + 1);
         BigDecimal result = 0;
 
-        int nLoops = 0;
         while (true)
         {
             // Get the next value.
@@ -90,15 +89,7 @@ public partial struct BigDecimal
             y0 = y1;
             expY0 = expY1;
             dY0 = 2 * (x - expY1) / (x + expY1);
-
-            nLoops++;
-            if (nLoops == 10000)
-            {
-                // Console.WriteLine("Too many loops");
-                break;
-            }
         }
-        // Console.WriteLine($"nLoops = {nLoops}");
 
         // Special handling for Log(10) to avoid infinite recursion.
         result = a == 10 ? -result : result + scale * Ln10;

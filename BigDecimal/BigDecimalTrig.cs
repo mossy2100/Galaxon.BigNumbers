@@ -8,8 +8,8 @@ namespace Galaxon.Numerics;
 /// </summary>
 /// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions" />
 /// <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions" />
-public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
-    IHyperbolicFunctions<BigDecimal>
+public partial struct BigDecimal :
+    ITrigonometricFunctions<BigDecimal>, IHyperbolicFunctions<BigDecimal>
 {
     #region Trigonometric methods
 
@@ -325,6 +325,10 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         return RoundSigFigs(sum);
     }
 
+    /// <inheritdoc />
+    public static BigDecimal AtanPi(BigDecimal a) =>
+        Atan(a) / Pi;
+
     /// <summary>
     /// This two-argument variation of the Atan() method comes originally from FORTRAN.
     /// If x is non-negative, it will find the same result as Atan(y / x).
@@ -338,6 +342,7 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     /// <param name="x">The x coordinate.</param>
     /// <returns>The polar angle.</returns>
     /// <exception cref="ArgumentInvalidException">if x and y both equal 0.</exception>
+    /// <see cref="double.AtanPi" />
     public static BigDecimal Atan2(BigDecimal y, BigDecimal x)
     {
         BigDecimal result;
@@ -346,7 +351,8 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
         {
             if (y == 0)
             {
-                throw new ArgumentInvalidException(nameof(y), "Atan is undefined for 0/0.");
+                throw new ArgumentInvalidException(nameof(y),
+                    "The atan() function is undefined for 0/0.");
             }
 
             result = Pi / 2;
@@ -359,12 +365,20 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
             return result;
         }
 
+        // x < 0
         return result + (y < 0 ? -Pi : Pi);
     }
 
-    /// <inheritdoc />
-    public static BigDecimal AtanPi(BigDecimal a) =>
-        Atan(a) / Pi;
+    /// <summary>
+    /// Computes the arc-tangent for the quotient of two values and divides the result by pi.
+    /// </summary>
+    /// <param name="y">The y coordinate.</param>
+    /// <param name="x">The x coordinate.</param>
+    /// <returns>The polar angle.</returns>
+    /// <exception cref="ArgumentInvalidException">if x and y both equal 0.</exception>
+    /// <see cref="double.Atan2Pi" />
+    public static BigDecimal Atan2Pi(BigDecimal y, BigDecimal x) =>
+        Atan2(y, x) / Pi;
 
     #endregion Inverse trigonometric methods
 
@@ -492,16 +506,16 @@ public partial struct BigDecimal : ITrigonometricFunctions<BigDecimal>,
     /// <param name="y">The y coordinate.</param>
     /// <returns>A tuple containing the radius (r) and angle (a).</returns>
     public (BigDecimal r, BigDecimal a) CartesianToPolar(BigDecimal x, BigDecimal y) =>
-        (Hypot(x, y), Atan2(y, x));
+        x == 0 && y == 0 ? (0, 0) : (Hypot(x, y), Atan2(y, x));
 
     /// <summary>
     /// Convert polar coordinates to cartesian coordinates.
     /// </summary>
     /// <param name="r">The radius.</param>
-    /// <param name="theta">The angle.</param>
+    /// <param name="a">The angle.</param>
     /// <returns>A tuple containing the x and y coordinates.</returns>
     public (BigDecimal x, BigDecimal y) PolarToCartesian(BigDecimal r, BigDecimal a) =>
-        (r * Cos(a), r * Sin(a));
+        r == 0 ? (0, 0) : (r * Cos(a), r * Sin(a));
 
     #endregion Methods for converting coordinates
 

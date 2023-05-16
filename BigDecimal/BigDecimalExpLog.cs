@@ -177,7 +177,6 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         var delta = Exp10(y0.Exponent - 1);
 
         // Newton's method.
-        var nLoops = 0;
         while (true)
         {
             // Get the next value of y.
@@ -216,13 +215,6 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
 
             // Next iteration.
             y0 = y1;
-
-            // Prevent infinite loops. Remove later, after testing.
-            nLoops++;
-            if (nLoops == 100)
-            {
-                throw new Exception($"Problem with RootN({x}, {n}).");
-            }
         }
 
         // Restore the maximum number of significant figures.
@@ -362,8 +354,6 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         // Taylor/Newton-Mercator series.
         // https://en.wikipedia.org/wiki/Mercator_series
         y--;
-        // Console.WriteLine($"a = {a}");
-        // Console.WriteLine($"x = {x}");
         var n = 1;
         var sign = 1;
         var yn = y;
@@ -375,7 +365,6 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
 
         // Add terms until the process ceases to affect the result.
         // The more significant figures wanted, the longer the process will take.
-        // int nLoops = 0;
         while (true)
         {
             // Add the next term in the series
@@ -392,15 +381,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
             n++;
             sign = -sign;
             yn *= y;
-
-            // nLoops++;
-            // if (nLoops == 5000)
-            // {
-            //     Console.WriteLine("Too many loops");
-            //     break;
-            // }
         }
-        // Console.WriteLine($"nLoops = {nLoops}");
 
         // Special handling for Log(10) to avoid infinite recursion.
         var result = x == 10 ? -sum : sum + scale * Ln10;
