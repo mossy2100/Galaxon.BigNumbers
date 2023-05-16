@@ -13,8 +13,7 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// <param name="significand">The significand or mantissa.</param>
     /// <param name="exponent">The exponent.</param>
     /// <param name="roundSigFigs">
-    /// If the value should be rounded off to the current value of
-    /// MaxSigFigs.
+    /// If the value should be rounded off to the current value of MaxSigFigs.
     /// </param>
     public BigDecimal(BigInteger significand, int exponent = 0, bool roundSigFigs = false)
     {
@@ -61,8 +60,7 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// 1 for positive
     /// </summary>
     /// <see cref="BigInteger.Sign" />
-    /// <see
-    ///     href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
+    /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
     public sbyte Sign => (sbyte)Significand.Sign;
 
     /// <summary>
@@ -93,8 +91,7 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
         {
             if (value < 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(MaxSigFigs),
-                    "Must be at least 1.");
+                throw new ArgumentOutOfRangeException(nameof(MaxSigFigs), "Must be at least 1.");
             }
             s_maxSigFigs = value;
         }
@@ -153,16 +150,14 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// <summary>
     /// Check if the value is a complex number.
     /// </summary>
-    public static bool IsComplexNumber(BigDecimal value) =>
-        false;
+    public static bool IsComplexNumber(BigDecimal value) => false;
 
     /// <summary>
     /// The value will be an integer if in canonical form and the exponent is >= 0.
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static bool IsInteger(BigDecimal value) =>
-        value.MakeCanonical().Exponent >= 0;
+    public static bool IsInteger(BigDecimal value) => value.MakeCanonical().Exponent >= 0;
 
     /// <inheritdoc />
     public static bool IsOddInteger(BigDecimal value) =>
@@ -173,72 +168,56 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
         IsInteger(value) && (value.Exponent > 0 || BigInteger.IsEvenInteger(value.Significand));
 
     /// <inheritdoc />
-    public static bool IsZero(BigDecimal value) =>
-        value.Significand == 0;
+    public static bool IsZero(BigDecimal value) => value.Significand == 0;
 
     /// <inheritdoc />
-    public static bool IsNegative(BigDecimal value) =>
-        value.Significand < 0;
+    public static bool IsNegative(BigDecimal value) => value.Significand < 0;
 
     /// <inheritdoc />
-    public static bool IsPositive(BigDecimal value) =>
-        value.Significand > 0;
+    public static bool IsPositive(BigDecimal value) => value.Significand > 0;
 
     /// <inheritdoc />
-    public static bool IsFinite(BigDecimal value) =>
-        true;
+    public static bool IsFinite(BigDecimal value) => true;
 
     /// <inheritdoc />
-    public static bool IsInfinity(BigDecimal value) =>
-        false;
+    public static bool IsInfinity(BigDecimal value) => false;
 
     /// <inheritdoc />
-    public static bool IsNegativeInfinity(BigDecimal value) =>
-        false;
+    public static bool IsNegativeInfinity(BigDecimal value) => false;
 
     /// <inheritdoc />
-    public static bool IsPositiveInfinity(BigDecimal value) =>
-        false;
+    public static bool IsPositiveInfinity(BigDecimal value) => false;
 
     /// <inheritdoc />
-    public static bool IsRealNumber(BigDecimal value) =>
-        true;
+    public static bool IsRealNumber(BigDecimal value) => true;
 
     /// <inheritdoc />
-    public static bool IsImaginaryNumber(BigDecimal value) =>
-        false;
+    public static bool IsImaginaryNumber(BigDecimal value) => false;
 
     /// <inheritdoc />
-    public static bool IsNormal(BigDecimal value) =>
-        true;
+    public static bool IsNormal(BigDecimal value) => value != 0;
 
     /// <inheritdoc />
-    public static bool IsSubnormal(BigDecimal value) =>
-        false;
+    public static bool IsSubnormal(BigDecimal value) => false;
 
     /// <inheritdoc />
-    public static bool IsNaN(BigDecimal value) =>
-        false;
+    public static bool IsNaN(BigDecimal value) => false;
 
     #endregion Inspection methods
 
     #region Methods related to data transfer
 
     /// <inheritdoc />
-    public int GetSignificandByteCount() =>
-        Significand.GetByteCount();
+    public int GetSignificandByteCount() => Significand.GetByteCount();
 
     /// <inheritdoc />
-    public int GetSignificandBitLength() =>
-        GetSignificandByteCount() * 8;
+    public int GetSignificandBitLength() => GetSignificandByteCount() * 8;
 
     /// <inheritdoc />
-    public int GetExponentByteCount() =>
-        4;
+    public int GetExponentByteCount() => 4;
 
     /// <inheritdoc />
-    public int GetExponentShortestBitLength() =>
-        32;
+    public int GetExponentShortestBitLength() => 32;
 
     /// <inheritdoc />
     public bool TryWriteSignificandBigEndian(Span<byte> destination, out int bytesWritten) =>

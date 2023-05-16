@@ -156,31 +156,34 @@ public class TestTrig
         const int n = 12;
         for (var i = -n; i <= n; i++)
         {
-            var x = i * double.Tau / n;
             for (var j = -n; j <= n; j++)
             {
-                var y = j * double.Tau / n;
-
-                if (x == 0 && y == 0)
+                if (i == 0 && j == 0)
                 {
                     continue;
                 }
 
-                var atanD = double.Atan2(y, x);
-                var strAtanD = atanD.ToString("F13");
-                if (strAtanD == "-0.0000000000000")
+                // Do the calc with doubles.
+                var x = i * double.Tau / n;
+                var y = j * double.Tau / n;
+                var atan2D = double.Atan2(y, x);
+                var strAtan2D = atan2D.ToString("F13");
+                // Matching 13 decimal places with the double calculations is the best I can get.
+                // Could be due to limitations of doubles in storing exact values.
+                if (strAtan2D == "-0.0000000000000")
                 {
-                    strAtanD = "0.0000000000000";
+                    strAtan2D = "0.0000000000000";
                 }
 
+                // Do the calc with BigDecimals.
                 var bdX = i * BigDecimal.Tau / n;
                 var bdY = j * BigDecimal.Tau / n;
-                var atanBd = BigDecimal.Atan2(bdY, bdX);
-                var strAtanBd = atanBd.ToString("F13");
+                var atan2Bd = BigDecimal.Atan2(bdY, bdX);
+                var strAtan2Bd = atan2Bd.ToString("F13");
 
-                Trace.WriteLine($"{strAtanD} == {strAtanBd}");
-
-                Assert.AreEqual(strAtanD, strAtanBd);
+                // Compare.
+                Assert.AreEqual(strAtan2D, strAtan2Bd);
+                Trace.WriteLine($"{strAtan2D} == {strAtan2Bd}");
             }
         }
     }

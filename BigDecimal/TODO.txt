@@ -2,6 +2,4 @@ Test and improve (where necessary) all conversion methods.
 
 Write tests for IsEvenInteger() and IsOddInteger().
 Write tests for CartesianToPolar() and PolarToCartesian().
-
-Figure out why Atan2() doesn't return exactly the same result as double.Atan2() for more than 13 sig
-figs with some input values.
+Write tests for XEnumerableBigDecimal.

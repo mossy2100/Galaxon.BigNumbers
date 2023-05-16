@@ -1133,11 +1133,10 @@
             </summary>
         </member>
         <member name="M:Galaxon.Numerics.XEnumerableBigDecimal.Average(System.Collections.Generic.IEnumerable{Galaxon.Numerics.BigDecimal})">
-             <summary>
-             Given a collection of BigDecimal values, get the average (i.e. the arithmetic mean).
-             </summary>
-             <see href="https://en.wikipedia.org/wiki/Arithmetic_mean" />
-            
+            <summary>
+            Given a collection of BigDecimal values, get the average (i.e. the arithmetic mean).
+            </summary>
+            <see href="https://en.wikipedia.org/wiki/Arithmetic_mean" />
         </member>
         <member name="M:Galaxon.Numerics.XEnumerableBigDecimal.Product(System.Collections.Generic.IEnumerable{Galaxon.Numerics.BigDecimal})">
             <summary>
