@@ -101,16 +101,14 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     /// </summary>
     /// <param name="x">A real value.</param>
     /// <returns>The square of the argument.</returns>
-    public static BigDecimal Sqr(BigDecimal x) =>
-        x * x;
+    public static BigDecimal Sqr(BigDecimal x) => x * x;
 
     /// <summary>
     /// Calculate the cube of a number.
     /// </summary>
     /// <param name="x">A real value.</param>
     /// <returns>The cube of the argument.</returns>
-    public static BigDecimal Cube(BigDecimal x) =>
-        x * x * x;
+    public static BigDecimal Cube(BigDecimal x) => x * x * x;
 
     #endregion Power functions
 
@@ -229,16 +227,14 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     /// <param name="x">The number.</param>
     /// <returns>The square root of the number.</returns>
     /// <exception cref="ArithmeticException">If the argument is negative.</exception>
-    public static BigDecimal Sqrt(BigDecimal x) =>
-        RootN(x, 2);
+    public static BigDecimal Sqrt(BigDecimal x) => RootN(x, 2);
 
     /// <summary>
     /// Calculate the cube root of a real number.
     /// </summary>
     /// <param name="x">The number.</param>
     /// <returns>The cube root of the number.</returns>
-    public static BigDecimal Cbrt(BigDecimal x) =>
-        RootN(x, 3);
+    public static BigDecimal Cbrt(BigDecimal x) => RootN(x, 3);
 
     /// <summary>
     /// Calculate the length of the hypotenuse of a right triangle.
@@ -246,8 +242,7 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     /// <param name="x">The length of one of the short sides of the triangle.</param>
     /// <param name="y">The length of the other short side of the triangle.</param>
     /// <returns>The length of the hypotenuse.</returns>
-    public static BigDecimal Hypot(BigDecimal x, BigDecimal y) =>
-        Sqrt(Sqr(x) + Sqr(y));
+    public static BigDecimal Hypot(BigDecimal x, BigDecimal y) => Sqrt(Sqr(x) + Sqr(y));
 
     #endregion Root functions
 
@@ -306,12 +301,10 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     }
 
     /// <inheritdoc />
-    public static BigDecimal Exp2(BigDecimal x) =>
-        Pow(2, x);
+    public static BigDecimal Exp2(BigDecimal x) => Pow(2, x);
 
     /// <inheritdoc />
-    public static BigDecimal Exp10(BigDecimal x) =>
-        Pow(10, x);
+    public static BigDecimal Exp10(BigDecimal x) => Pow(10, x);
 
     #endregion Exponential functions
 
@@ -413,12 +406,10 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
     }
 
     /// <inheritdoc />
-    public static BigDecimal Log2(BigDecimal x) =>
-        Log(x, 2);
+    public static BigDecimal Log2(BigDecimal x) => Log(x, 2);
 
     /// <inheritdoc />
-    public static BigDecimal Log10(BigDecimal x) =>
-        Log(x, 10);
+    public static BigDecimal Log10(BigDecimal x) => Log(x, 10);
 
     #endregion Logarithmic functions
 }

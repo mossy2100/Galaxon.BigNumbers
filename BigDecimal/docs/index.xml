@@ -471,8 +471,7 @@
             <param name="significand">The significand or mantissa.</param>
             <param name="exponent">The exponent.</param>
             <param name="roundSigFigs">
-            If the value should be rounded off to the current value of
-            MaxSigFigs.
+            If the value should be rounded off to the current value of MaxSigFigs.
             </param>
         </member>
         <member name="M:Galaxon.Numerics.BigDecimal.#ctor">
@@ -499,8 +498,7 @@
             1 for positive
             </summary>
             <see cref="P:System.Numerics.BigInteger.Sign" />
-            <see
-                href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
         </member>
         <member name="P:Galaxon.Numerics.BigDecimal.NumSigFigs">
             <summary>

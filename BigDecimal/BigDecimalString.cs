@@ -113,8 +113,7 @@ public partial struct BigDecimal
     /// Override of ValueType.ToString(). Needed for debugging and string interpolation.
     /// </remarks>
     /// <see cref="ValueType.ToString" />
-    public override string ToString() =>
-        ToString("G");
+    public override string ToString() => ToString("G");
 
     /// <inheritdoc />
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
@@ -174,8 +173,7 @@ public partial struct BigDecimal
     /// <summary>
     /// More convenient version of Parse().
     /// </summary>
-    public static BigDecimal Parse(string str) =>
-        Parse(str, NumberFormatInfo.InvariantInfo);
+    public static BigDecimal Parse(string str) => Parse(str, NumberFormatInfo.InvariantInfo);
 
     /// <inheritdoc />
     /// <remarks>Ignoring style parameter for now.</remarks>
@@ -294,7 +292,7 @@ public partial struct BigDecimal
         // Get the parts of the string.
         var bd = precision.HasValue ? Round(this, precision.Value) : this;
         var strSign = bd.Significand < 0 ? nfi.NegativeSign : "";
-        (var strInt, var strFrac) = bd.PreformatFixed();
+        var (strInt, strFrac) = bd.PreformatFixed();
 
         // Add group separators to the integer part if necessary.
         if (format == "N")

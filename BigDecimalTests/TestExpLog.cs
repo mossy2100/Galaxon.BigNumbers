@@ -7,12 +7,10 @@ namespace Galaxon.Numerics.BigDecimalTests;
 public class TestExpLog
 {
     [TestMethod]
-    public void TestSqrt0() =>
-        Assert.AreEqual(BigDecimal.Zero, BigDecimal.Sqrt(0));
+    public void TestSqrt0() => Assert.AreEqual(BigDecimal.Zero, BigDecimal.Sqrt(0));
 
     [TestMethod]
-    public void TestSqrt1() =>
-        Assert.AreEqual(BigDecimal.One, BigDecimal.Sqrt(1));
+    public void TestSqrt1() => Assert.AreEqual(BigDecimal.One, BigDecimal.Sqrt(1));
 
     [TestMethod]
     public void TestSqrtPiSquared()
@@ -101,12 +99,10 @@ public class TestExpLog
         Assert.ThrowsException<ArithmeticException>(() => BigDecimal.Sqrt(-1));
 
     [TestMethod]
-    public void TestCbrt0() =>
-        Assert.AreEqual(BigDecimal.Zero, BigDecimal.Cbrt(0));
+    public void TestCbrt0() => Assert.AreEqual(BigDecimal.Zero, BigDecimal.Cbrt(0));
 
     [TestMethod]
-    public void TestCbrt1() =>
-        Assert.AreEqual(BigDecimal.One, BigDecimal.Cbrt(1));
+    public void TestCbrt1() => Assert.AreEqual(BigDecimal.One, BigDecimal.Cbrt(1));
 
     // No asserts, just want to make sure the method calls complete fast enough and without error or
     // infinite looping.
@@ -316,23 +312,6 @@ public class TestExpLog
             var tLog = t2 - t1;
             Console.WriteLine($"Log({i}) == {log}");
             Console.WriteLine($"Log() took {tLog} ticks.");
-
-            // long t3 = DateTime.Now.Ticks;
-            // BigDecimal logH = BigDecimal.LogHalleys(i);
-            // long t4 = DateTime.Now.Ticks;
-            // long tLogH = t4 - t3;
-            // Console.WriteLine($"LogHalleys({i}) == {logH}");
-            // Console.WriteLine($"LogHalleys() took {tLogH} ticks.");
-
-            // long t5 = DateTime.Now.Ticks;
-            // BigDecimal logAgm = BigDecimal.LogAgm(i);
-            // long t6 = DateTime.Now.Ticks;
-            // long tLogAgm = t6 - t5;
-            // Console.WriteLine($"LogAgm({i}) == {logAgm}");
-            // Console.WriteLine($"LogAgm() took {tLogAgm} ticks.");
-
-            // double percent = 100.0 * tLogAgm / tLog;
-            // Console.WriteLine($"The AGM method took {percent:F0}% as long as the Taylor series method.");
         }
     }
 }

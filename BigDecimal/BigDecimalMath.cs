@@ -8,8 +8,7 @@ public partial struct BigDecimal : ICloneable
     #region Adjustment methods
 
     /// <inheritdoc />
-    public object Clone() =>
-        (BigDecimal)MemberwiseClone();
+    public object Clone() => (BigDecimal)MemberwiseClone();
 
     /// <inheritdoc />
     public static BigDecimal Abs(BigDecimal bd) =>
@@ -46,8 +45,7 @@ public partial struct BigDecimal : ICloneable
     /// default implementation is what we want. However, static virtual methods are not yet
     /// supported by Rider so we need this here for now.
     /// </remarks>
-    public static BigDecimal Round(BigDecimal x, MidpointRounding mode) =>
-        Round(x, 0, mode);
+    public static BigDecimal Round(BigDecimal x, MidpointRounding mode) => Round(x, 0, mode);
 
     /// <summary>
     /// Round off a value to a certain number of significant figures.
@@ -56,7 +54,7 @@ public partial struct BigDecimal : ICloneable
         MidpointRounding mode = MidpointRounding.ToEven)
     {
         maxSigFigs ??= MaxSigFigs;
-        (var newSig, var newExp) = RoundSigFigs(x.Significand, x.Exponent, maxSigFigs.Value,
+        var (newSig, newExp) = RoundSigFigs(x.Significand, x.Exponent, maxSigFigs.Value,
             mode);
         return new BigDecimal(newSig, newExp);
     }
@@ -67,8 +65,7 @@ public partial struct BigDecimal : ICloneable
     /// default implementation is what we want. However, static virtual methods are not yet
     /// supported by Rider so we need this here for now.
     /// </remarks>
-    public static BigDecimal Truncate(BigDecimal x) =>
-        Round(x, 0, MidpointRounding.ToZero);
+    public static BigDecimal Truncate(BigDecimal x) => Round(x, 0, MidpointRounding.ToZero);
 
     /// <summary>
     /// Return the fractional part of the value.
@@ -83,8 +80,7 @@ public partial struct BigDecimal : ICloneable
     /// x == Truncate(x) + Frac(x)
     /// </summary>
     /// <see href="https://en.wikipedia.org/wiki/Fractional_part" />
-    public static BigDecimal Frac(BigDecimal x) =>
-        x - Truncate(x);
+    public static BigDecimal Frac(BigDecimal x) => x - Truncate(x);
 
     /// <inheritdoc />
     /// <remarks>
@@ -206,8 +202,7 @@ public partial struct BigDecimal : ICloneable
     /// NB: The value will probably not be canonical after calling this method, so it should only
     /// be used on temporary variables.
     /// </summary>
-    private void ShiftToExp(int exp) =>
-        ShiftBy(Exponent - exp);
+    private void ShiftToExp(int exp) => ShiftBy(Exponent - exp);
 
     /// <summary>
     /// Adjust the parts of one of the values so both have the same exponent.
@@ -278,34 +273,30 @@ public partial struct BigDecimal : ICloneable
     #region Arithmetic operators
 
     /// <inheritdoc />
-    public static BigDecimal operator +(BigDecimal bd) =>
-        (BigDecimal)bd.Clone();
+    public static BigDecimal operator +(BigDecimal bd) => (BigDecimal)bd.Clone();
 
     /// <inheritdoc />
     public static BigDecimal operator +(BigDecimal a, BigDecimal b)
     {
-        (var x, var y) = Align(a, b);
+        var (x, y) = Align(a, b);
         return new BigDecimal(x.Significand + y.Significand, x.Exponent, true);
     }
 
     /// <inheritdoc />
-    public static BigDecimal operator ++(BigDecimal bd) =>
-        bd + 1;
+    public static BigDecimal operator ++(BigDecimal bd) => bd + 1;
 
     /// <inheritdoc />
-    public static BigDecimal operator -(BigDecimal bd) =>
-        new (-bd.Significand, bd.Exponent, true);
+    public static BigDecimal operator -(BigDecimal bd) => new (-bd.Significand, bd.Exponent, true);
 
     /// <inheritdoc />
     public static BigDecimal operator -(BigDecimal a, BigDecimal b)
     {
-        (var x, var y) = Align(a, b);
+        var (x, y) = Align(a, b);
         return new BigDecimal(x.Significand - y.Significand, x.Exponent, true);
     }
 
     /// <inheritdoc />
-    public static BigDecimal operator --(BigDecimal bd) =>
-        bd - 1;
+    public static BigDecimal operator --(BigDecimal bd) => bd - 1;
 
     /// <inheritdoc />
     public static BigDecimal operator *(BigDecimal a, BigDecimal b) =>
@@ -379,8 +370,7 @@ public partial struct BigDecimal : ICloneable
     }
 
     /// <inheritdoc />
-    public static BigDecimal operator %(BigDecimal a, BigDecimal b) =>
-        a - Truncate(a / b) * b;
+    public static BigDecimal operator %(BigDecimal a, BigDecimal b) => a - Truncate(a / b) * b;
 
     #endregion Arithmetic operators
 

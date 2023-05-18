@@ -74,8 +74,7 @@ public partial struct BigDecimal :
     }
 
     /// <inheritdoc />
-    public static BigDecimal SinPi(BigDecimal x) =>
-        Sin(x * Pi);
+    public static BigDecimal SinPi(BigDecimal x) => Sin(x * Pi);
 
     /// <inheritdoc />
     /// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions" />
@@ -143,12 +142,10 @@ public partial struct BigDecimal :
     }
 
     /// <inheritdoc />
-    public static BigDecimal CosPi(BigDecimal x) =>
-        Cos(x * Pi);
+    public static BigDecimal CosPi(BigDecimal x) => Cos(x * Pi);
 
     /// <inheritdoc />
-    public static (BigDecimal Sin, BigDecimal Cos) SinCos(BigDecimal x) =>
-        (Sin(x), Cos(x));
+    public static (BigDecimal Sin, BigDecimal Cos) SinCos(BigDecimal x) => (Sin(x), Cos(x));
 
     /// <inheritdoc />
     public static (BigDecimal SinPi, BigDecimal CosPi) SinCosPi(BigDecimal x) =>
@@ -170,8 +167,7 @@ public partial struct BigDecimal :
     }
 
     /// <inheritdoc />
-    public static BigDecimal TanPi(BigDecimal x) =>
-        Tan(x * Pi);
+    public static BigDecimal TanPi(BigDecimal x) => Tan(x * Pi);
 
     #endregion Trigonometric methods
 
@@ -255,16 +251,13 @@ public partial struct BigDecimal :
     }
 
     /// <inheritdoc />
-    public static BigDecimal AsinPi(BigDecimal a) =>
-        Asin(a) / Pi;
+    public static BigDecimal AsinPi(BigDecimal a) => Asin(a) / Pi;
 
     /// <inheritdoc />
-    public static BigDecimal Acos(BigDecimal a) =>
-        Pi / 2 - Asin(a);
+    public static BigDecimal Acos(BigDecimal a) => Pi / 2 - Asin(a);
 
     /// <inheritdoc />
-    public static BigDecimal AcosPi(BigDecimal a) =>
-        Acos(a) / Pi;
+    public static BigDecimal AcosPi(BigDecimal a) => Acos(a) / Pi;
 
     /// <inheritdoc />
     public static BigDecimal Atan(BigDecimal a)
@@ -326,8 +319,7 @@ public partial struct BigDecimal :
     }
 
     /// <inheritdoc />
-    public static BigDecimal AtanPi(BigDecimal a) =>
-        Atan(a) / Pi;
+    public static BigDecimal AtanPi(BigDecimal a) => Atan(a) / Pi;
 
     /// <summary>
     /// This two-argument variation of the Atan() method comes originally from FORTRAN.
@@ -377,8 +369,7 @@ public partial struct BigDecimal :
     /// <returns>The polar angle.</returns>
     /// <exception cref="ArgumentInvalidException">if x and y both equal 0.</exception>
     /// <see cref="double.Atan2Pi" />
-    public static BigDecimal Atan2Pi(BigDecimal y, BigDecimal x) =>
-        Atan2(y, x) / Pi;
+    public static BigDecimal Atan2Pi(BigDecimal y, BigDecimal x) => Atan2(y, x) / Pi;
 
     #endregion Inverse trigonometric methods
 
@@ -476,24 +467,20 @@ public partial struct BigDecimal :
     }
 
     /// <inheritdoc />
-    public static BigDecimal Tanh(BigDecimal x) =>
-        Sinh(x) / Cosh(x);
+    public static BigDecimal Tanh(BigDecimal x) => Sinh(x) / Cosh(x);
 
     #endregion Hyperbolic methods
 
     #region Inverse hyperbolic methods
 
     /// <inheritdoc />
-    public static BigDecimal Asinh(BigDecimal a) =>
-        Log(a + Sqrt(a * a + 1));
+    public static BigDecimal Asinh(BigDecimal a) => Log(a + Sqrt(a * a + 1));
 
     /// <inheritdoc />
-    public static BigDecimal Acosh(BigDecimal a) =>
-        Log(a + Sqrt(a * a - 1));
+    public static BigDecimal Acosh(BigDecimal a) => Log(a + Sqrt(a * a - 1));
 
     /// <inheritdoc />
-    public static BigDecimal Atanh(BigDecimal a) =>
-        Log((1 + a) / (1 - a)) / 2;
+    public static BigDecimal Atanh(BigDecimal a) => Log((1 + a) / (1 - a)) / 2;
 
     #endregion Inverse hyperbolic methods
 
