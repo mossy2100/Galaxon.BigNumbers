@@ -53,11 +53,11 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     public int Exponent { get; set; }
 
     /// <summary>
-    /// The sign of the value. The same convention is used as for BigInteger except sbyte is used
+    /// The sign of the value. The same convention is used as for BigInteger except an sbyte is used
     /// instead of an int.
-    /// -1 for negative
-    /// 0 for zero
-    /// 1 for positive
+    ///     -1 means negative
+    ///      0 means zero
+    ///      1 means positive
     /// </summary>
     /// <see cref="BigInteger.Sign" />
     /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />

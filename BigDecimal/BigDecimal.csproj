@@ -14,8 +14,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="BigDecimalOld.cs"/>
-        <None Include="BigDecimalOld.cs"/>
+        <Compile Remove="BigDecimalOld.cs" />
+        <None Include="BigDecimalOld.cs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -25,6 +25,10 @@
         <Reference Include="Galaxon.Numerics.BigRational">
             <HintPath>..\..\BigRational\BigRational\bin\Debug\net7.0\Galaxon.Numerics.BigRational.dll</HintPath>
         </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
     </ItemGroup>
 
 </Project>

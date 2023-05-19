@@ -4,6 +4,29 @@
         <name>Galaxon.Numerics.BigDecimal</name>
     </assembly>
     <members>
+        <member name="T:Galaxon.Numerics.BigDecimalAssert">
+            <summary>
+            Test methods for BigDecimal.
+            Comparable to StringAssert or CollectionAssert.
+            </summary>
+        </member>
+        <member name="M:Galaxon.Numerics.BigDecimalAssert.AreEqual(Galaxon.Numerics.BigDecimal,Galaxon.Numerics.BigDecimal,System.Nullable{Galaxon.Numerics.BigDecimal})">
+            <summary>
+            Compare two BigDecimal values for equality.
+            </summary>
+            <param name="expected">The expected value.</param>
+            <param name="actual">The actual value.</param>
+            <param name="delta">The maximum acceptable difference.</param>
+            <exception cref="T:Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException"></exception>
+        </member>
+        <member name="M:Galaxon.Numerics.BigDecimalAssert.AreEqual(System.Double,Galaxon.Numerics.BigDecimal)">
+            <summary>
+            Compare a BigDecimal value with an expected double value.
+            </summary>
+            <param name="expected">The expected value.</param>
+            <param name="actual">The actual value.</param>
+            <exception cref="T:Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException"></exception>
+        </member>
         <member name="T:Galaxon.Numerics.BigDecimal">
             <summary>
             Operators and methods for comparing BigDecimals.
@@ -491,11 +514,11 @@
         </member>
         <member name="P:Galaxon.Numerics.BigDecimal.Sign">
             <summary>
-            The sign of the value. The same convention is used as for BigInteger except sbyte is used
+            The sign of the value. The same convention is used as for BigInteger except an sbyte is used
             instead of an int.
-            -1 for negative
-            0 for zero
-            1 for positive
+                -1 means negative
+                 0 means zero
+                 1 means positive
             </summary>
             <see cref="P:System.Numerics.BigInteger.Sign" />
             <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />

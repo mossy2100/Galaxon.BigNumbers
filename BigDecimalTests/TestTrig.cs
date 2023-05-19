@@ -41,7 +41,7 @@ public class TestTrig
         var bd = i * BigDecimal.Tau / Denominator;
         var sinBd = BigDecimal.Sin(bd);
 
-        Assert.IsTrue(DoubleEqualsBigDecimal(sinD, sinBd));
+        BigDecimalAssert.AreEqual(sinD, sinBd);
     }
 
     [TestMethod]
@@ -54,7 +54,7 @@ public class TestTrig
         var bd = i * BigDecimal.Tau / Denominator;
         var cosBd = BigDecimal.Cos(bd);
 
-        Assert.IsTrue(DoubleEqualsBigDecimal(cosD, cosBd));
+        BigDecimalAssert.AreEqual(cosD, cosBd);
     }
 
     [TestMethod]
@@ -69,7 +69,7 @@ public class TestTrig
             var bd = i * BigDecimal.Tau / Denominator;
             var tanBd = BigDecimal.Tan(bd);
 
-            Assert.IsTrue(DoubleEqualsBigDecimal(tanD, tanBd));
+            BigDecimalAssert.AreEqual(tanD, tanBd);
         }
         catch (Exception)
         {
@@ -98,7 +98,7 @@ public class TestTrig
         var bd = (BigDecimal)i / Denominator;
         var asinBd = BigDecimal.Asin(bd);
 
-        Assert.IsTrue(DoubleEqualsBigDecimal(asinD, asinBd));
+        BigDecimalAssert.AreEqual(asinD, asinBd);
     }
 
     [TestMethod]
@@ -111,7 +111,7 @@ public class TestTrig
         var bd = (BigDecimal)i / Denominator;
         var acosBd = BigDecimal.Acos(bd);
 
-        Assert.IsTrue(DoubleEqualsBigDecimal(acosD, acosBd));
+        BigDecimalAssert.AreEqual(acosD, acosBd);
     }
 
     [TestMethod]
@@ -124,7 +124,7 @@ public class TestTrig
         var bd = (BigDecimal)i;
         var atanBd = BigDecimal.Atan(bd);
 
-        Assert.IsTrue(DoubleEqualsBigDecimal(atanD, atanBd));
+        BigDecimalAssert.AreEqual(atanD, atanBd);
     }
 
     [TestMethod]
@@ -146,7 +146,8 @@ public class TestTrig
 
                 var atan2D = double.Atan2(y, x);
                 var atan2Bd = BigDecimal.Atan2(y, x);
-                Assert.IsTrue(DoubleEqualsBigDecimal(atan2D, atan2Bd));
+
+                BigDecimalAssert.AreEqual(atan2D, atan2Bd);
             }
         }
     }
@@ -161,7 +162,7 @@ public class TestTrig
         var bd = i * BigDecimal.Tau / Denominator;
         var sinhBd = BigDecimal.Sinh(bd);
 
-        Assert.IsTrue(DoubleEqualsBigDecimal(sinhD, sinhBd));
+        BigDecimalAssert.AreEqual(sinhD, sinhBd);
     }
 
     [TestMethod]
@@ -174,7 +175,7 @@ public class TestTrig
         var bd = i * BigDecimal.Tau / Denominator;
         var coshBd = BigDecimal.Cosh(bd);
 
-        Assert.IsTrue(DoubleEqualsBigDecimal(coshD, coshBd));
+        BigDecimalAssert.AreEqual(coshD, coshBd);
     }
 
     [TestMethod]
@@ -187,7 +188,7 @@ public class TestTrig
         var bd = i * BigDecimal.Tau / Denominator;
         var tanhBd = BigDecimal.Tanh(bd);
 
-        Assert.IsTrue(DoubleEqualsBigDecimal(tanhD, tanhBd));
+        BigDecimalAssert.AreEqual(tanhD, tanhBd);
     }
 
     [TestMethod]
@@ -199,37 +200,37 @@ public class TestTrig
         r = 1;
         a = 0;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
-        Assert.AreEqual(1, x);
-        Assert.AreEqual(0, y);
+        BigDecimalAssert.AreEqual(1, x);
+        BigDecimalAssert.AreEqual(0, y);
 
         r = 1;
         a = BigDecimal.Pi / 4;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
-        Assert.AreEqual(oneOnSqrt2, x);
-        Assert.AreEqual(oneOnSqrt2, y);
+        BigDecimalAssert.AreEqual(oneOnSqrt2, x);
+        BigDecimalAssert.AreEqual(oneOnSqrt2, y);
 
         r = 1;
         a = BigDecimal.Pi / 2;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
-        Assert.AreEqual(0, x);
-        Assert.AreEqual(1, y);
+        BigDecimalAssert.AreEqual(0, x);
+        BigDecimalAssert.AreEqual(1, y);
 
         r = 1;
         a = BigDecimal.Pi;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
-        Assert.AreEqual(-1, x);
-        Assert.AreEqual(0, y);
+        BigDecimalAssert.AreEqual(-1, x);
+        BigDecimalAssert.AreEqual(0, y);
 
         r = 1;
         a = 3 * BigDecimal.Pi / 2;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
-        Assert.AreEqual(0, x);
-        Assert.AreEqual(-1, y);
+        BigDecimalAssert.AreEqual(0, x);
+        BigDecimalAssert.AreEqual(-1, y);
 
         r = 1;
         a = BigDecimal.Tau;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
-        Assert.AreEqual(1, x);
-        Assert.AreEqual(0, y);
+        BigDecimalAssert.AreEqual(1, x);
+        BigDecimalAssert.AreEqual(0, y);
     }
 }
