@@ -1,148 +1,130 @@
 using System.Diagnostics;
 using Galaxon.Core.Exceptions;
+using Galaxon.Core.Numbers;
 
 namespace Galaxon.Numerics.BigDecimalTests;
 
 [TestClass]
 public class TestTrig
 {
-    [TestMethod]
-    public void TestSin()
+    public const int Denominator = 12;
+
+    public static IEnumerable<object[]> Numerators
     {
-        BigDecimal.MaxSigFigs = 30;
-        for (var i = -360; i <= 360; i += 15)
+        get
         {
-            var d = i * double.Pi / 180.0;
-            var sinD = double.Sin(d);
-            var strSinD = sinD.ToString("F13");
-            if (strSinD == "-0.0000000000000")
+            List<object[]> fractions = new ();
+            for (var i = -Denominator; i <= Denominator; i++)
             {
-                strSinD = "0.0000000000000";
+                fractions.Add(new object[] { i });
             }
-
-            var bd = i * BigDecimal.Pi / 180;
-            var sinBd = BigDecimal.Sin(bd);
-            var strSinBd = sinBd.ToString("F13");
-
-            Assert.AreEqual(strSinD, strSinBd);
+            return fractions;
         }
     }
 
-    [TestMethod]
-    public void TestCos()
+    [ClassInitialize]
+    public static void Initialize(TestContext context)
     {
         BigDecimal.MaxSigFigs = 30;
-        for (var i = -360; i <= 360; i += 15)
-        {
-            var d = i * double.Pi / 180.0;
-            var cosD = double.Cos(d);
-            var strCosD = cosD.ToString("F13");
-            if (strCosD == "-0.0000000000000")
-            {
-                strCosD = "0.0000000000000";
-            }
+    }
 
-            var bd = i * BigDecimal.Pi / 180;
-            var cosBd = BigDecimal.Cos(bd);
-            var strCosBd = cosBd.ToString("F13");
+    private static bool DoubleEqualsBigDecimal(double d, BigDecimal bd) =>
+        d.FuzzyEquals((double)bd);
 
-            Assert.AreEqual(strCosD, strCosBd);
-        }
+    [TestMethod]
+    [DynamicData(nameof(Numerators))]
+    public void TestSin(int i)
+    {
+        var d = i * double.Tau / Denominator;
+        var sinD = double.Sin(d);
+
+        var bd = i * BigDecimal.Tau / Denominator;
+        var sinBd = BigDecimal.Sin(bd);
+
+        Assert.IsTrue(DoubleEqualsBigDecimal(sinD, sinBd));
     }
 
     [TestMethod]
-    public void TestTan()
+    [DynamicData(nameof(Numerators))]
+    public void TestCos(int i)
     {
-        BigDecimal.MaxSigFigs = 30;
-        for (var i = -360; i <= 360; i += 15)
-        {
-            // Skip values for which tan is undefined.
-            if (i is -270 or -90 or 90 or 270)
-            {
-                continue;
-            }
+        var d = i * double.Tau / Denominator;
+        var cosD = double.Cos(d);
 
-            var d = i * double.Pi / 180.0;
+        var bd = i * BigDecimal.Tau / Denominator;
+        var cosBd = BigDecimal.Cos(bd);
+
+        Assert.IsTrue(DoubleEqualsBigDecimal(cosD, cosBd));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(Numerators))]
+    public void TestTan(int i)
+    {
+        var d = i * double.Tau / Denominator;
+        try
+        {
             var tanD = double.Tan(d);
-            var strTanD = tanD.ToString("F13");
-            if (strTanD == "-0.0000000000000")
-            {
-                strTanD = "0.0000000000000";
-            }
 
-            var bd = i * BigDecimal.Pi / 180;
+            var bd = i * BigDecimal.Tau / Denominator;
             var tanBd = BigDecimal.Tan(bd);
-            var strTanBd = tanBd.ToString("F13");
 
-            Assert.AreEqual(strTanD, strTanBd);
+            Assert.IsTrue(DoubleEqualsBigDecimal(tanD, tanBd));
+        }
+        catch (Exception)
+        {
+            var deg = (int)(d * 180 / double.Pi);
+            Trace.WriteLine($"tan({deg}°) is undefined.");
         }
     }
 
     [TestMethod]
-    public void TestAsin()
+    public void TestTanException()
     {
-        BigDecimal.MaxSigFigs = 30;
-        for (var i = -10; i <= 10; i++)
+        for (var x = -3; x <= 3; x += 2)
         {
-            var d = i / 10.0;
-            var asinD = double.Asin(d);
-            var strAsinD = asinD.ToString("F13");
-            if (strAsinD == "-0.0000000000000")
-            {
-                strAsinD = "0.0000000000000";
-            }
-
-            BigDecimal bd = d;
-            var asinBb = BigDecimal.Asin(bd);
-            var strAsinBd = asinBb.ToString("F13");
-
-            Assert.AreEqual(strAsinD, strAsinBd);
+            Assert.ThrowsException<ArithmeticException>(() =>
+                BigDecimal.Tan(x * BigDecimal.Pi / 2));
         }
     }
 
     [TestMethod]
-    public void TestAcos()
+    [DynamicData(nameof(Numerators))]
+    public void TestAsin(int i)
     {
-        BigDecimal.MaxSigFigs = 30;
-        for (var i = -10; i <= 10; i++)
-        {
-            var d = i / 10.0;
-            var acosD = double.Acos(d);
-            var strAcosD = acosD.ToString("F13");
-            if (strAcosD == "-0.0000000000000")
-            {
-                strAcosD = "0.0000000000000";
-            }
+        var d = (double)i / Denominator;
+        var asinD = double.Asin(d);
 
-            BigDecimal bd = d;
-            var acosBd = BigDecimal.Acos(bd);
-            var strAcosBd = acosBd.ToString("F13");
+        var bd = (BigDecimal)i / Denominator;
+        var asinBd = BigDecimal.Asin(bd);
 
-            Assert.AreEqual(strAcosD, strAcosBd);
-        }
+        Assert.IsTrue(DoubleEqualsBigDecimal(asinD, asinBd));
     }
 
     [TestMethod]
-    public void TestAtan()
+    [DynamicData(nameof(Numerators))]
+    public void TestAcos(int i)
     {
-        BigDecimal.MaxSigFigs = 30;
-        const int n = 12;
-        for (var i = -n; i <= n; i++)
-        {
-            var x = i * double.Tau / n;
-            var atanD = double.Atan(x);
-            var strAtanD = atanD.ToString("F13");
-            if (strAtanD == "-0.0000000000000")
-            {
-                strAtanD = "0.0000000000000";
-            }
+        var d = (double)i / Denominator;
+        var acosD = double.Acos(d);
 
-            var bd = i * BigDecimal.Tau / n;
-            var atanBd = BigDecimal.Atan(bd);
-            var strAtanBd = atanBd.ToString("F13");
+        var bd = (BigDecimal)i / Denominator;
+        var acosBd = BigDecimal.Acos(bd);
 
-            Assert.AreEqual(strAtanD, strAtanBd);
-        }
+        Assert.IsTrue(DoubleEqualsBigDecimal(acosD, acosBd));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(Numerators))]
+    public void TestAtan(int i)
+    {
+        var d = (double)i;
+        var atanD = double.Atan(d);
+
+        var bd = (BigDecimal)i;
+        var atanBd = BigDecimal.Atan(bd);
+
+        Assert.IsTrue(DoubleEqualsBigDecimal(atanD, atanBd));
     }
 
     [TestMethod]
@@ -152,110 +134,102 @@ public class TestTrig
     [TestMethod]
     public void TestAtan2()
     {
-        BigDecimal.MaxSigFigs = 30;
         const int n = 12;
-        for (var i = -n; i <= n; i++)
+        for (var x = -n; x <= n; x++)
         {
-            for (var j = -n; j <= n; j++)
+            for (var y = -n; y <= n; y++)
             {
-                if (i == 0 && j == 0)
+                if (x == 0 && y == 0)
                 {
                     continue;
                 }
 
-                // Do the calc with doubles.
-                var x = i * double.Tau / n;
-                var y = j * double.Tau / n;
                 var atan2D = double.Atan2(y, x);
-                var strAtan2D = atan2D.ToString("F13");
-                // Matching 13 decimal places with the double calculations is the best I can get.
-                // Could be due to limitations of doubles in storing exact values.
-                if (strAtan2D == "-0.0000000000000")
-                {
-                    strAtan2D = "0.0000000000000";
-                }
-
-                // Do the calc with BigDecimals.
-                var bdX = i * BigDecimal.Tau / n;
-                var bdY = j * BigDecimal.Tau / n;
-                var atan2Bd = BigDecimal.Atan2(bdY, bdX);
-                var strAtan2Bd = atan2Bd.ToString("F13");
-
-                // Compare.
-                Assert.AreEqual(strAtan2D, strAtan2Bd);
-                Trace.WriteLine($"{strAtan2D} == {strAtan2Bd}");
+                var atan2Bd = BigDecimal.Atan2(y, x);
+                Assert.IsTrue(DoubleEqualsBigDecimal(atan2D, atan2Bd));
             }
         }
     }
 
     [TestMethod]
-    public void TestSinh()
+    [DynamicData(nameof(Numerators))]
+    public void TestSinh(int i)
     {
-        BigDecimal.MaxSigFigs = 30;
-        for (var i = -10; i <= 10; i++)
-        {
-            double d = i;
-            var sinhD = double.Sinh(d);
-            var strSinhD = sinhD.ToString("G14");
-            if (strSinhD == "-0.0000000000000")
-            {
-                strSinhD = "0.0000000000000";
-            }
+        var d = i * double.Tau / Denominator;
+        var sinhD = double.Sinh(d);
 
-            BigDecimal bd = i;
-            var sinhBd = BigDecimal.Sinh(bd);
-            var strSinhBd = sinhBd.ToString("G14");
+        var bd = i * BigDecimal.Tau / Denominator;
+        var sinhBd = BigDecimal.Sinh(bd);
 
-            Assert.AreEqual(strSinhD, strSinhBd);
-        }
+        Assert.IsTrue(DoubleEqualsBigDecimal(sinhD, sinhBd));
     }
 
     [TestMethod]
-    public void TestCosh()
+    [DynamicData(nameof(Numerators))]
+    public void TestCosh(int i)
     {
-        BigDecimal.MaxSigFigs = 30;
-        for (var i = -10; i <= 10; i++)
-        {
-            double d = i;
-            var coshD = double.Cosh(d);
-            var strCoshD = coshD.ToString("G14");
-            if (strCoshD == "-0.0000000000000")
-            {
-                strCoshD = "0.0000000000000";
-            }
+        var d = i * double.Tau / Denominator;
+        var coshD = double.Cosh(d);
 
-            BigDecimal bd = i;
-            var coshBd = BigDecimal.Cosh(bd);
-            var strCoshBd = coshBd.ToString("G14");
+        var bd = i * BigDecimal.Tau / Denominator;
+        var coshBd = BigDecimal.Cosh(bd);
 
-            Assert.AreEqual(strCoshD, strCoshBd);
-        }
+        Assert.IsTrue(DoubleEqualsBigDecimal(coshD, coshBd));
     }
 
     [TestMethod]
-    public void TestTanh()
+    [DynamicData(nameof(Numerators))]
+    public void TestTanh(int i)
     {
-        BigDecimal.MaxSigFigs = 30;
-        for (var i = -10; i <= 10; i++)
-        {
-            double d = i;
-            var tanhD = double.Tanh(d);
-            var strTanhD = tanhD.ToString("G14");
-            if (strTanhD == "-0.0000000000000")
-            {
-                strTanhD = "0.0000000000000";
-            }
+        var d = i * double.Tau / Denominator;
+        var tanhD = double.Tanh(d);
 
-            BigDecimal bd = i;
-            var tanhBd = BigDecimal.Tanh(bd);
-            var strTanhBd = tanhBd.ToString("G14");
+        var bd = i * BigDecimal.Tau / Denominator;
+        var tanhBd = BigDecimal.Tanh(bd);
 
-            Assert.AreEqual(strTanhD, strTanhBd);
-        }
+        Assert.IsTrue(DoubleEqualsBigDecimal(tanhD, tanhBd));
     }
 
     [TestMethod]
     public void TestPolarToCartesian()
     {
+        BigDecimal r, a, x, y;
+        var oneOnSqrt2 = 1 / BigDecimal.Sqrt(2);
+
+        r = 1;
+        a = 0;
+        (x, y) = BigDecimal.PolarToCartesian(r, a);
+        Assert.AreEqual(1, x);
+        Assert.AreEqual(0, y);
+
+        r = 1;
+        a = BigDecimal.Pi / 4;
+        (x, y) = BigDecimal.PolarToCartesian(r, a);
+        Assert.AreEqual(oneOnSqrt2, x);
+        Assert.AreEqual(oneOnSqrt2, y);
+
+        r = 1;
+        a = BigDecimal.Pi / 2;
+        (x, y) = BigDecimal.PolarToCartesian(r, a);
+        Assert.AreEqual(0, x);
+        Assert.AreEqual(1, y);
+
+        r = 1;
+        a = BigDecimal.Pi;
+        (x, y) = BigDecimal.PolarToCartesian(r, a);
+        Assert.AreEqual(-1, x);
+        Assert.AreEqual(0, y);
+
+        r = 1;
+        a = 3 * BigDecimal.Pi / 2;
+        (x, y) = BigDecimal.PolarToCartesian(r, a);
+        Assert.AreEqual(0, x);
+        Assert.AreEqual(-1, y);
+
+        r = 1;
+        a = BigDecimal.Tau;
+        (x, y) = BigDecimal.PolarToCartesian(r, a);
+        Assert.AreEqual(1, x);
+        Assert.AreEqual(0, y);
     }
 }

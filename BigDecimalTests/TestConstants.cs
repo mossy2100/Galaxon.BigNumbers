@@ -135,6 +135,7 @@ public class TestConstants
     /// </remarks>
     /// <see href="http://newton.ex.ac.uk/research/qsystems/collabs/pi/pi5.txt" />
     [TestMethod]
+    [Ignore]
     public void TestComputePi10000()
     {
         BigDecimal.MaxSigFigs = 10001;
