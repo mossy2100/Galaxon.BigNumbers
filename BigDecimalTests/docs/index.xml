@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Galaxon.Numerics.BigDecimalTests</name>
+    </assembly>
+    <members>
+        <member name="M:Galaxon.Numerics.BigDecimalTests.TestConstants.TestComputePi10000">
+            <remarks>
+            This takes a few minutes (about 7 on my computer at the time of typing), so sit back, relax,
+            sip your coffee, and enjoy the relentless march of time.
+            </remarks>
+            <see href="http://newton.ex.ac.uk/research/qsystems/collabs/pi/pi5.txt" />
+        </member>
+        <member name="M:Galaxon.Numerics.BigDecimalTests.TestExpLog.TestSqrtBig">
+            <summary>
+            Used https://keisan.casio.com/calculator to get expected result.
+            </summary>
+        </member>
+        <member name="M:Galaxon.Numerics.BigDecimalTests.TestExpLog.TestSqrtSmall">
+            <summary>
+            Used https://keisan.casio.com/calculator to get expected result.
+            </summary>
+        </member>
+        <member name="M:Galaxon.Numerics.BigDecimalTests.TestExpLog.TestSqrtBiggerThanBiggestDouble">
+            <summary>
+            In this test, both the initial argument and the square root are larger than the largest
+            possible double value.
+            Used https://keisan.casio.com/calculator to get expected result.
+            </summary>
+        </member>
+        <member name="M:Galaxon.Numerics.BigDecimalTests.TestExpLog.TestSqrtSmallerThanSmallestDouble">
+            <summary>
+            In this test, both the initial argument and the square root are smaller than the largest
+            possible double value.
+            Used https://keisan.casio.com/calculator to get expected result.
+            </summary>
+        </member>
+        <member name="M:Galaxon.Numerics.BigDecimalTests.TestExpLog.TestCubeRootOfNegativeValueUsingPow">
+            <summary>
+            This shows how the cube root of a negative value cannot be achieved using Pow(), because a
+            BigDecimal cannot represent 1/3 exactly. You have to use Cbrt() or RootN().
+            </summary>
+        </member>
+        <member name="M:Galaxon.Numerics.BigDecimalTests.TestRound.TestRoundingMethods">
+            <summary>
+            Check BigDecimal.Round() matches decimal.Round() for all rounding methods.
+            </summary>
+        </member>
+    </members>
+</doc>
