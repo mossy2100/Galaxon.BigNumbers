@@ -86,7 +86,7 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// </summary>
     public static int MaxSigFigs
     {
-        get => s_maxSigFigs;
+        get => _maxSigFigs;
 
         set
         {
@@ -94,14 +94,14 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
             {
                 throw new ArgumentOutOfRangeException(nameof(MaxSigFigs), "Must be at least 1.");
             }
-            s_maxSigFigs = value;
+            _maxSigFigs = value;
         }
     }
 
     /// <summary>
     /// Private backing field for MaxSigFigs.
     /// </summary>
-    private static int s_maxSigFigs = 100;
+    private static int _maxSigFigs = 100;
 
     /// <inheritdoc />
     public static BigDecimal Zero { get; } = new (0);

@@ -29,9 +29,9 @@ public partial struct BigDecimal
         }
 
         // Shortcut for Log(10).
-        if (a == 10 && s_ln10.NumSigFigs >= MaxSigFigs)
+        if (a == 10 && _ln10.NumSigFigs >= MaxSigFigs)
         {
-            return RoundSigFigs(s_ln10);
+            return RoundSigFigs(_ln10);
         }
 
         // Scale the value to the range (0..1).
