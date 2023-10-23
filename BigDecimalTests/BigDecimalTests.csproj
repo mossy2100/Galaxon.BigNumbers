@@ -10,17 +10,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
-        <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
-        <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
+        <PackageReference Include="MSTest.TestAdapter" Version="3.0.2"/>
+        <PackageReference Include="MSTest.TestFramework" Version="3.0.2"/>
         <PackageReference Include="coverlet.collector" Version="3.2.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\BigDecimal\BigDecimal.csproj" />
+        <ProjectReference Include="..\BigDecimal\BigDecimal.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

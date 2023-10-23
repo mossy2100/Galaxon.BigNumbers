@@ -28,8 +28,10 @@ public class TestTrig
         BigDecimal.MaxSigFigs = 30;
     }
 
-    private static bool DoubleEqualsBigDecimal(double d, BigDecimal bd) =>
-        d.FuzzyEquals((double)bd);
+    private static bool DoubleEqualsBigDecimal(double d, BigDecimal bd)
+    {
+        return d.FuzzyEquals((double)bd);
+    }
 
     [TestMethod]
     [DynamicData(nameof(Numerators))]
@@ -128,8 +130,10 @@ public class TestTrig
     }
 
     [TestMethod]
-    public void TestAtan2ThrowsExceptionWhenBothParamsZero() =>
+    public void TestAtan2ThrowsExceptionWhenBothParamsZero()
+    {
         Assert.ThrowsException<ArgumentInvalidException>(() => BigDecimal.Atan2(0, 0));
+    }
 
     [TestMethod]
     public void TestAtan2()

@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigDecimal", "BigDecimal\Bi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigDecimalTests", "BigDecimalTests\BigDecimalTests.csproj", "{5B1E692E-9089-4ABF-A3EE-50BBF8A0427B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Program", "Program\Program.csproj", "{CCFBBD8B-D27C-4083-8606-DF7BA77904F5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +18,5 @@ Global
 		{5B1E692E-9089-4ABF-A3EE-50BBF8A0427B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B1E692E-9089-4ABF-A3EE-50BBF8A0427B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B1E692E-9089-4ABF-A3EE-50BBF8A0427B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CCFBBD8B-D27C-4083-8606-DF7BA77904F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CCFBBD8B-D27C-4083-8606-DF7BA77904F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCFBBD8B-D27C-4083-8606-DF7BA77904F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCFBBD8B-D27C-4083-8606-DF7BA77904F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

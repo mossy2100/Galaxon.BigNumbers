@@ -14,8 +14,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="BigDecimalOld.cs" />
-        <None Include="BigDecimalOld.cs" />
+        <Compile Remove="BigDecimalOld.cs"/>
+        <None Include="BigDecimalOld.cs"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
+        <PackageReference Include="MSTest.TestFramework" Version="3.0.2"/>
     </ItemGroup>
 
 </Project>

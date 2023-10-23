@@ -24,7 +24,8 @@ public static class BigDecimalAssert
         // Compare values.
         if (BigDecimal.Abs(expected - actual) > delta)
         {
-            throw new AssertFailedException($"Values are unequal. Expected {expected}, got {actual}.");
+            throw new AssertFailedException(
+                $"Values are unequal. Expected {expected}, got {actual}.");
         }
     }
 

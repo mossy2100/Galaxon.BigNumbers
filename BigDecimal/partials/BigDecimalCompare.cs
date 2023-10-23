@@ -35,7 +35,10 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc />
-    public bool Equals(BigDecimal other) => CompareTo(other) == 0;
+    public bool Equals(BigDecimal other)
+    {
+        return CompareTo(other) == 0;
+    }
 
     /// <inheritdoc />
     public override bool Equals(object? obj)
@@ -48,41 +51,74 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc />
-    public override int GetHashCode() => HashCode.Combine(Significand, Exponent);
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Significand, Exponent);
+    }
 
     /// <inheritdoc />
-    public static BigDecimal MaxMagnitude(BigDecimal x, BigDecimal y) => x > y ? x : y;
+    public static BigDecimal MaxMagnitude(BigDecimal x, BigDecimal y)
+    {
+        return x > y ? x : y;
+    }
 
     /// <inheritdoc />
-    public static BigDecimal MaxMagnitudeNumber(BigDecimal x, BigDecimal y) => MaxMagnitude(x, y);
+    public static BigDecimal MaxMagnitudeNumber(BigDecimal x, BigDecimal y)
+    {
+        return MaxMagnitude(x, y);
+    }
 
     /// <inheritdoc />
-    public static BigDecimal MinMagnitude(BigDecimal x, BigDecimal y) => x < y ? x : y;
+    public static BigDecimal MinMagnitude(BigDecimal x, BigDecimal y)
+    {
+        return x < y ? x : y;
+    }
 
     /// <inheritdoc />
-    public static BigDecimal MinMagnitudeNumber(BigDecimal x, BigDecimal y) => MinMagnitude(x, y);
+    public static BigDecimal MinMagnitudeNumber(BigDecimal x, BigDecimal y)
+    {
+        return MinMagnitude(x, y);
+    }
 
     #endregion Comparison methods
 
     #region Comparison operators
 
     /// <inheritdoc />
-    public static bool operator ==(BigDecimal x, BigDecimal y) => x.Equals(y);
+    public static bool operator ==(BigDecimal x, BigDecimal y)
+    {
+        return x.Equals(y);
+    }
 
     /// <inheritdoc />
-    public static bool operator !=(BigDecimal x, BigDecimal y) => !x.Equals(y);
+    public static bool operator !=(BigDecimal x, BigDecimal y)
+    {
+        return !x.Equals(y);
+    }
 
     /// <inheritdoc />
-    public static bool operator <(BigDecimal x, BigDecimal y) => x.CompareTo(y) < 0;
+    public static bool operator <(BigDecimal x, BigDecimal y)
+    {
+        return x.CompareTo(y) < 0;
+    }
 
     /// <inheritdoc />
-    public static bool operator <=(BigDecimal x, BigDecimal y) => x.CompareTo(y) <= 0;
+    public static bool operator <=(BigDecimal x, BigDecimal y)
+    {
+        return x.CompareTo(y) <= 0;
+    }
 
     /// <inheritdoc />
-    public static bool operator >(BigDecimal x, BigDecimal y) => x.CompareTo(y) > 0;
+    public static bool operator >(BigDecimal x, BigDecimal y)
+    {
+        return x.CompareTo(y) > 0;
+    }
 
     /// <inheritdoc />
-    public static bool operator >=(BigDecimal x, BigDecimal y) => x.CompareTo(y) >= 0;
+    public static bool operator >=(BigDecimal x, BigDecimal y)
+    {
+        return x.CompareTo(y) >= 0;
+    }
 
     #endregion Comparison operators
 }

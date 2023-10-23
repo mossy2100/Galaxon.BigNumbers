@@ -8,8 +8,10 @@ public static class XEnumerableBigDecimal
     /// <summary>
     /// Given a collection of BigDecimal values, get the sum of the values.
     /// </summary>
-    public static BigDecimal Sum(this IEnumerable<BigDecimal> source) =>
-        source.Aggregate<BigDecimal, BigDecimal>(0, (sum, num) => sum + num);
+    public static BigDecimal Sum(this IEnumerable<BigDecimal> source)
+    {
+        return source.Aggregate<BigDecimal, BigDecimal>(0, (sum, num) => sum + num);
+    }
 
     /// <summary>
     /// Given a collection of BigDecimal values, get the average (i.e. the arithmetic mean).
@@ -37,8 +39,10 @@ public static class XEnumerableBigDecimal
     /// <summary>
     /// Given a collection of BigDecimal values, get the product of the values.
     /// </summary>
-    public static BigDecimal Product(this IEnumerable<BigDecimal> source) =>
-        source.Aggregate<BigDecimal, BigDecimal>(1, (sum, num) => sum * num);
+    public static BigDecimal Product(this IEnumerable<BigDecimal> source)
+    {
+        return source.Aggregate<BigDecimal, BigDecimal>(1, (sum, num) => sum * num);
+    }
 
     /// <summary>
     /// Given a collection of BigDecimal values, get the geometric mean.

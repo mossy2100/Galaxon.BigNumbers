@@ -76,7 +76,10 @@ public partial struct BigDecimal :
     }
 
     /// <inheritdoc />
-    public static BigDecimal SinPi(BigDecimal a) => Sin(a * Pi);
+    public static BigDecimal SinPi(BigDecimal a)
+    {
+        return Sin(a * Pi);
+    }
 
     /// <inheritdoc />
     /// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions" />
@@ -143,14 +146,22 @@ public partial struct BigDecimal :
     }
 
     /// <inheritdoc />
-    public static BigDecimal CosPi(BigDecimal a) => Cos(a * Pi);
+    public static BigDecimal CosPi(BigDecimal a)
+    {
+        return Cos(a * Pi);
+    }
 
     /// <inheritdoc />
-    public static (BigDecimal Sin, BigDecimal Cos) SinCos(BigDecimal a) => (Sin(a), Cos(a));
+    public static (BigDecimal Sin, BigDecimal Cos) SinCos(BigDecimal a)
+    {
+        return (Sin(a), Cos(a));
+    }
 
     /// <inheritdoc />
-    public static (BigDecimal SinPi, BigDecimal CosPi) SinCosPi(BigDecimal a) =>
-        (SinPi(a), CosPi(a));
+    public static (BigDecimal SinPi, BigDecimal CosPi) SinCosPi(BigDecimal a)
+    {
+        return (SinPi(a), CosPi(a));
+    }
 
     /// <inheritdoc />
     public static BigDecimal Tan(BigDecimal a)
@@ -170,7 +181,10 @@ public partial struct BigDecimal :
     }
 
     /// <inheritdoc />
-    public static BigDecimal TanPi(BigDecimal a) => Tan(a * Pi);
+    public static BigDecimal TanPi(BigDecimal a)
+    {
+        return Tan(a * Pi);
+    }
 
     #endregion Trigonometric methods
 
@@ -254,13 +268,22 @@ public partial struct BigDecimal :
     }
 
     /// <inheritdoc />
-    public static BigDecimal AsinPi(BigDecimal x) => Asin(x) / Pi;
+    public static BigDecimal AsinPi(BigDecimal x)
+    {
+        return Asin(x) / Pi;
+    }
 
     /// <inheritdoc />
-    public static BigDecimal Acos(BigDecimal x) => Pi / 2 - Asin(x);
+    public static BigDecimal Acos(BigDecimal x)
+    {
+        return Pi / 2 - Asin(x);
+    }
 
     /// <inheritdoc />
-    public static BigDecimal AcosPi(BigDecimal x) => Acos(x) / Pi;
+    public static BigDecimal AcosPi(BigDecimal x)
+    {
+        return Acos(x) / Pi;
+    }
 
     /// <inheritdoc />
     public static BigDecimal Atan(BigDecimal x)
@@ -322,7 +345,10 @@ public partial struct BigDecimal :
     }
 
     /// <inheritdoc />
-    public static BigDecimal AtanPi(BigDecimal x) => Atan(x) / Pi;
+    public static BigDecimal AtanPi(BigDecimal x)
+    {
+        return Atan(x) / Pi;
+    }
 
     /// <summary>
     /// This two-argument variation of the Atan() method comes originally from FORTRAN.
@@ -372,7 +398,10 @@ public partial struct BigDecimal :
     /// <returns>The polar angle.</returns>
     /// <exception cref="ArgumentInvalidException">If x and y both equal 0.</exception>
     /// <see cref="double.Atan2Pi" />
-    public static BigDecimal Atan2Pi(BigDecimal y, BigDecimal x) => Atan2(y, x) / Pi;
+    public static BigDecimal Atan2Pi(BigDecimal y, BigDecimal x)
+    {
+        return Atan2(y, x) / Pi;
+    }
 
     #endregion Inverse trigonometric methods
 
@@ -470,20 +499,32 @@ public partial struct BigDecimal :
     }
 
     /// <inheritdoc />
-    public static BigDecimal Tanh(BigDecimal a) => Sinh(a) / Cosh(a);
+    public static BigDecimal Tanh(BigDecimal a)
+    {
+        return Sinh(a) / Cosh(a);
+    }
 
     #endregion Hyperbolic methods
 
     #region Inverse hyperbolic methods
 
     /// <inheritdoc />
-    public static BigDecimal Asinh(BigDecimal x) => Log(x + Sqrt(x * x + 1));
+    public static BigDecimal Asinh(BigDecimal x)
+    {
+        return Log(x + Sqrt(x * x + 1));
+    }
 
     /// <inheritdoc />
-    public static BigDecimal Acosh(BigDecimal x) => Log(x + Sqrt(x * x - 1));
+    public static BigDecimal Acosh(BigDecimal x)
+    {
+        return Log(x + Sqrt(x * x - 1));
+    }
 
     /// <inheritdoc />
-    public static BigDecimal Atanh(BigDecimal x) => Log((1 + x) / (1 - x)) / 2;
+    public static BigDecimal Atanh(BigDecimal x)
+    {
+        return Log((1 + x) / (1 - x)) / 2;
+    }
 
     #endregion Inverse hyperbolic methods
 
@@ -495,8 +536,10 @@ public partial struct BigDecimal :
     /// <param name="x">The x coordinate.</param>
     /// <param name="y">The y coordinate.</param>
     /// <returns>A tuple containing the radius (r) and angle (a).</returns>
-    public static (BigDecimal r, BigDecimal a) CartesianToPolar(BigDecimal x, BigDecimal y) =>
-        x == 0 && y == 0 ? (0, 0) : (Hypot(x, y), Atan2(y, x));
+    public static (BigDecimal r, BigDecimal a) CartesianToPolar(BigDecimal x, BigDecimal y)
+    {
+        return x == 0 && y == 0 ? (0, 0) : (Hypot(x, y), Atan2(y, x));
+    }
 
     /// <summary>
     /// Convert polar coordinates to cartesian coordinates.
@@ -504,8 +547,10 @@ public partial struct BigDecimal :
     /// <param name="r">The radius.</param>
     /// <param name="a">The angle.</param>
     /// <returns>A tuple containing the x and y coordinates.</returns>
-    public static (BigDecimal x, BigDecimal y) PolarToCartesian(BigDecimal r, BigDecimal a) =>
-        r == 0 ? (0, 0) : (r * Cos(a), r * Sin(a));
+    public static (BigDecimal x, BigDecimal y) PolarToCartesian(BigDecimal r, BigDecimal a)
+    {
+        return r == 0 ? (0, 0) : (r * Cos(a), r * Sin(a));
+    }
 
     #endregion Methods for converting coordinates
 

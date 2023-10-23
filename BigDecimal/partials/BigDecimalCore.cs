@@ -55,12 +55,13 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// <summary>
     /// The sign of the value. The same convention is used as for BigInteger except an sbyte is used
     /// instead of an int.
-    ///     -1 means negative
-    ///      0 means zero
-    ///      1 means positive
+    /// -1 means negative
+    /// 0 means zero
+    /// 1 means positive
     /// </summary>
     /// <see cref="BigInteger.Sign" />
-    /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
+    /// <see
+    ///     href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
     public sbyte Sign => (sbyte)Significand.Sign;
 
     /// <summary>
@@ -144,96 +145,166 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// In this case, the value should not be evenly divisible by 10. In canonical form, a
     /// multiple of 10 should be shortened and the exponent increased.
     /// </summary>
-    public static bool IsCanonical(BigDecimal value) =>
-        value == Zero || value.Significand % 10 != 0;
+    public static bool IsCanonical(BigDecimal value)
+    {
+        return value == Zero || value.Significand % 10 != 0;
+    }
 
     /// <summary>
     /// Check if the value is a complex number.
     /// </summary>
-    public static bool IsComplexNumber(BigDecimal value) => false;
+    public static bool IsComplexNumber(BigDecimal value)
+    {
+        return false;
+    }
 
     /// <summary>
     /// The value will be an integer if in canonical form and the exponent is >= 0.
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static bool IsInteger(BigDecimal value) => value.MakeCanonical().Exponent >= 0;
+    public static bool IsInteger(BigDecimal value)
+    {
+        return value.MakeCanonical().Exponent >= 0;
+    }
 
     /// <inheritdoc />
-    public static bool IsOddInteger(BigDecimal value) =>
-        IsInteger(value) && value.Exponent == 0 && BigInteger.IsOddInteger(value.Significand);
+    public static bool IsOddInteger(BigDecimal value)
+    {
+        return IsInteger(value) && value.Exponent == 0
+            && BigInteger.IsOddInteger(value.Significand);
+    }
 
     /// <inheritdoc />
-    public static bool IsEvenInteger(BigDecimal value) =>
-        IsInteger(value) && (value.Exponent > 0 || BigInteger.IsEvenInteger(value.Significand));
+    public static bool IsEvenInteger(BigDecimal value)
+    {
+        return IsInteger(value)
+            && (value.Exponent > 0 || BigInteger.IsEvenInteger(value.Significand));
+    }
 
     /// <inheritdoc />
-    public static bool IsZero(BigDecimal value) => value.Significand == 0;
+    public static bool IsZero(BigDecimal value)
+    {
+        return value.Significand == 0;
+    }
 
     /// <inheritdoc />
-    public static bool IsNegative(BigDecimal value) => value.Significand < 0;
+    public static bool IsNegative(BigDecimal value)
+    {
+        return value.Significand < 0;
+    }
 
     /// <inheritdoc />
-    public static bool IsPositive(BigDecimal value) => value.Significand > 0;
+    public static bool IsPositive(BigDecimal value)
+    {
+        return value.Significand > 0;
+    }
 
     /// <inheritdoc />
-    public static bool IsFinite(BigDecimal value) => true;
+    public static bool IsFinite(BigDecimal value)
+    {
+        return true;
+    }
 
     /// <inheritdoc />
-    public static bool IsInfinity(BigDecimal value) => false;
+    public static bool IsInfinity(BigDecimal value)
+    {
+        return false;
+    }
 
     /// <inheritdoc />
-    public static bool IsNegativeInfinity(BigDecimal value) => false;
+    public static bool IsNegativeInfinity(BigDecimal value)
+    {
+        return false;
+    }
 
     /// <inheritdoc />
-    public static bool IsPositiveInfinity(BigDecimal value) => false;
+    public static bool IsPositiveInfinity(BigDecimal value)
+    {
+        return false;
+    }
 
     /// <inheritdoc />
-    public static bool IsRealNumber(BigDecimal value) => true;
+    public static bool IsRealNumber(BigDecimal value)
+    {
+        return true;
+    }
 
     /// <inheritdoc />
-    public static bool IsImaginaryNumber(BigDecimal value) => false;
+    public static bool IsImaginaryNumber(BigDecimal value)
+    {
+        return false;
+    }
 
     /// <inheritdoc />
-    public static bool IsNormal(BigDecimal value) => value != 0;
+    public static bool IsNormal(BigDecimal value)
+    {
+        return value != 0;
+    }
 
     /// <inheritdoc />
-    public static bool IsSubnormal(BigDecimal value) => false;
+    public static bool IsSubnormal(BigDecimal value)
+    {
+        return false;
+    }
 
     /// <inheritdoc />
-    public static bool IsNaN(BigDecimal value) => false;
+    public static bool IsNaN(BigDecimal value)
+    {
+        return false;
+    }
 
     #endregion Inspection methods
 
     #region Methods related to data transfer
 
     /// <inheritdoc />
-    public int GetSignificandByteCount() => Significand.GetByteCount();
+    public int GetSignificandByteCount()
+    {
+        return Significand.GetByteCount();
+    }
 
     /// <inheritdoc />
-    public int GetSignificandBitLength() => GetSignificandByteCount() * 8;
+    public int GetSignificandBitLength()
+    {
+        return GetSignificandByteCount() * 8;
+    }
 
     /// <inheritdoc />
-    public int GetExponentByteCount() => 4;
+    public int GetExponentByteCount()
+    {
+        return 4;
+    }
 
     /// <inheritdoc />
-    public int GetExponentShortestBitLength() => 32;
+    public int GetExponentShortestBitLength()
+    {
+        return 32;
+    }
 
     /// <inheritdoc />
-    public bool TryWriteSignificandBigEndian(Span<byte> destination, out int bytesWritten) =>
-        TryWriteBigInteger(Significand, destination, out bytesWritten, true);
+    public bool TryWriteSignificandBigEndian(Span<byte> destination, out int bytesWritten)
+    {
+        return TryWritebig(Significand, destination, out bytesWritten, true);
+    }
 
     /// <inheritdoc />
-    public bool TryWriteSignificandLittleEndian(Span<byte> destination, out int bytesWritten) =>
-        TryWriteBigInteger(Significand, destination, out bytesWritten, false);
+    public bool TryWriteSignificandLittleEndian(Span<byte> destination, out int bytesWritten)
+    {
+        return TryWritebig(Significand, destination, out bytesWritten, false);
+    }
 
     /// <inheritdoc />
-    public bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten) =>
-        TryWriteInt(Exponent, destination, out bytesWritten, true);
+    public bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten)
+    {
+        return TryWriteInt(Exponent, destination, out bytesWritten, true);
+    }
 
     /// <inheritdoc />
-    public bool TryWriteExponentLittleEndian(Span<byte> destination, out int bytesWritten) =>
-        TryWriteInt(Exponent, destination, out bytesWritten, false);
+    public bool TryWriteExponentLittleEndian(Span<byte> destination, out int bytesWritten)
+    {
+        return TryWriteInt(Exponent, destination, out bytesWritten, false);
+    }
 
     /// <summary>
     /// Shared logic for:
@@ -260,7 +331,7 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// <see cref="TryWriteSignificandBigEndian" />
     /// <see cref="TryWriteSignificandLittleEndian" />
     /// </summary>
-    private static bool TryWriteBigInteger(BigInteger bi, Span<byte> destination,
+    private static bool TryWritebig(BigInteger bi, Span<byte> destination,
         out int bytesWritten,
         bool isBigEndian)
     {

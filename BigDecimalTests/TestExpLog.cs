@@ -7,10 +7,16 @@ namespace Galaxon.Numerics.BigDecimalTests;
 public class TestExpLog
 {
     [TestMethod]
-    public void TestSqrt0() => Assert.AreEqual(BigDecimal.Zero, BigDecimal.Sqrt(0));
+    public void TestSqrt0()
+    {
+        Assert.AreEqual(BigDecimal.Zero, BigDecimal.Sqrt(0));
+    }
 
     [TestMethod]
-    public void TestSqrt1() => Assert.AreEqual(BigDecimal.One, BigDecimal.Sqrt(1));
+    public void TestSqrt1()
+    {
+        Assert.AreEqual(BigDecimal.One, BigDecimal.Sqrt(1));
+    }
 
     [TestMethod]
     public void TestSqrtPiSquared()
@@ -95,14 +101,22 @@ public class TestExpLog
     }
 
     [TestMethod]
-    public void TestSqrtNegative() =>
+    public void TestSqrtNegative()
+    {
         Assert.ThrowsException<ArithmeticException>(() => BigDecimal.Sqrt(-1));
+    }
 
     [TestMethod]
-    public void TestCbrt0() => Assert.AreEqual(BigDecimal.Zero, BigDecimal.Cbrt(0));
+    public void TestCbrt0()
+    {
+        Assert.AreEqual(BigDecimal.Zero, BigDecimal.Cbrt(0));
+    }
 
     [TestMethod]
-    public void TestCbrt1() => Assert.AreEqual(BigDecimal.One, BigDecimal.Cbrt(1));
+    public void TestCbrt1()
+    {
+        Assert.AreEqual(BigDecimal.One, BigDecimal.Cbrt(1));
+    }
 
     // No asserts, just want to make sure the method calls complete fast enough and without error or
     // infinite looping.
