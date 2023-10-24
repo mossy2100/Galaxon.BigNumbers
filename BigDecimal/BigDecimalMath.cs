@@ -1,7 +1,7 @@
 using System.Numerics;
 using Galaxon.Core.Numbers;
 
-namespace Galaxon.Numerics;
+namespace Galaxon.BigNumbers;
 
 public partial struct BigDecimal : ICloneable
 {

@@ -1,10 +1,10 @@
 using System.Diagnostics;
 using System.Numerics;
 
-namespace Galaxon.Numerics.BigDecimalTests;
+namespace Galaxon.BigNumbers.BigDecimalTests;
 
 [TestClass]
-public class TestExpLog
+public class ExpLogTests
 {
     [TestMethod]
     public void TestSqrt0()

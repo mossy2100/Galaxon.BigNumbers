@@ -1,10 +1,10 @@
 using System.Diagnostics;
 using Galaxon.Core.Numbers;
 
-namespace Galaxon.Numerics.BigDecimalTests;
+namespace Galaxon.BigNumbers.BigDecimalTests;
 
 [TestClass]
-public class TestConvert
+public class ConvertTests
 {
     [TestMethod]
     public void TestCastToInt()

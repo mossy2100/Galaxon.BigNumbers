@@ -1,7 +1,7 @@
 using System.Numerics;
 using Galaxon.Core.Exceptions;
 
-namespace Galaxon.Numerics;
+namespace Galaxon.BigNumbers;
 
 /// <summary>
 /// Trigonometric methods for BigDecimal.

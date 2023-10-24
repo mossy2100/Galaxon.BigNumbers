@@ -1,7 +1,7 @@
-namespace Galaxon.Numerics.BigDecimalTests;
+namespace Galaxon.BigNumbers.BigDecimalTests;
 
 [TestClass]
-public class TestConstants
+public class ConstantsTests
 {
     [TestMethod]
     public void TestComputeE50()

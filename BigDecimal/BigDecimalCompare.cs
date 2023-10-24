@@ -1,6 +1,6 @@
 using Galaxon.Core.Exceptions;
 
-namespace Galaxon.Numerics;
+namespace Galaxon.BigNumbers;
 
 /// <summary>
 /// Operators and methods for comparing BigDecimals.

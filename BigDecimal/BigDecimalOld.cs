@@ -1,7 +1,7 @@
 using System.Numerics;
 using Galaxon.Core.Numbers;
 
-namespace Galaxon.Numerics;
+namespace Galaxon.BigNumbers;
 
 /// <summary>
 /// Old, cut code, keeping just in case.

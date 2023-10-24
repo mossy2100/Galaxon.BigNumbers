@@ -4,8 +4,8 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <AssemblyName>Galaxon.Numerics.BigDecimal</AssemblyName>
-        <RootNamespace>Galaxon.Numerics</RootNamespace>
+        <AssemblyName>Galaxon.BigNumbers.BigDecimal</AssemblyName>
+        <RootNamespace>Galaxon.BigNumbers</RootNamespace>
         <OutputType>Library</OutputType>
         <DocumentationFile>docs/index.xml</DocumentationFile>
         <IsPackable>true</IsPackable>
@@ -27,13 +27,14 @@
         <Reference Include="Galaxon.Core">
             <HintPath>..\..\Core\Core\bin\Debug\net7.0\Galaxon.Core.dll</HintPath>
         </Reference>
-        <Reference Include="Galaxon.Numerics.BigRational">
-            <HintPath>..\..\BigRational\BigRational\bin\Debug\net7.0\Galaxon.Numerics.BigRational.dll</HintPath>
-        </Reference>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MSTest.TestFramework" Version="3.0.2"/>
+      <PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BigRational\BigRational.csproj" />
     </ItemGroup>
 
 </Project>

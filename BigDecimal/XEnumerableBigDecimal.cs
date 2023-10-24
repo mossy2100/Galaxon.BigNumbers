@@ -1,4 +1,4 @@
-namespace Galaxon.Numerics;
+namespace Galaxon.BigNumbers;
 
 /// <summary>
 /// LINQ methods for IEnumerable{BigDecimal}.

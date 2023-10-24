@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace Galaxon.Numerics;
+namespace Galaxon.BigNumbers;
 
 /// <summary>
 /// Contains everything relating to constants.

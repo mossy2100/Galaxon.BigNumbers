@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Galaxon.Core.Exceptions;
 using Galaxon.Core.Strings;
 
-namespace Galaxon.Numerics;
+namespace Galaxon.BigNumbers;
 
 public partial struct BigDecimal
 {

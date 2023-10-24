@@ -1,7 +1,7 @@
 using System.Numerics;
 using Galaxon.Core.Numbers;
 
-namespace Galaxon.Numerics;
+namespace Galaxon.BigNumbers;
 
 public partial struct BigDecimal : IFloatingPoint<BigDecimal>
 {
@@ -54,9 +54,9 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
 
     /// <summary>
     /// The sign of the value. The same convention is used as for BigInteger.
-    ///   -1 means negative
-    ///    0 means zero
-    ///    1 means positive
+    /// -1 means negative
+    /// 0 means zero
+    /// 1 means positive
     /// </summary>
     /// <see cref="BigInteger.Sign" />
     /// <see
@@ -288,7 +288,8 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     }
 
     /// <inheritdoc />
-    public readonly bool TryWriteSignificandLittleEndian(Span<byte> destination, out int bytesWritten)
+    public readonly bool TryWriteSignificandLittleEndian(Span<byte> destination,
+        out int bytesWritten)
     {
         return TryWriteBigInteger(Significand, destination, out bytesWritten, false);
     }

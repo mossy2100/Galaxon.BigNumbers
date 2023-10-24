@@ -2,7 +2,7 @@ using System.Numerics;
 using Galaxon.Core.Exceptions;
 using Galaxon.Core.Numbers;
 
-namespace Galaxon.Numerics;
+namespace Galaxon.BigNumbers;
 
 /// <summary>
 /// Power, root, exponential, and logarithm methods for BigDecimal.
@@ -86,43 +86,36 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         // At this point, we know:
         //   * x is negative
         //   * y is positive and not an integer
+        // This means the answer may be complex, or not computable, given limitations of RootN().
 
         // To compute the result for negative x with positive non-integer y, we can use the formula
         // shown at the end of the method, which calls Pow() and RootN().
         // To do this, we need to get y as a rational (fraction). This will determine if a real
         // result can be found.
+        // We don't want a dependency on BigComplex here, because that would be a circular
+        // dependency. If they want to compute complex results, they can use BigComplex.
+        // TODO Update the method documentation to explain all this.
 
-        // Casting to BigRational will create a rational number, with no loss of precision, and
+        // Casting y to a BigRational will create a rational number, with no loss of precision, and
         // reduce it as much as possible.
         BigRational r = y;
 
-        // There could be an issue if the exponent does not exactly represent the intended value.
-        // e.g. 1/3 cannot be stored exactly using a BigDecimal.
+        // NB: There could be an issue if the exponent does not exactly represent the intended
+        // value. e.g. 1/3 cannot be stored exactly using a BigDecimal.
         // Thus Pow(-27, 1/3), for example, will not work. You would have to use Cbrt().
 
-        // The denominator of the fraction must be convertible to int, because of the limitation
-        // of the RootN method.
-        // Therefore, if the denominator is larger than the maximum possible integer, we can
-        // compromise by using a less precise fraction, by making the denominator equal to
-        // int.MaxValue. This won't produce an exact result, but it should be a good approximation.
-        if (r.Denominator > int.MaxValue)
+        // Check if a real result can be computed.
+        //   1. If the denominator > int.MaxValue, we won't be able to call RootN() (below),
+        //      therefore we can't compute the result.
+        //   2. If calling RootN() with a negative x, y must be odd to get a real result (which
+        //      will also be negative). e.g. RootN(-27, 3) => -3.
+        //      [If y is even, the result will be complex, e.g. RootN(-1, 2).]
+        if (r.Denominator > int.MaxValue || !BigInteger.IsOddInteger(r.Denominator))
         {
-            r.Numerator = (BigInteger)(y * int.MaxValue);
-            r.Denominator = int.MaxValue;
+            throw new ArithmeticException("Cannot compute a real result. Try using BigComplex.Pow()");
         }
 
-        // When calling RootN() with a negative x, y must be odd to get a real result (which will
-        // also be negative). e.g. RootN(-27, 3) => -3.
-        // [If y is even, the result will be complex, e.g. RootN(-1, 2).]
-        if (!BigInteger.IsOddInteger(r.Denominator))
-        {
-            // TODO Provide a complex number result. This will require the BigComplex class.
-            // TODO Move this implementation to the BigComplex class, and call it from here.
-            // If a result is returned without an imaginary part, return the real part, or throw
-            // this exception.
-            throw new ArithmeticException("Cannot compute a real result.");
-        }
-
+        // Calculate the real result.
         return Pow(RootN(x, (int)r.Denominator), r.Numerator);
     }
 
