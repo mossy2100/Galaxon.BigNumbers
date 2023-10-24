@@ -1176,7 +1176,7 @@
             <param name="x">The x coordinate.</param>
             <returns>The polar angle.</returns>
             <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException">If x and y both equal 0.</exception>
-            <see cref="M:System.Double.AtanPi(System.Double)" />
+            <see cref="M:System.Double.Atan2(System.Double,System.Double)" />
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Atan2Pi(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>
