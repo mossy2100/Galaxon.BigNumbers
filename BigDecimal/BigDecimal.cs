@@ -113,13 +113,13 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     public static BigDecimal NegativeOne { get; } = new (-1);
 
     /// <inheritdoc />
-    public static int Radix => 10;
+    public static int Radix { get; } = 10;
 
     /// <inheritdoc />
-    public static BigDecimal AdditiveIdentity => Zero;
+    public static BigDecimal AdditiveIdentity { get; } = Zero;
 
     /// <inheritdoc />
-    public static BigDecimal MultiplicativeIdentity => One;
+    public static BigDecimal MultiplicativeIdentity { get; } = One;
 
     /// <summary>Precision supported by the Half type.</summary>
     /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation" />

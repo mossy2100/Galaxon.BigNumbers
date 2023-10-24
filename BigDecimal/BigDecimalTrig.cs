@@ -9,7 +9,8 @@ namespace Galaxon.BigNumbers;
 /// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions" />
 /// <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions" />
 public partial struct BigDecimal :
-    ITrigonometricFunctions<BigDecimal>, IHyperbolicFunctions<BigDecimal>
+    ITrigonometricFunctions<BigDecimal>,
+    IHyperbolicFunctions<BigDecimal>
 {
     #region Trigonometric methods
 
@@ -363,7 +364,7 @@ public partial struct BigDecimal :
     /// <param name="x">The x coordinate.</param>
     /// <returns>The polar angle.</returns>
     /// <exception cref="ArgumentInvalidException">If x and y both equal 0.</exception>
-    /// <see cref="double.AtanPi" />
+    /// <see cref="double.Atan2" />
     public static BigDecimal Atan2(BigDecimal y, BigDecimal x)
     {
         BigDecimal result;

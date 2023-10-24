@@ -7,26 +7,6 @@ public partial struct BigComplex
     #region Casts to BigComplex (all implicit)
 
     /// <summary>
-    /// Implicit cast from Complex to BigComplex.
-    /// </summary>
-    /// <param name="z">The Complex value.</param>
-    /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(Complex z)
-    {
-        return new BigComplex(z.Real, z.Imaginary);
-    }
-
-    /// <summary>
-    /// Implicit cast from BigDecimal to BigComplex.
-    /// </summary>
-    /// <param name="n">The BigDecimal value.</param>
-    /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(BigDecimal n)
-    {
-        return new BigComplex(n, 0);
-    }
-
-    /// <summary>
     /// Implicit cast from sbyte to BigComplex.
     /// </summary>
     /// <param name="n">The sbyte value.</param>
@@ -176,6 +156,26 @@ public partial struct BigComplex
         return new BigComplex(n, 0);
     }
 
+    /// <summary>
+    /// Implicit cast from BigDecimal to BigComplex.
+    /// </summary>
+    /// <param name="n">The BigDecimal value.</param>
+    /// <returns>The equivalent BigComplex value.</returns>
+    public static implicit operator BigComplex(BigDecimal n)
+    {
+        return new BigComplex(n, 0);
+    }
+
+    /// <summary>
+    /// Implicit cast from Complex to BigComplex.
+    /// </summary>
+    /// <param name="z">The Complex value.</param>
+    /// <returns>The equivalent BigComplex value.</returns>
+    public static implicit operator BigComplex(Complex z)
+    {
+        return new BigComplex(z.Real, z.Imaginary);
+    }
+
     #endregion Cast to BigComplex
 
     #region Cast from BigComplex (all explicit)
@@ -191,4 +191,50 @@ public partial struct BigComplex
     }
 
     #endregion Cast from BigComplex
+
+    #region TryConvert methods
+
+    /// <inheritdoc />
+    public static bool TryConvertFromChecked<TOther>(TOther value, out BigComplex result)
+        where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryConvertFromSaturating<TOther>(TOther value, out BigComplex result)
+        where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryConvertFromTruncating<TOther>(TOther value, out BigComplex result)
+        where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryConvertToChecked<TOther>(BigComplex value, out TOther result)
+        where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryConvertToSaturating<TOther>(BigComplex value, out TOther result)
+        where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryConvertToTruncating<TOther>(BigComplex value, out TOther result)
+        where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    #endregion TryConvert methods
 }
