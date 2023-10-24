@@ -6,6 +6,8 @@ public partial struct BigComplex
 {
     #region Core properties
 
+    //test
+
     public BigDecimal Real { get; set; }
 
     public BigDecimal Imaginary { get; set; }
