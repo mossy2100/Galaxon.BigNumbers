@@ -1,7 +1,5 @@
 # Galaxon.BigNumbers
 
-Test
-
 This solution contains 3 related types:
 
 - **BigRational**: A ratio of two BigIntegers.
