@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>Galaxon.BigNumbers.BigComplex</AssemblyName>
+        <RootNamespace>Galaxon.BigNumbers</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="Galaxon.Core">
+          <HintPath>..\..\Core\Core\bin\Debug\net7.0\Galaxon.Core.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BigDecimal\BigDecimal.csproj" />
+    </ItemGroup>
+
+</Project>
