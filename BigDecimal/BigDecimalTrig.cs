@@ -363,7 +363,6 @@ public partial struct BigDecimal :
     /// <param name="y">The y coordinate.</param>
     /// <param name="x">The x coordinate.</param>
     /// <returns>The polar angle.</returns>
-    /// <exception cref="ArgumentInvalidException">If x and y both equal 0.</exception>
     /// <see cref="double.Atan2" />
     public static BigDecimal Atan2(BigDecimal y, BigDecimal x)
     {
@@ -373,8 +372,7 @@ public partial struct BigDecimal :
         {
             if (y == 0)
             {
-                throw new ArgumentInvalidException(nameof(y),
-                    "The atan() function is undefined for 0/0.");
+                return 0;
             }
 
             result = Pi / 2;
