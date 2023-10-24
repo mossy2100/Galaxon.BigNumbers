@@ -663,7 +663,7 @@ public class StringsTests
         Assert.AreEqual("3.14", str);
     }
 
-        [TestMethod]
+    [TestMethod]
     public void TestParse0()
     {
         var bd = BigDecimal.Parse("0");

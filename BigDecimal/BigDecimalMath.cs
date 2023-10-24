@@ -3,15 +3,9 @@ using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers;
 
-public partial struct BigDecimal : ICloneable
+public partial struct BigDecimal
 {
     #region Adjustment methods
-
-    /// <inheritdoc />
-    public object Clone()
-    {
-        return (BigDecimal)MemberwiseClone();
-    }
 
     /// <inheritdoc />
     public static BigDecimal Abs(BigDecimal bd)
@@ -117,10 +111,6 @@ public partial struct BigDecimal : ICloneable
     {
         return Round(x, 0, MidpointRounding.ToPositiveInfinity);
     }
-
-    #endregion Adjustment methods
-
-    #region Helper methods
 
     private static BigInteger RoundSignificand(BigInteger sig, int nDigitsToCut,
         MidpointRounding mode = MidpointRounding.ToEven)
@@ -291,60 +281,95 @@ public partial struct BigDecimal : ICloneable
         return this;
     }
 
-    #endregion Helper methods
+    #endregion Adjustment methods
 
-    #region Arithmetic operators
+    #region Arithmetic methods
 
-    /// <inheritdoc />
-    public static BigDecimal operator +(BigDecimal bd)
+    /// <summary>
+    /// Clone method.
+    /// </summary>
+    /// <returns>A copy of the parameter.</returns>
+    public static BigDecimal Clone(BigDecimal z)
     {
-        return (BigDecimal)bd.Clone();
+        return new BigDecimal(z.Significand, z.Exponent);
     }
 
-    /// <inheritdoc />
-    public static BigDecimal operator +(BigDecimal a, BigDecimal b)
+    /// <summary>
+    /// Negate method.
+    /// </summary>
+    /// <returns>The negation of the parameter.</returns>
+    public static BigDecimal Negate(BigDecimal bd)
+    {
+        return new BigDecimal(-bd.Significand, bd.Exponent, true);
+    }
+
+    /// <summary>
+    /// Addition method.
+    /// </summary>
+    /// <param name="a">The left-hand BigDecimal number.</param>
+    /// <param name="b">The right-hand BigDecimal number.</param>
+    /// <returns>The addition of the arguments.</returns>
+    public static BigDecimal Add(BigDecimal a, BigDecimal b)
     {
         var (x, y) = Align(a, b);
         return new BigDecimal(x.Significand + y.Significand, x.Exponent, true);
     }
 
-    /// <inheritdoc />
-    public static BigDecimal operator ++(BigDecimal bd)
-    {
-        return bd + 1;
-    }
-
-    /// <inheritdoc />
-    public static BigDecimal operator -(BigDecimal bd)
-    {
-        return new BigDecimal(-bd.Significand, bd.Exponent, true);
-    }
-
-    /// <inheritdoc />
-    public static BigDecimal operator -(BigDecimal a, BigDecimal b)
+    /// <summary>
+    /// Subtraction method.
+    /// </summary>
+    /// <param name="a">The left-hand BigDecimal number.</param>
+    /// <param name="b">The right-hand BigDecimal number.</param>
+    /// <returns>The subtraction of the arguments.</returns>
+    public static BigDecimal Subtract(BigDecimal a, BigDecimal b)
     {
         var (x, y) = Align(a, b);
         return new BigDecimal(x.Significand - y.Significand, x.Exponent, true);
     }
 
-    /// <inheritdoc />
-    public static BigDecimal operator --(BigDecimal bd)
+    /// <summary>
+    /// Increment method.
+    /// </summary>
+    /// <param name="a">The BigDecimal number.</param>
+    /// <returns>The parameter incremented by 1.</returns>
+    public static BigDecimal Increment(BigDecimal a)
     {
-        return bd - 1;
+        return Add(a, 1);
     }
 
-    /// <inheritdoc />
-    public static BigDecimal operator *(BigDecimal a, BigDecimal b)
+    /// <summary>
+    /// Decrement method.
+    /// </summary>
+    /// <param name="a">The BigDecimal number.</param>
+    /// <returns>The parameter decremented by 1.</returns>
+    public static BigDecimal Decrement(BigDecimal a)
+    {
+        return Subtract(a, 1);
+    }
+
+    /// <summary>
+    /// Multiply two BigDecimal values.
+    /// </summary>
+    /// <param name="a">The left-hand BigDecimal number.</param>
+    /// <param name="b">The right-hand BigDecimal number.</param>
+    /// <returns>The multiplication of the arguments.</returns>
+    public static BigDecimal Multiply(BigDecimal a, BigDecimal b)
     {
         return new BigDecimal(a.Significand * b.Significand, a.Exponent + b.Exponent, true);
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Divide a BigDecimal by a BigDecimal.
+    /// </summary>
     /// <remarks>
     /// Computes division using the Goldschmidt algorithm.
     /// <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division" />
     /// </remarks>
-    public static BigDecimal operator /(BigDecimal a, BigDecimal b)
+    /// <param name="a">The left-hand BigDecimal number.</param>
+    /// <param name="b">The right-hand BigDecimal number.</param>
+    /// <returns>The division of the arguments.</returns>
+    /// <exception cref="System.DivideByZeroException">If b == 0</exception>
+    public static BigDecimal Divide(BigDecimal a, BigDecimal b)
     {
         // Guard.
         if (b == 0)
@@ -406,15 +431,25 @@ public partial struct BigDecimal : ICloneable
         return RoundSigFigs(a);
     }
 
-    /// <inheritdoc />
-    public static BigDecimal operator %(BigDecimal a, BigDecimal b)
+    /// <summary>
+    /// Calculate reciprocal.
+    /// </summary>
+    /// <returns>The reciprocal of the argument.</returns>
+    public static BigDecimal Reciprocal(BigDecimal z)
+    {
+        return Divide(1, z);
+    }
+
+    /// <summary>
+    /// Divides two BigDecimal values together to compute their modulus or remainder.
+    /// </summary>
+    /// <param name="a">The value which b divides.</param>
+    /// <param name="b">The value which divides a.</param>
+    /// <returns>The modulus or remainder of a divided by b.</returns>
+    public static BigDecimal Modulus(BigDecimal a, BigDecimal b)
     {
         return a - Truncate(a / b) * b;
     }
-
-    #endregion Arithmetic operators
-
-    #region Arithmetic methods
 
     /// <summary>
     /// Compute the arithmetic-geometric mean of two values.
@@ -472,4 +507,76 @@ public partial struct BigDecimal : ICloneable
     }
 
     #endregion Arithmetic methods
+
+    #region Arithmetic operators
+
+    /// <inheritdoc />
+    public static BigDecimal operator +(BigDecimal bd)
+    {
+        return Clone(bd);
+    }
+
+    /// <inheritdoc />
+    public static BigDecimal operator -(BigDecimal bd)
+    {
+        return Negate(bd);
+    }
+
+    /// <inheritdoc />
+    public static BigDecimal operator +(BigDecimal a, BigDecimal b)
+    {
+        return Add(a, b);
+    }
+
+    /// <inheritdoc />
+    public static BigDecimal operator -(BigDecimal a, BigDecimal b)
+    {
+        return Subtract(a, b);
+    }
+
+    /// <inheritdoc />
+    public static BigDecimal operator ++(BigDecimal bd)
+    {
+        return Increment(bd);
+    }
+
+    /// <inheritdoc />
+    public static BigDecimal operator --(BigDecimal bd)
+    {
+        return Decrement(bd);
+    }
+
+    /// <inheritdoc />
+    public static BigDecimal operator *(BigDecimal a, BigDecimal b)
+    {
+        return Multiply(a, b);
+    }
+
+    /// <inheritdoc />
+    public static BigDecimal operator /(BigDecimal a, BigDecimal b)
+    {
+        return Divide(a, b);
+    }
+
+    /// <inheritdoc />
+    public static BigDecimal operator %(BigDecimal a, BigDecimal b)
+    {
+        return Modulus(a, b);
+    }
+
+    /// <summary>
+    /// Exponentiation operator.
+    /// </summary>
+    /// <param name="a">The base.</param>
+    /// <param name="b">The exponent.</param>
+    /// <returns>The first operand raised to the power of the second.</returns>
+    /// <exception cref="ArithmeticException">
+    /// If the base is 0 and the exponent is negative or imaginary.
+    /// </exception>
+    public static BigDecimal operator ^(BigDecimal a, BigDecimal b)
+    {
+        return Pow(a, b);
+    }
+
+    #endregion Arithmetic operators
 }

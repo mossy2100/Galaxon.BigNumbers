@@ -41,7 +41,7 @@ public static class XEnumerableBigDecimal
     /// </summary>
     public static BigDecimal Product(this IEnumerable<BigDecimal> source)
     {
-        return source.Aggregate<BigDecimal, BigDecimal>(1, (sum, num) => sum * num);
+        return source.Aggregate<BigDecimal, BigDecimal>(1, (prod, num) => prod * num);
     }
 
     /// <summary>

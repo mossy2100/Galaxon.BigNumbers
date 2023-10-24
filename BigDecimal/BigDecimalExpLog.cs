@@ -7,8 +7,11 @@ namespace Galaxon.BigNumbers;
 /// <summary>
 /// Power, root, exponential, and logarithm methods for BigDecimal.
 /// </summary>
-public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<BigDecimal>,
-    IExponentialFunctions<BigDecimal>, ILogarithmicFunctions<BigDecimal>
+public partial struct BigDecimal :
+    IPowerFunctions<BigDecimal>,
+    IRootFunctions<BigDecimal>,
+    IExponentialFunctions<BigDecimal>,
+    ILogarithmicFunctions<BigDecimal>
 {
     #region Power functions
 
@@ -112,7 +115,8 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
         //      [If y is even, the result will be complex, e.g. RootN(-1, 2).]
         if (r.Denominator > int.MaxValue || !BigInteger.IsOddInteger(r.Denominator))
         {
-            throw new ArithmeticException("Cannot compute a real result. Try using BigComplex.Pow()");
+            throw new ArithmeticException(
+                "Cannot compute a real result. Try using BigComplex.Pow()");
         }
 
         // Calculate the real result.
@@ -429,6 +433,18 @@ public partial struct BigDecimal : IPowerFunctions<BigDecimal>, IRootFunctions<B
 
         // Scale back.
         return RoundSigFigs(result);
+    }
+
+    /// <summary>
+    /// Calculate the natural logarithm of a BigDecimal value.
+    /// Alias for Log(BigDecimal).
+    /// </summary>
+    /// <see cref="Log(BigDecimal)" />
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The natural logarithm of the parameter.</returns>
+    public static BigDecimal Ln(BigDecimal x)
+    {
+        return Log(x);
     }
 
     /// <inheritdoc />

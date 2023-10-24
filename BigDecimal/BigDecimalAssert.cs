@@ -11,7 +11,8 @@ public partial struct BigDecimal
     /// <param name="actual">The actual value.</param>
     /// <param name="delta">The maximum acceptable difference.</param>
     /// <exception cref="AssertFailedException"></exception>
-    public static void AssertAreEqual(BigDecimal expected, BigDecimal actual, BigDecimal? delta = null)
+    public static void AssertAreEqual(BigDecimal expected, BigDecimal actual,
+        BigDecimal? delta = null)
     {
         // Cannot set a default delta in the method signature because a BigDecimal value cannot be a
         // compile-time constant.
@@ -20,7 +21,8 @@ public partial struct BigDecimal
         // Compare values.
         if (Abs(expected - actual) > delta)
         {
-            throw new AssertFailedException($"Values are unequal. Expected {expected}, got {actual}.");
+            throw new AssertFailedException(
+                $"Values are unequal. Expected {expected}, got {actual}.");
         }
     }
 

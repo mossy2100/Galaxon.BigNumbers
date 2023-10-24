@@ -10,12 +10,12 @@
 
     <ItemGroup>
         <Reference Include="Galaxon.Core">
-          <HintPath>..\..\Core\Core\bin\Debug\net7.0\Galaxon.Core.dll</HintPath>
+            <HintPath>..\..\Core\Core\bin\Debug\net7.0\Galaxon.Core.dll</HintPath>
         </Reference>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BigDecimal\BigDecimal.csproj" />
+        <ProjectReference Include="..\BigDecimal\BigDecimal.csproj"/>
     </ItemGroup>
 
 </Project>

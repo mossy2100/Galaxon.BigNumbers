@@ -93,6 +93,7 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
             {
                 throw new ArgumentOutOfRangeException(nameof(MaxSigFigs), "Must be at least 1.");
             }
+
             _maxSigFigs = value;
         }
     }
