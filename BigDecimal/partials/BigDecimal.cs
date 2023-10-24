@@ -53,21 +53,20 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     public int Exponent { get; set; }
 
     /// <summary>
-    /// The sign of the value. The same convention is used as for BigInteger except an sbyte is used
-    /// instead of an int.
-    /// -1 means negative
-    /// 0 means zero
-    /// 1 means positive
+    /// The sign of the value. The same convention is used as for BigInteger.
+    ///   -1 means negative
+    ///    0 means zero
+    ///    1 means positive
     /// </summary>
     /// <see cref="BigInteger.Sign" />
     /// <see
     ///     href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
-    public sbyte Sign => (sbyte)Significand.Sign;
+    public readonly int Sign => Significand.Sign;
 
     /// <summary>
     /// Get the number of significant figures.
     /// </summary>
-    public int NumSigFigs => Significand.NumDigits();
+    public readonly int NumSigFigs => Significand.NumDigits();
 
     #endregion Instance properties
 
@@ -283,25 +282,25 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     }
 
     /// <inheritdoc />
-    public bool TryWriteSignificandBigEndian(Span<byte> destination, out int bytesWritten)
+    public readonly bool TryWriteSignificandBigEndian(Span<byte> destination, out int bytesWritten)
     {
-        return TryWritebig(Significand, destination, out bytesWritten, true);
+        return TryWriteBigInteger(Significand, destination, out bytesWritten, true);
     }
 
     /// <inheritdoc />
-    public bool TryWriteSignificandLittleEndian(Span<byte> destination, out int bytesWritten)
+    public readonly bool TryWriteSignificandLittleEndian(Span<byte> destination, out int bytesWritten)
     {
-        return TryWritebig(Significand, destination, out bytesWritten, false);
+        return TryWriteBigInteger(Significand, destination, out bytesWritten, false);
     }
 
     /// <inheritdoc />
-    public bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten)
+    public readonly bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten)
     {
         return TryWriteInt(Exponent, destination, out bytesWritten, true);
     }
 
     /// <inheritdoc />
-    public bool TryWriteExponentLittleEndian(Span<byte> destination, out int bytesWritten)
+    public readonly bool TryWriteExponentLittleEndian(Span<byte> destination, out int bytesWritten)
     {
         return TryWriteInt(Exponent, destination, out bytesWritten, false);
     }
@@ -331,7 +330,7 @@ public partial struct BigDecimal : IFloatingPoint<BigDecimal>
     /// <see cref="TryWriteSignificandBigEndian" />
     /// <see cref="TryWriteSignificandLittleEndian" />
     /// </summary>
-    private static bool TryWritebig(BigInteger bi, Span<byte> destination,
+    private static bool TryWriteBigInteger(BigInteger bi, Span<byte> destination,
         out int bytesWritten,
         bool isBigEndian)
     {

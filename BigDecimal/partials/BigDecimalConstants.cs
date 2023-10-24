@@ -7,6 +7,8 @@ namespace Galaxon.Numerics;
 /// </summary>
 public partial struct BigDecimal
 {
+    // ---------------------------------------------------------------------------------------------
+
     /// <summary>
     /// Cached value for e.
     /// </summary>
@@ -17,15 +19,23 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_e.NumSigFigs >= MaxSigFigs)
+            if (_e.NumSigFigs == MaxSigFigs)
+            {
+                return _e;
+            }
+
+            if (_e.NumSigFigs > MaxSigFigs)
             {
                 return RoundSigFigs(_e);
             }
 
+            // Calculate e:
             _e = Exp(1);
             return _e;
         }
     }
+
+    // ---------------------------------------------------------------------------------------------
 
     /// <summary>
     /// Cached value for π.
@@ -37,7 +47,12 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_pi.NumSigFigs >= MaxSigFigs)
+            if (_pi.NumSigFigs == MaxSigFigs)
+            {
+                return _pi;
+            }
+
+            if (_pi.NumSigFigs > MaxSigFigs)
             {
                 return RoundSigFigs(_pi);
             }
@@ -99,6 +114,8 @@ public partial struct BigDecimal
         return RoundSigFigs(pi);
     }
 
+    // ---------------------------------------------------------------------------------------------
+
     /// <summary>
     /// Cached value for τ.
     /// </summary>
@@ -109,7 +126,12 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_tau.NumSigFigs >= MaxSigFigs)
+            if (_tau.NumSigFigs == MaxSigFigs)
+            {
+                return _tau;
+            }
+
+            if (_tau.NumSigFigs > MaxSigFigs)
             {
                 return RoundSigFigs(_tau);
             }
@@ -138,6 +160,8 @@ public partial struct BigDecimal
         return RoundSigFigs(tau);
     }
 
+    // ---------------------------------------------------------------------------------------------
+
     /// <summary>
     /// Cached value for φ, the golden ratio.
     /// </summary>
@@ -150,7 +174,12 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_phi.NumSigFigs >= MaxSigFigs)
+            if (_phi.NumSigFigs == MaxSigFigs)
+            {
+                return _phi;
+            }
+
+            if (_phi.NumSigFigs > MaxSigFigs)
             {
                 return RoundSigFigs(_phi);
             }
@@ -179,6 +208,8 @@ public partial struct BigDecimal
         return RoundSigFigs(phi);
     }
 
+    // ---------------------------------------------------------------------------------------------
+
     /// <summary>
     /// Cached value for Log(10), the natural logarithm of 10.
     /// This value is cached because of it's use in the Log() method. We don't want to have to
@@ -193,7 +224,12 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_ln10.NumSigFigs >= MaxSigFigs)
+            if (_ln10.NumSigFigs == MaxSigFigs)
+            {
+                return _ln10;
+            }
+
+            if (_ln10.NumSigFigs > MaxSigFigs)
             {
                 return RoundSigFigs(_ln10);
             }

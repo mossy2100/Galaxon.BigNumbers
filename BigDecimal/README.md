@@ -7,15 +7,15 @@ numbers. It's well-tested, fast, and supports new interfaces for numeric types p
 
 The type implements the following interfaces:
 
-* [IFloatingPoint\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.ifloatingpoint-1)
-* [IPowerFunctions\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.ipowerfunctions-1)
-* [IRootFunctions\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.irootfunctions-1)
-* [IExponentialFunctions\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.iexponentialfunctions-1)
-* [ILogarithmicFunctions\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.ilogarithmicfunctions-1)
-* [ITrigonometricFunctions\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.itrigonometricfunctions-1)
-* [IHyperbolicFunctions\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.ihyperbolicfunctions-1)
-* [ICloneable](https://learn.microsoft.com/en-us/dotnet/api/system.icloneable)
-* [IConvertible](https://learn.microsoft.com/en-us/dotnet/api/system.iconvertible)
+* [IFloatingPoint\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.ifloatingpoint-1?view=net-7.0)
+* [IPowerFunctions\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.ipowerfunctions-1?view=net-7.0)
+* [IRootFunctions\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.irootfunctions-1?view=net-7.0)
+* [IExponentialFunctions\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.iexponentialfunctions-1?view=net-7.0)
+* [ILogarithmicFunctions\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.ilogarithmicfunctions-1?view=net-7.0)
+* [ITrigonometricFunctions\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.itrigonometricfunctions-1?view=net-7.0)
+* [IHyperbolicFunctions\<TSelf\>](https://learn.microsoft.com/en-us/dotnet/api/system.numerics.ihyperbolicfunctions-1?view=net-7.0)
+* [ICloneable](https://learn.microsoft.com/en-us/dotnet/api/system.icloneable?view=net-7.0)
+* [IConvertible](https://learn.microsoft.com/en-us/dotnet/api/system.iconvertible?view=net-7.0)
 
 And therefore includes:
 

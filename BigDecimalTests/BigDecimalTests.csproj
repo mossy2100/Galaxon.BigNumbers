@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AssemblyName>Galaxon.Numerics.BigDecimalTests</AssemblyName>
-        <RootNamespace>Galaxon.Numerics.BigDecimalTests</RootNamespace>
+        <RootNamespace>Galaxon.Numerics</RootNamespace>
         <OutputType>Library</OutputType>
         <DocumentationFile>docs/index.xml</DocumentationFile>
         <IsPackable>false</IsPackable>
