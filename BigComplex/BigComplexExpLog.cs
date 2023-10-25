@@ -2,11 +2,7 @@ using System.Numerics;
 
 namespace Galaxon.BigNumbers;
 
-public partial struct BigComplex :
-    IPowerFunctions<BigComplex>,
-    IRootFunctions<BigComplex>,
-    IExponentialFunctions<BigComplex>,
-    ILogarithmicFunctions<BigComplex>
+public partial struct BigComplex
 {
     #region Power functions
 

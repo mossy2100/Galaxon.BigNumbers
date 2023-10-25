@@ -8,9 +8,7 @@ namespace Galaxon.BigNumbers;
 /// </summary>
 /// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions" />
 /// <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions" />
-public partial struct BigDecimal :
-    ITrigonometricFunctions<BigDecimal>,
-    IHyperbolicFunctions<BigDecimal>
+public partial struct BigDecimal
 {
     #region Trigonometric methods
 

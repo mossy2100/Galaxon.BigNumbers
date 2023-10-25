@@ -8,7 +8,7 @@ limitations of the double type (which the built-in Complex type relies on), espe
 range, precision, and accuracy.
 
 The struct contains two BigDecimal types; therefore, this package (Galaxon.BigComplex)
-depends on Galaxon.BigDecimal, which in turn depends on Galaxon.Numerics and Galaxon.Core.
+depends on Galaxon.BigDecimal, which in turn depends on Galaxon.Core and Galaxon.BigRational.
 
 To understand the capabilities of BigComplex, it's worth understanding BigDecimal.
 
@@ -91,7 +91,6 @@ achieved using numerical methods such as:
 This package depends on:
 
 - [Galaxon.Core](https://github.com/mossy2100/Galaxon.Core)
-- [Galaxon.Numerics](https://github.com/mossy2100/Galaxon.Numerics)
 - [Galaxon.BigDecimal](https://github.com/mossy2100/Galaxon.BigDecimal)
 
 ## Feedback

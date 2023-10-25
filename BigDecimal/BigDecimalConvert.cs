@@ -189,16 +189,6 @@ public partial struct BigDecimal
         return ConvertFromFloatingPoint(n);
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to BigDecimal.
-    /// This cast operation has to be explicit as there could be loss of information due to the
-    /// limit on the number of significant figures in the result of the division.
-    /// </summary>
-    public static explicit operator BigDecimal(BigRational n)
-    {
-        return (BigDecimal)n.Numerator / n.Denominator;
-    }
-
     #endregion Cast operators to BigDecimal
 
     #region Cast operators from BigDecimal
@@ -415,26 +405,6 @@ public partial struct BigDecimal
         return double.Parse(bd.ToString("E"));
     }
 
-    /// <summary>
-    /// Implicit cast from BigDecimal to BigRational.
-    /// This cast operation can be implicit because it can be done exactly, without loss of
-    /// information, due to the use of BigIntegers inside BigRational.
-    /// </summary>
-    public static implicit operator BigRational(BigDecimal n)
-    {
-        return n.Exponent switch
-        {
-            // Zero exponent.
-            0 => new BigRational(n.Significand),
-
-            // Positive exponent.
-            > 0 => new BigRational(n.Significand * BigInteger.Pow(10, n.Exponent)),
-
-            // Negative exponent.
-            < 0 => new BigRational(n.Significand, BigInteger.Pow(10, -n.Exponent)),
-        };
-    }
-
     #endregion Cast operators from BigDecimal
 
     #region TryConvert methods
@@ -443,6 +413,15 @@ public partial struct BigDecimal
     public static bool TryConvertFromChecked<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
+        // Set a default result.
+        result = Zero;
+
+        // Check for supported type.
+        if (!IsTypeSupported(typeof(TOther)))
+        {
+            return false;
+        }
+
         // See if we can cast it.
         if (XReflection.CanCast<TOther, BigDecimal>())
         {
@@ -450,9 +429,10 @@ public partial struct BigDecimal
             return true;
         }
 
-        // Unsupported type.
-        result = 0;
-        return false;
+        // Unsupported type. Should never happen.
+        // It means a cast from a standard number type to BigDecimal is missing.
+        throw new NotImplementedException(
+            $"The cast operation from {typeof(TOther).Name} to BigDecimal has not been implemented.");
     }
 
     /// <inheritdoc />
@@ -467,7 +447,7 @@ public partial struct BigDecimal
     public static bool TryConvertFromTruncating<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
-        // No truncation needed as BigDecimal isn't an integer type.
+        // No truncation needed, as BigDecimal isn't an integer type.
         return TryConvertFromChecked(value, out result);
     }
 
@@ -478,8 +458,14 @@ public partial struct BigDecimal
         // Set a default result.
         result = TOther.Zero;
 
+        // Check for supported type.
+        if (!IsTypeSupported(typeof(TOther)))
+        {
+            return false;
+        }
+
         // Check types with unlimited range.
-        if (result is BigInteger or BigRational)
+        if (result is BigInteger)
         {
             result = (TOther)(object)value;
             return true;
@@ -489,6 +475,7 @@ public partial struct BigDecimal
         var (min, max) = XNumber.GetRange<TOther>();
 
         // If the type doesn't have MinValue and MaxValue properties, it's unsupported.
+        // This shouldn't happen, though.
         if (min is null || max is null)
         {
             return false;
@@ -540,8 +527,14 @@ public partial struct BigDecimal
         // Set a default result.
         result = TOther.Zero;
 
+        // Check for supported type.
+        if (!IsTypeSupported(typeof(TOther)))
+        {
+            return false;
+        }
+
         // Check types with unlimited range.
-        if (result is BigInteger or BigRational)
+        if (result is BigInteger)
         {
             result = (TOther)(object)value;
             return true;
@@ -650,6 +643,16 @@ public partial struct BigDecimal
 
         // Calculate the result.
         return sign * sig * Exp2(exp);
+    }
+
+    /// <summary>
+    /// Which types are supported for conversions to and from BigDecimal.
+    /// </summary>
+    /// <param name="type">A type.</param>
+    /// <returns>If the type is supported.</returns>
+    private static bool IsTypeSupported(Type type)
+    {
+        return XNumber.IsStandardNumberType(type);
     }
 
     #endregion Helper methods

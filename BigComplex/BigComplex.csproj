@@ -16,6 +16,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\BigDecimal\BigDecimal.csproj"/>
+        <ProjectReference Include="..\BigRational\BigRational.csproj" />
     </ItemGroup>
 
 </Project>

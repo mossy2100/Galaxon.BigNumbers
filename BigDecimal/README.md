@@ -72,9 +72,6 @@ achieved using numerical methods such as:
 This package depends on:
 
 - [Galaxon.Core](https://github.com/mossy2100/Galaxon.Core)
-- [Galaxon.Numerics](https://github.com/mossy2100/Galaxon.Numerics)
-
-(TODO: Separate out BigRational from Galaxon.Numerics and change the dependency to just that.)
 
 ## Feedback
 

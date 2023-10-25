@@ -8,20 +8,12 @@ namespace Galaxon.BigNumbers;
 
 /// <summary>
 /// Encapsulates a rational.
-/// TODO: Change this. They should be reduced automatically.
-/// Unlike Java's BigRational, the rationals are not automatically reduced (reduced) because
-/// this is a bit slow and not always required. So, you can pass true to the constructor, or call
-/// Reduce() yourself when needed.
 /// <see href="https://en.wikipedia.org/wiki/Rational_number" />
 /// <see href="https://introcs.cs.princeton.edu/java/92symbolic/BigRational.java.html" />
 /// <see href="https://github.com/danm-de/BigRationals" />
 /// </summary>
-public partial struct BigRational : IEquatable<BigRational>, IFormattable, IParsable<BigRational>,
-    IUnaryNegationOperators<BigRational, BigRational>,
-    IAdditionOperators<BigRational, BigRational, BigRational>,
-    ISubtractionOperators<BigRational, BigRational, BigRational>,
-    IMultiplyOperators<BigRational, BigRational, BigRational>,
-    IDivisionOperators<BigRational, BigRational, BigRational>,
+public partial struct BigRational :
+    INumberBase<BigRational>,
     IComparisonOperators<BigRational, BigRational, bool>
 {
     #region Constructors
@@ -84,7 +76,204 @@ public partial struct BigRational : IEquatable<BigRational>, IFormattable, IPars
 
     public BigInteger Denominator { get; set; }
 
+    /// <inheritdoc />
+    public static int Radix { get; }
+
     public static BigRational Zero => new (0, 1);
+
+    /// <inheritdoc />
+    public static BigRational Abs(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsCanonical(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsComplexNumber(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsEvenInteger(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsFinite(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsImaginaryNumber(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsInfinity(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsInteger(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsNaN(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsNegative(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsNegativeInfinity(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsNormal(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsOddInteger(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsPositive(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsPositiveInfinity(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsRealNumber(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsSubnormal(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool IsZero(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static BigRational MaxMagnitude(BigRational x, BigRational y)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static BigRational MaxMagnitudeNumber(BigRational x, BigRational y)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static BigRational MinMagnitude(BigRational x, BigRational y)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static BigRational MinMagnitudeNumber(BigRational x, BigRational y)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static BigRational Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static BigRational Parse(string s, NumberStyles style, IFormatProvider? provider)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryConvertFromChecked<TOther>(TOther value, out BigRational result) where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryConvertFromSaturating<TOther>(TOther value, out BigRational result) where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryConvertFromTruncating<TOther>(TOther value, out BigRational result) where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryConvertToChecked<TOther>(BigRational value, out TOther result) where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryConvertToSaturating<TOther>(BigRational value, out TOther result) where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryConvertToTruncating<TOther>(BigRational value, out TOther result) where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider,
+        out BigRational result)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider,
+        out BigRational result)
+    {
+        throw new NotImplementedException();
+    }
 
     public static BigRational One => new (1, 1);
 
@@ -103,6 +292,12 @@ public partial struct BigRational : IEquatable<BigRational>, IFormattable, IPars
 
         // See if the numerators and denominators are equal.
         return Numerator == br2.Numerator && Denominator == br2.Denominator;
+    }
+
+    /// <inheritdoc />
+    public static BigRational operator +(BigRational value)
+    {
+        throw new NotImplementedException();
     }
 
     public override bool Equals(object? obj)
@@ -175,6 +370,13 @@ public partial struct BigRational : IEquatable<BigRational>, IFormattable, IPars
                 throw new ArgumentFormatException(nameof(format),
                     "The provided format string is not supported.");
         }
+    }
+
+    /// <inheritdoc />
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
+        IFormatProvider? provider)
+    {
+        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -585,4 +787,34 @@ public partial struct BigRational : IEquatable<BigRational>, IFormattable, IPars
     }
 
     #endregion Comparison operators
+
+    /// <inheritdoc />
+    public static BigRational Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out BigRational result)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static BigRational AdditiveIdentity { get; }
+
+    /// <inheritdoc />
+    public static BigRational operator --(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static BigRational operator ++(BigRational value)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public static BigRational MultiplicativeIdentity { get; }
 }

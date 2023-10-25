@@ -3,7 +3,14 @@ using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers;
 
-public partial struct BigDecimal : IFloatingPoint<BigDecimal>
+public partial struct BigDecimal :
+    IFloatingPoint<BigDecimal>,
+    IPowerFunctions<BigDecimal>,
+    IRootFunctions<BigDecimal>,
+    IExponentialFunctions<BigDecimal>,
+    ILogarithmicFunctions<BigDecimal>,
+    ITrigonometricFunctions<BigDecimal>,
+    IHyperbolicFunctions<BigDecimal>
 {
     #region Constructors
 

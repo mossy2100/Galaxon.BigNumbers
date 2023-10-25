@@ -2,9 +2,7 @@ using System.Numerics;
 
 namespace Galaxon.BigNumbers;
 
-public partial struct BigComplex :
-    ITrigonometricFunctions<BigComplex>,
-    IHyperbolicFunctions<BigComplex>
+public partial struct BigComplex
 {
     #region Trigonometric methods
 

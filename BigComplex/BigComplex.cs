@@ -2,7 +2,13 @@
 
 namespace Galaxon.BigNumbers;
 
-public partial struct BigComplex
+public partial struct BigComplex :
+    IPowerFunctions<BigComplex>,
+    IRootFunctions<BigComplex>,
+    IExponentialFunctions<BigComplex>,
+    ILogarithmicFunctions<BigComplex>,
+    ITrigonometricFunctions<BigComplex>,
+    IHyperbolicFunctions<BigComplex>
 {
     #region Core properties
 

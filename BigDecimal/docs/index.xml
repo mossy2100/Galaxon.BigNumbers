@@ -467,13 +467,6 @@
             </code>
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigRational)~Galaxon.BigNumbers.BigDecimal">
-            <summary>
-            Explicit cast from BigRational to BigDecimal.
-            This cast operation has to be explicit as there could be loss of information due to the
-            limit on the number of significant figures in the result of the division.
-            </summary>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.SByte">
             <summary>
             Explicit cast from BigDecimal to sbyte.
@@ -597,13 +590,6 @@
             valid range for double.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(Galaxon.BigNumbers.BigDecimal)~Galaxon.BigNumbers.BigRational">
-            <summary>
-            Implicit cast from BigDecimal to BigRational.
-            This cast operation can be implicit because it can be done exactly, without loss of
-            information, due to the use of BigIntegers inside BigRational.
-            </summary>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryConvertFromChecked``1(``0,Galaxon.BigNumbers.BigDecimal@)">
             <inheritdoc />
         </member>
@@ -628,6 +614,13 @@
             Private method to convert a floating point value (float or double) to a BigDecimal.
             </summary>
             <exception cref="T:System.InvalidCastException"></exception>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.IsTypeSupported(System.Type)">
+            <summary>
+            Which types are supported for conversions to and from BigDecimal.
+            </summary>
+            <param name="type">A type.</param>
+            <returns>If the type is supported.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Pow(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>

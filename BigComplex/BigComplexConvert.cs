@@ -1,4 +1,6 @@
 using System.Numerics;
+using Galaxon.Core.Numbers;
+using Galaxon.Core.Types;
 
 namespace Galaxon.BigNumbers;
 
@@ -208,44 +210,33 @@ public partial struct BigComplex
     public static bool TryConvertFromChecked<TOther>(TOther value, out BigComplex result)
         where TOther : INumberBase<TOther>
     {
-        BigComplex? tmp = value switch
-        {
-            sbyte n => (BigComplex)n,
-            byte n => (BigComplex)n,
-            short n => (BigComplex)n,
-            ushort n => (BigComplex)n,
-            int n => (BigComplex)n,
-            uint n => (BigComplex)n,
-            long n => (BigComplex)n,
-            ulong n => (BigComplex)n,
-            Int128 n => (BigComplex)n,
-            UInt128 n => (BigComplex)n,
-            Half n => (BigComplex)n,
-            float n => (BigComplex)n,
-            double n => (BigComplex)n,
-            decimal n => (BigComplex)n,
-            BigInteger n => (BigComplex)n,
-            BigDecimal n => (BigComplex)n,
-            BigRational n => (BigComplex)n,
-            _ => null,
-        };
+        // Set a default result.
+        result = Zero;
 
-        if (tmp == null)
+        // Check for supported type.
+        if (!IsTypeSupported(typeof(TOther)))
         {
-            // Unsupported type.
-            result = 0;
             return false;
         }
 
-        // Success.
-        result = tmp.Value;
-        return true;
+        // See if we can cast it.
+        if (XReflection.CanCast<TOther, BigComplex>())
+        {
+            result = (BigComplex)(object)value;
+            return true;
+        }
+
+        // Unsupported type. Should never happen.
+        // It means a cast from a standard number type to BigComplex is missing.
+        throw new NotImplementedException(
+            $"The cast operation from {typeof(TOther).Name} to BigComplex has not been implemented.");
     }
 
     /// <inheritdoc />
     public static bool TryConvertFromSaturating<TOther>(TOther value, out BigComplex result)
         where TOther : INumberBase<TOther>
     {
+        // No saturation needed, as BigDecimal does not specify a min or max value.
         return TryConvertFromChecked(value, out result);
     }
 
@@ -253,6 +244,7 @@ public partial struct BigComplex
     public static bool TryConvertFromTruncating<TOther>(TOther value, out BigComplex result)
         where TOther : INumberBase<TOther>
     {
+        // No truncation needed, as BigDecimal isn't an integer type.
         return TryConvertFromChecked(value, out result);
     }
 
@@ -263,18 +255,24 @@ public partial struct BigComplex
         // Set a default result.
         result = TOther.Zero;
 
-        // If the number is real, convert the real part use the BigDecimal method.
-        if (IsRealNumber(value))
+        // Check for supported type.
+        if (!IsTypeSupported(typeof(TOther)))
         {
-            return BigDecimal.TryConvertToChecked(value.Real, out result);
+            return false;
         }
 
-        // If the number is complex, we can only support conversion to Complex.
+        // Complex is the only supported type that can handle both real and imaginary parts.
         if (result is Complex)
         {
             // Cast to Complex.
             result = (TOther)(object)value;
             return true;
+        }
+
+        // If the number is real, convert the real part use the BigDecimal method.
+        if (IsRealNumber(value))
+        {
+            return BigDecimal.TryConvertToChecked(value.Real, out result);
         }
 
         // Otherwise, we'll assume TOther is supported, but value is outside its valid range.
@@ -288,6 +286,12 @@ public partial struct BigComplex
     {
         // Set a default result.
         result = TOther.Zero;
+
+        // Check for supported type.
+        if (!IsTypeSupported(typeof(TOther)))
+        {
+            return false;
+        }
 
         // Complex is the only supported type that can handle both real and imaginary parts.
         if (result is Complex)
@@ -312,4 +316,19 @@ public partial struct BigComplex
     }
 
     #endregion TryConvert methods
+
+    #region Helper methods
+
+    /// <summary>
+    /// Which types are supported for conversions to and from BigComplex.
+    /// </summary>
+    /// <param name="type">A type.</param>
+    /// <returns>If the type is supported.</returns>
+    private static bool IsTypeSupported(Type type)
+    {
+        return XNumber.IsStandardNumberType(type) || type == typeof(BigRational)
+            || type == typeof(BigDecimal);
+    }
+
+    #endregion Helper methods
 }

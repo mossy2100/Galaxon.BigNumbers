@@ -7,11 +7,7 @@ namespace Galaxon.BigNumbers;
 /// <summary>
 /// Power, root, exponential, and logarithm methods for BigDecimal.
 /// </summary>
-public partial struct BigDecimal :
-    IPowerFunctions<BigDecimal>,
-    IRootFunctions<BigDecimal>,
-    IExponentialFunctions<BigDecimal>,
-    ILogarithmicFunctions<BigDecimal>
+public partial struct BigDecimal
 {
     #region Power functions
 
@@ -30,97 +26,52 @@ public partial struct BigDecimal :
     /// </exception>
     public static BigDecimal Pow(BigDecimal x, BigDecimal y)
     {
-        // Handle negative powers.
-        if (y < 0)
-        {
-            return 1 / Pow(x, -y);
-        }
+        // Handle negative y.
+        if (y < 0) return 1 / Pow(x, -y);
 
         // Anything to the power of 0 (including 0) is 1.
-        if (y == 0)
-        {
-            return 1;
-        }
+        if (y == 0) return 1;
 
         // Anything to the power of 1 is itself.
-        if (y == 1)
-        {
-            return x;
-        }
+        if (y == 1) return x;
 
         // 0 to any power other than 0 is 0.
-        if (x == 0)
-        {
-            return 0;
-        }
+        if (x == 0) return 0;
 
         // 1 to any power is 1.
-        if (x == 1)
-        {
-            return 1;
-        }
+        if (x == 1) return 1;
 
-        // If the exponent is an integer we can computer a result quickly with exponentiation by
-        // squaring.
+        // If the exponent is an integer we can compute a result reasonably quickly with
+        // exponentiation by squaring (recursion).
         if (IsInteger(y))
         {
-            // 10 to an integer power is easy.
+            // 10 to an integer power is easy, given the structure of the BigDecimal type.
             if (x == 10 && y >= int.MinValue && y <= int.MaxValue)
             {
                 return new BigDecimal(1, (int)y);
             }
 
             // Even integer powers.
-            if (IsEvenInteger(y))
-            {
-                return Pow(Sqr(x), y / 2);
-            }
+            if (IsEvenInteger(y)) return Pow(Sqr(x), y / 2);
 
-            // Odd integer powers.
-            return x * Pow(Sqr(x), (y - 1) / 2);
+            // Odd integer powers. (We know y >= 3 at this point.)
+            return x * Pow(x, y - 1);
         }
 
         // For positive x with non-integer exponent, compute the result using Exp() and Ln().
-        if (x > 0)
-        {
-            return Exp(y * Log(x));
-        }
+        if (x > 0) return Exp(y * Log(x));
 
-        // At this point, we know:
-        //   * x is negative
-        //   * y is positive and not an integer
-        // This means the answer may be complex, or not computable, given limitations of RootN().
-
-        // To compute the result for negative x with positive non-integer y, we can use the formula
-        // shown at the end of the method, which calls Pow() and RootN().
-        // To do this, we need to get y as a rational (fraction). This will determine if a real
-        // result can be found.
-        // We don't want a dependency on BigComplex here, because that would be a circular
-        // dependency. If they want to compute complex results, they can use BigComplex.
-        // TODO Update the method documentation to explain all this.
-
-        // Casting y to a BigRational will create a rational number, with no loss of precision, and
-        // reduce it as much as possible.
-        BigRational r = y;
-
-        // NB: There could be an issue if the exponent does not exactly represent the intended
-        // value. e.g. 1/3 cannot be stored exactly using a BigDecimal.
-        // Thus Pow(-27, 1/3), for example, will not work. You would have to use Cbrt().
-
-        // Check if a real result can be computed.
-        //   1. If the denominator > int.MaxValue, we won't be able to call RootN() (below),
-        //      therefore we can't compute the result.
-        //   2. If calling RootN() with a negative x, y must be odd to get a real result (which
-        //      will also be negative). e.g. RootN(-27, 3) => -3.
-        //      [If y is even, the result will be complex, e.g. RootN(-1, 2).]
-        if (r.Denominator > int.MaxValue || !BigInteger.IsOddInteger(r.Denominator))
-        {
-            throw new ArithmeticException(
-                "Cannot compute a real result. Try using BigComplex.Pow()");
-        }
-
-        // Calculate the real result.
-        return Pow(RootN(x, (int)r.Denominator), r.Numerator);
+        // For negative x with non-integer exponent, we can't compute the result.
+        // In theory, one may exist (e.g. Pow(-243, 0.2) == -3), but I haven't written the algorithm
+        // for it yet.
+        // TODO Possibly solve this in BigComplex.Pow(), which should find all roots, real and
+        // complex.
+        // Unfortunately we can't access BigComplex from this class, as this would create a
+        // circular dependency.
+        // Alternatively, I could include code here that finds all roots, real and complex, and just
+        // return the first real root. Yes, that would work best.
+        throw new ArithmeticException(
+            "Cannot compute a result for x^y where x < 0 and y is not an integer.");
     }
 
     /// <summary>
