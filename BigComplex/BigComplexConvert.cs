@@ -4,7 +4,7 @@ namespace Galaxon.BigNumbers;
 
 public partial struct BigComplex
 {
-    #region Casts to BigComplex (all implicit)
+    #region Casts operators to BigComplex
 
     /// <summary>
     /// Implicit cast from sbyte to BigComplex.
@@ -167,6 +167,16 @@ public partial struct BigComplex
     }
 
     /// <summary>
+    /// Implicit cast from BigRational to BigComplex.
+    /// </summary>
+    /// <param name="n">The BigRational value.</param>
+    /// <returns>The equivalent BigComplex value.</returns>
+    public static implicit operator BigComplex(BigRational n)
+    {
+        return new BigComplex((BigDecimal)n, 0);
+    }
+
+    /// <summary>
     /// Implicit cast from Complex to BigComplex.
     /// </summary>
     /// <param name="z">The Complex value.</param>
@@ -176,9 +186,9 @@ public partial struct BigComplex
         return new BigComplex(z.Real, z.Imaginary);
     }
 
-    #endregion Cast to BigComplex
+    #endregion Casts operators to BigComplex
 
-    #region Cast from BigComplex (all explicit)
+    #region Cast operators from BigComplex
 
     /// <summary>
     /// Explicit cast of BigComplex to a Complex.
@@ -190,7 +200,7 @@ public partial struct BigComplex
         return new Complex((double)z.Real, (double)z.Imaginary);
     }
 
-    #endregion Cast from BigComplex
+    #endregion Cast operators from BigComplex
 
     #region TryConvert methods
 
@@ -198,42 +208,107 @@ public partial struct BigComplex
     public static bool TryConvertFromChecked<TOther>(TOther value, out BigComplex result)
         where TOther : INumberBase<TOther>
     {
-        throw new NotImplementedException();
+        BigComplex? tmp = value switch
+        {
+            sbyte n => (BigComplex)n,
+            byte n => (BigComplex)n,
+            short n => (BigComplex)n,
+            ushort n => (BigComplex)n,
+            int n => (BigComplex)n,
+            uint n => (BigComplex)n,
+            long n => (BigComplex)n,
+            ulong n => (BigComplex)n,
+            Int128 n => (BigComplex)n,
+            UInt128 n => (BigComplex)n,
+            Half n => (BigComplex)n,
+            float n => (BigComplex)n,
+            double n => (BigComplex)n,
+            decimal n => (BigComplex)n,
+            BigInteger n => (BigComplex)n,
+            BigDecimal n => (BigComplex)n,
+            BigRational n => (BigComplex)n,
+            _ => null,
+        };
+
+        if (tmp == null)
+        {
+            // Unsupported type.
+            result = 0;
+            return false;
+        }
+
+        // Success.
+        result = tmp.Value;
+        return true;
     }
 
     /// <inheritdoc />
     public static bool TryConvertFromSaturating<TOther>(TOther value, out BigComplex result)
         where TOther : INumberBase<TOther>
     {
-        throw new NotImplementedException();
+        return TryConvertFromChecked(value, out result);
     }
 
     /// <inheritdoc />
     public static bool TryConvertFromTruncating<TOther>(TOther value, out BigComplex result)
         where TOther : INumberBase<TOther>
     {
-        throw new NotImplementedException();
+        return TryConvertFromChecked(value, out result);
     }
 
     /// <inheritdoc />
     public static bool TryConvertToChecked<TOther>(BigComplex value, out TOther result)
         where TOther : INumberBase<TOther>
     {
-        throw new NotImplementedException();
+        // Set a default result.
+        result = TOther.Zero;
+
+        // If the number is real, convert the real part use the BigDecimal method.
+        if (IsRealNumber(value))
+        {
+            return BigDecimal.TryConvertToChecked(value.Real, out result);
+        }
+
+        // If the number is complex, we can only support conversion to Complex.
+        if (result is Complex)
+        {
+            // Cast to Complex.
+            result = (TOther)(object)value;
+            return true;
+        }
+
+        // Otherwise, we'll assume TOther is supported, but value is outside its valid range.
+        throw new OverflowException(
+            $"The value is outside the valid range for the {typeof(TOther).Name} type.");
     }
 
     /// <inheritdoc />
     public static bool TryConvertToSaturating<TOther>(BigComplex value, out TOther result)
         where TOther : INumberBase<TOther>
     {
-        throw new NotImplementedException();
+        // Set a default result.
+        result = TOther.Zero;
+
+        // Complex is the only supported type that can handle both real and imaginary parts.
+        if (result is Complex)
+        {
+            // Convert real and imaginary parts to doubles, with saturation.
+            BigDecimal.TryConvertToSaturating(value.Real, out double real);
+            BigDecimal.TryConvertToSaturating(value.Imaginary, out double imag);
+            result = (TOther)(object)(new Complex(real, imag));
+            return true;
+        }
+
+        // For other number types, we'll just ignore the imaginary part.
+        return BigDecimal.TryConvertToSaturating(value.Real, out result);
     }
 
     /// <inheritdoc />
     public static bool TryConvertToTruncating<TOther>(BigComplex value, out TOther result)
         where TOther : INumberBase<TOther>
     {
-        throw new NotImplementedException();
+        // TODO This should work fine, need to test.
+        return TryConvertToChecked(value, out result);
     }
 
     #endregion TryConvert methods

@@ -434,12 +434,6 @@
             those. This method should be faster than using ToString() and Parse().
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ConvertFromFloatingPoint``1(``0)">
-            <summary>
-            Private method to convert a floating point value (float or double) to a BigDecimal.
-            </summary>
-            <exception cref="T:System.InvalidCastException"></exception>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Half)~Galaxon.BigNumbers.BigDecimal">
             <summary>
             Implicit cast from Half to BigDecimal.
@@ -627,57 +621,13 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryConvertToTruncating``1(Galaxon.BigNumbers.BigDecimal,``0@)">
             <inheritdoc />
+            <see cref="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Numerics.BigInteger"/>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.GetTypeCode">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToBoolean(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToSByte(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToByte(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToInt16(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToUInt16(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToInt32(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToUInt32(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToInt64(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToUInt64(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToSingle(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToDouble(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToDecimal(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToChar(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToString(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToDateTime(System.IFormatProvider)">
-            <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ToType(System.Type,System.IFormatProvider)">
-            <inheritdoc />
+        <member name="M:Galaxon.BigNumbers.BigDecimal.ConvertFromFloatingPoint``1(``0)">
+            <summary>
+            Private method to convert a floating point value (float or double) to a BigDecimal.
+            </summary>
+            <exception cref="T:System.InvalidCastException"></exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Pow(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>
@@ -1175,7 +1125,6 @@
             <param name="y">The y coordinate.</param>
             <param name="x">The x coordinate.</param>
             <returns>The polar angle.</returns>
-            <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException">If x and y both equal 0.</exception>
             <see cref="M:System.Double.Atan2(System.Double,System.Double)" />
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Atan2Pi(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">

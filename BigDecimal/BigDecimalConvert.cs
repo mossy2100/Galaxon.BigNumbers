@@ -1,9 +1,10 @@
 using System.Numerics;
 using Galaxon.Core.Numbers;
+using Galaxon.Core.Types;
 
 namespace Galaxon.BigNumbers;
 
-public partial struct BigDecimal : IConvertible
+public partial struct BigDecimal
 {
     #region Cast operators to BigDecimal
 
@@ -144,65 +145,6 @@ public partial struct BigDecimal : IConvertible
         }
 
         return new BigDecimal(sign * sig, -scale);
-    }
-
-    /// <summary>
-    /// Private method to convert a floating point value (float or double) to a BigDecimal.
-    /// </summary>
-    /// <exception cref="InvalidCastException"></exception>
-    private static BigDecimal ConvertFromFloatingPoint<T>(T n) where T : IFloatingPoint<T>
-    {
-        // Guard.
-        if (!T.IsFinite(n))
-        {
-            throw new InvalidCastException("Cannot convert ±∞ or NaN to BigDecimal.");
-        }
-
-        // Get the value's parts.
-        var (signBit, expBits, fracBits) = n.Disassemble();
-
-        // Check for ±0.
-        if (expBits == 0 && fracBits == 0)
-        {
-            return 0;
-        }
-
-        // Check if the number is normal or subnormal.
-        var isSubnormal = expBits == 0;
-
-        // Get sign.
-        var sign = signBit == 1 ? -1 : 1;
-
-        // Get some information about the type.
-        var nFracBits = XFloatingPoint.GetNumFracBits<T>();
-        var maxExp = XFloatingPoint.GetMaxExp<T>();
-
-        // Get the significand.
-        // The bit values are taken to have the value 1..2^(nFracBits - 1) and the exponent is
-        // correspondingly shifted. Doing this avoids division operations.
-        BigDecimal sig = 0;
-        BigDecimal pow = 1;
-        for (var i = 0; i < nFracBits; i++)
-        {
-            var set = (fracBits & 1ul << i) != 0;
-            if (set)
-            {
-                sig += pow;
-            }
-            pow *= 2;
-        }
-
-        // One more addition for normal numbers, which have the most significant bit set implicitly.
-        if (!isSubnormal)
-        {
-            sig += pow;
-        }
-
-        // Get the power of 2.
-        var exp = (isSubnormal ? 1 : expBits) - maxExp - nFracBits;
-
-        // Calculate the result.
-        return sign * sig * Exp2(exp);
     }
 
     /// <summary>
@@ -495,46 +437,29 @@ public partial struct BigDecimal : IConvertible
 
     #endregion Cast operators from BigDecimal
 
-    #region Conversion methods
+    #region TryConvert methods
 
     /// <inheritdoc />
     public static bool TryConvertFromChecked<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
-        BigDecimal? tmp = value switch
+        // See if we can cast it.
+        if (XReflection.CanCast<TOther, BigDecimal>())
         {
-            sbyte n => (BigDecimal)n,
-            byte n => (BigDecimal)n,
-            short n => (BigDecimal)n,
-            ushort n => (BigDecimal)n,
-            int n => (BigDecimal)n,
-            uint n => (BigDecimal)n,
-            long n => (BigDecimal)n,
-            ulong n => (BigDecimal)n,
-            BigInteger n => (BigDecimal)n,
-            decimal n => (BigDecimal)n,
-            float n => (BigDecimal)n,
-            double n => (BigDecimal)n,
-            BigRational n => (BigDecimal)n,
-            _ => null,
-        };
-
-        if (!tmp.HasValue)
-        {
-            // Unsupported type.
-            result = 0;
-            return false;
+            result = (BigDecimal)(object)value;
+            return true;
         }
 
-        // Success.
-        result = tmp.Value;
-        return true;
+        // Unsupported type.
+        result = 0;
+        return false;
     }
 
     /// <inheritdoc />
     public static bool TryConvertFromSaturating<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
+        // No saturation needed, as BigDecimal does not specify a min or max value.
         return TryConvertFromChecked(value, out result);
     }
 
@@ -542,44 +467,8 @@ public partial struct BigDecimal : IConvertible
     public static bool TryConvertFromTruncating<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
+        // No truncation needed as BigDecimal isn't an integer type.
         return TryConvertFromChecked(value, out result);
-    }
-
-    private static (BigDecimal? min, BigDecimal? max) GetRange<TOther>(TOther n)
-        where TOther : INumberBase<TOther>
-    {
-        // Declare a temporary variable for use in the switch expressions.
-        BigDecimal? min = n switch
-        {
-            sbyte => sbyte.MinValue,
-            byte => byte.MinValue,
-            short => short.MinValue,
-            ushort => ushort.MinValue,
-            int => int.MinValue,
-            uint => uint.MinValue,
-            long => long.MinValue,
-            ulong => ulong.MinValue,
-            decimal => decimal.MinValue,
-            float => (BigDecimal)float.MinValue,
-            double => (BigDecimal)double.MinValue,
-            _ => null,
-        };
-        BigDecimal? max = n switch
-        {
-            sbyte => sbyte.MaxValue,
-            byte => byte.MaxValue,
-            short => short.MaxValue,
-            ushort => ushort.MaxValue,
-            int => int.MaxValue,
-            uint => uint.MaxValue,
-            long => long.MaxValue,
-            ulong => ulong.MaxValue,
-            decimal => decimal.MaxValue,
-            float => (BigDecimal)float.MaxValue,
-            double => (BigDecimal)double.MaxValue,
-            _ => null,
-        };
-        return (min, max);
     }
 
     /// <inheritdoc />
@@ -590,57 +479,53 @@ public partial struct BigDecimal : IConvertible
         result = TOther.Zero;
 
         // Check types with unlimited range.
-        if (result is BigDecimal or BigInteger or BigRational)
+        if (result is BigInteger or BigRational)
         {
             result = (TOther)(object)value;
             return true;
         }
 
         // Get the min and max values for the result type.
-        var (min, max) = GetRange(result);
+        var (min, max) = XNumber.GetRange<TOther>();
 
-        // Check for unsupported type.
-        if (!min.HasValue || !max.HasValue)
+        // If the type doesn't have MinValue and MaxValue properties, it's unsupported.
+        if (min is null || max is null)
         {
             return false;
         }
 
-        // Check for underflow.
-        if (value < min.Value)
+        // Check for negative overflow.
+        if (value < (BigDecimal)(object)min)
         {
-            switch (result)
+            // Check if the type supports negative infinity.
+            var negInf = XNumber.GetNegativeInfinity<TOther>();
+
+            // If not, overflow.
+            if (negInf is null)
             {
-                case float:
-                    result = (TOther)(object)float.NegativeInfinity;
-                    return true;
-
-                case double:
-                    result = (TOther)(object)double.NegativeInfinity;
-                    return true;
-
-                default:
-                    throw new OverflowException(
-                        $"Value {value} is less than the minimum value for {result.GetType()}");
+                throw new OverflowException(
+                    $"Value {value} is less than the minimum value for {result.GetType()}");
             }
+
+            // Return negative infinity.
+            result = negInf;
         }
 
-        // Check for overflow.
-        if (value > max.Value)
+        // Check for positive overflow.
+        if (value > (BigDecimal)(object)max)
         {
-            switch (result)
+            // Check if the type supports positive infinity.
+            var posInf = XNumber.GetPositiveInfinity<TOther>();
+
+            // If not, overflow.
+            if (posInf is null)
             {
-                case float:
-                    result = (TOther)(object)float.PositiveInfinity;
-                    return true;
-
-                case double:
-                    result = (TOther)(object)double.PositiveInfinity;
-                    return true;
-
-                default:
-                    throw new OverflowException(
-                        $"Value {value} is greater than the maximum value for {result.GetType()}");
+                throw new OverflowException(
+                    $"Value {value} is greater than the maximum value for {result.GetType()}");
             }
+
+            // Return positive infinity.
+            result = posInf;
         }
 
         // Value is within range for the type.
@@ -656,30 +541,31 @@ public partial struct BigDecimal : IConvertible
         result = TOther.Zero;
 
         // Check types with unlimited range.
-        if (result is BigDecimal or BigInteger or BigRational)
+        if (result is BigInteger or BigRational)
         {
             result = (TOther)(object)value;
             return true;
         }
 
         // Get the min and max values for the result type.
-        var (min, max) = GetRange(result);
+        var (min, max) = XNumber.GetRange<TOther>();
 
-        // Check for unsupported type.
-        if (!min.HasValue || !max.HasValue)
+        // If the type doesn't have MinValue and MaxValue properties, it's unsupported.
+        if (min is null || max is null)
         {
             return false;
         }
 
-        if (value < min.Value)
+        // Check for overflow.
+        if (value < (BigDecimal)(object)min)
         {
-            // Value is less than the minimum value for TOther.
-            result = (TOther)(object)min.Value;
+            // Overflow. Value is less than the minimum value for TOther. Return MinValue.
+            result = min;
         }
-        else if (value > max.Value)
+        else if (value > (BigDecimal)(object)max)
         {
-            // Value is greater than the maximum value for TOther.
-            result = (TOther)(object)max.Value;
+            // Overflow. Value is greater than the maximum value for TOther. Return MaxValue.
+            result = max;
         }
         else
         {
@@ -691,144 +577,80 @@ public partial struct BigDecimal : IConvertible
     }
 
     /// <inheritdoc />
+    /// <see cref="BigDecimal.explicit operator BigInteger(BigDecimal)"/>
     public static bool TryConvertToTruncating<TOther>(BigDecimal value, out TOther result)
         where TOther : INumberBase<TOther>
     {
-        // Set a default result.
-        result = TOther.Zero;
+        // Convert with overflow check.
+        // Integers will be truncated by the conversion, in the cast to BigInteger (see ref above).
+        // The documentation doesn't mention throwing overflow exceptions for
+        // TryConvertToTruncating(), so I'm making an assumption here, but it seems logical.
+        // TODO Test behaviour with built-in types.
+        return TryConvertToChecked(value, out result);
+    }
 
-        // Check types with unlimited range.
-        if (result is BigDecimal or BigInteger or BigRational)
+    #endregion TryConvert methods
+
+    #region Helper methods
+
+    /// <summary>
+    /// Private method to convert a floating point value (float or double) to a BigDecimal.
+    /// </summary>
+    /// <exception cref="InvalidCastException"></exception>
+    private static BigDecimal ConvertFromFloatingPoint<T>(T n) where T : IFloatingPoint<T>
+    {
+        // Guard.
+        if (!T.IsFinite(n))
         {
-            result = (TOther)(object)value;
-            return true;
+            throw new InvalidCastException("Cannot convert ±∞ or NaN to BigDecimal.");
         }
 
-        var (min, max) = GetRange(result);
+        // Get the value's parts.
+        var (signBit, expBits, fracBits) = n.Disassemble();
 
-        // Signed types.
-        if (min < 0)
+        // Check for ±0.
+        if (expBits == 0 && fracBits == 0)
         {
-            result = (TOther)(object)(value % -min);
-            return true;
+            return 0;
         }
 
-        // Unsigned types.
-        if (max != null)
+        // Check if the number is normal or subnormal.
+        var isSubnormal = expBits == 0;
+
+        // Get sign.
+        var sign = signBit == 1 ? -1 : 1;
+
+        // Get some information about the type.
+        var nFracBits = XFloatingPoint.GetNumFracBits<T>();
+        var maxExp = XFloatingPoint.GetMaxExp<T>();
+
+        // Get the significand.
+        // The bit values are taken to have the value 1..2^(nFracBits - 1) and the exponent is
+        // correspondingly shifted. Doing this avoids division operations.
+        BigDecimal sig = 0;
+        BigDecimal pow = 1;
+        for (var i = 0; i < nFracBits; i++)
         {
-            result = (TOther)(object)(value % max + 1);
-            return true;
+            var set = (fracBits & 1ul << i) != 0;
+            if (set)
+            {
+                sig += pow;
+            }
+            pow *= 2;
         }
 
-        return false;
+        // One more addition for normal numbers, which have the most significant bit set implicitly.
+        if (!isSubnormal)
+        {
+            sig += pow;
+        }
+
+        // Get the power of 2.
+        var exp = (isSubnormal ? 1 : expBits) - maxExp - nFracBits;
+
+        // Calculate the result.
+        return sign * sig * Exp2(exp);
     }
 
-    #endregion Conversion methods
-
-    #region IConvertible methods
-
-    /// <inheritdoc />
-    public TypeCode GetTypeCode()
-    {
-        return TypeCode.Object;
-    }
-
-    /// <inheritdoc />
-    public bool ToBoolean(IFormatProvider? provider)
-    {
-        throw new InvalidCastException("Converting from BigDecimal to bool is unsupported.");
-    }
-
-    /// <inheritdoc />
-    public readonly sbyte ToSByte(IFormatProvider? provider)
-    {
-        return (sbyte)this;
-    }
-
-    /// <inheritdoc />
-    public readonly byte ToByte(IFormatProvider? provider)
-    {
-        return (byte)this;
-    }
-
-    /// <inheritdoc />
-    public readonly short ToInt16(IFormatProvider? provider)
-    {
-        return (short)this;
-    }
-
-    /// <inheritdoc />
-    public readonly ushort ToUInt16(IFormatProvider? provider)
-    {
-        return (ushort)this;
-    }
-
-    /// <inheritdoc />
-    public readonly int ToInt32(IFormatProvider? provider)
-    {
-        return (int)this;
-    }
-
-    /// <inheritdoc />
-    public readonly uint ToUInt32(IFormatProvider? provider)
-    {
-        return (uint)this;
-    }
-
-    /// <inheritdoc />
-    public readonly long ToInt64(IFormatProvider? provider)
-    {
-        return (long)this;
-    }
-
-    /// <inheritdoc />
-    public readonly ulong ToUInt64(IFormatProvider? provider)
-    {
-        return (ulong)this;
-    }
-
-    /// <inheritdoc />
-    public readonly float ToSingle(IFormatProvider? provider)
-    {
-        return (float)this;
-    }
-
-    /// <inheritdoc />
-    public readonly double ToDouble(IFormatProvider? provider)
-    {
-        return (double)this;
-    }
-
-    /// <inheritdoc />
-    public readonly decimal ToDecimal(IFormatProvider? provider)
-    {
-        return (decimal)this;
-    }
-
-    /// <inheritdoc />
-    public char ToChar(IFormatProvider? provider)
-    {
-        throw new InvalidCastException("Converting from BigDecimal to char is unsupported.");
-    }
-
-    /// <inheritdoc />
-    public string ToString(IFormatProvider? provider)
-    {
-        return ToString("G", provider);
-    }
-
-    /// <inheritdoc />
-    public DateTime ToDateTime(IFormatProvider? provider)
-    {
-        throw new InvalidCastException("Converting from BigDecimal to DateTime is unsupported.");
-    }
-
-    /// <inheritdoc />
-    public object ToType(Type conversionType, IFormatProvider? provider)
-    {
-        throw new InvalidCastException(
-            $"Converting from BigDecimal to {conversionType.Name} is unsupported.");
-    }
-
-    #endregion IConvertible methods
+    #endregion Helper methods
 }
