@@ -19,7 +19,7 @@ public partial struct BigRational :
     #region Constructors
 
     /// <summary>
-    /// Construct a new BigRational object.
+    /// Construct a BigRational from two integers, the numerator and denominator.
     /// The fraction is automatically reduced to its simplest form.
     /// </summary>
     /// <param name="num">The numerator.</param>
@@ -27,34 +27,16 @@ public partial struct BigRational :
     /// <exception cref="ArgumentInvalidException">If the denominator is 0.</exception>
     public BigRational(BigInteger num, BigInteger den)
     {
-        // A rational with a 0 denominator is undefined.
-        if (den == 0)
-        {
-            throw new ArgumentInvalidException(nameof(den),
-                "A rational with a denominator of 0 is undefined.");
-        }
-
-        // If the numerator is 0, set the denominator to 1 so it matches Zero.
-        if (num == 0)
-        {
-            den = 1;
-        }
-        else if (den < 0)
-        {
-            // Ensure the denominator is positive.
-            num = -num;
-            den = -den;
-        }
-
         // Reduce.
         (num, den) = Reduce(num, den);
 
+        // Assign parts.
         Numerator = num;
         Denominator = den;
     }
 
     /// <summary>
-    /// Constructor for creating a BigRational objects from a single number.
+    /// Construct a BigRational from a single integer, taken to be the numerator.
     /// </summary>
     /// <param name="num">The numerator.</param>
     public BigRational(BigInteger num) : this(num, 1)
@@ -62,10 +44,40 @@ public partial struct BigRational :
     }
 
     /// <summary>
-    /// Default constructor, returns Zero.
+    /// Construct a zero BigRational.
     /// </summary>
     public BigRational() : this(0, 1)
     {
+    }
+
+    /// <summary>
+    /// Construct a BigRational from a tuple of 2 BigInteger values.
+    /// </summary>
+    /// <param name="rational">The tuple.</param>
+    public BigRational((BigInteger, BigInteger) rational) : this(rational.Item1, rational.Item2)
+    {
+    }
+
+    /// <summary>
+    /// Construct a BigRational from an array of 2 BigInteger values.
+    /// </summary>
+    /// <param name="rational">The array.</param>
+    /// <exception cref="ArgumentException">If the array does not contain exactly 2
+    /// values.</exception>
+    public BigRational(BigInteger[] rational)
+    {
+        // Guard.
+        if (rational.Length != 2)
+        {
+            throw new ArgumentException("The array must contain exactly two elements.");
+        }
+
+        // Reduce.
+        var (num, den) = Reduce(rational[0], rational[1]);
+
+        // Assign parts.
+        Numerator = num;
+        Denominator = den;
     }
 
     #endregion Constructors
@@ -531,7 +543,7 @@ public partial struct BigRational :
         if (den == 0)
         {
             throw new ArgumentOutOfRangeException(nameof(den),
-                "The denominator cannot be 0.");
+                "The denominator of a rational number cannot be 0.");
         }
 
         // Optimizations.

@@ -43,18 +43,58 @@ public partial struct BigComplex :
 
     #region Constructors
 
+    /// <summary>
+    /// Construct a BigComplex from 2 BigDecimal values.
+    /// </summary>
+    /// <param name="real">The real part.</param>
+    /// <param name="imaginary">The imaginary part.</param>
     public BigComplex(BigDecimal real, BigDecimal imaginary)
     {
+        // Assign parts.
         Real = real;
         Imaginary = imaginary;
     }
 
+    /// <summary>
+    /// Construct a BigComplex from a single BigDecimal value.
+    /// </summary>
+    /// <param name="real">The real part.</param>
     public BigComplex(BigDecimal real) : this(real, 0)
     {
     }
 
+    /// <summary>
+    /// Construct a zero BigComplex.
+    /// </summary>
     public BigComplex() : this(0, 0)
     {
+    }
+
+    /// <summary>
+    /// Construct BigComplex from an tuple of 2 BigDecimal values.
+    /// </summary>
+    /// <param name="complex">The tuple.</param>
+    public BigComplex((BigDecimal, BigDecimal) complex) : this(complex.Item1, complex.Item2)
+    {
+    }
+
+    /// <summary>
+    /// Construct BigComplex from an array of 2 BigDecimal values.
+    /// </summary>
+    /// <param name="complex">The array.</param>
+    /// <exception cref="ArgumentException">If the array does not contain exactly 2
+    /// values.</exception>
+    public BigComplex(BigDecimal[] complex)
+    {
+        // Guard.
+        if (complex.Length != 2)
+        {
+            throw new ArgumentException("The array must contain exactly two elements.");
+        }
+
+        // Assign parts.
+        Real = complex[0];
+        Imaginary = complex[1];
     }
 
     #endregion Constructors

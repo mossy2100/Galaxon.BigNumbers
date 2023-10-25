@@ -50,8 +50,7 @@ public partial struct BigComplex
     /// <see cref="Complex.FromPolarCoordinates" />
     public static BigComplex FromPolarCoordinates(BigDecimal magnitude, BigDecimal phase)
     {
-        var (x, y) = PolarToCartesian(magnitude, phase);
-        return new BigComplex(x, y);
+        return new BigComplex(PolarToCartesian(magnitude, phase));
     }
 
     #endregion Methods equivalent to those provided by Complex.
