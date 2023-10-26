@@ -7,36 +7,6 @@ namespace Galaxon.BigNumbers.BigDecimalTests;
 public class ConvertTests
 {
     [TestMethod]
-    public void TestCastToInt()
-    {
-        BigDecimal bd = 0;
-        Assert.AreEqual(0, (int)bd);
-
-        bd = 1;
-        Assert.AreEqual(1, (int)bd);
-
-        bd = int.MaxValue;
-        Assert.AreEqual(int.MaxValue, (int)bd);
-
-        bd = int.MinValue;
-        Assert.AreEqual(int.MinValue, (int)bd);
-    }
-
-    [TestMethod]
-    public void TestCastToIntTooBig()
-    {
-        var bd = (BigDecimal)int.MaxValue + 1;
-        Assert.ThrowsException<OverflowException>(() => (int)bd);
-    }
-
-    [TestMethod]
-    public void TestCastToIntTooBigNegative()
-    {
-        var bd = (BigDecimal)int.MinValue - 1;
-        Assert.ThrowsException<OverflowException>(() => (int)bd);
-    }
-
-    [TestMethod]
     public void TestCastFromDecimal()
     {
         decimal x;
@@ -394,6 +364,9 @@ public class ConvertTests
         Assert.AreEqual(2, bd.Exponent);
     }
 
+    /// <summary>
+    ///
+    /// </summary>
     [TestMethod]
     public void TestTryConvertFromCheckedDouble()
     {

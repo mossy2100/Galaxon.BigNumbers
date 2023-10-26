@@ -355,6 +355,7 @@ public partial struct BigDecimal
     /// If x is negative, the result will be offset by π.
     /// The purpose of the method is to produce a correct value for the polar angle when converting
     /// from cartesian coordinates to polar coordinates.
+    /// It also avoids division by 0 exceptions.
     /// </summary>
     /// <see href="https://en.wikipedia.org/wiki/Atan2" />
     /// <see cref="CartesianToPolar" />

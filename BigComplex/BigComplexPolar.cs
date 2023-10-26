@@ -10,14 +10,14 @@ public partial struct BigComplex
     {
         readonly get => BigDecimal.Hypot(Real, Imaginary);
 
-        set => (Real, Imaginary) = PolarToCartesian(value, Phase);
+        set => (Real, Imaginary) = BigDecimal.PolarToCartesian(value, Phase);
     }
 
     public BigDecimal Phase
     {
         readonly get => BigDecimal.Atan2(Imaginary, Real);
 
-        set => (Real, Imaginary) = PolarToCartesian(Magnitude, value);
+        set => (Real, Imaginary) = BigDecimal.PolarToCartesian(Magnitude, value);
     }
 
     #endregion Calculated properties (same as Complex)
@@ -50,22 +50,8 @@ public partial struct BigComplex
     /// <see cref="Complex.FromPolarCoordinates" />
     public static BigComplex FromPolarCoordinates(BigDecimal magnitude, BigDecimal phase)
     {
-        return new BigComplex(PolarToCartesian(magnitude, phase));
+        return new BigComplex(BigDecimal.PolarToCartesian(magnitude, phase));
     }
 
     #endregion Methods equivalent to those provided by Complex.
-
-    #region Helper functions
-
-    private static (BigDecimal x, BigDecimal y) PolarToCartesian(BigDecimal r, BigDecimal a)
-    {
-        return (r * BigDecimal.Cos(a), r * BigDecimal.Sin(a));
-    }
-
-    private static (BigDecimal r, BigDecimal a) CartesianToPolar(BigDecimal x, BigDecimal y)
-    {
-        return (BigDecimal.Hypot(x, y), BigDecimal.Atan2(y, x));
-    }
-
-    #endregion Helper functions
 }

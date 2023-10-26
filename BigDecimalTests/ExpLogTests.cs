@@ -197,9 +197,9 @@ public class ExpLogTests
     [TestMethod]
     public void TestPowNegativeBaseFractionalExp()
     {
-        BigDecimal x = -32;
-        BigDecimal y = 0.2m;
-        Assert.AreEqual(-2, BigDecimal.Pow(x, y));
+        var expected = -2;
+        var actual = BigDecimal.Pow(-32, 0.2);
+        Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]

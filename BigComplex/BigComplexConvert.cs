@@ -204,6 +204,28 @@ public partial struct BigComplex
 
     #endregion Cast operators from BigComplex
 
+    #region Methods that convert to an object.
+
+    /// <summary>
+    /// Convert BigComplex to array.
+    /// </summary>
+    /// <returns>The equivalent array.</returns>
+    public readonly BigDecimal[] ToArray()
+    {
+        return new[] { Real, Imaginary };
+    }
+
+    /// <summary>
+    /// Convert BigComplex to tuple.
+    /// </summary>
+    /// <returns>The equivalent tuple.</returns>
+    public readonly (BigDecimal, BigDecimal) ToTuple()
+    {
+        return (Real, Imaginary);
+    }
+
+    #endregion Methods that convert to an object.
+
     #region TryConvert methods
 
     /// <inheritdoc />

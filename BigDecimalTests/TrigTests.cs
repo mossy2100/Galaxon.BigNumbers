@@ -130,9 +130,9 @@ public class TrigTests
     }
 
     [TestMethod]
-    public void TestAtan2ThrowsExceptionWhenBothParamsZero()
+    public void TestAtan2Returns0WhenBothParams0()
     {
-        Assert.ThrowsException<ArgumentInvalidException>(() => BigDecimal.Atan2(0, 0));
+        Assert.AreEqual(0, BigDecimal.Atan2(0, 0));
     }
 
     [TestMethod]

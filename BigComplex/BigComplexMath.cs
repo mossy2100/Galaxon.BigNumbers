@@ -37,7 +37,7 @@ public partial struct BigComplex
     /// <returns>The reciprocal of the argument.</returns>
     public static BigComplex Reciprocal(BigComplex z)
     {
-        return 1 / z;
+        return Divide(1, z);
     }
 
     /// <summary>
@@ -86,15 +86,14 @@ public partial struct BigComplex
     /// <exception cref="System.DivideByZeroException">If z2 == 0</exception>
     public static BigComplex Divide(BigComplex z1, BigComplex z2)
     {
-        var a = z1.Real;
-        var b = z1.Imaginary;
-        var c = z2.Real;
-        var d = z2.Imaginary;
-        if (d == 0)
-        {
-            return z1 / c;
-        }
-        return new BigComplex(a * c + b * d, b * c - a * d) / (c * c + d * d);
+        // Guard.
+        if (z2 == 0) throw new DivideByZeroException();
+
+        // Extract parts for convenience.
+        var (a, b) = z1.ToTuple();
+        var (c, d) = z2.ToTuple();
+        var e = c * c + d * d;
+        return new BigComplex((a * c + b * d) / e, (b * c - a * d) / e);
     }
 
     #endregion Arithmetic methods

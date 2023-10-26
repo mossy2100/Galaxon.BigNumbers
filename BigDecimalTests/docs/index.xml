@@ -11,6 +11,11 @@
             </remarks>
             <see href="http://newton.ex.ac.uk/research/qsystems/collabs/pi/pi5.txt" />
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimalTests.ConvertTests.TestTryConvertFromCheckedDouble">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimalTests.ExpLogTests.TestSqrtBig">
             <summary>
             Used https://keisan.casio.com/calculator to get expected result.

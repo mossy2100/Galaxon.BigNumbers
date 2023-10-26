@@ -45,7 +45,7 @@ public partial struct BigDecimal
             // Check format is valid.
             if (!match.Success)
             {
-                throw new ArgumentInvalidException(nameof(specifier),
+                throw new ArgumentOutOfRangeException(nameof(specifier),
                     $"Invalid format specifier \"{specifier}\".");
             }
 

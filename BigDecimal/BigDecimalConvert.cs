@@ -1,6 +1,6 @@
+using System.Data.SqlTypes;
 using System.Numerics;
 using Galaxon.Core.Numbers;
-using Galaxon.Core.Types;
 
 namespace Galaxon.BigNumbers;
 
@@ -413,26 +413,69 @@ public partial struct BigDecimal
     public static bool TryConvertFromChecked<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
-        // Set a default result.
-        result = Zero;
-
-        // Check for supported type.
-        if (!IsTypeSupported(typeof(TOther)))
+        switch (value)
         {
-            return false;
-        }
+            case sbyte:
+                result = (sbyte)(object)value;
+                return true;
 
-        // See if we can cast it.
-        if (XReflection.CanCast<TOther, BigDecimal>())
-        {
-            result = (BigDecimal)(object)value;
-            return true;
-        }
+            case byte:
+                result = (byte)(object)value;
+                return true;
 
-        // Unsupported type. Should never happen.
-        // It means a cast from a standard number type to BigDecimal is missing.
-        throw new NotImplementedException(
-            $"The cast operation from {typeof(TOther).Name} to BigDecimal has not been implemented.");
+            case short:
+                result = (short)(object)value;
+                return true;
+
+            case ushort:
+                result = (ushort)(object)value;
+                return true;
+
+            case int:
+                result = (int)(object)value;
+                return true;
+
+            case uint:
+                result = (uint)(object)value;
+                return true;
+
+            case long:
+                result = (long)(object)value;
+                return true;
+
+            case ulong:
+                result = (ulong)(object)value;
+                return true;
+
+            case Int128:
+                result = (Int128)(object)value;
+                return true;
+
+            case UInt128:
+                result = (UInt128)(object)value;
+                return true;
+
+            case Half:
+                result = (Half)(object)value;
+                return true;
+
+            case float:
+                result = (float)(object)value;
+                return true;
+
+            case double:
+                result = (double)(object)value;
+                return true;
+
+            case decimal:
+                result = (decimal)(object)value;
+                return true;
+
+            default:
+                // Unsupported type.
+                result = 0;
+                return false;
+        }
     }
 
     /// <inheritdoc />
@@ -455,118 +498,180 @@ public partial struct BigDecimal
     public static bool TryConvertToChecked<TOther>(BigDecimal value, out TOther result)
         where TOther : INumberBase<TOther>
     {
-        // Set a default result.
         result = TOther.Zero;
-
-        // Check for supported type.
-        if (!IsTypeSupported(typeof(TOther)))
+        switch (result)
         {
-            return false;
+            case sbyte:
+                result = (TOther)(object)(sbyte)value;
+                return true;
+
+            case byte:
+                result = (TOther)(object)(byte)value;
+                return true;
+
+            case short:
+                result = (TOther)(object)(short)value;
+                return true;
+
+            case ushort:
+                result = (TOther)(object)(ushort)value;
+                return true;
+
+            case int:
+                result = (TOther)(object)(int)value;
+                return true;
+
+            case uint:
+                result = (TOther)(object)(uint)value;
+                return true;
+
+            case long:
+                result = (TOther)(object)(long)value;
+                return true;
+
+            case ulong:
+                result = (TOther)(object)(ulong)value;
+                return true;
+
+            case Int128:
+                result = (TOther)(object)(Int128)value;
+                return true;
+
+            case UInt128:
+                result = (TOther)(object)(UInt128)value;
+                return true;
+
+            case Half:
+                result = (TOther)(object)(Half)value;
+                return true;
+
+            case float:
+                result = (TOther)(object)(float)value;
+                return true;
+
+            case double:
+                result = (TOther)(object)(double)value;
+                return true;
+
+            case decimal:
+                result = (TOther)(object)(decimal)value;
+                return true;
+
+            default:
+                // Unsupported type.
+                return false;
         }
-
-        // Check types with unlimited range.
-        if (result is BigInteger)
-        {
-            result = (TOther)(object)value;
-            return true;
-        }
-
-        // Get the min and max values for the result type.
-        var (min, max) = XNumber.GetRange<TOther>();
-
-        // If the type doesn't have MinValue and MaxValue properties, it's unsupported.
-        // This shouldn't happen, though.
-        if (min is null || max is null)
-        {
-            return false;
-        }
-
-        // Check for negative overflow.
-        if (value < (BigDecimal)(object)min)
-        {
-            // Check if the type supports negative infinity.
-            var negInf = XNumber.GetNegativeInfinity<TOther>();
-
-            // If not, overflow.
-            if (negInf is null)
-            {
-                throw new OverflowException(
-                    $"Value {value} is less than the minimum value for {result.GetType()}");
-            }
-
-            // Return negative infinity.
-            result = negInf;
-        }
-
-        // Check for positive overflow.
-        if (value > (BigDecimal)(object)max)
-        {
-            // Check if the type supports positive infinity.
-            var posInf = XNumber.GetPositiveInfinity<TOther>();
-
-            // If not, overflow.
-            if (posInf is null)
-            {
-                throw new OverflowException(
-                    $"Value {value} is greater than the maximum value for {result.GetType()}");
-            }
-
-            // Return positive infinity.
-            result = posInf;
-        }
-
-        // Value is within range for the type.
-        result = (TOther)(object)value;
-        return true;
     }
 
     /// <inheritdoc />
     public static bool TryConvertToSaturating<TOther>(BigDecimal value, out TOther result)
         where TOther : INumberBase<TOther>
     {
-        // Set a default result.
-        result = TOther.Zero;
+        var typeOther = typeof(TOther);
 
-        // Check for supported type.
-        if (!IsTypeSupported(typeof(TOther)))
+        // Supported types.
+        if (typeOther == typeof(sbyte))
         {
-            return false;
+            sbyte actualResult = (value >= sbyte.MaxValue) ? sbyte.MaxValue :
+                (value <= sbyte.MinValue) ? sbyte.MinValue : (sbyte)value;
+            result = (TOther)(object)actualResult;
+            return true;
         }
-
-        // Check types with unlimited range.
-        if (result is BigInteger)
+        if (typeOther == typeof(byte))
         {
-            result = (TOther)(object)value;
+            byte actualResult = (value >= byte.MaxValue) ? byte.MaxValue :
+                (value <= byte.MinValue) ? byte.MinValue : (byte)value;
+            result = (TOther)(object)actualResult;
+            return true;
+        }
+        if (typeOther == typeof(short))
+        {
+            short actualResult = (value >= short.MaxValue) ? short.MaxValue :
+                (value <= short.MinValue) ? short.MinValue : (short)value;
+            result = (TOther)(object)actualResult;
+            return true;
+        }
+        if (typeOther == typeof(ushort))
+        {
+            ushort actualResult = (value >= ushort.MaxValue) ? ushort.MaxValue :
+                (value <= ushort.MinValue) ? ushort.MinValue : (ushort)value;
+            result = (TOther)(object)actualResult;
+            return true;
+        }
+        if (typeOther == typeof(int))
+        {
+            int actualResult = (value >= int.MaxValue) ? int.MaxValue :
+                (value <= int.MinValue) ? int.MinValue : (int)value;
+            result = (TOther)(object)actualResult;
+            return true;
+        }
+        if (typeOther == typeof(uint))
+        {
+            uint actualResult = (value >= uint.MaxValue) ? uint.MaxValue :
+                (value <= uint.MinValue) ? uint.MinValue : (uint)value;
+            result = (TOther)(object)actualResult;
+            return true;
+        }
+        if (typeOther == typeof(long))
+        {
+            long actualResult = (value >= long.MaxValue) ? long.MaxValue :
+                (value <= long.MinValue) ? long.MinValue : (long)value;
+            result = (TOther)(object)actualResult;
+            return true;
+        }
+        if (typeOther == typeof(ulong))
+        {
+            ulong actualResult = (value >= ulong.MaxValue) ? ulong.MaxValue :
+                (value <= ulong.MinValue) ? ulong.MinValue : (ulong)value;
+            result = (TOther)(object)actualResult;
+            return true;
+        }
+        if (typeOther == typeof(Int128))
+        {
+            Int128 actualResult = (value >= Int128.MaxValue) ? Int128.MaxValue :
+                (value <= Int128.MinValue) ? Int128.MinValue : (Int128)value;
+            result = (TOther)(object)actualResult;
+            return true;
+        }
+        if (typeOther == typeof(UInt128))
+        {
+            UInt128 actualResult = (value >= UInt128.MaxValue) ? UInt128.MaxValue :
+                (value <= UInt128.MinValue) ? UInt128.MinValue : (UInt128)value;
+            result = (TOther)(object)actualResult;
+            return true;
+        }
+        if (typeOther == typeof(Half))
+        {
+            Half actualResult = (value >= Half.MaxValue) ? Half.MaxValue :
+                (value <= Half.MinValue) ? Half.MinValue : (Half)value;
+            result = (TOther)(object)actualResult;
+            return true;
+        }
+        if (typeOther == typeof(float))
+        {
+            float actualResult = (value >= float.MaxValue) ? float.MaxValue :
+                (value <= float.MinValue) ? float.MinValue : (float)value;
+            result = (TOther)(object)actualResult;
+            return true;
+        }
+        if (typeOther == typeof(double))
+        {
+            double actualResult = (value >= double.MaxValue) ? double.MaxValue :
+                (value <= double.MinValue) ? double.MinValue : (double)value;
+            result = (TOther)(object)actualResult;
+            return true;
+        }
+        if (typeOther == typeof(decimal))
+        {
+            decimal actualResult = (value >= decimal.MaxValue) ? decimal.MaxValue :
+                (value <= decimal.MinValue) ? decimal.MinValue : (decimal)value;
+            result = (TOther)(object)actualResult;
             return true;
         }
 
-        // Get the min and max values for the result type.
-        var (min, max) = XNumber.GetRange<TOther>();
-
-        // If the type doesn't have MinValue and MaxValue properties, it's unsupported.
-        if (min is null || max is null)
-        {
-            return false;
-        }
-
-        // Check for overflow.
-        if (value < (BigDecimal)(object)min)
-        {
-            // Overflow. Value is less than the minimum value for TOther. Return MinValue.
-            result = min;
-        }
-        else if (value > (BigDecimal)(object)max)
-        {
-            // Overflow. Value is greater than the maximum value for TOther. Return MaxValue.
-            result = max;
-        }
-        else
-        {
-            // Value is within range for the type.
-            result = (TOther)(object)value;
-        }
-
-        return true;
+        // Unsupported type.
+        result = TOther.Zero;
+        return false;
     }
 
     /// <inheritdoc />
@@ -574,11 +679,11 @@ public partial struct BigDecimal
     public static bool TryConvertToTruncating<TOther>(BigDecimal value, out TOther result)
         where TOther : INumberBase<TOther>
     {
-        // Convert with overflow check.
         // Integers will be truncated by the conversion, in the cast to BigInteger (see ref above).
         // The documentation doesn't mention throwing overflow exceptions for
-        // TryConvertToTruncating(), so I'm making an assumption here, but it seems logical.
-        // TODO Test behaviour with built-in types.
+        // TryConvertToTruncating(), but that's what is done for built-in number types, so we'll do
+        // the same thing here.
+        // See: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Int32.cs
         return TryConvertToChecked(value, out result);
     }
 

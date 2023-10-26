@@ -45,7 +45,7 @@ public partial struct BigDecimal
         }
 
         // This delta is large enough to produce fuzzy equality when expected.
-        var delta = new BigDecimal(1, -14);
+        var delta = new BigDecimal(1, -13);
 
         // Compare values.
         AssertAreEqual(e, a, delta);

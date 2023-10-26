@@ -23,7 +23,7 @@ public partial struct BigComplex
         // Guards.
         if (z == 0)
         {
-            // 0 raised to a negative real value is undefined.
+            // 0 raised to a negative real value is undefined (it is equivalent to division by 0).
             // Math.Pow() returns double.Infinity, but BigDecimal doesn't have this.
             if (w.Imaginary == 0 && w.Real < 0)
             {
@@ -37,10 +37,9 @@ public partial struct BigComplex
             }
         }
 
-        // Any non-zero value (real or complex) raised to the 0 power is 1.
-        // 0^0 has no agreed-upon value, but some programming languages,
-        // including C#, return 1 (i.e. Math.Pow(0, 0) == 1). Rather than throw
-        // an exception, we'll do that here, too, for consistency.
+        // Any value (real or complex) raised to the 0 power is 1.
+        // 0^0 has no agreed-upon value, but some programming languages, including C#, return 1
+        // (i.e. Math.Pow(0, 0) == 1). We'll do that here, too, for consistency.
         if (w == 0)
         {
             return 1;
@@ -101,26 +100,55 @@ public partial struct BigComplex
 
     #region Root functions
 
-    // TODO
     /// <inheritdoc />
     public static BigComplex Hypot(BigComplex x, BigComplex y)
     {
-        throw new NotImplementedException();
+        return Sqrt(Sqr(x) + Sqr(y));
     }
 
+    /// <inheritdoc />
     public static BigComplex RootN(BigComplex z, int n)
     {
-        throw new NotImplementedException();
+        return Root(z, n);
+    }
+
+    /// <summary>Computes the n-th root of a value.</summary>
+    /// <param name="z">The value whose <paramref name="n" />-th root is to be computed.</param>
+    /// <param name="n">The degree of the root to be computed.</param>
+    /// <returns>The <paramref name="n" />-th root of <paramref name="z" />.</returns>
+    public static BigComplex Root(BigComplex z, BigInteger n)
+    {
+        // The 0th root is undefined.
+        if (n == 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(n),
+                "The 0th root is undefined since any number to the power of 0 is 1.");
+        }
+
+        // The first root of a number is itself.
+        if (n == 1) return z;
+
+        // Can't solve.
+        throw new ArithmeticException(
+            $"There are {n} solutions, whereas this method is designed to return only 1. Try calling BigComplex.Roots() to find all the roots.");
+    }
+
+    /// <summary>Computes the n-th roots of a complex value.</summary>
+    /// <param name="z">The value whose <paramref name="n" />-th roots are to be computed.</param>
+    /// <param name="n">The degree of the roots to be computed.</param>
+    /// <returns>The <paramref name="n" />-th roots of <paramref name="z" />.</returns>
+    public static List<BigComplex> Roots(BigComplex z, BigInteger n)
+    {
+        return BigDecimal.ComplexRoots(z.Real, z.Imaginary, n)
+            .Select(tup => new BigComplex(tup)).ToList();
     }
 
     /// <summary>
     /// Calculate the square root of a BigComplex number.
-    /// The second root can be found by the negative of the result, as with other Sqrt() methods.
+    /// The second root can be found by the conjugate of the result.
     /// You can use this method to get the square root of a negative value (including a BigDecimal
     /// value).
     /// e.g. BigComplex z = BigComplex.Sqrt(-5);
-    /// (There will be an implicit cast of the -5 to a BigComplex.)
-    /// TODO Test.
     /// <see cref="System.Math.Sqrt" />
     /// <see cref="System.Numerics.Complex.Sqrt" />
     /// <see cref="BigDecimal.Sqrt" />
@@ -129,23 +157,13 @@ public partial struct BigComplex
     /// <returns>The positive square root as a BigComplex number.</returns>
     public static BigComplex Sqrt(BigComplex z)
     {
-        if (z == 0)
-        {
-            return 0;
-        }
+        // Optimizations.
+        if (z == 0) return 0;
+        if (z == 1) return 1;
+        if (z == -1) return I;
 
-        if (z == 1)
-        {
-            return 1;
-        }
-
-        if (z == -1)
-        {
-            return I;
-        }
-
-        var a = z.Real;
-        var b = z.Imaginary;
+        // Handle real values.
+        var (a, b) = z.ToTuple();
         if (b == 0)
         {
             return a > 0
@@ -153,141 +171,92 @@ public partial struct BigComplex
                 : new BigComplex(0, BigDecimal.Sqrt(-a));
         }
 
+        // Handle complex values.
         var m = Abs(z);
         var x = BigDecimal.Sqrt((m + a) / 2);
         var y = b / BigDecimal.Abs(b) * BigDecimal.Sqrt((m - a) / 2);
         return new BigComplex(x, y);
     }
 
-    // TODO
+    /// <summary>
+    /// Get both square roots of a complex number.
+    /// </summary>
+    /// <param name="z">The complex value to find the square roots of</param>
+    /// <returns>A list with up to 2 complex numbers, which are the roots.</returns>
+    public static List<BigComplex> Sqrts(BigComplex z)
+    {
+        // The only parameter with 1 solution is 0.
+        if (z == 0) return new List<BigComplex> { 0 };
+
+        // Find the 2 roots.
+        return Roots(z, 2);
+    }
+
+    /// <inheritdoc/>
     public static BigComplex Cbrt(BigComplex z)
     {
-        throw new NotImplementedException();
+        // The only parameter with 1 solution is 0.
+        if (z == 0) return 0;
+
+        throw new ArithmeticException(
+            "There are 3 solutions, whereas this method is designed to return only 1. Try calling BigComplex.Cbrts()");
+    }
+
+    /// <summary>
+    /// Get all 3 cube roots of a complex number.
+    /// </summary>
+    /// <param name="z">The complex value to find the cube roots of</param>
+    /// <returns>A list with up to 3 complex numbers, which are the roots.</returns>
+    public static List<BigComplex> Cbrts(BigComplex z)
+    {
+        // The only parameter with 1 solution is 0.
+        if (z == 0) return new List<BigComplex> { 0 };
+
+        // Find the 3 roots.
+        return Roots(z, 3);
     }
 
     #endregion Root functions
 
     #region Exponential functions
 
+    /// <inheritdoc/>
     public static BigComplex Exp(BigComplex z)
     {
-        // Optimizations.
-        if (z.Real == 0)
-        {
-            // e^0 = 1
-            if (z.Imaginary == 0)
-            {
-                return 1;
-            }
-
-            // Euler's identity with π: e^πi = -1
-            if (z.Imaginary == BigDecimal.Pi)
-            {
-                return -1;
-            }
-
-            // Euler's identity with τ: e^τi = 1
-            if (z.Imaginary == BigDecimal.Tau)
-            {
-                return 1;
-            }
-        }
-
-        if (z.Imaginary == 0)
-        {
-            if (z.Real == 1)
-            {
-                // e^1 == e
-                return BigDecimal.E;
-            }
-
-            if (z.Real == BigDecimal.Ln10)
-            {
-                // e^ln10 == 10
-                return 10;
-            }
-        }
-
-        // Euler's formula.
-        var r = BigDecimal.Exp(z.Real);
-        var x = r * BigDecimal.Cos(z.Imaginary);
-        var y = r * BigDecimal.Sin(z.Imaginary);
-        return new BigComplex(x, y);
+        // TODO Compare this approach (which uses BigDecimal.Exp, Sin, and Cos) with using the
+        // power series.
+        // See https://en.wikipedia.org/wiki/Euler%27s_formula#Power_series_definition
+        return new BigComplex(BigDecimal.ComplexExp(z.Real, z.Imaginary));
     }
 
-    /// <summary>
-    /// Calculate 2 raised to a complex power.
-    /// <see cref="BigDecimal.Exp2" />
-    /// </summary>
-    /// <param name="z">A complex value.</param>
-    /// <returns>2^z</returns>
+    /// <inheritdoc/>
     public static BigComplex Exp2(BigComplex z)
     {
         return 2 ^ z;
     }
 
-    /// <summary>
-    /// Calculate 10 raised to a complex power.
-    /// <see cref="BigDecimal.Exp10" />
-    /// </summary>
-    /// <param name="z">A complex value.</param>
-    /// <returns>10^z</returns>
+    /// <inheritdoc/>
     public static BigComplex Exp10(BigComplex z)
     {
         return 10 ^ z;
     }
 
     #endregion Exponential functions
+
     #region Logarithmic functions
 
-    /// <summary>
-    /// Natural logarithm of a complex number.
-    /// <see cref="Math.Log(double)" />
-    /// <see cref="Complex.Log(Complex)" />
-    /// </summary>
-    /// <param name="z">A complex number.</param>
-    /// <returns>The natural logarithm of the given value.</returns>
-    /// <exception cref="ArgumentOutOfRangeException">If z == 0.</exception>
+    /// <inheritdoc/>
+    /// <remarks>Finds the principal value only.</remarks>
+    /// <exception cref="ArgumentOutOfRangeException">If z is 0.</exception>
     public static BigComplex Log(BigComplex z)
     {
-        if (z.Imaginary == 0)
-        {
-            if (z.Real == 0)
-            {
-                // Log(0) is undefined.
-                // Math.Log(0) returns -Infinity, which BigDecimal can't represent.
-                throw new ArgumentOutOfRangeException(nameof(z), "Logarithm of 0 is undefined.");
-            }
-
-            if (z.Real < 0)
-            {
-                // ln(x) = ln(|x|) + πi, for x < 0
-                return new BigComplex(BigDecimal.Log(-z.Real), BigDecimal.Pi);
-            }
-
-            // For positive real values, pass to the BigDecimal method.
-            return BigDecimal.Log(z.Real);
-        }
-
-        return new BigComplex(BigDecimal.Log(z.Magnitude), z.Phase);
+        return new BigComplex(BigDecimal.ComplexLog(z.Real, z.Imaginary));
     }
 
     /// <inheritdoc />
     public static BigComplex Log(BigComplex x, BigComplex newBase)
     {
         throw new NotImplementedException();
-    }
-
-    /// <summary>
-    /// Calculate the natural logarithm of a BigComplex value.
-    /// Alias for Log(BigComplex).
-    /// </summary>
-    /// <see cref="Log(BigComplex)" />
-    /// <param name="z">The BigComplex value.</param>
-    /// <returns>The natural logarithm of the parameter.</returns>
-    public static BigComplex Ln(BigComplex z)
-    {
-        return Log(z);
     }
 
     /// <summary>

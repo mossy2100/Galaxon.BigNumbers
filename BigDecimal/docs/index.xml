@@ -654,6 +654,14 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.RootN(Galaxon.BigNumbers.BigDecimal,System.Int32)">
             <inheritdoc />
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Root(Galaxon.BigNumbers.BigDecimal,System.Numerics.BigInteger)">
+            <summary>Computes the n-th root of a value. BigInteger version.</summary>
+            <param name="x">The value whose <paramref name="n" />-th root is to be computed.</param>
+            <param name="n">The degree of the root to be computed.</param>
+            <returns>The <paramref name="n" />-th root of <paramref name="x" />.</returns>
+            <exception cref="T:System.ArithmeticException"></exception>
+            <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException"></exception>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Sqrt(Galaxon.BigNumbers.BigDecimal)">
             <summary>
             Calculate the square root of a real number.
@@ -677,6 +685,20 @@
             <param name="y">The length of the other short side of the triangle.</param>
             <returns>The length of the hypotenuse.</returns>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.ComplexRoots(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,System.Numerics.BigInteger)">
+            <summary>
+            Determine all n roots of the complex number defined by real and imaginary parts.
+            This will include complex conjugates.
+            This method is really just for internal use by BigDecimal and BigComplex, but because they
+            are different projects and packages, I have to make it public.
+            I couldn't place it in BigComplex as I want to avoid a circular dependency.
+            Ordinary users of the class should use BigComplex.Roots(), which calls this.
+            </summary>
+            <param name="real">The real part of the complex value.</param>
+            <param name="imag">The imaginary part of the complex value.</param>
+            <param name="n">The degree of the roots to be computed.</param>
+            <returns>An array of tuples representing complex numbers.</returns>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Exp(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc />
         </member>
@@ -686,17 +708,14 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.Exp10(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc />
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.ComplexExp(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
+            <summary>Computes e raised to a given complex power.</summary>
+            <param name="real">The real part of the complex exponent.</param>
+            <param name="imaginary">The imaginary part of the complex exponent.</param>
+            <returns>The complex result as a tuple of 2 BigDecimal values.</returns>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Log(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Ln(Galaxon.BigNumbers.BigDecimal)">
-            <summary>
-            Calculate the natural logarithm of a BigDecimal value.
-            Alias for Log(BigDecimal).
-            </summary>
-            <see cref="M:Galaxon.BigNumbers.BigDecimal.Log(Galaxon.BigNumbers.BigDecimal)" />
-            <param name="x">The BigDecimal value.</param>
-            <returns>The natural logarithm of the parameter.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Log(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc />
@@ -706,6 +725,17 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Log10(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc />
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.ComplexLog(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
+            <summary>
+            Natural logarithm of a complex number.
+            </summary>
+            <remarks>This method finds the principal value only.</remarks>
+            <param name="real">The real part of the complex value.</param>
+            <param name="imaginary">The imaginary part of the complex value.</param>
+            <returns>The logarithm of the complex value as a tuple of 2 BigDecimal values.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">If real and imaginary are both 0.</exception>
+            <see href="https://en.wikipedia.org/wiki/Complex_number#Complex_logarithm"/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Abs(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc />
@@ -1112,6 +1142,7 @@
             If x is negative, the result will be offset by π.
             The purpose of the method is to produce a correct value for the polar angle when converting
             from cartesian coordinates to polar coordinates.
+            It also avoids division by 0 exceptions.
             </summary>
             <see href="https://en.wikipedia.org/wiki/Atan2" />
             <see cref="M:Galaxon.BigNumbers.BigDecimal.CartesianToPolar(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)" />

@@ -31,6 +31,7 @@ public partial struct BigDecimal
         {
             throw new ArgumentInvalidException(nameof(obj), "Must be a BigDecimal.");
         }
+
         return CompareTo(other);
     }
 

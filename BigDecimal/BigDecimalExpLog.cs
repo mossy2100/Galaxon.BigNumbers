@@ -58,20 +58,20 @@ public partial struct BigDecimal
             return x * Pow(x, y - 1);
         }
 
-        // For positive x with non-integer exponent, compute the result using Exp() and Ln().
+        // For positive x with non-integer exponent, compute the result using Exp() and Log().
         if (x > 0) return Exp(y * Log(x));
 
-        // For negative x with non-integer exponent, we can't compute the result.
-        // In theory, one may exist (e.g. Pow(-243, 0.2) == -3), but I haven't written the algorithm
-        // for it yet.
-        // TODO Possibly solve this in BigComplex.Pow(), which should find all roots, real and
-        // complex.
-        // Unfortunately we can't access BigComplex from this class, as this would create a
-        // circular dependency.
-        // Alternatively, I could include code here that finds all roots, real and complex, and just
-        // return the first real root. Yes, that would work best.
+        // For negative x with non-integer exponent, we can't easily compute a real result.
+        // However, one may exist, e.g. Pow(-243, 0.2) == -3
+        // We can use the complex methods, and check if the result is real.
+        // (This is precisely why I moved this code out of BigComplex to this class.)
+        var (a, b) = ComplexLog(x, 0);
+        var c = ComplexExp(y * a, y * b);
+        // See if the result is real.
+        if (c.Item2 == 0) return c.Item1;
+
         throw new ArithmeticException(
-            "Cannot compute a result for x^y where x < 0 and y is not an integer.");
+            $"Cannot compute a real result. Try BigComplex.Pow(). (The complex result is <{c.Item1}; {c.Item2}>)");
     }
 
     /// <summary>
@@ -101,108 +101,122 @@ public partial struct BigDecimal
     /// <inheritdoc />
     public static BigDecimal RootN(BigDecimal x, int n)
     {
-        // If n is even, a negative value for a is unsupported as there will be no real results,
+        return Root(x, n);
+    }
+
+    /// <summary>Computes the n-th root of a value. BigInteger version.</summary>
+    /// <param name="x">The value whose <paramref name="n" />-th root is to be computed.</param>
+    /// <param name="n">The degree of the root to be computed.</param>
+    /// <returns>The <paramref name="n" />-th root of <paramref name="x" />.</returns>
+    /// <exception cref="ArithmeticException"></exception>
+    /// <exception cref="ArgumentInvalidException"></exception>
+    public static BigDecimal Root(BigDecimal x, BigInteger n)
+    {
+        // The 0th root is undefined.
+        if (n == 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(n),
+                "The 0th root is undefined since any number to the power of 0 is 1.");
+        }
+
+        // If n is even, a negative value for x is unsupported as there will be no real results,
         // only complex ones.
-        if (x < 0 && int.IsEvenInteger(n))
+        if (x < 0 && BigInteger.IsEvenInteger(n))
         {
-            throw new ArithmeticException("Negative numbers have no real even roots.");
+            throw new ArithmeticException(
+                "Negative numbers have no real even roots, only complex ones.");
         }
 
-        if (x == 0)
+        // Optimizations. TODO Check.
+        if (x == 0) return 0;
+        if (x == 1) return 1;
+
+        // A negative root is the inverse of the positive root.
+        if (n < 0) return 1 / Root(x, -n);
+
+        // The first root of a number is itself.
+        if (n == 1) return x;
+
+        // Get all the roots.
+        var roots = ComplexRoots(x, 0, n);
+
+        // Find the first real root, if present.
+        foreach (var root in roots)
         {
-            return 0;
-        }
-
-        if (x == 1)
-        {
-            return 1;
-        }
-
-        switch (n)
-        {
-            // A negative root is the inverse of the positive root.
-            case < 0:
-                return 1 / RootN(x, -n);
-
-            // 0th root unsolvable.
-            case 0:
-                throw new ArgumentInvalidException(nameof(n),
-                    "The 0th root is unsolvable since any number to the power of 0 is 1.");
-
-            // The 1st root of a number is itself.
-            case 1:
-                return x;
-        }
-
-        // Get an initial estimate using double, which should be pretty fast.
-        // Reduce operand to the maximum number of significant digits supported by the double type.
-        var xR = RoundSigFigs(x, DoublePrecision);
-        var sig = double.RootN((double)xR.Significand, n);
-        var exp = (BigDecimal)xR.Exponent / n;
-        var y0 = sig * Exp10(exp);
-
-        // Check if our estimate is already our result.
-        if (Pow(y0, n) == x)
-        {
-            return y0;
-        }
-
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
-
-        BigDecimal result;
-
-        // Calculate the smallest difference between two adjacent values before we stop.
-        // Our initial estimate provides the scale.
-        y0.ShiftToSigFigs(prevMaxSigFigs);
-        var delta = Exp10(y0.Exponent - 1);
-
-        // Newton's method.
-        while (true)
-        {
-            // Get the next value of y.
-            var ym = Pow(y0, n - 1);
-            var yn = ym * y0;
-            var y1 = y0 - (yn - x) / (n * ym);
-
-            // See if the values are close enough.
-            // Simply testing for equality doesn't work because this method will sometime alternate
-            // (bounce) between two very close values. This is caused by rounding in the above
-            // operations.
-            // Rounding again (to the original, lower sig figs) doesn't solve this, as sometimes
-            // even very close values can round to different values.
-            // So, we compare the two similar values to see which is best.
-            if (Abs(y1 - y0) <= delta)
+            if (root.Item2 == 0)
             {
-                // Test for equality.
-                if (y0 == y1)
-                {
-                    result = y0;
-                }
-                else
-                {
-                    // Pick the best value. We have to temporarily increase the number of
-                    // significant figures again to get an accurate comparison (otherwise we often
-                    // end up comparing 1 and 1, etc.).
-                    var prevMaxSigFigs2 = MaxSigFigs;
-                    MaxSigFigs += 2;
-                    var diff0 = Abs(x - Pow(y0, n));
-                    var diff1 = Abs(x - Pow(y1, n));
-                    result = diff0 < diff1 ? y0 : y1;
-                    MaxSigFigs = prevMaxSigFigs2;
-                }
-                break;
+                return RoundSigFigs(root.Item1);
             }
-
-            // Next iteration.
-            y0 = y1;
         }
 
-        // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
+        // No solution found.
+        throw new ArithmeticException("No real root exists.");
 
-        return RoundSigFigs(result);
+        // // Get an initial estimate using double, which should be pretty fast.
+        // // Reduce operand to the maximum number of significant digits supported by the double type.
+        // var xR = RoundSigFigs(x, DoublePrecision);
+        // var sig = double.RootN((double)xR.Significand, n);
+        // var exp = (BigDecimal)xR.Exponent / n;
+        // var y0 = sig * Exp10(exp);
+        //
+        // // Check if our estimate is already our result.
+        // if (Pow(y0, n) == x) return y0;
+        //
+        // // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        // var prevMaxSigFigs = MaxSigFigs;
+        // MaxSigFigs += 2;
+        //
+        // BigDecimal result;
+        //
+        // // Calculate the smallest difference between two adjacent values before we stop.
+        // // Our initial estimate provides the scale.
+        // y0.ShiftToSigFigs(prevMaxSigFigs);
+        // var delta = Exp10(y0.Exponent - 1);
+        //
+        // // Newton's method.
+        // while (true)
+        // {
+        //     // Get the next value of y.
+        //     var ym = Pow(y0, n - 1);
+        //     var yn = ym * y0;
+        //     var y1 = y0 - (yn - x) / (n * ym);
+        //
+        //     // See if the values are close enough.
+        //     // Simply testing for equality doesn't work because this method will sometime alternate
+        //     // (bounce) between two very close values. This is caused by rounding in the above
+        //     // operations.
+        //     // Rounding again (to the original, lower sig figs) doesn't solve this, as sometimes
+        //     // even very close values can round to different values.
+        //     // So, we compare the two similar values to see which is best.
+        //     if (Abs(y1 - y0) <= delta)
+        //     {
+        //         // Test for equality.
+        //         if (y0 == y1)
+        //         {
+        //             result = y0;
+        //         }
+        //         else
+        //         {
+        //             // Pick the best value. We have to temporarily increase the number of
+        //             // significant figures again to get an accurate comparison (otherwise we often
+        //             // end up comparing 1 and 1, etc.).
+        //             var prevMaxSigFigs2 = MaxSigFigs;
+        //             MaxSigFigs += 2;
+        //             var diff0 = Abs(x - Pow(y0, n));
+        //             var diff1 = Abs(x - Pow(y1, n));
+        //             result = diff0 < diff1 ? y0 : y1;
+        //             MaxSigFigs = prevMaxSigFigs2;
+        //         }
+        //         break;
+        //     }
+        //
+        //     // Next iteration.
+        //     y0 = y1;
+        // }
+        //
+        // // Restore the maximum number of significant figures.
+        // MaxSigFigs = prevMaxSigFigs;
+        // return RoundSigFigs(result);
     }
 
     /// <summary>
@@ -235,6 +249,40 @@ public partial struct BigDecimal
     public static BigDecimal Hypot(BigDecimal x, BigDecimal y)
     {
         return Sqrt(Sqr(x) + Sqr(y));
+    }
+
+    /// <summary>
+    /// Determine all n roots of the complex number defined by real and imaginary parts.
+    /// This will include complex conjugates.
+    /// This method is really just for internal use by BigDecimal and BigComplex, but because they
+    /// are different projects and packages, I have to make it public.
+    /// I couldn't place it in BigComplex as I want to avoid a circular dependency.
+    /// Ordinary users of the class should use BigComplex.Roots(), which calls this.
+    /// </summary>
+    /// <param name="real">The real part of the complex value.</param>
+    /// <param name="imag">The imaginary part of the complex value.</param>
+    /// <param name="n">The degree of the roots to be computed.</param>
+    /// <returns>An array of tuples representing complex numbers.</returns>
+    public static List<(BigDecimal, BigDecimal)> ComplexRoots(BigDecimal real, BigDecimal imag,
+        BigInteger n)
+    {
+        // Get the polar form:
+        var (mag, phase) = CartesianToPolar(real, imag);
+
+        // Calculate r^(1/n).
+        var q = Root(mag, n);
+
+        // Get all the roots as complex numbers.
+        var roots = new List<(BigDecimal, BigDecimal)>();
+        var iota = Tau / n;
+        for (var k = 0; k < n; k++)
+        {
+            var alpha = phase + iota * k;
+            var root = (q * Cos(alpha), q * Sin(alpha));
+            roots.Add(root);
+        }
+
+        return roots;
     }
 
     #endregion Root functions
@@ -305,6 +353,30 @@ public partial struct BigDecimal
         return Pow(10, x);
     }
 
+    /// <summary>Computes e raised to a given complex power.</summary>
+    /// <param name="real">The real part of the complex exponent.</param>
+    /// <param name="imaginary">The imaginary part of the complex exponent.</param>
+    /// <returns>The complex result as a tuple of 2 BigDecimal values.</returns>
+    public static (BigDecimal, BigDecimal) ComplexExp(BigDecimal real, BigDecimal imaginary)
+    {
+        // If there's no imaginary component, use the real version of the method.
+        if (imaginary == 0) return (Exp(real), 0);
+
+        // Optimizations using Euler's identity.
+        if (real == 0)
+        {
+            // Euler's identity with π: e^πi = -1
+            if (imaginary == Pi) return (-1, 0);
+
+            // Euler's identity with τ: e^τi = 1
+            if (imaginary == Tau) return (1, 0);
+        }
+
+        // Euler's formula.
+        var ex = Exp(real);
+        return (ex * Cos(imaginary), ex * Sin(imaginary));
+    }
+
     #endregion Exponential functions
 
     #region Logarithmic functions
@@ -315,8 +387,7 @@ public partial struct BigDecimal
         // Guards.
         if (x == 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(x),
-                "Logarithm of 0 is -∞, which cannot be expressed using a BigDecimal.");
+            throw new ArgumentOutOfRangeException(nameof(x), "The logarithm of 0 is undefined.");
         }
 
         if (x < 0)
@@ -386,18 +457,6 @@ public partial struct BigDecimal
         return RoundSigFigs(result);
     }
 
-    /// <summary>
-    /// Calculate the natural logarithm of a BigDecimal value.
-    /// Alias for Log(BigDecimal).
-    /// </summary>
-    /// <see cref="Log(BigDecimal)" />
-    /// <param name="x">The BigDecimal value.</param>
-    /// <returns>The natural logarithm of the parameter.</returns>
-    public static BigDecimal Ln(BigDecimal x)
-    {
-        return Log(x);
-    }
-
     /// <inheritdoc />
     public static BigDecimal Log(BigDecimal x, BigDecimal b)
     {
@@ -427,6 +486,29 @@ public partial struct BigDecimal
     public static BigDecimal Log10(BigDecimal x)
     {
         return Log(x, 10);
+    }
+
+    /// <summary>
+    /// Natural logarithm of a complex number.
+    /// </summary>
+    /// <remarks>This method finds the principal value only.</remarks>
+    /// <param name="real">The real part of the complex value.</param>
+    /// <param name="imaginary">The imaginary part of the complex value.</param>
+    /// <returns>The logarithm of the complex value as a tuple of 2 BigDecimal values.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">If real and imaginary are both 0.</exception>
+    /// <see href="https://en.wikipedia.org/wiki/Complex_number#Complex_logarithm"/>
+    public static (BigDecimal, BigDecimal) ComplexLog(BigDecimal real, BigDecimal imaginary)
+    {
+        if (imaginary == 0 && real >= 0)
+        {
+            // For non-negative real values, use the real version of the method.
+            // This will throw an exception if real == 0.
+            return (Log(real), 0);
+        }
+
+        // Calculate complex logarithm.
+        var (magnitude, phase) = CartesianToPolar(real, imaginary);
+        return (Log(magnitude), phase);
     }
 
     #endregion Logarithmic functions

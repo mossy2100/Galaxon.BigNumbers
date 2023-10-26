@@ -295,13 +295,6 @@ public partial struct BigRational :
 
     public bool Equals(BigRational br2)
     {
-        // If both numerators are 0 then we don't care what the denominators are.
-        // (Although, they should both be the same anyway, equal to 1.)
-        if (Numerator == 0 && br2.Numerator == 0)
-        {
-            return true;
-        }
-
         // See if the numerators and denominators are equal.
         return Numerator == br2.Numerator && Denominator == br2.Denominator;
     }
@@ -488,50 +481,6 @@ public partial struct BigRational :
         return (BigRational)MemberwiseClone();
     }
 
-    // /// <summary>
-    // /// Find a numerator and denominator that fits the given real value within a given tolerance.
-    // /// Warning: this can be slow.
-    // /// TODO Why is this needed if we have a cast from double to BigRational which is exact?
-    // /// </summary>
-    // public static BigRational Find(double x, double tolerance = XDouble.Delta)
-    // {
-    //     // Optimizations.
-    //     if (x == 0)
-    //     {
-    //         return Zero;
-    //     }
-    //     if (double.IsInteger(x))
-    //     {
-    //         return new BigRational((BigInteger)x);
-    //     }
-    //
-    //     // Get the sign of the input value as 1 or -1.
-    //     var sign = (sbyte)double.CopySign(1, x);
-    //
-    //     // Make the value positive.
-    //     x = double.Abs(x);
-    //
-    //     // Start with a denominator of 1 and increment until we find a good match.
-    //     BigInteger den = 1;
-    //     double nRounded;
-    //     while (true)
-    //     {
-    //         // Calculate the numerator for this denominator, and see if it's an integer (or very
-    //         // close to).
-    //         var num = x * (double)den;
-    //         nRounded = double.Round(num);
-    //         if (nRounded > 0 && num.FuzzyEquals(nRounded, tolerance))
-    //         {
-    //             break;
-    //         }
-    //
-    //         // Next.
-    //         den++;
-    //     }
-    //
-    //     return new BigRational((BigInteger)nRounded * sign, den);
-    // }
-
     /// <summary>
     /// Reduce a rational given as a numerator and denominator.
     /// I've made this version, which doesn't receive or return a BigRational object, so it can be
@@ -547,14 +496,8 @@ public partial struct BigRational :
         }
 
         // Optimizations.
-        if (num == 0)
-        {
-            return (0, 1);
-        }
-        if (num == den)
-        {
-            return (1, 1);
-        }
+        if (num == 0) return (0, 1);
+        if (num == den) return (1, 1);
 
         // Make the denominator positive.
         if (den < 0)
@@ -564,14 +507,8 @@ public partial struct BigRational :
         }
 
         // Check for simple, irreducible fractions.
-        if (num == 1)
-        {
-            return (1, den);
-        }
-        if (den == 1)
-        {
-            return (num, 1);
-        }
+        if (num == 1) return (1, den);
+        if (den == 1) return (num, 1);
 
         // Get the greatest common divisor.
         var gcd = XBigInteger.GreatestCommonDivisor(num, den);
@@ -637,9 +574,7 @@ public partial struct BigRational :
         var den = BigInteger.Pow(br.Denominator, exp);
 
         // If the sign is negative, invert the rational.
-        return sign < 0
-            ? new BigRational(den, num)
-            : new BigRational(num, den);
+        return sign < 0 ? new BigRational(den, num) : new BigRational(num, den);
     }
 
     /// <summary>
@@ -683,8 +618,7 @@ public partial struct BigRational :
     /// </summary>
     public static BigRational operator +(BigRational br, BigRational br2)
     {
-        var num =
-            br.Numerator * br2.Denominator + br2.Numerator * br.Denominator;
+        var num = br.Numerator * br2.Denominator + br2.Numerator * br.Denominator;
         var den = br.Denominator * br2.Denominator;
         return new BigRational(num, den);
     }
@@ -695,15 +629,6 @@ public partial struct BigRational :
     public static BigRational operator -(BigRational br, BigRational br2)
     {
         return br + -br2;
-    }
-
-    /// <summary>
-    /// Reciprocal operator.
-    /// Slightly faster than using 1/br.
-    /// </summary>
-    public static BigRational operator ~(BigRational br)
-    {
-        return Reciprocal(br);
     }
 
     /// <summary>
@@ -723,23 +648,7 @@ public partial struct BigRational :
     }
 
     /// <summary>
-    /// Exponentiation operator (integer exponent).
-    /// </summary>
-    public static BigRational operator ^(BigRational br, int i)
-    {
-        return Pow(br, i);
-    }
-
-    /// <summary>
-    /// Exponentiation operator (double exponent).
-    /// </summary>
-    public static BigRational operator ^(BigRational br, double x)
-    {
-        return Pow(br, x);
-    }
-
-    /// <summary>
-    /// Exponentiation operator (rational exponent).
+    /// Exponentiation operator.
     /// </summary>
     public static BigRational operator ^(BigRational br, BigRational br2)
     {
@@ -771,7 +680,7 @@ public partial struct BigRational :
     /// </summary>
     public static bool operator <(BigRational br, BigRational br2)
     {
-        return (double)br < (double)br2;
+        return (BigDecimal)br < (BigDecimal)br2;
     }
 
     /// <summary>
@@ -779,7 +688,7 @@ public partial struct BigRational :
     /// </summary>
     public static bool operator >(BigRational br, BigRational br2)
     {
-        return (double)br > (double)br2;
+        return (BigDecimal)br > (BigDecimal)br2;
     }
 
     /// <summary>
