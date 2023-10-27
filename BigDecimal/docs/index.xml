@@ -647,12 +647,6 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.RootN(Galaxon.BigNumbers.BigDecimal,System.Int32)">
             <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Root(Galaxon.BigNumbers.BigDecimal,System.Numerics.BigInteger)">
-            <summary>Computes the n-th root of a value. BigInteger version.</summary>
-            <param name="x">The value whose <paramref name="n" />-th root is to be computed.</param>
-            <param name="n">The degree of the root to be computed.</param>
-            <returns>The <paramref name="n" />-th root of <paramref name="x" />.</returns>
             <exception cref="T:System.ArithmeticException"></exception>
             <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException"></exception>
         </member>
@@ -679,7 +673,16 @@
             <param name="y">The length of the other short side of the triangle.</param>
             <returns>The length of the hypotenuse.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ComplexRoots(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,System.Numerics.BigInteger)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.FirstComplexRoot(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,System.Int32)">
+            <summary>
+            Get the first root of a complex number, defined by real and imaginary parts.
+            </summary>
+            <param name="real">The real part of the complex value.</param>
+            <param name="imag">The imaginary part of the complex value.</param>
+            <param name="n">The degree of the roots to be computed.</param>
+            <returns>A tuple representing the first root.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.ComplexRoots(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,System.Int32)">
             <summary>
             Determine all n roots of the complex number defined by real and imaginary parts.
             This will include complex conjugates.
@@ -705,7 +708,7 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.ComplexExp(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>Computes e raised to a given complex power.</summary>
             <param name="real">The real part of the complex exponent.</param>
-            <param name="imaginary">The imaginary part of the complex exponent.</param>
+            <param name="imag">The imaginary part of the complex exponent.</param>
             <returns>The complex result as a tuple of 2 BigDecimal values.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Log(Galaxon.BigNumbers.BigDecimal)">
@@ -726,7 +729,7 @@
             </summary>
             <remarks>This method finds the principal value only.</remarks>
             <param name="real">The real part of the complex value.</param>
-            <param name="imaginary">The imaginary part of the complex value.</param>
+            <param name="imag">The imaginary part of the complex value.</param>
             <returns>The logarithm of the complex value as a tuple of 2 BigDecimal values.</returns>
             <exception cref="T:System.ArgumentOutOfRangeException">If real and imaginary are both 0.</exception>
             <see href="https://en.wikipedia.org/wiki/Complex_number#Complex_logarithm"/>

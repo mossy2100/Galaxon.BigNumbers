@@ -19,21 +19,11 @@ public partial struct BigDecimal
         a = NormalizeAngle(in a);
 
         // Optimizations.
-        if (a == 0 || a == Pi)
-        {
-            return 0;
-        }
+        if (a == 0 || a == Pi) return 0;
 
         var halfPi = Pi / 2;
-        if (a == halfPi)
-        {
-            return 1;
-        }
-
-        if (a == -halfPi)
-        {
-            return NegativeOne;
-        }
+        if (a == halfPi) return 1;
+        if (a == -halfPi) return NegativeOne;
 
         // Taylor series.
         var sign = 1;
@@ -55,10 +45,7 @@ public partial struct BigDecimal
             var newSum = sum + sign * aToM / mFact;
 
             // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum)
-            {
-                break;
-            }
+            if (sum == newSum) break;
 
             // Prepare for next iteration.
             sum = newSum;
@@ -89,20 +76,9 @@ public partial struct BigDecimal
         a = NormalizeAngle(in a);
 
         // Optimizations.
-        if (a == 0)
-        {
-            return 1;
-        }
-
-        if (a == Pi)
-        {
-            return NegativeOne;
-        }
-
-        if (Abs(a) == Pi / 2)
-        {
-            return 0;
-        }
+        if (a == 0) return 1;
+        if (a == Pi) return NegativeOne;
+        if (Abs(a) == Pi / 2) return 0;
 
         // Taylor series.
         // https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
@@ -125,10 +101,7 @@ public partial struct BigDecimal
             var newSum = sum + sign * aToM / mFact;
 
             // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum)
-            {
-                break;
-            }
+            if (sum == newSum) break;
 
             // Prepare for next iteration.
             sum = newSum;
@@ -193,38 +166,23 @@ public partial struct BigDecimal
     public static BigDecimal Asin(BigDecimal x)
     {
         // Optimization.
-        if (x == 0)
-        {
-            return 0;
-        }
+        if (x == 0) return 0;
 
         // Handle negative arguments.
-        if (x < 0)
-        {
-            return -Asin(-x);
-        }
+        if (x < 0) return -Asin(-x);
 
         // Guard.
-        if (x > 1)
-        {
-            throw new ArgumentOutOfRangeException(nameof(x), "Must be in the range -1..1.");
-        }
+        if (x > 1) throw new ArgumentOutOfRangeException(nameof(x), "Must be in the range -1..1.");
 
         // Optimization.
         var halfPi = Pi / 2;
-        if (x == 1)
-        {
-            return halfPi;
-        }
+        if (x == 1) return halfPi;
 
         // The Taylor series is slow to converge near x = ±1, but we can the following identity
         // relationship and calculate Asin() accurately and quickly for a smaller value:
         // Asin(θ) = π/2 - Asin(√(1-θ²))
         var xSqr = x * x;
-        if (x > 0.75m)
-        {
-            return halfPi - Asin(Sqrt(1 - xSqr));
-        }
+        if (x > 0.75m) return halfPi - Asin(Sqrt(1 - xSqr));
 
         // Taylor series.
         BigInteger n = 1;
@@ -246,10 +204,7 @@ public partial struct BigDecimal
             var newSum = sum + b * xToM / (c * m);
 
             // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum)
-            {
-                break;
-            }
+            if (sum == newSum) break;
 
             // Prepare for next iteration.
             sum = newSum;
@@ -287,23 +242,12 @@ public partial struct BigDecimal
     /// <inheritdoc />
     public static BigDecimal Atan(BigDecimal x)
     {
-        // Optimization.
-        if (x == 0)
-        {
-            return 0;
-        }
-
         // Handle negative arguments.
-        if (x < 0)
-        {
-            return -Atan(-x);
-        }
+        if (x < 0) return -Atan(-x);
 
         // Optimization.
-        if (x == 1)
-        {
-            return Pi / 4;
-        }
+        if (x == 0) return 0;
+        if (x == 1) return Pi / 4;
 
         // Taylor series.
         var m = 1;
@@ -325,10 +269,7 @@ public partial struct BigDecimal
             var newSum = sum + sign * (small ? xToM / m : 1 / (m * xToM));
 
             // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum)
-            {
-                break;
-            }
+            if (sum == newSum) break;
 
             // Prepare for next iteration.
             sum = newSum;
@@ -369,20 +310,14 @@ public partial struct BigDecimal
 
         if (x == 0)
         {
-            if (y == 0)
-            {
-                return 0;
-            }
+            if (y == 0) return 0;
 
             result = Pi / 2;
             return y > 0 ? result : -result;
         }
 
         result = Atan(y / x);
-        if (x > 0)
-        {
-            return result;
-        }
+        if (x > 0) return result;
 
         // x < 0
         return result + (y < 0 ? -Pi : Pi);
@@ -409,10 +344,7 @@ public partial struct BigDecimal
     public static BigDecimal Sinh(BigDecimal a)
     {
         // Optimization.
-        if (a == 0)
-        {
-            return 0;
-        }
+        if (a == 0) return 0;
 
         // Taylor series.
         var m = 1;
@@ -432,10 +364,7 @@ public partial struct BigDecimal
             var newSum = sum + aToM / mFact;
 
             // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum)
-            {
-                break;
-            }
+            if (sum == newSum) break;
 
             // Prepare for next iteration.
             m += 2;
@@ -454,10 +383,7 @@ public partial struct BigDecimal
     public static BigDecimal Cosh(BigDecimal a)
     {
         // Optimization.
-        if (a == 0)
-        {
-            return 1;
-        }
+        if (a == 0) return 1;
 
         // Taylor series.
         var m = 0;
@@ -478,10 +404,7 @@ public partial struct BigDecimal
             var newSum = sum + aToM / mFact;
 
             // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum)
-            {
-                break;
-            }
+            if (sum == newSum) break;
 
             // Prepare for next iteration.
             m += 2;
@@ -565,15 +488,8 @@ public partial struct BigDecimal
         // the default behaviour of modulo is to assign the sign of the dividend (the left-hand
         // operand) to the result. So if radians is negative, the result will be, too.
         // Therefore, we may need to shift the value once more to place it in the desired range.
-        if (a < -Pi)
-        {
-            return a + Tau;
-        }
-
-        if (a >= Pi)
-        {
-            return a - Tau;
-        }
+        if (a < -Pi) return a + Tau;
+        if (a >= Pi) return a - Tau;
 
         return a;
     }

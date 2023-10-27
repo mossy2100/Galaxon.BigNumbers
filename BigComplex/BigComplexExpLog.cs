@@ -109,15 +109,6 @@ public partial struct BigComplex
     /// <inheritdoc />
     public static BigComplex RootN(BigComplex z, int n)
     {
-        return Root(z, n);
-    }
-
-    /// <summary>Computes the n-th root of a value.</summary>
-    /// <param name="z">The value whose <paramref name="n" />-th root is to be computed.</param>
-    /// <param name="n">The degree of the root to be computed.</param>
-    /// <returns>The <paramref name="n" />-th root of <paramref name="z" />.</returns>
-    public static BigComplex Root(BigComplex z, BigInteger n)
-    {
         // The 0th root is undefined.
         if (n == 0)
         {
@@ -125,22 +116,20 @@ public partial struct BigComplex
                 "The 0th root is undefined since any number to the power of 0 is 1.");
         }
 
-        // The first root of a number is itself.
-        if (n == 1) return z;
-
-        // Can't solve.
-        throw new ArithmeticException(
-            $"There are {n} solutions, whereas this method is designed to return only 1. Try calling BigComplex.Roots() to find all the roots.");
+        // Just return the first root found.
+        return new BigComplex(BigDecimal.FirstComplexRoot(z.Real, z.Imaginary, n));
     }
 
     /// <summary>Computes the n-th roots of a complex value.</summary>
     /// <param name="z">The value whose <paramref name="n" />-th roots are to be computed.</param>
     /// <param name="n">The degree of the roots to be computed.</param>
     /// <returns>The <paramref name="n" />-th roots of <paramref name="z" />.</returns>
-    public static List<BigComplex> Roots(BigComplex z, BigInteger n)
+    public static List<BigComplex> Roots(BigComplex z, int n)
     {
-        return BigDecimal.ComplexRoots(z.Real, z.Imaginary, n)
-            .Select(tup => new BigComplex(tup)).ToList();
+        return BigDecimal
+            .ComplexRoots(z.Real, z.Imaginary, n)
+            .Select(tup => new BigComplex(tup))
+            .ToList();
     }
 
     /// <summary>

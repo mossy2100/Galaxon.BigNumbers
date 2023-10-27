@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Numerics;
+using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers.BigDecimalTests;
 
@@ -327,5 +328,32 @@ public class ExpLogTests
             Console.WriteLine($"Log({i}) == {log}");
             Console.WriteLine($"Log() took {tLog} ticks.");
         }
+    }
+
+    [TestMethod]
+    public void TestFirstComplexRootOfNegative()
+    {
+        (BigDecimal, BigDecimal) root;
+
+        root = BigDecimal.FirstComplexRoot(-16, 0, 2);
+        Assert.AreEqual(0, root.Item1);
+        Assert.AreEqual(4, root.Item2);
+
+        root = BigDecimal.FirstComplexRoot(-16, 0, 3);
+        Assert.AreEqual(1.259921049894873, (double)root.Item1, 1e-15);
+        Assert.AreEqual(2.182247271943443, (double)root.Item2, 1e-15);
+
+        root = BigDecimal.FirstComplexRoot(-16, 0, 4);
+        Assert.AreEqual(1.414213562373095, (double)root.Item1, 1e-15);
+        Assert.AreEqual(1.414213562373095, (double)root.Item2, 1e-15);
+    }
+
+    [TestMethod]
+    public void TestCbrtOfNegative()
+    {
+        BigDecimal c;
+
+        c = BigDecimal.Cbrt(-27);
+        Assert.AreEqual(-3, c);
     }
 }
