@@ -423,22 +423,11 @@
             <param name="n">The BigInteger value.</param>
             <returns>The equivalent BigDecimal value.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Decimal)~Galaxon.BigNumbers.BigDecimal">
-            <summary>
-            Implicit cast from decimal to BigDecimal.
-            The cast is implicit because any decimal value can be cast to a BigDecimal exactly, without
-            loss of information. However, rounding off using Round() or RoundSigFigs() can cause
-            information loss.
-            We don't need to use Parse() or division operations here, because the base is decimal.
-            We can just extract the parts of the decimal from the bits and construct a BigDecimal from
-            those. This method should be faster than using ToString() and Parse().
-            </summary>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Half)~Galaxon.BigNumbers.BigDecimal">
             <summary>
             Implicit cast from Half to BigDecimal.
             NB: The resulting BigDecimal value is exactly the value encoded by the Half.
-            However, since Halfs only approximate decimal values, it's possible that only the first few
+            However, since Halves only approximate decimal values, it's possible that only the first few
             digits are valid in terms of the intended value.
             Therefore, you may need to use RoundSigFigs() to get the value you really want.
             </summary>
@@ -465,6 +454,17 @@
             <code>
             BigDecimal bd = BigDecimal.RoundSigFigs(1.2345, DoubleMaxSigFigs);
             </code>
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Decimal)~Galaxon.BigNumbers.BigDecimal">
+            <summary>
+            Implicit cast from decimal to BigDecimal.
+            The cast is implicit because any decimal value can be cast to a BigDecimal exactly, without
+            loss of information. However, rounding off using Round() or RoundSigFigs() can cause
+            information loss.
+            We don't need to use Parse() or division operations here, because the base is decimal.
+            We can just extract the parts of the decimal from the bits and construct a BigDecimal from
+            those. This method should be faster than using ToString() and Parse().
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.SByte">
@@ -552,19 +552,9 @@
             Explicit cast from BigDecimal to BigInteger.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Decimal">
-            <summary>
-            Explicit cast from BigDecimal to decimal.
-            </summary>
-            <exception cref="T:System.OverflowException">
-            If the value is outside the valid range for decimal.
-            </exception>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Half">
             <summary>
             Explicit cast from BigDecimal to Half.
-            BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
-            be rendered in the call to ToString(). This will produce the closest matching Half possible.
             This method will not throw an OverflowException, but will return ±∞ for a value outside the
             valid range for Half.
             </summary>
@@ -572,10 +562,6 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Single">
             <summary>
             Explicit cast from BigDecimal to float.
-            (I implemented a method to do this using maths and bits, but it takes much longer.)
-            BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
-            be rendered in the call to ToString(). This will produce the closest matching float
-            possible.
             This method will not throw an OverflowException, but will return ±∞ for a value outside the
             valid range for float.
             </summary>
@@ -583,12 +569,17 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Double">
             <summary>
             Explicit cast from BigDecimal to double.
-            BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
-            be rendered in the call to ToString(). This will produce the closest matching double
-            possible.
             This method will not throw an OverflowException, but will return ±∞ for a value outside the
             valid range for double.
             </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Decimal">
+            <summary>
+            Explicit cast from BigDecimal to decimal.
+            </summary>
+            <exception cref="T:System.OverflowException">
+            If the value is outside the valid range for decimal.
+            </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryConvertFromChecked``1(``0,Galaxon.BigNumbers.BigDecimal@)">
             <inheritdoc />
@@ -615,12 +606,15 @@
             </summary>
             <exception cref="T:System.InvalidCastException"></exception>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.IsTypeSupported(System.Type)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.ConvertToFloatingPoint``1(Galaxon.BigNumbers.BigDecimal)">
             <summary>
-            Which types are supported for conversions to and from BigDecimal.
+            Convert a BigDecimal to a standard binary floating point type.
+            If the BigDecimal is outside the range for this type, this method will return negative or
+            positive infinity as needed, without throwing an exception.
             </summary>
-            <param name="type">A type.</param>
-            <returns>If the type is supported.</returns>
+            <typeparam name="T">The standard binary floating point type.</typeparam>
+            <param name="bd">The BigDecimal value.</param>
+            <returns>The converted value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Pow(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>

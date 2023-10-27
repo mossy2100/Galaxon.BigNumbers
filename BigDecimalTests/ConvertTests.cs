@@ -140,7 +140,7 @@ public class ConvertTests
         y = (float)bd;
         Assert.AreEqual(x, y);
 
-        x = XFloat.MinPosNormalValue;
+        x = XFloatingPoint.GetMinPosNormalValue<float>();
         bd = x;
         y = (float)bd;
         Assert.AreEqual(x, y);
@@ -162,7 +162,7 @@ public class ConvertTests
         y = (float)bd;
         Assert.AreEqual(x, y);
 
-        x = -XFloat.MinPosNormalValue;
+        x = -XFloatingPoint.GetMinPosNormalValue<float>();
         bd = x;
         y = (float)bd;
         Assert.AreEqual(x, y);
@@ -189,7 +189,7 @@ public class ConvertTests
         y = (float)bd;
         Assert.AreEqual(x, y);
 
-        x = XFloat.MaxPosSubnormalValue;
+        x = XFloatingPoint.GetMaxPosSubnormalValue<float>();
         bd = x;
         y = (float)bd;
         Assert.AreEqual(x, y);
@@ -216,7 +216,7 @@ public class ConvertTests
         y = (float)bd;
         Assert.AreEqual(x, y);
 
-        x = -XFloat.MaxPosSubnormalValue;
+        x = -XFloatingPoint.GetMaxPosSubnormalValue<float>();
         bd = x;
         y = (float)bd;
         Assert.AreEqual(x, y);

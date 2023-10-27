@@ -314,10 +314,10 @@ public partial struct BigRational
     #region Helper methods
 
     /// <summary>
-    /// Implicitly cast a floating point value to a BigRational.
+    /// Implicitly cast a standard binary floating point value to a BigRational.
     /// This can be done exactly.
     /// </summary>
-    public static BigRational ConvertFromFloatingPoint<T>(T x) where T : IFloatingPoint<T>
+    public static BigRational ConvertFromFloatingPoint<T>(T x) where T : IFloatingPointIeee754<T>
     {
         // Check the value can be converted.
         if (!T.IsFinite(x))
@@ -329,7 +329,7 @@ public partial struct BigRational
         if (x == T.Zero) return Zero;
 
         // Get the parts of the floating point value.
-        var (signBit, expBits, fracBits) = x.Disassemble();
+        var (signBit, expBits, fracBits) = x.Disassemble<T>();
 
         // Convert the fraction bits to a denominator.
         var nFracBits = XFloatingPoint.GetNumFracBits<T>();
@@ -362,16 +362,6 @@ public partial struct BigRational
 
         // Construct and return the new value.
         return new BigRational(num, den);
-    }
-
-    /// <summary>
-    /// Which types are supported for conversions to and from BigRational.
-    /// </summary>
-    /// <param name="type">A type.</param>
-    /// <returns>If the type is supported.</returns>
-    private static bool IsTypeSupported(Type type)
-    {
-        return XNumber.IsStandardNumberType(type) || type == typeof(BigDecimal);
     }
 
     #endregion Helper methods

@@ -1,5 +1,6 @@
 using System.Numerics;
 using Galaxon.Core.Numbers;
+using Galaxon.Core.Types;
 
 namespace Galaxon.BigNumbers;
 
@@ -118,6 +119,48 @@ public partial struct BigDecimal
     }
 
     /// <summary>
+    /// Implicit cast from Half to BigDecimal.
+    /// NB: The resulting BigDecimal value is exactly the value encoded by the Half.
+    /// However, since Halves only approximate decimal values, it's possible that only the first few
+    /// digits are valid in terms of the intended value.
+    /// Therefore, you may need to use RoundSigFigs() to get the value you really want.
+    /// </summary>
+    public static implicit operator BigDecimal(Half n)
+    {
+        return ConvertFromFloatingPoint<Half>(n);
+    }
+
+    /// <summary>
+    /// Implicit cast from float to BigDecimal.
+    /// NB: The resulting BigDecimal value is exactly the value encoded by the float.
+    /// However, since floats only approximate decimal values, it's possible that only the first 6-9
+    /// digits are valid in terms of the intended value.
+    /// Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
+    /// <code>
+    /// BigDecimal bd = BigDecimal.RoundSigFigs(1.2345f, FloatMaxSigFigs);
+    /// </code>
+    /// </summary>
+    public static implicit operator BigDecimal(float n)
+    {
+        return ConvertFromFloatingPoint<float>(n);
+    }
+
+    /// <summary>
+    /// Implicit cast from double to BigDecimal.
+    /// NB: The resulting BigDecimal value is exactly the value encoded by the double.
+    /// However, since doubles only approximate decimal values, it's possible that only the first
+    /// 15-17 digits are valid in terms of the intended value.
+    /// Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
+    /// <code>
+    /// BigDecimal bd = BigDecimal.RoundSigFigs(1.2345, DoubleMaxSigFigs);
+    /// </code>
+    /// </summary>
+    public static implicit operator BigDecimal(double n)
+    {
+        return ConvertFromFloatingPoint<double>(n);
+    }
+
+    /// <summary>
     /// Implicit cast from decimal to BigDecimal.
     /// The cast is implicit because any decimal value can be cast to a BigDecimal exactly, without
     /// loss of information. However, rounding off using Round() or RoundSigFigs() can cause
@@ -144,48 +187,6 @@ public partial struct BigDecimal
         }
 
         return new BigDecimal(sign * sig, -scale);
-    }
-
-    /// <summary>
-    /// Implicit cast from Half to BigDecimal.
-    /// NB: The resulting BigDecimal value is exactly the value encoded by the Half.
-    /// However, since Halves only approximate decimal values, it's possible that only the first few
-    /// digits are valid in terms of the intended value.
-    /// Therefore, you may need to use RoundSigFigs() to get the value you really want.
-    /// </summary>
-    public static implicit operator BigDecimal(Half n)
-    {
-        return ConvertFromFloatingPoint(n);
-    }
-
-    /// <summary>
-    /// Implicit cast from float to BigDecimal.
-    /// NB: The resulting BigDecimal value is exactly the value encoded by the float.
-    /// However, since floats only approximate decimal values, it's possible that only the first 6-9
-    /// digits are valid in terms of the intended value.
-    /// Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
-    /// <code>
-    /// BigDecimal bd = BigDecimal.RoundSigFigs(1.2345f, FloatMaxSigFigs);
-    /// </code>
-    /// </summary>
-    public static implicit operator BigDecimal(float n)
-    {
-        return ConvertFromFloatingPoint(n);
-    }
-
-    /// <summary>
-    /// Implicit cast from double to BigDecimal.
-    /// NB: The resulting BigDecimal value is exactly the value encoded by the double.
-    /// However, since doubles only approximate decimal values, it's possible that only the first
-    /// 15-17 digits are valid in terms of the intended value.
-    /// Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
-    /// <code>
-    /// BigDecimal bd = BigDecimal.RoundSigFigs(1.2345, DoubleMaxSigFigs);
-    /// </code>
-    /// </summary>
-    public static implicit operator BigDecimal(double n)
-    {
-        return ConvertFromFloatingPoint(n);
     }
 
     #endregion Cast operators to BigDecimal
@@ -313,6 +314,36 @@ public partial struct BigDecimal
     }
 
     /// <summary>
+    /// Explicit cast from BigDecimal to Half.
+    /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
+    /// valid range for Half.
+    /// </summary>
+    public static explicit operator Half(BigDecimal bd)
+    {
+        return ConvertToFloatingPoint<Half>(bd);
+    }
+
+    /// <summary>
+    /// Explicit cast from BigDecimal to float.
+    /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
+    /// valid range for float.
+    /// </summary>
+    public static explicit operator float(BigDecimal bd)
+    {
+        return ConvertToFloatingPoint<float>(bd);
+    }
+
+    /// <summary>
+    /// Explicit cast from BigDecimal to double.
+    /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
+    /// valid range for double.
+    /// </summary>
+    public static explicit operator double(BigDecimal bd)
+    {
+        return ConvertToFloatingPoint<double>(bd);
+    }
+
+    /// <summary>
     /// Explicit cast from BigDecimal to decimal.
     /// </summary>
     /// <exception cref="OverflowException">
@@ -363,45 +394,6 @@ public partial struct BigDecimal
         var isNegative = bd.Significand < 0;
 
         return new decimal(decInts[0], decInts[1], decInts[2], isNegative, scale);
-    }
-
-    /// <summary>
-    /// Explicit cast from BigDecimal to Half.
-    /// BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
-    /// be rendered in the call to ToString(). This will produce the closest matching Half possible.
-    /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
-    /// valid range for Half.
-    /// </summary>
-    public static explicit operator Half(BigDecimal bd)
-    {
-        return Half.Parse(bd.ToString("E"));
-    }
-
-    /// <summary>
-    /// Explicit cast from BigDecimal to float.
-    /// (I implemented a method to do this using maths and bits, but it takes much longer.)
-    /// BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
-    /// be rendered in the call to ToString(). This will produce the closest matching float
-    /// possible.
-    /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
-    /// valid range for float.
-    /// </summary>
-    public static explicit operator float(BigDecimal bd)
-    {
-        return float.Parse(bd.ToString("E"));
-    }
-
-    /// <summary>
-    /// Explicit cast from BigDecimal to double.
-    /// BigDecimal doesn't use a default precision for the "E" format specifier, so all digits will
-    /// be rendered in the call to ToString(). This will produce the closest matching double
-    /// possible.
-    /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
-    /// valid range for double.
-    /// </summary>
-    public static explicit operator double(BigDecimal bd)
-    {
-        return double.Parse(bd.ToString("E"));
     }
 
     #endregion Cast operators from BigDecimal
@@ -684,7 +676,7 @@ public partial struct BigDecimal
     /// Private method to convert a floating point value (float or double) to a BigDecimal.
     /// </summary>
     /// <exception cref="InvalidCastException"></exception>
-    private static BigDecimal ConvertFromFloatingPoint<T>(T n) where T : IFloatingPoint<T>
+    private static BigDecimal ConvertFromFloatingPoint<T>(T n) where T : IFloatingPointIeee754<T>
     {
         // Guard.
         if (!T.IsFinite(n))
@@ -718,8 +710,7 @@ public partial struct BigDecimal
         BigDecimal pow = 1;
         for (var i = 0; i < nFracBits; i++)
         {
-            var set = (fracBits & 1ul << i) != 0;
-            if (set)
+            if ((fracBits & 1ul << i) != 0)
             {
                 sig += pow;
             }
@@ -737,6 +728,92 @@ public partial struct BigDecimal
 
         // Calculate the result.
         return sign * sig * Exp2(exp);
+    }
+
+    /// <summary>
+    /// Convert a BigDecimal to a standard binary floating point type.
+    /// If the BigDecimal is outside the range for this type, this method will return negative or
+    /// positive infinity as needed, without throwing an exception.
+    /// </summary>
+    /// <typeparam name="T">The standard binary floating point type.</typeparam>
+    /// <param name="bd">The BigDecimal value.</param>
+    /// <returns>The converted value.</returns>
+    public static T ConvertToFloatingPoint<T>(BigDecimal bd)
+        where T : IBinaryFloatingPointIeee754<T>
+    {
+        // Check for 0.
+        if (bd == 0) return T.Zero;
+
+        // Check for -∞.
+        var minValue = XReflection.Cast<T, BigDecimal>(XNumber.GetMinValue<T>());
+        if (bd < minValue) return XFloatingPoint.GetNegativeInfinity<T>();
+
+        // Check for +∞.
+        var maxValue = XReflection.Cast<T, BigDecimal>(XNumber.GetMaxValue<T>());
+        if (bd > maxValue) return XFloatingPoint.GetPositiveInfinity<T>();
+
+        // Check if its subnormal.
+        var minPosNormalValue = XFloatingPoint.GetMinPosNormalValue<T>();
+        var bdMinPosNormalValue = XReflection.Cast<T, BigDecimal>(minPosNormalValue);
+        var abs = Abs(bd);
+        var isSubnormal = abs < bdMinPosNormalValue;
+
+        // Get the minimum and maximum exponent.
+        var minExp = XFloatingPoint.GetMinExp<T>();
+        var maxExp = XFloatingPoint.GetMaxExp<T>();
+
+        // Calculate the exponent.
+        var exp = isSubnormal ? minExp : (BigInteger)Floor(Log2(abs));
+        var sig = abs / Exp2(exp);
+        var fracBits = 0uL;
+        byte nextBit = 0;
+
+        // Get the number of fraction bits.
+        var nFracBits = XFloatingPoint.GetNumFracBits<T>();
+
+        // Calculate fraction bits.
+        for (var i = 0; i < nFracBits + 1; i++)
+        {
+            // Get the next bit.
+            nextBit = (byte)(sig < 1 ? 0 : 1);
+
+            // Add the bit.
+            fracBits = (fracBits << 1) + nextBit;
+
+            // Prepare for next iteration.
+            sig = (sig - nextBit) * 2;
+        }
+
+        // Round up if necessary, using MidpointRounding.ToEven method.
+        var rollover = (ulong)Exp2(nFracBits);
+        var maxFraction = rollover * 2 - 1;
+        if (nextBit == 1 && sig >= 0.5 || nextBit == 0 && sig > 0.5)
+        {
+            // Don't go over 24 bits.
+            if (fracBits == maxFraction)
+            {
+                fracBits = rollover;
+                exp--;
+            }
+            else
+            {
+                fracBits += 1;
+            }
+        }
+
+        // Get the float's parts.
+        var signBit = (byte)(bd < 0 ? 1 : 0);
+        ushort expBits = 0;
+        if (!isSubnormal)
+        {
+            // Convert exponent to stored value.
+            expBits = (ushort)(exp + maxExp);
+            // Clear top bit as this isn't stored in the float.
+            fracBits &= rollover - 1;
+        }
+
+        // Assemble the final value.
+        return XFloatingPoint.Assemble<T>(signBit, expBits, fracBits);
     }
 
     #endregion Helper methods
