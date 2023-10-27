@@ -333,26 +333,28 @@ public class ExpLogTests
     [TestMethod]
     public void TestFirstComplexRootOfNegative()
     {
-        (BigDecimal, BigDecimal) root;
+        BigComplex root;
 
-        root = BigDecimal.FirstComplexRoot(-16, 0, 2);
-        Assert.AreEqual(0, root.Item1);
-        Assert.AreEqual(4, root.Item2);
+        // I got the answers to test from this online calculator:
+        // https://www.emathhelp.net/en/calculators/algebra-2/nth-roots-of-complex-number-calculator/
 
-        root = BigDecimal.FirstComplexRoot(-16, 0, 3);
-        Assert.AreEqual(1.259921049894873, (double)root.Item1, 1e-15);
-        Assert.AreEqual(2.182247271943443, (double)root.Item2, 1e-15);
+        root = BigComplex.RootN(-16, 2);
+        Assert.AreEqual(0, root.Real);
+        Assert.AreEqual(4, root.Imaginary);
 
-        root = BigDecimal.FirstComplexRoot(-16, 0, 4);
-        Assert.AreEqual(1.414213562373095, (double)root.Item1, 1e-15);
-        Assert.AreEqual(1.414213562373095, (double)root.Item2, 1e-15);
+        root = BigComplex.RootN(-16, 3);
+        Assert.AreEqual(1.259921049894873, (double)root.Real, 1e-15);
+        Assert.AreEqual(2.182247271943443, (double)root.Imaginary, 1e-15);
+
+        root = BigComplex.RootN(-16, 4);
+        Assert.AreEqual(1.414213562373095, (double)root.Real, 1e-15);
+        Assert.AreEqual(1.414213562373095, (double)root.Imaginary, 1e-15);
     }
 
     [TestMethod]
     public void TestCbrtOfNegative()
     {
         BigDecimal c;
-
         c = BigDecimal.Cbrt(-27);
         Assert.AreEqual(-3, c);
     }

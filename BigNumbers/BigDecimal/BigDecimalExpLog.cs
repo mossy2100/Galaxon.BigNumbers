@@ -64,14 +64,13 @@ public partial struct BigDecimal
         // For negative x with non-integer exponent, we can't easily compute a real result.
         // However, one may exist, e.g. Pow(-243, 0.2) == -3
         // We can use the complex methods, and check if the result is real.
-        // (This is precisely why I moved this code out of BigComplex to this class.)
-        var (a, b) = ComplexLog(x, 0);
-        var c = ComplexExp(y * a, y * b);
-        // See if the result is real.
-        if (c.Item2 == 0) return c.Item1;
+        // TODO Test!
+        var z = BigComplex.Exp(y * BigComplex.Log(x));
 
-        throw new ArithmeticException(
-            $"Cannot compute a real result. Try BigComplex.Pow(). (The complex result is <{c.Item1}; {c.Item2}>)");
+        // See if the result is real.
+        if (z.Imaginary == 0) return z.Real;
+
+        throw new ArithmeticException("Cannot compute a real result. Try BigComplex.Pow().");
     }
 
     /// <summary>
@@ -200,13 +199,13 @@ public partial struct BigDecimal
         }
 
         // Get all the roots, real and complex.
-        var roots = ComplexRoots(x, 0, n);
+        var roots = BigComplex.Roots(x, n);
 
         // Find the first real root, if present. We only need to check the first half of the
         // values, because the second half will just be complex conjugates of those.
         for (var i = 0; i < (int)Ceiling(n / 2); i++)
         {
-            if (roots[i].Item2 == 0) return RoundSigFigs(roots[i].Item1);
+            if (roots[i].Imaginary == 0) return RoundSigFigs(roots[i].Real);
         }
 
         // No solution found.
@@ -246,13 +245,12 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Get the first root of a complex number, defined by real and imaginary parts.
+    /// Get the first root of a complex number.
     /// </summary>
-    /// <param name="real">The real part of the complex value.</param>
-    /// <param name="imag">The imaginary part of the complex value.</param>
+    /// <param name="z">The complex value.</param>
     /// <param name="n">The degree of the roots to be computed.</param>
-    /// <returns>A tuple representing the first root.</returns>
-    public static (BigDecimal, BigDecimal) FirstComplexRoot(BigDecimal real, BigDecimal imag, int n)
+    /// <returns>A BigComplex representing the first root.</returns>
+    public static BigComplex FirstComplexRoot(BigComplex z, int n)
     {
         // The 0th root is undefined.
         if (n == 0)
@@ -262,75 +260,15 @@ public partial struct BigDecimal
         }
 
         // The first root of a number is itself.
-        if (n == 1) return (real, imag);
+        if (n == 1) return z;
 
         // Get the polar form:
-        var (r, theta) = CartesianToPolar(real, imag);
+        var (r, theta) = CartesianToPolar(z.Real, z.Imaginary);
 
         // Calculate the root.
         var s = RootN(r, n);
         var iota = theta / n;
-        return (s * Cos(iota), s * Sin(iota));
-    }
-
-    /// <summary>
-    /// Determine all n roots of the complex number defined by real and imaginary parts.
-    /// This will include complex conjugates.
-    /// This method is really just for internal use by BigNumbers and BigComplex, but because they
-    /// are different projects and packages, I have to make it public.
-    /// I couldn't place it in BigComplex as I want to avoid a circular dependency.
-    /// Ordinary users of the class should use BigComplex.Roots(), which calls this.
-    /// </summary>
-    /// <param name="real">The real part of the complex value.</param>
-    /// <param name="imag">The imaginary part of the complex value.</param>
-    /// <param name="n">The degree of the roots to be computed.</param>
-    /// <returns>An array of tuples representing complex numbers.</returns>
-    public static (BigDecimal, BigDecimal)[] ComplexRoots(BigDecimal real, BigDecimal imag, int n)
-    {
-        // The 0th root is undefined.
-        if (n == 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(n),
-                "The 0th root is undefined since any number to the power of 0 is 1.");
-        }
-
-        // Create array to store results.
-        var roots = new (BigDecimal, BigDecimal)[n];
-
-        // The first root of a number is itself.
-        if (n == 1)
-        {
-            roots[0] = (real, imag);
-            return roots;
-        }
-
-        // Get the polar form:
-        var (r, theta) = CartesianToPolar(real, imag);
-
-        // Calculate values that will be constant during the loop.
-        var s = RootN(r, n);
-        var iota = theta / n;
-        var beta = Tau / n;
-
-        // Calculate all the roots as complex numbers.
-        var midPoint = (int)Ceiling(n / 2);
-        for (var k = 0; k < n; k++)
-        {
-            if (k < midPoint)
-            {
-                // Calculate the root.
-                var alpha = iota + k * beta;
-                roots[k] = (s * Cos(alpha), s * Sin(alpha));
-            }
-            else
-            {
-                // To save time, get the complex conjugate of one we already found.
-                var conjugate = roots[n - 1 - k];
-                roots[k] = (conjugate.Item1, -conjugate.Item2);
-            }
-        }
-
-        return roots;
+        return new BigComplex(s * Cos(iota), s * Sin(iota));
     }
 
     #endregion Root functions
@@ -399,30 +337,6 @@ public partial struct BigDecimal
     public static BigDecimal Exp10(BigDecimal x)
     {
         return Pow(10, x);
-    }
-
-    /// <summary>Computes e raised to a given complex power.</summary>
-    /// <param name="real">The real part of the complex exponent.</param>
-    /// <param name="imag">The imaginary part of the complex exponent.</param>
-    /// <returns>The complex result as a tuple of 2 BigNumbers values.</returns>
-    public static (BigDecimal, BigDecimal) ComplexExp(BigDecimal real, BigDecimal imag)
-    {
-        // If there's no imaginary component, use the real version of the method.
-        if (imag == 0) return (Exp(real), 0);
-
-        // Optimizations using Euler's identity.
-        if (real == 0)
-        {
-            // Euler's identity with π: e^πi = -1
-            if (imag == Pi) return (-1, 0);
-
-            // Euler's identity with τ: e^τi = 1
-            if (imag == Tau) return (1, 0);
-        }
-
-        // Euler's formula.
-        var ex = Exp(real);
-        return (ex * Cos(imag), ex * Sin(imag));
     }
 
     #endregion Exponential functions
@@ -534,29 +448,6 @@ public partial struct BigDecimal
     public static BigDecimal Log10(BigDecimal x)
     {
         return Log(x, 10);
-    }
-
-    /// <summary>
-    /// Natural logarithm of a complex number.
-    /// </summary>
-    /// <remarks>This method finds the principal value only.</remarks>
-    /// <param name="real">The real part of the complex value.</param>
-    /// <param name="imag">The imaginary part of the complex value.</param>
-    /// <returns>The logarithm of the complex value as a tuple of 2 BigNumbers values.</returns>
-    /// <exception cref="ArgumentOutOfRangeException">If real and imaginary are both 0.</exception>
-    /// <see href="https://en.wikipedia.org/wiki/Complex_number#Complex_logarithm"/>
-    public static (BigDecimal, BigDecimal) ComplexLog(BigDecimal real, BigDecimal imag)
-    {
-        if (imag == 0 && real >= 0)
-        {
-            // For non-negative real values, use the real version of the method.
-            // This will throw an exception if real == 0.
-            return (Log(real), 0);
-        }
-
-        // Calculate complex logarithm.
-        var (r, theta) = CartesianToPolar(real, imag);
-        return (Log(r), theta);
     }
 
     #endregion Logarithmic functions

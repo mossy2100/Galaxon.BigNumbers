@@ -4,6 +4,11 @@
         <name>Galaxon.BigNumbers</name>
     </assembly>
     <members>
+        <member name="T:Galaxon.BigNumbers.BigComplex">
+            <summary>
+            Encapsulates a complex number with BigDecimal parts, allowing high levels of precision.
+            </summary>
+        </member>
         <member name="P:Galaxon.BigNumbers.BigComplex.Radix">
             <inheritdoc />
         </member>
@@ -373,22 +378,8 @@
             <param name="z">A BigComplex number.</param>
             <returns>The positive square root as a BigComplex number.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigComplex.Sqrts(Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Get both square roots of a complex number.
-            </summary>
-            <param name="z">The complex value to find the square roots of</param>
-            <returns>A list with up to 2 complex numbers, which are the roots.</returns>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Cbrt(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigComplex.Cbrts(Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Get all 3 cube roots of a complex number.
-            </summary>
-            <param name="z">The complex value to find the cube roots of</param>
-            <returns>A list with up to 3 complex numbers, which are the roots.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Exp(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
@@ -1322,28 +1313,13 @@
             <param name="y">The length of the other short side of the triangle.</param>
             <returns>The length of the hypotenuse.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.FirstComplexRoot(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,System.Int32)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.FirstComplexRoot(Galaxon.BigNumbers.BigComplex,System.Int32)">
             <summary>
-            Get the first root of a complex number, defined by real and imaginary parts.
+            Get the first root of a complex number.
             </summary>
-            <param name="real">The real part of the complex value.</param>
-            <param name="imag">The imaginary part of the complex value.</param>
+            <param name="z">The complex value.</param>
             <param name="n">The degree of the roots to be computed.</param>
-            <returns>A tuple representing the first root.</returns>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ComplexRoots(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,System.Int32)">
-            <summary>
-            Determine all n roots of the complex number defined by real and imaginary parts.
-            This will include complex conjugates.
-            This method is really just for internal use by BigNumbers and BigComplex, but because they
-            are different projects and packages, I have to make it public.
-            I couldn't place it in BigComplex as I want to avoid a circular dependency.
-            Ordinary users of the class should use BigComplex.Roots(), which calls this.
-            </summary>
-            <param name="real">The real part of the complex value.</param>
-            <param name="imag">The imaginary part of the complex value.</param>
-            <param name="n">The degree of the roots to be computed.</param>
-            <returns>An array of tuples representing complex numbers.</returns>
+            <returns>A BigComplex representing the first root.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Exp(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc />
@@ -1353,12 +1329,6 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Exp10(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ComplexExp(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <summary>Computes e raised to a given complex power.</summary>
-            <param name="real">The real part of the complex exponent.</param>
-            <param name="imag">The imaginary part of the complex exponent.</param>
-            <returns>The complex result as a tuple of 2 BigNumbers values.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Log(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc />
@@ -1371,17 +1341,6 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Log10(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc />
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ComplexLog(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <summary>
-            Natural logarithm of a complex number.
-            </summary>
-            <remarks>This method finds the principal value only.</remarks>
-            <param name="real">The real part of the complex value.</param>
-            <param name="imag">The imaginary part of the complex value.</param>
-            <returns>The logarithm of the complex value as a tuple of 2 BigNumbers values.</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">If real and imaginary are both 0.</exception>
-            <see href="https://en.wikipedia.org/wiki/Complex_number#Complex_logarithm"/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Abs(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc />
@@ -1831,14 +1790,14 @@
             </summary>
             <param name="x">The x coordinate.</param>
             <param name="y">The y coordinate.</param>
-            <returns>A tuple containing the radius (r) and angle (a).</returns>
+            <returns>A tuple containing the radius (r) and phase angle (theta).</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.PolarToCartesian(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>
             Convert polar coordinates to cartesian coordinates.
             </summary>
             <param name="r">The radius.</param>
-            <param name="a">The angle.</param>
+            <param name="theta">The phase angle.</param>
             <returns>A tuple containing the x and y coordinates.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.NormalizeAngle(Galaxon.BigNumbers.BigDecimal@)">

@@ -456,8 +456,8 @@ public partial struct BigDecimal
     /// </summary>
     /// <param name="x">The x coordinate.</param>
     /// <param name="y">The y coordinate.</param>
-    /// <returns>A tuple containing the radius (r) and angle (a).</returns>
-    public static (BigDecimal r, BigDecimal a) CartesianToPolar(BigDecimal x, BigDecimal y)
+    /// <returns>A tuple containing the radius (r) and phase angle (theta).</returns>
+    public static (BigDecimal r, BigDecimal theta) CartesianToPolar(BigDecimal x, BigDecimal y)
     {
         return x == 0 && y == 0 ? (0, 0) : (Hypot(x, y), Atan2(y, x));
     }
@@ -466,11 +466,11 @@ public partial struct BigDecimal
     /// Convert polar coordinates to cartesian coordinates.
     /// </summary>
     /// <param name="r">The radius.</param>
-    /// <param name="a">The angle.</param>
+    /// <param name="theta">The phase angle.</param>
     /// <returns>A tuple containing the x and y coordinates.</returns>
-    public static (BigDecimal x, BigDecimal y) PolarToCartesian(BigDecimal r, BigDecimal a)
+    public static (BigDecimal x, BigDecimal y) PolarToCartesian(BigDecimal r, BigDecimal theta)
     {
-        return r == 0 ? (0, 0) : (r * Cos(a), r * Sin(a));
+        return r == 0 ? (0, 0) : (r * Cos(theta), r * Sin(theta));
     }
 
     #endregion Methods for converting coordinates

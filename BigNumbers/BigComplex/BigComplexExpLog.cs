@@ -1,7 +1,8 @@
-using System.Numerics;
-
 namespace Galaxon.BigNumbers;
 
+/// <summary>
+/// Encapsulates a complex number with BigDecimal parts, allowing high levels of precision.
+/// </summary>
 public partial struct BigComplex
 {
     #region Power functions
@@ -116,20 +117,67 @@ public partial struct BigComplex
                 "The 0th root is undefined since any number to the power of 0 is 1.");
         }
 
-        // Just return the first root found.
-        return new BigComplex(BigDecimal.FirstComplexRoot(z.Real, z.Imaginary, n));
+        // The first root of a number is itself.
+        if (n == 1) return z;
+
+        // Get the polar form:
+        var (r, theta) = BigDecimal.CartesianToPolar(z.Real, z.Imaginary);
+
+        // Calculate the first root.
+        var s = BigDecimal.RootN(r, n);
+        var iota = theta / n;
+        return new BigComplex(s * BigDecimal.Cos(iota), s * BigDecimal.Sin(iota));
     }
 
     /// <summary>Computes the n-th roots of a complex value.</summary>
     /// <param name="z">The value whose <paramref name="n" />-th roots are to be computed.</param>
     /// <param name="n">The degree of the roots to be computed.</param>
     /// <returns>The <paramref name="n" />-th roots of <paramref name="z" />.</returns>
-    public static List<BigComplex> Roots(BigComplex z, int n)
+    public static BigComplex[] Roots(BigComplex z, int n)
     {
-        return BigDecimal
-            .ComplexRoots(z.Real, z.Imaginary, n)
-            .Select(tup => new BigComplex(tup))
-            .ToList();
+        // The 0th root is undefined.
+        if (n == 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(n),
+                "The 0th root is undefined since any number to the power of 0 is 1.");
+        }
+
+        // Create array to store results.
+        var roots = new BigComplex[n];
+
+        // The first root of a number is itself.
+        if (n == 1)
+        {
+            roots[0] = z;
+            return roots;
+        }
+
+        // Get the polar form:
+        var (r, theta) = BigDecimal.CartesianToPolar(z.Real, z.Imaginary);
+
+        // Calculate values that will be constant during the loop.
+        var s = BigDecimal.RootN(r, n);
+        var iota = theta / n;
+        var beta = BigDecimal.Tau / n;
+
+        // Calculate all the roots as complex numbers.
+        var midPoint = (int)decimal.Ceiling(n / 2m);
+        for (var k = 0; k < n; k++)
+        {
+            if (k < midPoint)
+            {
+                // Calculate the root.
+                var alpha = iota + k * beta;
+                roots[k] = new BigComplex(s * BigDecimal.Cos(alpha), s * BigDecimal.Sin(alpha));
+            }
+            else
+            {
+                // To save time, get the complex conjugate of one we already found.
+                roots[k] = Conjugate(roots[n - 1 - k]);
+            }
+        }
+
+        return roots;
     }
 
     /// <summary>
@@ -167,42 +215,10 @@ public partial struct BigComplex
         return new BigComplex(x, y);
     }
 
-    /// <summary>
-    /// Get both square roots of a complex number.
-    /// </summary>
-    /// <param name="z">The complex value to find the square roots of</param>
-    /// <returns>A list with up to 2 complex numbers, which are the roots.</returns>
-    public static List<BigComplex> Sqrts(BigComplex z)
-    {
-        // The only parameter with 1 solution is 0.
-        if (z == 0) return new List<BigComplex> { 0 };
-
-        // Find the 2 roots.
-        return Roots(z, 2);
-    }
-
     /// <inheritdoc/>
     public static BigComplex Cbrt(BigComplex z)
     {
-        // The only parameter with 1 solution is 0.
-        if (z == 0) return 0;
-
-        throw new ArithmeticException(
-            "There are 3 solutions, whereas this method is designed to return only 1. Try calling BigComplex.Cbrts()");
-    }
-
-    /// <summary>
-    /// Get all 3 cube roots of a complex number.
-    /// </summary>
-    /// <param name="z">The complex value to find the cube roots of</param>
-    /// <returns>A list with up to 3 complex numbers, which are the roots.</returns>
-    public static List<BigComplex> Cbrts(BigComplex z)
-    {
-        // The only parameter with 1 solution is 0.
-        if (z == 0) return new List<BigComplex> { 0 };
-
-        // Find the 3 roots.
-        return Roots(z, 3);
+        return RootN(z, 3);
     }
 
     #endregion Root functions
@@ -215,7 +231,21 @@ public partial struct BigComplex
         // TODO Compare this approach (which uses BigNumbers.Exp, Sin, and Cos) with using the
         // power series.
         // See https://en.wikipedia.org/wiki/Euler%27s_formula#Power_series_definition
-        return new BigComplex(BigDecimal.ComplexExp(z.Real, z.Imaginary));
+        // If there's no imaginary component, use the real version of the method.
+
+        // Optimizations using Euler's identity.
+        if (z.Real == 0)
+        {
+            // Euler's identity with π: e^πi = -1
+            if (z.Imaginary == Pi) return -1;
+
+            // Euler's identity with τ: e^τi = 1
+            if (z.Imaginary == Tau) return 1;
+        }
+
+        // Euler's formula.
+        var r = BigDecimal.Exp(z.Real);
+        return new BigComplex(r * BigDecimal.Cos(z.Imaginary), r * BigDecimal.Sin(z.Imaginary));
     }
 
     /// <inheritdoc/>
@@ -239,7 +269,16 @@ public partial struct BigComplex
     /// <exception cref="ArgumentOutOfRangeException">If z is 0.</exception>
     public static BigComplex Log(BigComplex z)
     {
-        return new BigComplex(BigDecimal.ComplexLog(z.Real, z.Imaginary));
+        if (z.Real >= 0 && z.Imaginary == 0)
+        {
+            // For non-negative real values, use the real version of the method.
+            // This will throw an exception if real == 0.
+            return BigDecimal.Log(z.Real);
+        }
+
+        // Calculate the complex logarithm.
+        var (r, theta) = BigDecimal.CartesianToPolar(z.Real, z.Imaginary);
+        return new BigComplex(BigDecimal.Log(r), theta);
     }
 
     /// <inheritdoc />
