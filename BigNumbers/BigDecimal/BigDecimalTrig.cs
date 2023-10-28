@@ -181,7 +181,7 @@ public partial struct BigDecimal
         // The Taylor series is slow to converge near x = ±1, but we can the following identity
         // relationship and calculate Asin() accurately and quickly for a smaller value:
         // Asin(θ) = π/2 - Asin(√(1-θ²))
-        var xSqr = x * x;
+        var xSqr = Sqr(x);
         if (x > 0.75m) return halfPi - Asin(Sqrt(1 - xSqr));
 
         // Taylor series.
@@ -252,7 +252,7 @@ public partial struct BigDecimal
         // Taylor series.
         var m = 1;
         var xToM = x;
-        var xSqr = x * x;
+        var xSqr = Sqr(x);
         var small = x < 1;
         var sign = small ? 1 : -1;
         var sum = small ? 0 : Pi / 2;
@@ -432,13 +432,13 @@ public partial struct BigDecimal
     /// <inheritdoc />
     public static BigDecimal Asinh(BigDecimal x)
     {
-        return Log(x + Sqrt(x * x + 1));
+        return Log(x + Sqrt(Sqr(x) + 1));
     }
 
     /// <inheritdoc />
     public static BigDecimal Acosh(BigDecimal x)
     {
-        return Log(x + Sqrt(x * x - 1));
+        return Log(x + Sqrt(Sqr(x) - 1));
     }
 
     /// <inheritdoc />

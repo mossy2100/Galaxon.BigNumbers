@@ -507,32 +507,25 @@
             </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Pow(Galaxon.BigNumbers.BigComplex,Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Complex exponentiation.
-            Only the principal value is returned.
+            <summary>Complex exponentiation.</summary>
+            <remarks>Only the principal value is returned.</remarks>>
             <see href="https://en.wikipedia.org/wiki/Exponentiation#Complex_exponentiation" />
-            </summary>
             <param name="z">The base.</param>
             <param name="w">The exponent.</param>
-            <returns>The result.</returns>
+            <returns>The result of the exponentiation.</returns>
             <exception cref="T:System.ArithmeticException">
-            If the base is 0 and the exponent
-            is negative or imaginary.
+            If the base is 0 and the exponent is negative or imaginary.
             </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Sqr(Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Calculate the square of a complex number.
-            </summary>
-            <param name="z">A complex value.</param>
-            <returns>The square of the parameter.</returns>
+            <summary>Calculate the square of a BigComplex number.</summary>
+            <param name="z">A BigComplex value.</param>
+            <returns>The square of the BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Cube(Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Calculate the cube of a complex number.
-            </summary>
-            <param name="z">A complex value.</param>
-            <returns>The cube of the parameter.</returns>
+            <summary>Calculate the cube of a BigComplex number.</summary>
+            <param name="z">A BigComplex value.</param>
+            <returns>The cube of the BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Hypot(Galaxon.BigNumbers.BigComplex,Galaxon.BigNumbers.BigComplex)">
             <inheritdoc />
@@ -634,61 +627,50 @@
             <see cref="M:System.Numerics.Complex.FromPolarCoordinates(System.Double,System.Double)" />
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Clone(Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Clone method.
-            </summary>
-            <returns>A copy of the argument.</returns>
+            <summary>Clone method.</summary>
+            <param name="z">The BigComplex value to clone.</param>
+            <returns>A new BigComplex with the same value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Negate(Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Negate method.
-            </summary>
+            <summary>Negate method.</summary>
+            <param name="z">The BigComplex value to negate.</param>
             <returns>The negation of the argument.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Conjugate(Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Complex conjugate method.
-            </summary>
+            <summary>Complex conjugate method.</summary>
+            <param name="z">The BigComplex value to conjugate.</param>
             <returns>The complex conjugate of the argument.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigComplex.Reciprocal(Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Calculate reciprocal.
-            </summary>
-            <returns>The reciprocal of the argument.</returns>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Add(Galaxon.BigNumbers.BigComplex,Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Addition method.
-            </summary>
-            <param name="z1">The left-hand BigComplex number.</param>
-            <param name="z2">The right-hand BigComplex number.</param>
+            <summary>Addition method.</summary>
+            <param name="z">The left-hand operand.</param>
+            <param name="w">The right-hand operand.</param>
             <returns>The addition of the arguments.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Subtract(Galaxon.BigNumbers.BigComplex,Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Subtraction method.
-            </summary>
-            <param name="z1">The left-hand BigComplex number.</param>
-            <param name="z2">The right-hand BigComplex number.</param>
+            <summary>Subtraction method.</summary>
+            <param name="z">The left-hand operand.</param>
+            <param name="w">The right-hand operand.</param>
             <returns>The subtraction of the arguments.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Multiply(Galaxon.BigNumbers.BigComplex,Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Multiply two BigComplex values.
-            </summary>
-            <param name="z1">The left-hand BigComplex number.</param>
-            <param name="z2">The right-hand BigComplex number.</param>
+            <summary>Multiply two BigComplex values.</summary>
+            <param name="z">The left-hand operand.</param>
+            <param name="w">The right-hand operand.</param>
             <returns>The multiplication of the arguments.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Divide(Galaxon.BigNumbers.BigComplex,Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Divide a BigComplex by a BigComplex.
-            </summary>
-            <param name="z1">The left-hand BigComplex number.</param>
-            <param name="z2">The right-hand BigComplex number.</param>
+            <summary>Divide one BigComplex by another.</summary>
+            <param name="z">The left-hand operand.</param>
+            <param name="w">The right-hand operand.</param>
             <returns>The division of the arguments.</returns>
-            <exception cref="T:System.DivideByZeroException">If z2 == 0</exception>
+            <exception cref="T:System.DivideByZeroException">If w == 0</exception>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Reciprocal(Galaxon.BigNumbers.BigComplex)">
+            <summary>Calculate the reciprocal of a BigComplex value..</summary>
+            <param name="z">A BigComplex value.</param>
+            <returns>The reciprocal of the parameter.</returns>
+            <exception cref="T:System.DivideByZeroException">If z == 0</exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_UnaryPlus(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc />
@@ -715,9 +697,7 @@
             <inheritdoc />
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_ExclusiveOr(Galaxon.BigNumbers.BigComplex,Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Exponentiation operator.
-            </summary>
+            <summary>Exponentiation operator. </summary>
             <param name="z">The base.</param>
             <param name="w">The exponent.</param>
             <returns>The first operand raised to the power of the second.</returns>

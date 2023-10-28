@@ -40,96 +40,88 @@ public partial struct BigComplex
 
     #region Arithmetic methods
 
-    /// <summary>
-    /// Clone method.
-    /// </summary>
-    /// <returns>A copy of the argument.</returns>
+    /// <summary>Clone method.</summary>
+    /// <param name="z">The BigComplex value to clone.</param>
+    /// <returns>A new BigComplex with the same value.</returns>
     public static BigComplex Clone(BigComplex z)
     {
         return new BigComplex(z.Real, z.Imaginary);
     }
 
-    /// <summary>
-    /// Negate method.
-    /// </summary>
+    /// <summary>Negate method.</summary>
+    /// <param name="z">The BigComplex value to negate.</param>
     /// <returns>The negation of the argument.</returns>
     public static BigComplex Negate(BigComplex z)
     {
         return new BigComplex(-z.Real, -z.Imaginary);
     }
 
-    /// <summary>
-    /// Complex conjugate method.
-    /// </summary>
+    /// <summary>Complex conjugate method.</summary>
+    /// <param name="z">The BigComplex value to conjugate.</param>
     /// <returns>The complex conjugate of the argument.</returns>
     public static BigComplex Conjugate(BigComplex z)
     {
         return new BigComplex(z.Real, -z.Imaginary);
     }
 
-    /// <summary>
-    /// Calculate reciprocal.
-    /// </summary>
-    /// <returns>The reciprocal of the argument.</returns>
-    public static BigComplex Reciprocal(BigComplex z)
-    {
-        return Divide(1, z);
-    }
-
-    /// <summary>
-    /// Addition method.
-    /// </summary>
-    /// <param name="z1">The left-hand BigComplex number.</param>
-    /// <param name="z2">The right-hand BigComplex number.</param>
+    /// <summary>Addition method.</summary>
+    /// <param name="z">The left-hand operand.</param>
+    /// <param name="w">The right-hand operand.</param>
     /// <returns>The addition of the arguments.</returns>
-    public static BigComplex Add(BigComplex z1, BigComplex z2)
+    public static BigComplex Add(BigComplex z, BigComplex w)
     {
-        return new BigComplex(z1.Real + z2.Real, z1.Imaginary + z2.Imaginary);
+        return new BigComplex(z.Real + w.Real, z.Imaginary + w.Imaginary);
     }
 
-    /// <summary>
-    /// Subtraction method.
-    /// </summary>
-    /// <param name="z1">The left-hand BigComplex number.</param>
-    /// <param name="z2">The right-hand BigComplex number.</param>
+    /// <summary>Subtraction method.</summary>
+    /// <param name="z">The left-hand operand.</param>
+    /// <param name="w">The right-hand operand.</param>
     /// <returns>The subtraction of the arguments.</returns>
-    public static BigComplex Subtract(BigComplex z1, BigComplex z2)
+    public static BigComplex Subtract(BigComplex z, BigComplex w)
     {
-        return new BigComplex(z1.Real - z2.Real, z1.Imaginary - z2.Imaginary);
+        return new BigComplex(z.Real - w.Real, z.Imaginary - w.Imaginary);
     }
 
-    /// <summary>
-    /// Multiply two BigComplex values.
-    /// </summary>
-    /// <param name="z1">The left-hand BigComplex number.</param>
-    /// <param name="z2">The right-hand BigComplex number.</param>
+    /// <summary>Multiply two BigComplex values.</summary>
+    /// <param name="z">The left-hand operand.</param>
+    /// <param name="w">The right-hand operand.</param>
     /// <returns>The multiplication of the arguments.</returns>
-    public static BigComplex Multiply(BigComplex z1, BigComplex z2)
+    public static BigComplex Multiply(BigComplex z, BigComplex w)
     {
-        var a = z1.Real;
-        var b = z1.Imaginary;
-        var c = z2.Real;
-        var d = z2.Imaginary;
+        // Extract parts for convenience.
+        var (a, b) = z.ToTuple();
+        var (c, d) = w.ToTuple();
+
+        // Calculate.
         return new BigComplex(a * c - b * d, a * d + b * c);
     }
 
-    /// <summary>
-    /// Divide a BigComplex by a BigComplex.
-    /// </summary>
-    /// <param name="z1">The left-hand BigComplex number.</param>
-    /// <param name="z2">The right-hand BigComplex number.</param>
+    /// <summary>Divide one BigComplex by another.</summary>
+    /// <param name="z">The left-hand operand.</param>
+    /// <param name="w">The right-hand operand.</param>
     /// <returns>The division of the arguments.</returns>
-    /// <exception cref="System.DivideByZeroException">If z2 == 0</exception>
-    public static BigComplex Divide(BigComplex z1, BigComplex z2)
+    /// <exception cref="DivideByZeroException">If w == 0</exception>
+    public static BigComplex Divide(BigComplex z, BigComplex w)
     {
         // Guard.
-        if (z2 == 0) throw new DivideByZeroException();
+        if (w == 0) throw new DivideByZeroException();
 
         // Extract parts for convenience.
-        var (a, b) = z1.ToTuple();
-        var (c, d) = z2.ToTuple();
+        var (a, b) = z.ToTuple();
+        var (c, d) = w.ToTuple();
+
+        // Calculate.
         var e = c * c + d * d;
         return new BigComplex((a * c + b * d) / e, (b * c - a * d) / e);
+    }
+
+    /// <summary>Calculate the reciprocal of a BigComplex value..</summary>
+    /// <param name="z">A BigComplex value.</param>
+    /// <returns>The reciprocal of the parameter.</returns>
+    /// <exception cref="DivideByZeroException">If z == 0</exception>
+    public static BigComplex Reciprocal(BigComplex z)
+    {
+        return Divide(1, z);
     }
 
     #endregion Arithmetic methods
@@ -149,15 +141,15 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc />
-    public static BigComplex operator +(BigComplex z1, BigComplex z2)
+    public static BigComplex operator +(BigComplex z, BigComplex w)
     {
-        return Add(z1, z2);
+        return Add(z, w);
     }
 
     /// <inheritdoc />
-    public static BigComplex operator -(BigComplex z1, BigComplex z2)
+    public static BigComplex operator -(BigComplex z, BigComplex w)
     {
-        return Subtract(z1, z2);
+        return Subtract(z, w);
     }
 
     /// <inheritdoc />
@@ -173,20 +165,18 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc />
-    public static BigComplex operator *(BigComplex z1, BigComplex z2)
+    public static BigComplex operator *(BigComplex z, BigComplex w)
     {
-        return Multiply(z1, z2);
+        return Multiply(z, w);
     }
 
     /// <inheritdoc />
-    public static BigComplex operator /(BigComplex z1, BigComplex z2)
+    public static BigComplex operator /(BigComplex z, BigComplex w)
     {
-        return Divide(z1, z2);
+        return Divide(z, w);
     }
 
-    /// <summary>
-    /// Exponentiation operator.
-    /// </summary>
+    /// <summary>Exponentiation operator. </summary>
     /// <param name="z">The base.</param>
     /// <param name="w">The exponent.</param>
     /// <returns>The first operand raised to the power of the second.</returns>

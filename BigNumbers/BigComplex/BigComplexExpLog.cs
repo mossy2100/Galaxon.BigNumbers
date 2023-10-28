@@ -7,17 +7,14 @@ public partial struct BigComplex
 {
     #region Power functions
 
-    /// <summary>
-    /// Complex exponentiation.
-    /// Only the principal value is returned.
+    /// <summary>Complex exponentiation.</summary>
+    /// <remarks>Only the principal value is returned.</remarks>>
     /// <see href="https://en.wikipedia.org/wiki/Exponentiation#Complex_exponentiation" />
-    /// </summary>
     /// <param name="z">The base.</param>
     /// <param name="w">The exponent.</param>
-    /// <returns>The result.</returns>
+    /// <returns>The result of the exponentiation.</returns>
     /// <exception cref="ArithmeticException">
-    /// If the base is 0 and the exponent
-    /// is negative or imaginary.
+    /// If the base is 0 and the exponent is negative or imaginary.
     /// </exception>
     public static BigComplex Pow(BigComplex z, BigComplex w)
     {
@@ -25,7 +22,8 @@ public partial struct BigComplex
         if (z == 0)
         {
             // 0 raised to a negative real value is undefined (it is equivalent to division by 0).
-            // Math.Pow() returns double.Infinity, but BigDecimal doesn't have this.
+            // Math.Pow() returns double.Infinity in this case, but BigDecimal can't represent
+            // infinities.
             if (w.Imaginary == 0 && w.Real < 0)
             {
                 throw new ArithmeticException("0 raised to a negative power is undefined.");
@@ -41,57 +39,38 @@ public partial struct BigComplex
         // Any value (real or complex) raised to the 0 power is 1.
         // 0^0 has no agreed-upon value, but some programming languages, including C#, return 1
         // (i.e. Math.Pow(0, 0) == 1). We'll do that here, too, for consistency.
-        if (w == 0)
-        {
-            return 1;
-        }
+        if (w == 0) return 1;
 
         // Any value (real or complex) raised to the power of 1 is itself.
-        if (w == 1)
-        {
-            return z;
-        }
+        if (w == 1) return z;
 
         // 1 raised to any real value is 1.
         // 1 raised to any complex value has multiple results, including 1.
-        // We'll just return 1 (the principal value) for simplicity and
-        // consistency with Complex.Pow().
-        if (z == 1)
-        {
-            return 1;
-        }
+        // We'll just return 1 (the principal value) for simplicity and consistency with
+        // Complex.Pow().
+        if (z == 1) return 1;
 
         // i^2 == -1 by definition.
-        if (z == I && w == 2)
-        {
-            return -1;
-        }
+        if (z == I && w == 2) return -1;
 
         // If the values are both real, pass it to the BigDecimal calculation.
-        if (z.Imaginary == 0 && w.Imaginary == 0)
-        {
-            return BigDecimal.Pow(z.Real, w.Real);
-        }
+        if (z.Imaginary == 0 && w.Imaginary == 0) return BigDecimal.Pow(z.Real, w.Real);
 
         // Use formula for principal value.
         return Exp(w * Log(z));
     }
 
-    /// <summary>
-    /// Calculate the square of a complex number.
-    /// </summary>
-    /// <param name="z">A complex value.</param>
-    /// <returns>The square of the parameter.</returns>
+    /// <summary>Calculate the square of a BigComplex number.</summary>
+    /// <param name="z">A BigComplex value.</param>
+    /// <returns>The square of the BigComplex value.</returns>
     public static BigComplex Sqr(BigComplex z)
     {
         return z * z;
     }
 
-    /// <summary>
-    /// Calculate the cube of a complex number.
-    /// </summary>
-    /// <param name="z">A complex value.</param>
-    /// <returns>The cube of the parameter.</returns>
+    /// <summary>Calculate the cube of a BigComplex number.</summary>
+    /// <param name="z">A BigComplex value.</param>
+    /// <returns>The cube of the BigComplex value.</returns>
     public static BigComplex Cube(BigComplex z)
     {
         return z * z * z;
