@@ -148,17 +148,6 @@ public partial struct BigComplex
         return Negate(z);
     }
 
-    /// <summary>
-    /// Complex conjugate operator.
-    /// The use of the tilde (~) for this operator is non-standard, but it seems a good fit and
-    /// could be useful.
-    /// </summary>
-    /// <returns>The complex conjugate of the operand.</returns>
-    public static BigComplex operator ~(BigComplex z)
-    {
-        return Conjugate(z);
-    }
-
     /// <inheritdoc />
     public static BigComplex operator +(BigComplex z1, BigComplex z2)
     {

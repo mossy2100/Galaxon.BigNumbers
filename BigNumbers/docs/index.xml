@@ -696,14 +696,6 @@
         <member name="M:Galaxon.BigNumbers.BigComplex.op_UnaryNegation(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc />
         </member>
-        <member name="M:Galaxon.BigNumbers.BigComplex.op_OnesComplement(Galaxon.BigNumbers.BigComplex)">
-            <summary>
-            Complex conjugate operator.
-            The use of the tilde (~) for this operator is non-standard, but it seems a good fit and
-            could be useful.
-            </summary>
-            <returns>The complex conjugate of the operand.</returns>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Addition(Galaxon.BigNumbers.BigComplex,Galaxon.BigNumbers.BigComplex)">
             <inheritdoc />
         </member>
