@@ -6,121 +6,121 @@ namespace Galaxon.BigNumbers;
 
 public partial struct BigDecimal
 {
-    #region Cast operators to BigNumbers
+    #region Operators for casting from other number types to BigDecimal
 
     /// <summary>
-    /// Implicit cast from sbyte to BigNumbers.
+    /// Implicit cast from sbyte to BigDecimals.
     /// </summary>
     /// <param name="n">The sbyte value.</param>
-    /// <returns>The equivalent BigNumbers value.</returns>
+    /// <returns>The equivalent BigDecimals value.</returns>
     public static implicit operator BigDecimal(sbyte n)
     {
         return new BigDecimal(n);
     }
 
     /// <summary>
-    /// Implicit cast from byte to BigNumbers.
+    /// Implicit cast from byte to BigDecimals.
     /// </summary>
     /// <param name="n">The byte value.</param>
-    /// <returns>The equivalent BigNumbers value.</returns>
+    /// <returns>The equivalent BigDecimals value.</returns>
     public static implicit operator BigDecimal(byte n)
     {
         return new BigDecimal(n);
     }
 
     /// <summary>
-    /// Implicit cast from short to BigNumbers.
+    /// Implicit cast from short to BigDecimals.
     /// </summary>
     /// <param name="n">The short value.</param>
-    /// <returns>The equivalent BigNumbers value.</returns>
+    /// <returns>The equivalent BigDecimals value.</returns>
     public static implicit operator BigDecimal(short n)
     {
         return new BigDecimal(n);
     }
 
     /// <summary>
-    /// Implicit cast from ushort to BigNumbers.
+    /// Implicit cast from ushort to BigDecimals.
     /// </summary>
     /// <param name="n">The ushort value.</param>
-    /// <returns>The equivalent BigNumbers value.</returns>
+    /// <returns>The equivalent BigDecimals value.</returns>
     public static implicit operator BigDecimal(ushort n)
     {
         return new BigDecimal(n);
     }
 
     /// <summary>
-    /// Implicit cast from int to BigNumbers.
+    /// Implicit cast from int to BigDecimals.
     /// </summary>
     /// <param name="n">The int value.</param>
-    /// <returns>The equivalent BigNumbers value.</returns>
+    /// <returns>The equivalent BigDecimals value.</returns>
     public static implicit operator BigDecimal(int n)
     {
         return new BigDecimal(n);
     }
 
     /// <summary>
-    /// Implicit cast from uint to BigNumbers.
+    /// Implicit cast from uint to BigDecimals.
     /// </summary>
     /// <param name="n">The uint value.</param>
-    /// <returns>The equivalent BigNumbers value.</returns>
+    /// <returns>The equivalent BigDecimals value.</returns>
     public static implicit operator BigDecimal(uint n)
     {
         return new BigDecimal(n);
     }
 
     /// <summary>
-    /// Implicit cast from long to BigNumbers.
+    /// Implicit cast from long to BigDecimals.
     /// </summary>
     /// <param name="n">The long value.</param>
-    /// <returns>The equivalent BigNumbers value.</returns>
+    /// <returns>The equivalent BigDecimals value.</returns>
     public static implicit operator BigDecimal(long n)
     {
         return new BigDecimal(n);
     }
 
     /// <summary>
-    /// Implicit cast from ulong to BigNumbers.
+    /// Implicit cast from ulong to BigDecimals.
     /// </summary>
     /// <param name="n">The ulong value.</param>
-    /// <returns>The equivalent BigNumbers value.</returns>
+    /// <returns>The equivalent BigDecimals value.</returns>
     public static implicit operator BigDecimal(ulong n)
     {
         return new BigDecimal(n);
     }
 
     /// <summary>
-    /// Implicit cast from Int128 to BigNumbers.
+    /// Implicit cast from Int128 to BigDecimals.
     /// </summary>
     /// <param name="n">The Int128 value.</param>
-    /// <returns>The equivalent BigNumbers value.</returns>
+    /// <returns>The equivalent BigDecimals value.</returns>
     public static implicit operator BigDecimal(Int128 n)
     {
         return new BigDecimal(n);
     }
 
     /// <summary>
-    /// Implicit cast from UInt128 to BigNumbers.
+    /// Implicit cast from UInt128 to BigDecimals.
     /// </summary>
     /// <param name="n">The UInt128 value.</param>
-    /// <returns>The equivalent BigNumbers value.</returns>
+    /// <returns>The equivalent BigDecimals value.</returns>
     public static implicit operator BigDecimal(UInt128 n)
     {
         return new BigDecimal(n);
     }
 
     /// <summary>
-    /// Implicit cast from BigInteger to BigNumbers.
+    /// Implicit cast from BigInteger to BigDecimals.
     /// </summary>
     /// <param name="n">The BigInteger value.</param>
-    /// <returns>The equivalent BigNumbers value.</returns>
+    /// <returns>The equivalent BigDecimals value.</returns>
     public static implicit operator BigDecimal(BigInteger n)
     {
         return new BigDecimal(n);
     }
 
     /// <summary>
-    /// Implicit cast from Half to BigNumbers.
-    /// NB: The resulting BigNumbers value is exactly the value encoded by the Half.
+    /// Implicit cast from Half to BigDecimals.
+    /// NB: The resulting BigDecimals value is exactly the value encoded by the Half.
     /// However, since Halves only approximate decimal values, it's possible that only the first few
     /// digits are valid in terms of the intended value.
     /// Therefore, you may need to use RoundSigFigs() to get the value you really want.
@@ -131,13 +131,13 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Implicit cast from float to BigNumbers.
-    /// NB: The resulting BigNumbers value is exactly the value encoded by the float.
+    /// Implicit cast from float to BigDecimals.
+    /// NB: The resulting BigDecimals value is exactly the value encoded by the float.
     /// However, since floats only approximate decimal values, it's possible that only the first 6-9
     /// digits are valid in terms of the intended value.
     /// Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
     /// <code>
-    /// BigNumbers bd = BigNumbers.RoundSigFigs(1.2345f, FloatMaxSigFigs);
+    /// BigDecimals bd = BigDecimals.RoundSigFigs(1.2345f, FloatMaxSigFigs);
     /// </code>
     /// </summary>
     public static implicit operator BigDecimal(float n)
@@ -146,13 +146,13 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Implicit cast from double to BigNumbers.
-    /// NB: The resulting BigNumbers value is exactly the value encoded by the double.
+    /// Implicit cast from double to BigDecimals.
+    /// NB: The resulting BigDecimals value is exactly the value encoded by the double.
     /// However, since doubles only approximate decimal values, it's possible that only the first
     /// 15-17 digits are valid in terms of the intended value.
     /// Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
     /// <code>
-    /// BigNumbers bd = BigNumbers.RoundSigFigs(1.2345, DoubleMaxSigFigs);
+    /// BigDecimals bd = BigDecimals.RoundSigFigs(1.2345, DoubleMaxSigFigs);
     /// </code>
     /// </summary>
     public static implicit operator BigDecimal(double n)
@@ -161,12 +161,12 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Implicit cast from decimal to BigNumbers.
-    /// The cast is implicit because any decimal value can be cast to a BigNumbers exactly, without
+    /// Implicit cast from decimal to BigDecimals.
+    /// The cast is implicit because any decimal value can be cast to a BigDecimals exactly, without
     /// loss of information. However, rounding off using Round() or RoundSigFigs() can cause
     /// information loss.
     /// We don't need to use Parse() or division operations here, because the base is decimal.
-    /// We can just extract the parts of the decimal from the bits and construct a BigNumbers from
+    /// We can just extract the parts of the decimal from the bits and construct a BigDecimals from
     /// those. This method should be faster than using ToString() and Parse().
     /// </summary>
     public static implicit operator BigDecimal(decimal n)
@@ -189,12 +189,12 @@ public partial struct BigDecimal
         return new BigDecimal(sign * sig, -scale);
     }
 
-    #endregion Cast operators to BigNumbers
+    #endregion Operators for casting from other number types to BigDecimal
 
-    #region Cast operators from BigNumbers
+    #region Operators for casting from BigDecimal to other number types
 
     /// <summary>
-    /// Explicit cast from BigNumbers to sbyte.
+    /// Explicit cast from BigDecimals to sbyte.
     /// </summary>
     /// <exception cref="OverflowException">
     /// If the value is outside the valid range for sbyte.
@@ -205,7 +205,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to byte.
+    /// Explicit cast from BigDecimals to byte.
     /// </summary>
     /// <exception cref="OverflowException">
     /// If the value is outside the valid range for byte.
@@ -216,7 +216,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to short.
+    /// Explicit cast from BigDecimals to short.
     /// </summary>
     /// <exception cref="OverflowException">
     /// If the value is outside the valid range for short.
@@ -227,7 +227,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to ushort.
+    /// Explicit cast from BigDecimals to ushort.
     /// </summary>
     /// <exception cref="OverflowException">
     /// If the value is outside the valid range for ushort.
@@ -238,7 +238,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to int.
+    /// Explicit cast from BigDecimals to int.
     /// </summary>
     /// <exception cref="OverflowException">
     /// If the value is outside the valid range for int.
@@ -249,7 +249,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to uint.
+    /// Explicit cast from BigDecimals to uint.
     /// </summary>
     /// <exception cref="OverflowException">
     /// If the value is outside the valid range for uint.
@@ -260,7 +260,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to long.
+    /// Explicit cast from BigDecimals to long.
     /// </summary>
     /// <exception cref="OverflowException">
     /// If the value is outside the valid range for long.
@@ -271,7 +271,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to ulong.
+    /// Explicit cast from BigDecimals to ulong.
     /// </summary>
     /// <exception cref="OverflowException">
     /// If the value is outside the valid range for ulong.
@@ -282,7 +282,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to Int128.
+    /// Explicit cast from BigDecimals to Int128.
     /// </summary>
     /// <exception cref="OverflowException">
     /// If the value is outside the valid range for Int128.
@@ -293,7 +293,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to UInt128.
+    /// Explicit cast from BigDecimals to UInt128.
     /// </summary>
     /// <exception cref="OverflowException">
     /// If the value is outside the valid range for uInt128.
@@ -304,7 +304,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to BigInteger.
+    /// Explicit cast from BigDecimals to BigInteger.
     /// </summary>
     public static explicit operator BigInteger(BigDecimal bd)
     {
@@ -314,7 +314,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to Half.
+    /// Explicit cast from BigDecimals to Half.
     /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
     /// valid range for Half.
     /// </summary>
@@ -324,7 +324,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to float.
+    /// Explicit cast from BigDecimals to float.
     /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
     /// valid range for float.
     /// </summary>
@@ -334,7 +334,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to double.
+    /// Explicit cast from BigDecimals to double.
     /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
     /// valid range for double.
     /// </summary>
@@ -344,7 +344,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Explicit cast from BigNumbers to decimal.
+    /// Explicit cast from BigDecimals to decimal.
     /// </summary>
     /// <exception cref="OverflowException">
     /// If the value is outside the valid range for decimal.
@@ -396,7 +396,7 @@ public partial struct BigDecimal
         return new decimal(decInts[0], decInts[1], decInts[2], isNegative, scale);
     }
 
-    #endregion Cast operators from BigNumbers
+    #endregion Operators for casting from BigDecimal to other number types
 
     #region TryConvert methods
 
@@ -473,7 +473,7 @@ public partial struct BigDecimal
     public static bool TryConvertFromSaturating<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
-        // No saturation needed, as BigNumbers does not specify a min or max value.
+        // No saturation needed, as BigDecimals does not specify a min or max value.
         return TryConvertFromChecked(value, out result);
     }
 
@@ -481,7 +481,7 @@ public partial struct BigDecimal
     public static bool TryConvertFromTruncating<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
-        // No truncation needed, as BigNumbers isn't an integer type.
+        // No truncation needed, as BigDecimals isn't an integer type.
         return TryConvertFromChecked(value, out result);
     }
 
@@ -673,7 +673,7 @@ public partial struct BigDecimal
     #region Helper methods
 
     /// <summary>
-    /// Private method to convert a floating point value (float or double) to a BigNumbers.
+    /// Private method to convert a floating point value (float or double) to a BigDecimals.
     /// </summary>
     /// <exception cref="InvalidCastException"></exception>
     private static BigDecimal ConvertFromFloatingPoint<T>(T n) where T : IFloatingPointIeee754<T>
@@ -681,7 +681,7 @@ public partial struct BigDecimal
         // Guard.
         if (!T.IsFinite(n))
         {
-            throw new InvalidCastException("Cannot convert ±∞ or NaN to BigNumbers.");
+            throw new InvalidCastException("Cannot convert ±∞ or NaN to BigDecimal.");
         }
 
         // Get the value's parts.
@@ -731,12 +731,12 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Convert a BigNumbers to a standard binary floating point type.
-    /// If the BigNumbers is outside the range for this type, this method will return negative or
+    /// Convert a BigDecimals to a standard binary floating point type.
+    /// If the BigDecimals is outside the range for this type, this method will return negative or
     /// positive infinity as needed, without throwing an exception.
     /// </summary>
     /// <typeparam name="T">The standard binary floating point type.</typeparam>
-    /// <param name="bd">The BigNumbers value.</param>
+    /// <param name="bd">The BigDecimals value.</param>
     /// <returns>The converted value.</returns>
     public static T ConvertToFloatingPoint<T>(BigDecimal bd)
         where T : IBinaryFloatingPointIeee754<T>

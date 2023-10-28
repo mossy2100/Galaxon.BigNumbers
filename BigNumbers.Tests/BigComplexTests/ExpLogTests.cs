@@ -187,7 +187,7 @@ public class ExpLogTests
         // z = decimal.MinValue;
         // BigComplex.AssertAreEqual(Complex.Exp((Complex)z), BigComplex.Exp(z));
 
-        // z = BigNumbers.SmallestNonZeroDec;
+        // z = BigDecimals.SmallestNonZeroDec;
         // BigComplex.AssertAreEqual(Complex.Exp((Complex)z), BigComplex.Exp(z));
 
         z = new BigComplex(0, BigDecimal.Pi);

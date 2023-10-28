@@ -222,7 +222,7 @@ public class ExpLogTests
 
     /// <summary>
     /// This shows how the cube root of a negative value cannot be achieved using Pow(), because a
-    /// BigNumbers cannot represent 1/3 exactly. You have to use Cbrt() or RootN().
+    /// BigDecimals cannot represent 1/3 exactly. You have to use Cbrt() or RootN().
     /// </summary>
     [TestMethod]
     public void TestCubeRootOfNegativeValueUsingPow()
@@ -259,33 +259,33 @@ public class ExpLogTests
     // [TestMethod]
     // public void TestLogAgm()
     // {
-    //     BigNumbers.MaxSigFigs = 50;
+    //     BigDecimals.MaxSigFigs = 50;
     //
-    //     BigNumbers expected;
-    //     BigNumbers actual;
+    //     BigDecimals expected;
+    //     BigDecimals actual;
     //
     //     expected = 0;
-    //     actual = BigNumbers.LogAgm(1);
+    //     actual = BigDecimals.LogAgm(1);
     //     Assert.AreEqual(expected, actual);
     //
-    //     expected = BigNumbers.Parse("0.69314718055994530941723212145817656807550013436026");
-    //     actual = BigNumbers.LogAgm(2);
+    //     expected = BigDecimals.Parse("0.69314718055994530941723212145817656807550013436026");
+    //     actual = BigDecimals.LogAgm(2);
     //     Assert.AreEqual(expected, actual);
     //
     //     expected = 1;
-    //     actual = BigNumbers.LogAgm(BigNumbers.E);
+    //     actual = BigDecimals.LogAgm(BigDecimals.E);
     //     Assert.AreEqual(expected, actual);
     //
-    //     expected = BigNumbers.Parse("2.3025850929940456840179914546843642076011014886288");
-    //     actual = BigNumbers.LogAgm(10);
+    //     expected = BigDecimals.Parse("2.3025850929940456840179914546843642076011014886288");
+    //     actual = BigDecimals.LogAgm(10);
     //     Assert.AreEqual(expected, actual);
     //
-    //     expected = BigNumbers.Parse("4.6051701859880913680359829093687284152022029772575");
-    //     actual = BigNumbers.LogAgm(100);
+    //     expected = BigDecimals.Parse("4.6051701859880913680359829093687284152022029772575");
+    //     actual = BigDecimals.LogAgm(100);
     //     Assert.AreEqual(expected, actual);
     //
-    //     expected = BigNumbers.Parse("8.14786712992394624010636056097481309047097261399");
-    //     actual = BigNumbers.LogAgm(3456);
+    //     expected = BigDecimals.Parse("8.14786712992394624010636056097481309047097261399");
+    //     actual = BigDecimals.LogAgm(3456);
     //     Assert.AreEqual(expected, actual);
     // }
 
@@ -303,7 +303,7 @@ public class ExpLogTests
             var logBD = BigDecimal.Log(bd);
 
             Console.WriteLine($"double.Log({d})     = {logD}");
-            Console.WriteLine($"BigNumbers.Log({bd}) = {logBD}");
+            Console.WriteLine($"BigDecimal.Log({bd}) = {logBD}");
             var expected = logD.ToString("G13");
             Console.WriteLine(expected);
             var actual = logBD.ToString("G13");

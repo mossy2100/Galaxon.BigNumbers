@@ -19,7 +19,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from byte to BigNumbers.
+    /// Implicit cast from byte to BigDecimals.
     /// </summary>
     /// <param name="n">The byte value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -29,7 +29,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from short to BigNumbers.
+    /// Implicit cast from short to BigDecimals.
     /// </summary>
     /// <param name="n">The short value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -39,7 +39,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from ushort to BigNumbers.
+    /// Implicit cast from ushort to BigDecimals.
     /// </summary>
     /// <param name="n">The ushort value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -49,7 +49,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from int to BigNumbers.
+    /// Implicit cast from int to BigDecimals.
     /// </summary>
     /// <param name="n">The int value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -59,7 +59,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from uint to BigNumbers.
+    /// Implicit cast from uint to BigDecimals.
     /// </summary>
     /// <param name="n">The uint value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -69,7 +69,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from long to BigNumbers.
+    /// Implicit cast from long to BigDecimals.
     /// </summary>
     /// <param name="n">The long value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -79,7 +79,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from ulong to BigNumbers.
+    /// Implicit cast from ulong to BigDecimals.
     /// </summary>
     /// <param name="n">The ulong value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -89,7 +89,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from Int128 to BigNumbers.
+    /// Implicit cast from Int128 to BigDecimals.
     /// </summary>
     /// <param name="n">The Int128 value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -99,7 +99,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from UInt128 to BigNumbers.
+    /// Implicit cast from UInt128 to BigDecimals.
     /// </summary>
     /// <param name="n">The UInt128 value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -109,7 +109,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from BigInteger to BigNumbers.
+    /// Implicit cast from BigInteger to BigDecimals.
     /// </summary>
     /// <param name="n">The BigInteger value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -119,7 +119,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from Half to BigNumbers.
+    /// Implicit cast from Half to BigDecimals.
     /// </summary>
     /// <param name="n">The Half value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -129,7 +129,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from float to BigNumbers.
+    /// Implicit cast from float to BigDecimals.
     /// </summary>
     /// <param name="n">The float value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -139,7 +139,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from double to BigNumbers.
+    /// Implicit cast from double to BigDecimals.
     /// </summary>
     /// <param name="n">The double value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -149,7 +149,7 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from decimal to BigNumbers.
+    /// Implicit cast from decimal to BigDecimals.
     /// </summary>
     /// <param name="n">The decimal value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
@@ -159,9 +159,9 @@ public partial struct BigComplex
     }
 
     /// <summary>
-    /// Implicit cast from BigNumbers to BigComplex.
+    /// Implicit cast from BigDecimals to BigComplex.
     /// </summary>
-    /// <param name="n">The BigNumbers value.</param>
+    /// <param name="n">The BigDecimals value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
     public static implicit operator BigComplex(BigDecimal n)
     {
@@ -258,7 +258,7 @@ public partial struct BigComplex
     public static bool TryConvertFromSaturating<TOther>(TOther value, out BigComplex result)
         where TOther : INumberBase<TOther>
     {
-        // No saturation needed, as BigNumbers does not specify a min or max value.
+        // No saturation needed, as BigDecimals does not specify a min or max value.
         return TryConvertFromChecked(value, out result);
     }
 
@@ -266,7 +266,7 @@ public partial struct BigComplex
     public static bool TryConvertFromTruncating<TOther>(TOther value, out BigComplex result)
         where TOther : INumberBase<TOther>
     {
-        // No truncation needed, as BigNumbers isn't an integer type.
+        // No truncation needed, as BigDecimals isn't an integer type.
         return TryConvertFromChecked(value, out result);
     }
 
@@ -291,7 +291,7 @@ public partial struct BigComplex
             return true;
         }
 
-        // If the number is real, convert the real part use the BigNumbers method.
+        // If the number is real, convert the real part use the BigDecimals method.
         if (IsRealNumber(value))
         {
             return BigDecimal.TryConvertToChecked(value.Real, out result);

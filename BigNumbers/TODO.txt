@@ -1,5 +1,8 @@
-Test and improve (where necessary) all conversion methods.
+Test and debug all conversion methods.
+Add conversion methods and tests for casting and converting between BigRational and the standard numeric types.
+Add conversion methods and tests for casting and converting between the Big types.
 
 Write tests for IsEvenInteger() and IsOddInteger().
+Write tests for all root, pow, exp, and log methods.
 Write tests for CartesianToPolar() and PolarToCartesian().
 Write tests for XEnumerableBigDecimal.

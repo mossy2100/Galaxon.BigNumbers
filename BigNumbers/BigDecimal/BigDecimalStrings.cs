@@ -9,7 +9,7 @@ namespace Galaxon.BigNumbers;
 public partial struct BigDecimal
 {
     /// <summary>
-    /// Format the BigNumbers as a string.
+    /// Format the BigDecimals as a string.
     /// Supported formats are the usual: D, E, F, G, N, P, and R.
     /// <see
     ///     href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings" />
@@ -158,7 +158,7 @@ public partial struct BigDecimal
 
         if (!match.Success)
         {
-            throw new ArgumentFormatException(nameof(strBigDecimal), "Invalid BigNumbers format.");
+            throw new ArgumentFormatException(nameof(strBigDecimal), "Invalid BigDecimal format.");
         }
 
         // Get the digits.
@@ -256,7 +256,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// From a BigNumbers, extract two strings of digits that would appear if the number was written
+    /// From a BigDecimals, extract two strings of digits that would appear if the number was written
     /// in fixed-point format (i.e. without an exponent).
     /// Sign is ignored.
     /// </summary>
@@ -288,7 +288,7 @@ public partial struct BigDecimal
     }
 
     // /// <summary>
-    // /// From a BigNumbers, extract the significand and the exponent needed to write the number using
+    // /// From a BigDecimals, extract the significand and the exponent needed to write the number using
     // /// scientific notation.
     // /// Sign is ignored.
     // /// </summary>

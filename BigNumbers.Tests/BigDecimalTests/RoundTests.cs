@@ -4,7 +4,7 @@ namespace Galaxon.BigNumbers.Tests.BigDecimalTests;
 public class RoundTests
 {
     /// <summary>
-    /// Check BigNumbers.Round() matches decimal.Round() for all rounding methods.
+    /// Check BigDecimals.Round() matches decimal.Round() for all rounding methods.
     /// </summary>
     [TestMethod]
     public void TestRoundingMethods()

@@ -145,7 +145,7 @@ public partial struct BigRational
     }
 
     /// <summary>
-    /// Implicit cast from BigNumbers to BigRational.
+    /// Implicit cast from BigDecimals to BigRational.
     /// </summary>
     public static implicit operator BigRational(BigDecimal n)
     {
@@ -302,7 +302,7 @@ public partial struct BigRational
     }
 
     /// <summary>
-    /// Explicit cast from BigRational to BigNumbers.
+    /// Explicit cast from BigRational to BigDecimals.
     /// </summary>
     public static explicit operator BigDecimal(BigRational n)
     {

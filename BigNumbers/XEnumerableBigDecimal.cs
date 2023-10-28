@@ -1,12 +1,12 @@
 namespace Galaxon.BigNumbers;
 
 /// <summary>
-/// LINQ methods for IEnumerable{BigNumbers}.
+/// LINQ methods for IEnumerable{BigDecimals}.
 /// </summary>
 public static class XEnumerableBigDecimal
 {
     /// <summary>
-    /// Given a collection of BigNumbers values, get the sum of the values.
+    /// Given a collection of BigDecimals values, get the sum of the values.
     /// </summary>
     public static BigDecimal Sum(this IEnumerable<BigDecimal> source)
     {
@@ -14,7 +14,7 @@ public static class XEnumerableBigDecimal
     }
 
     /// <summary>
-    /// Given a collection of BigNumbers values, get the average (i.e. the arithmetic mean).
+    /// Given a collection of BigDecimals values, get the average (i.e. the arithmetic mean).
     /// </summary>
     /// <see href="https://en.wikipedia.org/wiki/Arithmetic_mean" />
     public static BigDecimal Average(this IEnumerable<BigDecimal> source)
@@ -37,7 +37,7 @@ public static class XEnumerableBigDecimal
     }
 
     /// <summary>
-    /// Given a collection of BigNumbers values, get the product of the values.
+    /// Given a collection of BigDecimals values, get the product of the values.
     /// </summary>
     public static BigDecimal Product(this IEnumerable<BigDecimal> source)
     {
@@ -45,7 +45,7 @@ public static class XEnumerableBigDecimal
     }
 
     /// <summary>
-    /// Given a collection of BigNumbers values, get the geometric mean.
+    /// Given a collection of BigDecimals values, get the geometric mean.
     /// </summary>
     /// <see href="https://en.wikipedia.org/wiki/Geometric_mean" />
     public static BigDecimal GeometricMean(this IEnumerable<BigDecimal> source)

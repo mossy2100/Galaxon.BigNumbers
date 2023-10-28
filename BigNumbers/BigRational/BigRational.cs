@@ -324,7 +324,7 @@ public partial struct BigRational :
     /// </summary>
     /// <todo>
     /// Update to support standard format strings for integers, namely D, N, R, with the optional U
-    /// code, same as for BigNumbers. Remove "A", keep "M" for mixed.
+    /// code, same as for BigDecimals. Remove "A", keep "M" for mixed.
     /// </todo>
     /// <param name="format"></param>
     /// <param name="formatProvider"></param>

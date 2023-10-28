@@ -20,14 +20,14 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.#ctor(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>
-            Construct a BigComplex from 2 BigNumbers values.
+            Construct a BigComplex from 2 BigDecimals values.
             </summary>
             <param name="real">The real part.</param>
             <param name="imaginary">The imaginary part.</param>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.#ctor(Galaxon.BigNumbers.BigDecimal)">
             <summary>
-            Construct a BigComplex from a single BigNumbers value.
+            Construct a BigComplex from a single BigDecimals value.
             </summary>
             <param name="real">The real part.</param>
         </member>
@@ -38,13 +38,13 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.#ctor(System.ValueTuple{Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal})">
             <summary>
-            Construct BigComplex from an tuple of 2 BigNumbers values.
+            Construct BigComplex from an tuple of 2 BigDecimals values.
             </summary>
             <param name="complex">The tuple.</param>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.#ctor(Galaxon.BigNumbers.BigDecimal[])">
             <summary>
-            Construct BigComplex from an array of 2 BigNumbers values.
+            Construct BigComplex from an array of 2 BigDecimals values.
             </summary>
             <param name="complex">The array.</param>
             <exception cref="T:System.ArgumentException">If the array does not contain exactly 2
@@ -163,107 +163,107 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.Byte)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from byte to BigNumbers.
+            Implicit cast from byte to BigDecimals.
             </summary>
             <param name="n">The byte value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.Int16)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from short to BigNumbers.
+            Implicit cast from short to BigDecimals.
             </summary>
             <param name="n">The short value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.UInt16)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from ushort to BigNumbers.
+            Implicit cast from ushort to BigDecimals.
             </summary>
             <param name="n">The ushort value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.Int32)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from int to BigNumbers.
+            Implicit cast from int to BigDecimals.
             </summary>
             <param name="n">The int value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.UInt32)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from uint to BigNumbers.
+            Implicit cast from uint to BigDecimals.
             </summary>
             <param name="n">The uint value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.Int64)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from long to BigNumbers.
+            Implicit cast from long to BigDecimals.
             </summary>
             <param name="n">The long value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.UInt64)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from ulong to BigNumbers.
+            Implicit cast from ulong to BigDecimals.
             </summary>
             <param name="n">The ulong value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.Int128)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from Int128 to BigNumbers.
+            Implicit cast from Int128 to BigDecimals.
             </summary>
             <param name="n">The Int128 value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.UInt128)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from UInt128 to BigNumbers.
+            Implicit cast from UInt128 to BigDecimals.
             </summary>
             <param name="n">The UInt128 value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.Numerics.BigInteger)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from BigInteger to BigNumbers.
+            Implicit cast from BigInteger to BigDecimals.
             </summary>
             <param name="n">The BigInteger value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.Half)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from Half to BigNumbers.
+            Implicit cast from Half to BigDecimals.
             </summary>
             <param name="n">The Half value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.Single)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from float to BigNumbers.
+            Implicit cast from float to BigDecimals.
             </summary>
             <param name="n">The float value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.Double)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from double to BigNumbers.
+            Implicit cast from double to BigDecimals.
             </summary>
             <param name="n">The double value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.Decimal)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from decimal to BigNumbers.
+            Implicit cast from decimal to BigDecimals.
             </summary>
             <param name="n">The decimal value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(Galaxon.BigNumbers.BigDecimal)~Galaxon.BigNumbers.BigComplex">
             <summary>
-            Implicit cast from BigNumbers to BigComplex.
+            Implicit cast from BigDecimals to BigComplex.
             </summary>
-            <param name="n">The BigNumbers value.</param>
+            <param name="n">The BigDecimals value.</param>
             <returns>The equivalent BigComplex value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(Galaxon.BigNumbers.BigRational)~Galaxon.BigNumbers.BigComplex">
@@ -368,7 +368,7 @@
             <summary>
             Calculate the square root of a BigComplex number.
             The second root can be found by the conjugate of the result.
-            You can use this method to get the square root of a negative value (including a BigNumbers
+            You can use this method to get the square root of a negative value (including a BigDecimals
             value).
             e.g. BigComplex z = BigComplex.Sqrt(-5);
             <see cref="M:System.Math.Sqrt(System.Double)" />
@@ -649,13 +649,13 @@
             Contains everything relating to constants.
             </summary>
             <summary>
-            Power, root, exponential, and logarithm methods for BigNumbers.
+            Power, root, exponential, and logarithm methods for BigDecimals.
             </summary>
             <summary>
             Old, cut code, keeping just in case.
             </summary>
             <summary>
-            Trigonometric methods for BigNumbers.
+            Trigonometric methods for BigDecimals.
             </summary>
             <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions" />
             <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions" />
@@ -703,7 +703,7 @@
         </member>
         <member name="P:Galaxon.BigNumbers.BigDecimal.MaxSigFigs">
             <summary>
-            This property determines the maximum number of significant figures to keep in a BigNumbers
+            This property determines the maximum number of significant figures to keep in a BigDecimals
             value.
             After any calculation, the result will be rounded to this many significant figures.
             This not only helps control memory usage by controlling the size of the significand, but
@@ -860,7 +860,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.AssertAreEqual(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,System.Nullable{Galaxon.BigNumbers.BigDecimal})">
             <summary>
-            Compare two BigNumbers values for equality.
+            Compare two BigDecimals values for equality.
             </summary>
             <param name="expected">The expected value.</param>
             <param name="actual">The actual value.</param>
@@ -869,7 +869,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.AssertAreEqual(System.Double,Galaxon.BigNumbers.BigDecimal)">
             <summary>
-            Compare a BigNumbers value with an expected double value.
+            Compare a BigDecimals value with an expected double value.
             </summary>
             <param name="expected">The expected value.</param>
             <param name="actual">The actual value.</param>
@@ -988,85 +988,85 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.SByte)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from sbyte to BigNumbers.
+            Implicit cast from sbyte to BigDecimals.
             </summary>
             <param name="n">The sbyte value.</param>
-            <returns>The equivalent BigNumbers value.</returns>
+            <returns>The equivalent BigDecimals value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Byte)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from byte to BigNumbers.
+            Implicit cast from byte to BigDecimals.
             </summary>
             <param name="n">The byte value.</param>
-            <returns>The equivalent BigNumbers value.</returns>
+            <returns>The equivalent BigDecimals value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Int16)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from short to BigNumbers.
+            Implicit cast from short to BigDecimals.
             </summary>
             <param name="n">The short value.</param>
-            <returns>The equivalent BigNumbers value.</returns>
+            <returns>The equivalent BigDecimals value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.UInt16)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from ushort to BigNumbers.
+            Implicit cast from ushort to BigDecimals.
             </summary>
             <param name="n">The ushort value.</param>
-            <returns>The equivalent BigNumbers value.</returns>
+            <returns>The equivalent BigDecimals value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Int32)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from int to BigNumbers.
+            Implicit cast from int to BigDecimals.
             </summary>
             <param name="n">The int value.</param>
-            <returns>The equivalent BigNumbers value.</returns>
+            <returns>The equivalent BigDecimals value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.UInt32)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from uint to BigNumbers.
+            Implicit cast from uint to BigDecimals.
             </summary>
             <param name="n">The uint value.</param>
-            <returns>The equivalent BigNumbers value.</returns>
+            <returns>The equivalent BigDecimals value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Int64)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from long to BigNumbers.
+            Implicit cast from long to BigDecimals.
             </summary>
             <param name="n">The long value.</param>
-            <returns>The equivalent BigNumbers value.</returns>
+            <returns>The equivalent BigDecimals value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.UInt64)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from ulong to BigNumbers.
+            Implicit cast from ulong to BigDecimals.
             </summary>
             <param name="n">The ulong value.</param>
-            <returns>The equivalent BigNumbers value.</returns>
+            <returns>The equivalent BigDecimals value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Int128)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from Int128 to BigNumbers.
+            Implicit cast from Int128 to BigDecimals.
             </summary>
             <param name="n">The Int128 value.</param>
-            <returns>The equivalent BigNumbers value.</returns>
+            <returns>The equivalent BigDecimals value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.UInt128)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from UInt128 to BigNumbers.
+            Implicit cast from UInt128 to BigDecimals.
             </summary>
             <param name="n">The UInt128 value.</param>
-            <returns>The equivalent BigNumbers value.</returns>
+            <returns>The equivalent BigDecimals value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Numerics.BigInteger)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from BigInteger to BigNumbers.
+            Implicit cast from BigInteger to BigDecimals.
             </summary>
             <param name="n">The BigInteger value.</param>
-            <returns>The equivalent BigNumbers value.</returns>
+            <returns>The equivalent BigDecimals value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Half)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from Half to BigNumbers.
-            NB: The resulting BigNumbers value is exactly the value encoded by the Half.
+            Implicit cast from Half to BigDecimals.
+            NB: The resulting BigDecimals value is exactly the value encoded by the Half.
             However, since Halves only approximate decimal values, it's possible that only the first few
             digits are valid in terms of the intended value.
             Therefore, you may need to use RoundSigFigs() to get the value you really want.
@@ -1074,42 +1074,42 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Single)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from float to BigNumbers.
-            NB: The resulting BigNumbers value is exactly the value encoded by the float.
+            Implicit cast from float to BigDecimals.
+            NB: The resulting BigDecimals value is exactly the value encoded by the float.
             However, since floats only approximate decimal values, it's possible that only the first 6-9
             digits are valid in terms of the intended value.
             Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
             <code>
-            BigNumbers bd = BigNumbers.RoundSigFigs(1.2345f, FloatMaxSigFigs);
+            BigDecimals bd = BigDecimals.RoundSigFigs(1.2345f, FloatMaxSigFigs);
             </code>
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Double)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from double to BigNumbers.
-            NB: The resulting BigNumbers value is exactly the value encoded by the double.
+            Implicit cast from double to BigDecimals.
+            NB: The resulting BigDecimals value is exactly the value encoded by the double.
             However, since doubles only approximate decimal values, it's possible that only the first
             15-17 digits are valid in terms of the intended value.
             Therefore, you may need to use RoundSigFigs() to get the value you really want, e.g.
             <code>
-            BigNumbers bd = BigNumbers.RoundSigFigs(1.2345, DoubleMaxSigFigs);
+            BigDecimals bd = BigDecimals.RoundSigFigs(1.2345, DoubleMaxSigFigs);
             </code>
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Implicit(System.Decimal)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Implicit cast from decimal to BigNumbers.
-            The cast is implicit because any decimal value can be cast to a BigNumbers exactly, without
+            Implicit cast from decimal to BigDecimals.
+            The cast is implicit because any decimal value can be cast to a BigDecimals exactly, without
             loss of information. However, rounding off using Round() or RoundSigFigs() can cause
             information loss.
             We don't need to use Parse() or division operations here, because the base is decimal.
-            We can just extract the parts of the decimal from the bits and construct a BigNumbers from
+            We can just extract the parts of the decimal from the bits and construct a BigDecimals from
             those. This method should be faster than using ToString() and Parse().
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.SByte">
             <summary>
-            Explicit cast from BigNumbers to sbyte.
+            Explicit cast from BigDecimals to sbyte.
             </summary>
             <exception cref="T:System.OverflowException">
             If the value is outside the valid range for sbyte.
@@ -1117,7 +1117,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Byte">
             <summary>
-            Explicit cast from BigNumbers to byte.
+            Explicit cast from BigDecimals to byte.
             </summary>
             <exception cref="T:System.OverflowException">
             If the value is outside the valid range for byte.
@@ -1125,7 +1125,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Int16">
             <summary>
-            Explicit cast from BigNumbers to short.
+            Explicit cast from BigDecimals to short.
             </summary>
             <exception cref="T:System.OverflowException">
             If the value is outside the valid range for short.
@@ -1133,7 +1133,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.UInt16">
             <summary>
-            Explicit cast from BigNumbers to ushort.
+            Explicit cast from BigDecimals to ushort.
             </summary>
             <exception cref="T:System.OverflowException">
             If the value is outside the valid range for ushort.
@@ -1141,7 +1141,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Int32">
             <summary>
-            Explicit cast from BigNumbers to int.
+            Explicit cast from BigDecimals to int.
             </summary>
             <exception cref="T:System.OverflowException">
             If the value is outside the valid range for int.
@@ -1149,7 +1149,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.UInt32">
             <summary>
-            Explicit cast from BigNumbers to uint.
+            Explicit cast from BigDecimals to uint.
             </summary>
             <exception cref="T:System.OverflowException">
             If the value is outside the valid range for uint.
@@ -1157,7 +1157,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Int64">
             <summary>
-            Explicit cast from BigNumbers to long.
+            Explicit cast from BigDecimals to long.
             </summary>
             <exception cref="T:System.OverflowException">
             If the value is outside the valid range for long.
@@ -1165,7 +1165,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.UInt64">
             <summary>
-            Explicit cast from BigNumbers to ulong.
+            Explicit cast from BigDecimals to ulong.
             </summary>
             <exception cref="T:System.OverflowException">
             If the value is outside the valid range for ulong.
@@ -1173,7 +1173,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Int128">
             <summary>
-            Explicit cast from BigNumbers to Int128.
+            Explicit cast from BigDecimals to Int128.
             </summary>
             <exception cref="T:System.OverflowException">
             If the value is outside the valid range for Int128.
@@ -1181,7 +1181,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.UInt128">
             <summary>
-            Explicit cast from BigNumbers to UInt128.
+            Explicit cast from BigDecimals to UInt128.
             </summary>
             <exception cref="T:System.OverflowException">
             If the value is outside the valid range for uInt128.
@@ -1189,33 +1189,33 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Numerics.BigInteger">
             <summary>
-            Explicit cast from BigNumbers to BigInteger.
+            Explicit cast from BigDecimals to BigInteger.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Half">
             <summary>
-            Explicit cast from BigNumbers to Half.
+            Explicit cast from BigDecimals to Half.
             This method will not throw an OverflowException, but will return ±∞ for a value outside the
             valid range for Half.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Single">
             <summary>
-            Explicit cast from BigNumbers to float.
+            Explicit cast from BigDecimals to float.
             This method will not throw an OverflowException, but will return ±∞ for a value outside the
             valid range for float.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Double">
             <summary>
-            Explicit cast from BigNumbers to double.
+            Explicit cast from BigDecimals to double.
             This method will not throw an OverflowException, but will return ±∞ for a value outside the
             valid range for double.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Explicit(Galaxon.BigNumbers.BigDecimal)~System.Decimal">
             <summary>
-            Explicit cast from BigNumbers to decimal.
+            Explicit cast from BigDecimals to decimal.
             </summary>
             <exception cref="T:System.OverflowException">
             If the value is outside the valid range for decimal.
@@ -1242,23 +1242,23 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.ConvertFromFloatingPoint``1(``0)">
             <summary>
-            Private method to convert a floating point value (float or double) to a BigNumbers.
+            Private method to convert a floating point value (float or double) to a BigDecimals.
             </summary>
             <exception cref="T:System.InvalidCastException"></exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.ConvertToFloatingPoint``1(Galaxon.BigNumbers.BigDecimal)">
             <summary>
-            Convert a BigNumbers to a standard binary floating point type.
-            If the BigNumbers is outside the range for this type, this method will return negative or
+            Convert a BigDecimals to a standard binary floating point type.
+            If the BigDecimals is outside the range for this type, this method will return negative or
             positive infinity as needed, without throwing an exception.
             </summary>
             <typeparam name="T">The standard binary floating point type.</typeparam>
-            <param name="bd">The BigNumbers value.</param>
+            <param name="bd">The BigDecimals value.</param>
             <returns>The converted value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Pow(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>
-            Calculate the value of x^y where x and y are both BigNumbers values.
+            Calculate the value of x^y where x and y are both BigDecimals values.
             </summary>
             <param name="x">The base.</param>
             <param name="y">The exponent.</param>
@@ -1468,50 +1468,50 @@
             <summary>
             Addition method.
             </summary>
-            <param name="a">The left-hand BigNumbers number.</param>
-            <param name="b">The right-hand BigNumbers number.</param>
+            <param name="a">The left-hand BigDecimals number.</param>
+            <param name="b">The right-hand BigDecimals number.</param>
             <returns>The addition of the arguments.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Subtract(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>
             Subtraction method.
             </summary>
-            <param name="a">The left-hand BigNumbers number.</param>
-            <param name="b">The right-hand BigNumbers number.</param>
+            <param name="a">The left-hand BigDecimals number.</param>
+            <param name="b">The right-hand BigDecimals number.</param>
             <returns>The subtraction of the arguments.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Increment(Galaxon.BigNumbers.BigDecimal)">
             <summary>
             Increment method.
             </summary>
-            <param name="a">The BigNumbers number.</param>
+            <param name="a">The BigDecimals number.</param>
             <returns>The parameter incremented by 1.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Decrement(Galaxon.BigNumbers.BigDecimal)">
             <summary>
             Decrement method.
             </summary>
-            <param name="a">The BigNumbers number.</param>
+            <param name="a">The BigDecimals number.</param>
             <returns>The parameter decremented by 1.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Multiply(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>
-            Multiply two BigNumbers values.
+            Multiply two BigDecimals values.
             </summary>
-            <param name="a">The left-hand BigNumbers number.</param>
-            <param name="b">The right-hand BigNumbers number.</param>
+            <param name="a">The left-hand BigDecimals number.</param>
+            <param name="b">The right-hand BigDecimals number.</param>
             <returns>The multiplication of the arguments.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Divide(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>
-            Divide a BigNumbers by a BigNumbers.
+            Divide a BigDecimals by a BigDecimals.
             </summary>
             <remarks>
             Computes division using the Goldschmidt algorithm.
             <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division" />
             </remarks>
-            <param name="a">The left-hand BigNumbers number.</param>
-            <param name="b">The right-hand BigNumbers number.</param>
+            <param name="a">The left-hand BigDecimals number.</param>
+            <param name="b">The right-hand BigDecimals number.</param>
             <returns>The division of the arguments.</returns>
             <exception cref="T:System.DivideByZeroException">If b == 0</exception>
         </member>
@@ -1523,7 +1523,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Modulus(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>
-            Divides two BigNumbers values together to compute their modulus or remainder.
+            Divides two BigDecimals values together to compute their modulus or remainder.
             </summary>
             <param name="a">The value which b divides.</param>
             <param name="b">The value which divides a.</param>
@@ -1575,7 +1575,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.ToString(System.String,System.IFormatProvider)">
             <summary>
-            Format the BigNumbers as a string.
+            Format the BigDecimals as a string.
             Supported formats are the usual: D, E, F, G, N, P, and R.
             <see
                 href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings" />
@@ -1646,7 +1646,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.PreformatFixed">
             <summary>
-            From a BigNumbers, extract two strings of digits that would appear if the number was written
+            From a BigDecimals, extract two strings of digits that would appear if the number was written
             in fixed-point format (i.e. without an exponent).
             Sign is ignored.
             </summary>
@@ -1955,7 +1955,7 @@
             </summary>
             <todo>
             Update to support standard format strings for integers, namely D, N, R, with the optional U
-            code, same as for BigNumbers. Remove "A", keep "M" for mixed.
+            code, same as for BigDecimals. Remove "A", keep "M" for mixed.
             </todo>
             <param name="format"></param>
             <param name="formatProvider"></param>
@@ -2205,7 +2205,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.op_Implicit(Galaxon.BigNumbers.BigDecimal)~Galaxon.BigNumbers.BigRational">
             <summary>
-            Implicit cast from BigNumbers to BigRational.
+            Implicit cast from BigDecimals to BigRational.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.op_Explicit(Galaxon.BigNumbers.BigRational)~System.SByte">
@@ -2300,7 +2300,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.op_Explicit(Galaxon.BigNumbers.BigRational)~Galaxon.BigNumbers.BigDecimal">
             <summary>
-            Explicit cast from BigRational to BigNumbers.
+            Explicit cast from BigRational to BigDecimals.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.ConvertFromFloatingPoint``1(``0)">
@@ -2311,28 +2311,28 @@
         </member>
         <member name="T:Galaxon.BigNumbers.XEnumerableBigDecimal">
             <summary>
-            LINQ methods for IEnumerable{BigNumbers}.
+            LINQ methods for IEnumerable{BigDecimals}.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.XEnumerableBigDecimal.Sum(System.Collections.Generic.IEnumerable{Galaxon.BigNumbers.BigDecimal})">
             <summary>
-            Given a collection of BigNumbers values, get the sum of the values.
+            Given a collection of BigDecimals values, get the sum of the values.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.XEnumerableBigDecimal.Average(System.Collections.Generic.IEnumerable{Galaxon.BigNumbers.BigDecimal})">
             <summary>
-            Given a collection of BigNumbers values, get the average (i.e. the arithmetic mean).
+            Given a collection of BigDecimals values, get the average (i.e. the arithmetic mean).
             </summary>
             <see href="https://en.wikipedia.org/wiki/Arithmetic_mean" />
         </member>
         <member name="M:Galaxon.BigNumbers.XEnumerableBigDecimal.Product(System.Collections.Generic.IEnumerable{Galaxon.BigNumbers.BigDecimal})">
             <summary>
-            Given a collection of BigNumbers values, get the product of the values.
+            Given a collection of BigDecimals values, get the product of the values.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.XEnumerableBigDecimal.GeometricMean(System.Collections.Generic.IEnumerable{Galaxon.BigNumbers.BigDecimal})">
             <summary>
-            Given a collection of BigNumbers values, get the geometric mean.
+            Given a collection of BigDecimals values, get the geometric mean.
             </summary>
             <see href="https://en.wikipedia.org/wiki/Geometric_mean" />
         </member>

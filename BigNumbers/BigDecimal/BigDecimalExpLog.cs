@@ -5,14 +5,14 @@ using Galaxon.Core.Numbers;
 namespace Galaxon.BigNumbers;
 
 /// <summary>
-/// Power, root, exponential, and logarithm methods for BigNumbers.
+/// Power, root, exponential, and logarithm methods for BigDecimals.
 /// </summary>
 public partial struct BigDecimal
 {
     #region Power functions
 
     /// <summary>
-    /// Calculate the value of x^y where x and y are both BigNumbers values.
+    /// Calculate the value of x^y where x and y are both BigDecimals values.
     /// </summary>
     /// <param name="x">The base.</param>
     /// <param name="y">The exponent.</param>
@@ -45,7 +45,7 @@ public partial struct BigDecimal
         // exponentiation by squaring (recursion).
         if (IsInteger(y))
         {
-            // 10 to an integer power is easy, given the structure of the BigNumbers type.
+            // 10 to an integer power is easy, given the structure of the BigDecimals type.
             if (x == 10 && y >= int.MinValue && y <= int.MaxValue)
             {
                 return new BigDecimal(1, (int)y);
@@ -262,12 +262,9 @@ public partial struct BigDecimal
         // The first root of a number is itself.
         if (n == 1) return z;
 
-        // Get the polar form:
-        var (r, theta) = CartesianToPolar(z.Real, z.Imaginary);
-
         // Calculate the root.
-        var s = RootN(r, n);
-        var iota = theta / n;
+        var s = RootN(z.Magnitude, n);
+        var iota = z.Phase / n;
         return new BigComplex(s * Cos(iota), s * Sin(iota));
     }
 
@@ -355,7 +352,7 @@ public partial struct BigDecimal
         if (x < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(x),
-                "Logarithm of a negative value is a complex number, which cannot be expressed using a BigNumbers.");
+                "Logarithm of a negative value is a complex number, which cannot be expressed using a BigDecimal.");
         }
 
         // Optimization.

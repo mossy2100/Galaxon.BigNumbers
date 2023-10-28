@@ -80,7 +80,7 @@ public partial struct BigDecimal :
     #region Static properties
 
     /// <summary>
-    /// This property determines the maximum number of significant figures to keep in a BigNumbers
+    /// This property determines the maximum number of significant figures to keep in a BigDecimals
     /// value.
     /// After any calculation, the result will be rounded to this many significant figures.
     /// This not only helps control memory usage by controlling the size of the significand, but

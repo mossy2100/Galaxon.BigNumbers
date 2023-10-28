@@ -44,7 +44,7 @@ public partial struct BigComplex :
     #region Constructors
 
     /// <summary>
-    /// Construct a BigComplex from 2 BigNumbers values.
+    /// Construct a BigComplex from 2 BigDecimals values.
     /// </summary>
     /// <param name="real">The real part.</param>
     /// <param name="imaginary">The imaginary part.</param>
@@ -56,7 +56,7 @@ public partial struct BigComplex :
     }
 
     /// <summary>
-    /// Construct a BigComplex from a single BigNumbers value.
+    /// Construct a BigComplex from a single BigDecimals value.
     /// </summary>
     /// <param name="real">The real part.</param>
     public BigComplex(BigDecimal real) : this(real, 0)
@@ -71,7 +71,7 @@ public partial struct BigComplex :
     }
 
     /// <summary>
-    /// Construct BigComplex from an tuple of 2 BigNumbers values.
+    /// Construct BigComplex from an tuple of 2 BigDecimals values.
     /// </summary>
     /// <param name="complex">The tuple.</param>
     public BigComplex((BigDecimal, BigDecimal) complex) : this(complex.Item1, complex.Item2)
@@ -79,7 +79,7 @@ public partial struct BigComplex :
     }
 
     /// <summary>
-    /// Construct BigComplex from an array of 2 BigNumbers values.
+    /// Construct BigComplex from an array of 2 BigDecimals values.
     /// </summary>
     /// <param name="complex">The array.</param>
     /// <exception cref="ArgumentException">If the array does not contain exactly 2

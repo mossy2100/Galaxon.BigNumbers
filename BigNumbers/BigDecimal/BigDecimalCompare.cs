@@ -29,7 +29,7 @@ public partial struct BigDecimal
     {
         if (obj is not BigDecimal other)
         {
-            throw new ArgumentInvalidException(nameof(obj), "Must be a BigNumbers.");
+            throw new ArgumentInvalidException(nameof(obj), "Must be a BigDecimal.");
         }
 
         return CompareTo(other);

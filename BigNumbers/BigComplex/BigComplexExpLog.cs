@@ -25,7 +25,7 @@ public partial struct BigComplex
         if (z == 0)
         {
             // 0 raised to a negative real value is undefined (it is equivalent to division by 0).
-            // Math.Pow() returns double.Infinity, but BigNumbers doesn't have this.
+            // Math.Pow() returns double.Infinity, but BigDecimals doesn't have this.
             if (w.Imaginary == 0 && w.Real < 0)
             {
                 throw new ArithmeticException("0 raised to a negative power is undefined.");
@@ -67,7 +67,7 @@ public partial struct BigComplex
             return -1;
         }
 
-        // If the values are both real, pass it to the BigNumbers calculation.
+        // If the values are both real, pass it to the BigDecimals calculation.
         if (z.Imaginary == 0 && w.Imaginary == 0)
         {
             return BigDecimal.Pow(z.Real, w.Real);
@@ -120,12 +120,9 @@ public partial struct BigComplex
         // The first root of a number is itself.
         if (n == 1) return z;
 
-        // Get the polar form:
-        var (r, theta) = BigDecimal.CartesianToPolar(z.Real, z.Imaginary);
-
         // Calculate the first root.
-        var s = BigDecimal.RootN(r, n);
-        var iota = theta / n;
+        var s = BigDecimal.RootN(z.Magnitude, n);
+        var iota = z.Phase / n;
         return new BigComplex(s * BigDecimal.Cos(iota), s * BigDecimal.Sin(iota));
     }
 
@@ -152,12 +149,9 @@ public partial struct BigComplex
             return roots;
         }
 
-        // Get the polar form:
-        var (r, theta) = BigDecimal.CartesianToPolar(z.Real, z.Imaginary);
-
         // Calculate values that will be constant during the loop.
-        var s = BigDecimal.RootN(r, n);
-        var iota = theta / n;
+        var s = BigDecimal.RootN(z.Magnitude, n);
+        var iota = z.Phase / n;
         var beta = BigDecimal.Tau / n;
 
         // Calculate all the roots as complex numbers.
@@ -183,7 +177,7 @@ public partial struct BigComplex
     /// <summary>
     /// Calculate the square root of a BigComplex number.
     /// The second root can be found by the conjugate of the result.
-    /// You can use this method to get the square root of a negative value (including a BigNumbers
+    /// You can use this method to get the square root of a negative value (including a BigDecimals
     /// value).
     /// e.g. BigComplex z = BigComplex.Sqrt(-5);
     /// <see cref="System.Math.Sqrt" />
@@ -228,7 +222,7 @@ public partial struct BigComplex
     /// <inheritdoc/>
     public static BigComplex Exp(BigComplex z)
     {
-        // TODO Compare this approach (which uses BigNumbers.Exp, Sin, and Cos) with using the
+        // TODO Compare this approach (which uses BigDecimals.Exp, Sin, and Cos) with using the
         // power series.
         // See https://en.wikipedia.org/wiki/Euler%27s_formula#Power_series_definition
         // If there's no imaginary component, use the real version of the method.
@@ -277,8 +271,7 @@ public partial struct BigComplex
         }
 
         // Calculate the complex logarithm.
-        var (r, theta) = BigDecimal.CartesianToPolar(z.Real, z.Imaginary);
-        return new BigComplex(BigDecimal.Log(r), theta);
+        return new BigComplex(BigDecimal.Log(z.Magnitude), z.Phase);
     }
 
     /// <inheritdoc />

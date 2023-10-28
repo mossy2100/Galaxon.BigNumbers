@@ -14,12 +14,12 @@ public partial struct BigDecimal
         if (a == 0)
         {
             throw new ArgumentOutOfRangeException(nameof(a),
-                "Logarithm of 0 is -∞, which cannot be expressed using a BigNumbers.");
+                "Logarithm of 0 is -∞, which cannot be expressed using a BigDecimal.");
         }
         if (a < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(a),
-                "Logarithm of a negative value is a complex number, which cannot be expressed using a BigNumbers.");
+                "Logarithm of a negative value is a complex number, which cannot be expressed using a BigDecimal.");
         }
 
         // Optimization.
@@ -107,12 +107,12 @@ public partial struct BigDecimal
         if (x == 0)
         {
             throw new ArgumentOutOfRangeException(nameof(x),
-                "Logarithm of 0 is -∞, which cannot be expressed using a BigNumbers.");
+                "Logarithm of 0 is -∞, which cannot be expressed using a BigDecimal.");
         }
         if (x < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(x),
-                "Logarithm of a negative value is a complex number, which cannot be expressed using a BigNumbers.");
+                "Logarithm of a negative value is a complex number, which cannot be expressed using a BigDecimal.");
         }
 
         // Optimization.
@@ -125,7 +125,7 @@ public partial struct BigDecimal
         // overflow.
         // int nDigits = a.Significand.NumDigits();
         // int scale = nDigits + a.Exponent;
-        // BigNumbers x = a;
+        // BigDecimals x = a;
         // x.Exponent = -nDigits;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
