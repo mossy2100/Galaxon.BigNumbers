@@ -263,6 +263,24 @@ public partial struct BigRational
 
     #endregion Operators for casting from BigRational to other number types
 
+    #region Methods that convert to an object
+
+    /// <summary>Convert BigRational to array.</summary>
+    /// <returns>The equivalent array.</returns>
+    public readonly BigInteger[] ToArray()
+    {
+        return new[] { Numerator, Denominator };
+    }
+
+    /// <summary>Convert BigRational to tuple.</summary>
+    /// <returns>The equivalent tuple.</returns>
+    public readonly (BigInteger, BigInteger) ToTuple()
+    {
+        return (Numerator, Denominator);
+    }
+
+    #endregion Methods that convert to an object
+
     #region Helper methods
 
     /// <summary>

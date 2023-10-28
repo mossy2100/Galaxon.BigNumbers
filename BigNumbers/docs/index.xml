@@ -2413,6 +2413,14 @@
         <member name="M:Galaxon.BigNumbers.BigRational.op_Explicit(Galaxon.BigNumbers.BigRational)~Galaxon.BigNumbers.BigDecimal">
             <summary>Cast from BigRational to BigDecimal.</summary>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigRational.ToArray">
+            <summary>Convert BigRational to array.</summary>
+            <returns>The equivalent array.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigRational.ToTuple">
+            <summary>Convert BigRational to tuple.</summary>
+            <returns>The equivalent tuple.</returns>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigRational.ConvertFromFloatingPoint``1(``0)">
             <summary>
             Implicitly cast a standard binary floating point value to a BigRational.
