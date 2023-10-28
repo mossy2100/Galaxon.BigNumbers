@@ -5,7 +5,7 @@ namespace Galaxon.BigNumbers;
 public partial struct BigDecimal
 {
     /// <summary>
-    /// Compare two BigDecimals values for equality.
+    /// Compare two BigDecimal values for equality.
     /// </summary>
     /// <param name="expected">The expected value.</param>
     /// <param name="actual">The actual value.</param>
@@ -14,7 +14,7 @@ public partial struct BigDecimal
     public static void AssertAreEqual(BigDecimal expected, BigDecimal actual,
         BigDecimal? delta = null)
     {
-        // Cannot set a default delta in the method signature because a BigDecimals value cannot be a
+        // Cannot set a default delta in the method signature because a BigDecimal value cannot be a
         // compile-time constant.
         delta ??= 0;
 
@@ -27,7 +27,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Compare a BigDecimals value with an expected double value.
+    /// Compare a BigDecimal value with an expected double value.
     /// </summary>
     /// <param name="expected">The expected value.</param>
     /// <param name="actual">The actual value.</param>

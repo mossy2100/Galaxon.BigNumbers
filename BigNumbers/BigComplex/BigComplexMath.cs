@@ -1,7 +1,43 @@
+using System.Numerics;
+
 namespace Galaxon.BigNumbers;
 
 public partial struct BigComplex
 {
+    #region Methods related to magnitude and phase
+
+    /// <summary>
+    /// Calculate the absolute value of the BigComplex value (also known as magnitude).
+    /// </summary>
+    /// <param name="z">A BigComplex number.</param>
+    /// <returns>The magnitude of the argument.</returns>
+    /// <see cref="Complex.Abs" />
+    public static BigDecimal Abs(BigComplex z)
+    {
+        return BigDecimal.Hypot(z.Real, z.Imaginary);
+    }
+
+    /// <summary>This method isn't needed for practical purposes, just for the interface.</summary>
+    /// <inheritdoc />
+    static BigComplex INumberBase<BigComplex>.Abs(BigComplex z)
+    {
+        return Abs(z);
+    }
+
+    /// <summary>
+    /// Construct a complex number from the magnitude and phase.
+    /// </summary>
+    /// <param name="magnitude">The magnitude of the complex number.</param>
+    /// <param name="phase">The phase angle in radians.</param>
+    /// <returns>The new BigComplex number.</returns>
+    /// <see cref="Complex.FromPolarCoordinates" />
+    public static BigComplex FromPolarCoordinates(BigDecimal magnitude, BigDecimal phase)
+    {
+        return new BigComplex(BigDecimal.PolarToCartesian(magnitude, phase));
+    }
+
+    #endregion Methods related to magnitude and phase
+
     #region Arithmetic methods
 
     /// <summary>

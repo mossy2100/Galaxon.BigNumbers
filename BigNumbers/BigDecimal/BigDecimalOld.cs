@@ -125,7 +125,7 @@ public partial struct BigDecimal
         // overflow.
         // int nDigits = a.Significand.NumDigits();
         // int scale = nDigits + a.Exponent;
-        // BigDecimals x = a;
+        // BigDecimal x = a;
         // x.Exponent = -nDigits;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.

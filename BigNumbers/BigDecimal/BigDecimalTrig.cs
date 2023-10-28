@@ -4,7 +4,7 @@ using Galaxon.Core.Exceptions;
 namespace Galaxon.BigNumbers;
 
 /// <summary>
-/// Trigonometric methods for BigDecimals.
+/// Trigonometric methods for BigDecimal.
 /// </summary>
 /// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions" />
 /// <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions" />

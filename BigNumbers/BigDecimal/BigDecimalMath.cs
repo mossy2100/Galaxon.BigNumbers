@@ -306,8 +306,8 @@ public partial struct BigDecimal
     /// <summary>
     /// Addition method.
     /// </summary>
-    /// <param name="a">The left-hand BigDecimals number.</param>
-    /// <param name="b">The right-hand BigDecimals number.</param>
+    /// <param name="a">The left-hand BigDecimal number.</param>
+    /// <param name="b">The right-hand BigDecimal number.</param>
     /// <returns>The addition of the arguments.</returns>
     public static BigDecimal Add(BigDecimal a, BigDecimal b)
     {
@@ -318,8 +318,8 @@ public partial struct BigDecimal
     /// <summary>
     /// Subtraction method.
     /// </summary>
-    /// <param name="a">The left-hand BigDecimals number.</param>
-    /// <param name="b">The right-hand BigDecimals number.</param>
+    /// <param name="a">The left-hand BigDecimal number.</param>
+    /// <param name="b">The right-hand BigDecimal number.</param>
     /// <returns>The subtraction of the arguments.</returns>
     public static BigDecimal Subtract(BigDecimal a, BigDecimal b)
     {
@@ -330,7 +330,7 @@ public partial struct BigDecimal
     /// <summary>
     /// Increment method.
     /// </summary>
-    /// <param name="a">The BigDecimals number.</param>
+    /// <param name="a">The BigDecimal number.</param>
     /// <returns>The parameter incremented by 1.</returns>
     public static BigDecimal Increment(BigDecimal a)
     {
@@ -340,7 +340,7 @@ public partial struct BigDecimal
     /// <summary>
     /// Decrement method.
     /// </summary>
-    /// <param name="a">The BigDecimals number.</param>
+    /// <param name="a">The BigDecimal number.</param>
     /// <returns>The parameter decremented by 1.</returns>
     public static BigDecimal Decrement(BigDecimal a)
     {
@@ -348,10 +348,10 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Multiply two BigDecimals values.
+    /// Multiply two BigDecimal values.
     /// </summary>
-    /// <param name="a">The left-hand BigDecimals number.</param>
-    /// <param name="b">The right-hand BigDecimals number.</param>
+    /// <param name="a">The left-hand BigDecimal number.</param>
+    /// <param name="b">The right-hand BigDecimal number.</param>
     /// <returns>The multiplication of the arguments.</returns>
     public static BigDecimal Multiply(BigDecimal a, BigDecimal b)
     {
@@ -359,14 +359,14 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Divide a BigDecimals by a BigDecimals.
+    /// Divide a BigDecimal by a BigDecimal.
     /// </summary>
     /// <remarks>
     /// Computes division using the Goldschmidt algorithm.
     /// <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division" />
     /// </remarks>
-    /// <param name="a">The left-hand BigDecimals number.</param>
-    /// <param name="b">The right-hand BigDecimals number.</param>
+    /// <param name="a">The left-hand BigDecimal number.</param>
+    /// <param name="b">The right-hand BigDecimal number.</param>
     /// <returns>The division of the arguments.</returns>
     /// <exception cref="System.DivideByZeroException">If b == 0</exception>
     public static BigDecimal Divide(BigDecimal a, BigDecimal b)
@@ -392,8 +392,8 @@ public partial struct BigDecimal
         // We can quickly get a very good initial estimate by leveraging the decimal type.
         // In other places we've used the double type for calculating estimates, both for speed and
         // to access methods that the decimal type doesn't provide. However, because division may be
-        // needed when casting from double to BigDecimals, using double here causes infinite
-        // recursion. Casting from decimal to BigDecimals doesn't require division so it doesn't have
+        // needed when casting from double to BigDecimal, using double here causes infinite
+        // recursion. Casting from decimal to BigDecimal doesn't require division so it doesn't have
         // that problem.
 
         var bR = RoundSigFigs(b, DecimalPrecision);
@@ -441,7 +441,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Divides two BigDecimals values together to compute their modulus or remainder.
+    /// Divides two BigDecimal values together to compute their modulus or remainder.
     /// </summary>
     /// <param name="a">The value which b divides.</param>
     /// <param name="b">The value which divides a.</param>

@@ -12,23 +12,38 @@ public partial struct BigComplex :
 {
     #region Core properties
 
+    /// <summary>The real part of the BigComplex number.</summary>
     public BigDecimal Real { get; set; }
 
+    /// <summary>The imaginary part of the BigComplex number.</summary>
     public BigDecimal Imaginary { get; set; }
 
     #endregion Core properties
 
+    #region Calculated properties
+
+    /// <summary>The magnitude (or absolute value) of the BigComplex number.</summary>
+    public readonly BigDecimal Magnitude => Abs(this);
+
+    /// <summary>The phase angle of the BigComplex number.</summary>
+    public readonly BigDecimal Phase => BigDecimal.Atan2(Imaginary, Real);
+
+    #endregion Calculated properties
+
     #region Constants
 
+    /// <inheritdoc/>
     public static BigComplex Zero { get; } = new (0, 0);
 
+    /// <inheritdoc/>
     public static BigComplex One { get; } = new (1, 0);
 
-    // Equivalent to System.Numerics.Complex.ImaginaryOne.
+    /// <summary>Value of the imaginary unit, equal to Sqrt(-1).</summary>
+    /// <see cref="Complex.ImaginaryOne"/>
     public static BigComplex ImaginaryOne { get; } = new (0, 1);
 
-    // Convenient shorthand for ImaginaryOne.
-    public static BigComplex I => ImaginaryOne;
+    /// <summary>Convenient shorthand for ImaginaryOne.</summary>
+    public static BigComplex I { get; } = ImaginaryOne;
 
     /// <inheritdoc />
     public static int Radix { get; } = 10;
@@ -44,7 +59,7 @@ public partial struct BigComplex :
     #region Constructors
 
     /// <summary>
-    /// Construct a BigComplex from 2 BigDecimals values.
+    /// Construct a BigComplex from 2 BigDecimal values.
     /// </summary>
     /// <param name="real">The real part.</param>
     /// <param name="imaginary">The imaginary part.</param>
@@ -56,7 +71,7 @@ public partial struct BigComplex :
     }
 
     /// <summary>
-    /// Construct a BigComplex from a single BigDecimals value.
+    /// Construct a BigComplex from a single BigDecimal value.
     /// </summary>
     /// <param name="real">The real part.</param>
     public BigComplex(BigDecimal real) : this(real, 0)
@@ -71,7 +86,7 @@ public partial struct BigComplex :
     }
 
     /// <summary>
-    /// Construct BigComplex from an tuple of 2 BigDecimals values.
+    /// Construct BigComplex from an tuple of 2 BigDecimal values.
     /// </summary>
     /// <param name="complex">The tuple.</param>
     public BigComplex((BigDecimal, BigDecimal) complex) : this(complex.Item1, complex.Item2)
@@ -79,7 +94,7 @@ public partial struct BigComplex :
     }
 
     /// <summary>
-    /// Construct BigComplex from an array of 2 BigDecimals values.
+    /// Construct BigComplex from an array of 2 BigDecimal values.
     /// </summary>
     /// <param name="complex">The array.</param>
     /// <exception cref="ArgumentException">If the array does not contain exactly 2

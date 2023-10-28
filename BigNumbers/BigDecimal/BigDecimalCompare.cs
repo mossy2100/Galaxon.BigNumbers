@@ -3,7 +3,7 @@ using Galaxon.Core.Exceptions;
 namespace Galaxon.BigNumbers;
 
 /// <summary>
-/// Operators and methods for comparing BigDecimals.
+/// Operators and methods for comparing BigDecimal.
 /// </summary>
 public partial struct BigDecimal
 {

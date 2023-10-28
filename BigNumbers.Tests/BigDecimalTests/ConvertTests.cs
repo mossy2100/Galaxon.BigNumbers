@@ -4,7 +4,7 @@ using Galaxon.Core.Numbers;
 namespace Galaxon.BigNumbers.Tests.BigDecimalTests;
 
 /// <summary>
-/// Test conversions between BigDecimals and the standard number types.
+/// Test conversions between BigDecimal and the standard number types.
 /// </summary>
 [TestClass]
 public class ConvertTests
@@ -17,7 +17,7 @@ public class ConvertTests
     private sbyte[] _sbyteTestValues = { sbyte.MinValue, -1, 0, 1, sbyte.MaxValue };
 
     /// <summary>
-    /// Test casting from BigDecimals to sbyte and back.
+    /// Test casting from BigDecimal to sbyte and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToSbyte()
@@ -31,7 +31,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test casting from BigDecimals to sbyte, outside the valid range for that type.
+    /// Test casting from BigDecimal to sbyte, outside the valid range for that type.
     /// </summary>
     [TestMethod]
     public void ThrowsExceptionWhenCastingToSbyteOutsideOfValidRange()
@@ -50,7 +50,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from sbyte to BigDecimals with overflow check, within the valid range
+    /// Test converting from sbyte to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -66,7 +66,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to sbyte with overflow check, within the valid range for
+    /// Test converting from BigDecimal to sbyte with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -82,7 +82,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to sbyte with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to sbyte with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -96,7 +96,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to sbyte, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to sbyte, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -112,7 +112,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to sbyte, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to sbyte, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -140,7 +140,7 @@ public class ConvertTests
     private byte[] _byteTestValues = { 0, 1, byte.MaxValue };
 
     /// <summary>
-    /// Test casting from BigDecimals to byte and back.
+    /// Test casting from BigDecimal to byte and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToByte()
@@ -154,7 +154,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test casting from BigDecimals to byte, outside the valid range for that type.
+    /// Test casting from BigDecimal to byte, outside the valid range for that type.
     /// </summary>
     [TestMethod]
     public void ThrowsExceptionWhenCastingToByteOutsideOfValidRange()
@@ -173,7 +173,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from byte to BigDecimals with overflow check, within the valid range
+    /// Test converting from byte to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -189,7 +189,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to byte with overflow check, within the valid range for
+    /// Test converting from BigDecimal to byte with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -205,7 +205,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to byte with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to byte with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -219,7 +219,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to byte, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to byte, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -235,7 +235,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to byte, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to byte, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -263,7 +263,7 @@ public class ConvertTests
     private short[] _shortTestValues = { short.MinValue, -1, 0, 1, short.MaxValue };
 
     /// <summary>
-    /// Test casting from BigDecimals to short and back.
+    /// Test casting from BigDecimal to short and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToShort()
@@ -277,7 +277,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test casting from BigDecimals to short, outside the valid range for that type.
+    /// Test casting from BigDecimal to short, outside the valid range for that type.
     /// </summary>
     [TestMethod]
     public void ThrowsExceptionWhenCastingToShortOutsideOfValidRange()
@@ -296,7 +296,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from short to BigDecimals with overflow check, within the valid range
+    /// Test converting from short to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -312,7 +312,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to short with overflow check, within the valid range for
+    /// Test converting from BigDecimal to short with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -328,7 +328,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to short with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to short with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -342,7 +342,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to short, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to short, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -358,7 +358,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to short, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to short, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -386,7 +386,7 @@ public class ConvertTests
     private ushort[] _ushortTestValues = { 0, 1, ushort.MaxValue };
 
     /// <summary>
-    /// Test casting from BigDecimals to ushort and back.
+    /// Test casting from BigDecimal to ushort and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToUshort()
@@ -400,7 +400,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test casting from BigDecimals to ushort, outside the valid range for that type.
+    /// Test casting from BigDecimal to ushort, outside the valid range for that type.
     /// </summary>
     [TestMethod]
     public void ThrowsExceptionWhenCastingToUshortOutsideOfValidRange()
@@ -419,7 +419,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from ushort to BigDecimals with overflow check, within the valid range
+    /// Test converting from ushort to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -435,7 +435,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to ushort with overflow check, within the valid range for
+    /// Test converting from BigDecimal to ushort with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -451,7 +451,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to ushort with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to ushort with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -465,7 +465,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to ushort, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to ushort, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -481,7 +481,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to ushort, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to ushort, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -509,7 +509,7 @@ public class ConvertTests
     private int[] _intTestValues = { int.MinValue, -1, 0, 1, int.MaxValue };
 
     /// <summary>
-    /// Test casting from BigDecimals to int and back.
+    /// Test casting from BigDecimal to int and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToInt()
@@ -523,7 +523,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test casting from BigDecimals to int, outside the valid range for that type.
+    /// Test casting from BigDecimal to int, outside the valid range for that type.
     /// </summary>
     [TestMethod]
     public void ThrowsExceptionWhenCastingToIntOutsideOfValidRange()
@@ -542,7 +542,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from int to BigDecimals with overflow check, within the valid range
+    /// Test converting from int to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -558,7 +558,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to int with overflow check, within the valid range for
+    /// Test converting from BigDecimal to int with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -574,7 +574,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to int with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to int with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -588,7 +588,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to int, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to int, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -604,7 +604,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to int, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to int, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -632,7 +632,7 @@ public class ConvertTests
     private uint[] _uintTestValues = { 0, 1, uint.MaxValue };
 
     /// <summary>
-    /// Test casting from BigDecimals to uint and back.
+    /// Test casting from BigDecimal to uint and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToUint()
@@ -646,7 +646,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test casting from BigDecimals to long, outside the valid range for that type.
+    /// Test casting from BigDecimal to long, outside the valid range for that type.
     /// </summary>
     [TestMethod]
     public void ThrowsExceptionWhenCastingToUintOutsideOfValidRange()
@@ -665,7 +665,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from uint to BigDecimals with overflow check, within the valid range
+    /// Test converting from uint to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -681,7 +681,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to uint with overflow check, within the valid range for
+    /// Test converting from BigDecimal to uint with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -697,7 +697,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to uint with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to uint with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -711,7 +711,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to uint, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to uint, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -727,7 +727,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to uint, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to uint, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -755,7 +755,7 @@ public class ConvertTests
     private long[] _longTestValues = { long.MinValue, -1, 0, 1, long.MaxValue };
 
     /// <summary>
-    /// Test casting from BigDecimals to long and back.
+    /// Test casting from BigDecimal to long and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToLong()
@@ -769,7 +769,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test an OverflowException is thrown when casting from BigDecimals to long, outside the
+    /// Test an OverflowException is thrown when casting from BigDecimal to long, outside the
     /// valid range for that type.
     /// </summary>
     [TestMethod]
@@ -789,7 +789,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from long to BigDecimals with overflow check, within the valid range
+    /// Test converting from long to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -805,7 +805,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to long with overflow check, within the valid range for
+    /// Test converting from BigDecimal to long with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -821,7 +821,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to long with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to long with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -835,7 +835,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to long, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to long, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -851,7 +851,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to long, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to long, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -879,7 +879,7 @@ public class ConvertTests
     private ulong[] _ulongTestValues = { 0, 1, ulong.MaxValue };
 
     /// <summary>
-    /// Test casting from BigDecimals to ulong and back.
+    /// Test casting from BigDecimal to ulong and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToUlong()
@@ -893,7 +893,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test casting from BigDecimals to ulong, outside the valid range for that type.
+    /// Test casting from BigDecimal to ulong, outside the valid range for that type.
     /// </summary>
     [TestMethod]
     public void ThrowsExceptionWhenCastingToUlongOutsideOfValidRange()
@@ -912,7 +912,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from ulong to BigDecimals with overflow check, within the valid range
+    /// Test converting from ulong to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -928,7 +928,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to ulong with overflow check, within the valid range for
+    /// Test converting from BigDecimal to ulong with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -944,7 +944,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to ulong with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to ulong with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -958,7 +958,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to ulong, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to ulong, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -974,7 +974,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to ulong, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to ulong, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1002,7 +1002,7 @@ public class ConvertTests
     private Int128[] _int128TestValues = { Int128.MinValue, -1, 0, 1, Int128.MaxValue };
 
     /// <summary>
-    /// Test casting from BigDecimals to Int128 and back.
+    /// Test casting from BigDecimal to Int128 and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToInt128()
@@ -1016,7 +1016,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test casting from BigDecimals to Int128, outside the valid range for that type.
+    /// Test casting from BigDecimal to Int128, outside the valid range for that type.
     /// </summary>
     [TestMethod]
     public void ThrowsExceptionWhenCastingToInt128OutsideOfValidRange()
@@ -1035,7 +1035,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from Int128 to BigDecimals with overflow check, within the valid range
+    /// Test converting from Int128 to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -1051,7 +1051,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to Int128 with overflow check, within the valid range for
+    /// Test converting from BigDecimal to Int128 with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1067,7 +1067,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to Int128 with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to Int128 with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -1081,7 +1081,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to Int128, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to Int128, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1097,7 +1097,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to Int128, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to Int128, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1125,7 +1125,7 @@ public class ConvertTests
     private UInt128[] _uint128TestValues = { 0, 1, UInt128.MaxValue };
 
     /// <summary>
-    /// Test casting from BigDecimals to UInt128 and back.
+    /// Test casting from BigDecimal to UInt128 and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToUInt128()
@@ -1139,7 +1139,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test casting from BigDecimals to UInt128, outside the valid range for that type.
+    /// Test casting from BigDecimal to UInt128, outside the valid range for that type.
     /// </summary>
     [TestMethod]
     public void ThrowsExceptionWhenCastingToUInt128OutsideOfValidRange()
@@ -1158,7 +1158,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from UInt128 to BigDecimals with overflow check, within the valid range
+    /// Test converting from UInt128 to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -1174,7 +1174,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to UInt128 with overflow check, within the valid range for
+    /// Test converting from BigDecimal to UInt128 with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1190,7 +1190,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to UInt128 with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to UInt128 with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -1204,7 +1204,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to UInt128, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to UInt128, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1220,7 +1220,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to UInt128, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to UInt128, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1276,7 +1276,7 @@ public class ConvertTests
     private static BigDecimal _halfPosInf = (BigDecimal)Half.MaxValue + 1;
 
     /// <summary>
-    /// Test casting from BigDecimals to Half and back.
+    /// Test casting from BigDecimal to Half and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToHalf()
@@ -1294,7 +1294,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from Half to BigDecimals with overflow check, within the valid range
+    /// Test converting from Half to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -1314,7 +1314,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to Half with overflow check, within the valid range for
+    /// Test converting from BigDecimal to Half with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1334,7 +1334,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to Half with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to Half with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -1361,7 +1361,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to Half, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to Half, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1381,7 +1381,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to Half, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to Half, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1445,7 +1445,7 @@ public class ConvertTests
     private static BigDecimal _floatPosInf = (BigDecimal)float.MaxValue + 1e29;
 
     /// <summary>
-    /// Test casting from BigDecimals to float and back.
+    /// Test casting from BigDecimal to float and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToFloat()
@@ -1463,7 +1463,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test casting from BigDecimals to float, outside the valid range for that type.
+    /// Test casting from BigDecimal to float, outside the valid range for that type.
     /// </summary>
     [TestMethod]
     public void ReturnsInfinityWhenCastingToFloatOutsideOfValidRange()
@@ -1486,7 +1486,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from float to BigDecimals with overflow check, within the valid range
+    /// Test converting from float to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -1506,7 +1506,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to float with overflow check, within the valid range for
+    /// Test converting from BigDecimal to float with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1526,7 +1526,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to float with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to float with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -1553,7 +1553,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to float, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to float, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1573,7 +1573,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to float, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to float, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1637,7 +1637,7 @@ public class ConvertTests
     private static BigDecimal _doublePosInf = (BigDecimal)double.MaxValue + 1e291;
 
     /// <summary>
-    /// Test casting from BigDecimals to double and back.
+    /// Test casting from BigDecimal to double and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToDouble()
@@ -1655,7 +1655,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test casting from BigDecimals to double, outside the valid range for that type.
+    /// Test casting from BigDecimal to double, outside the valid range for that type.
     /// </summary>
     [TestMethod]
     public void ReturnsInfinityWhenCastingToDoubleOutsideOfValidRange()
@@ -1678,7 +1678,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from double to BigDecimals with overflow check, within the valid range
+    /// Test converting from double to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -1698,7 +1698,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to double with overflow check, within the valid range for
+    /// Test converting from BigDecimal to double with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1718,7 +1718,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to double with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to double with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -1745,7 +1745,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to double, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to double, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1765,7 +1765,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to double, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to double, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1821,7 +1821,7 @@ public class ConvertTests
     private static BigDecimal _decimalPosInf = (BigDecimal)decimal.MaxValue + 1;
 
     /// <summary>
-    /// Test casting from BigDecimals to decimal and back.
+    /// Test casting from BigDecimal to decimal and back.
     /// </summary>
     [TestMethod]
     public void ValidCastsToDecimal()
@@ -1839,7 +1839,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test casting from BigDecimals to decimal, outside the valid range for that type.
+    /// Test casting from BigDecimal to decimal, outside the valid range for that type.
     /// </summary>
     [TestMethod]
     public void ThrowsExceptionWhenCastingToDecimalOutsideOfValidRange()
@@ -1858,7 +1858,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from decimal to BigDecimals with overflow check, within the valid range
+    /// Test converting from decimal to BigDecimal with overflow check, within the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -1878,7 +1878,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from BigDecimals to decimal with overflow check, within the valid range for
+    /// Test converting from BigDecimal to decimal with overflow check, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1898,7 +1898,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to decimal with overflow check, outside the valid range
+    /// Test converting from a BigDecimal to decimal with overflow check, outside the valid range
     /// for that type.
     /// </summary>
     [TestMethod]
@@ -1912,7 +1912,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to decimal, with saturation, within the valid range for
+    /// Test converting from a BigDecimal to decimal, with saturation, within the valid range for
     /// that type.
     /// </summary>
     [TestMethod]
@@ -1932,7 +1932,7 @@ public class ConvertTests
     }
 
     /// <summary>
-    /// Test converting from a BigDecimals to decimal, with saturation, outside the valid range for
+    /// Test converting from a BigDecimal to decimal, with saturation, outside the valid range for
     /// that type.
     /// </summary>
     [TestMethod]

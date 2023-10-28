@@ -5,14 +5,14 @@ using Galaxon.Core.Numbers;
 namespace Galaxon.BigNumbers;
 
 /// <summary>
-/// Power, root, exponential, and logarithm methods for BigDecimals.
+/// Power, root, exponential, and logarithm methods for BigDecimal.
 /// </summary>
 public partial struct BigDecimal
 {
     #region Power functions
 
     /// <summary>
-    /// Calculate the value of x^y where x and y are both BigDecimals values.
+    /// Calculate the value of x^y where x and y are both BigDecimal values.
     /// </summary>
     /// <param name="x">The base.</param>
     /// <param name="y">The exponent.</param>
@@ -45,7 +45,7 @@ public partial struct BigDecimal
         // exponentiation by squaring (recursion).
         if (IsInteger(y))
         {
-            // 10 to an integer power is easy, given the structure of the BigDecimals type.
+            // 10 to an integer power is easy, given the structure of the BigDecimal type.
             if (x == 10 && y >= int.MinValue && y <= int.MaxValue)
             {
                 return new BigDecimal(1, (int)y);

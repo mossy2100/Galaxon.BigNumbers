@@ -5,67 +5,51 @@ namespace Galaxon.BigNumbers;
 
 public partial struct BigRational
 {
-    #region Cast operators to BigRational
+    #region Operators for casting from other number types to BigRational
 
-    /// <summary>
-    /// Implicit cast from sbyte to BigRational.
-    /// </summary>
+    /// <summary>Cast from sbyte to BigRational.</summary>
     public static implicit operator BigRational(sbyte num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>
-    /// Implicit cast from byte to BigRational.
-    /// </summary>
+    /// <summary>Cast from byte to BigRational.</summary>
     public static implicit operator BigRational(byte num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>
-    /// Implicit cast from short to BigRational.
-    /// </summary>
+    /// <summary>Cast from short to BigRational.</summary>
     public static implicit operator BigRational(short num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>
-    /// Implicit cast from ushort to BigRational.
-    /// </summary>
+    /// <summary>Cast from ushort to BigRational.</summary>
     public static implicit operator BigRational(ushort num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>
-    /// Implicit cast from int to BigRational.
-    /// </summary>
+    /// <summary>Cast from int to BigRational.</summary>
     public static implicit operator BigRational(int num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>
-    /// Implicit cast from uint to BigRational.
-    /// </summary>
+    /// <summary>Cast from uint to BigRational.</summary>
     public static implicit operator BigRational(uint num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>
-    /// Implicit cast from long to BigRational.
-    /// </summary>
+    /// <summary>Cast from long to BigRational.</summary>
     public static implicit operator BigRational(long num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>
-    /// Implicit cast from ulong to BigRational.
-    /// </summary>
+    /// <summary>Cast from ulong to BigRational.</summary>
     public static implicit operator BigRational(ulong num)
     {
         return new BigRational(num);
@@ -88,7 +72,7 @@ public partial struct BigRational
     }
 
     /// <summary>
-    /// Implicit cast from Half to BigRational.
+    /// Cast from Half to BigRational.
     /// This can be done exactly.
     /// </summary>
     public static implicit operator BigRational(Half x)
@@ -97,7 +81,7 @@ public partial struct BigRational
     }
 
     /// <summary>
-    /// Implicit cast from float to BigRational.
+    /// Cast from float to BigRational.
     /// This can be done exactly.
     /// </summary>
     public static implicit operator BigRational(float x)
@@ -106,7 +90,7 @@ public partial struct BigRational
     }
 
     /// <summary>
-    /// Implicit cast from double to BigRational.
+    /// Cast from double to BigRational.
     /// This can be done exactly.
     /// </summary>
     public static implicit operator BigRational(double x)
@@ -115,7 +99,7 @@ public partial struct BigRational
     }
 
     /// <summary>
-    /// Implicit cast from decimal to BigRational.
+    /// Cast from decimal to BigRational.
     /// This can be done exactly.
     /// </summary>
     public static implicit operator BigRational(decimal x)
@@ -136,17 +120,13 @@ public partial struct BigRational
         return new BigRational(num, den);
     }
 
-    /// <summary>
-    /// Implicit cast from BigInteger to BigRational.
-    /// </summary>
+    /// <summary>Cast from BigInteger to BigRational.</summary>
     public static implicit operator BigRational(BigInteger num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>
-    /// Implicit cast from BigDecimals to BigRational.
-    /// </summary>
+    /// <summary>Cast from BigDecimal to BigRational.</summary>
     public static implicit operator BigRational(BigDecimal n)
     {
         return n.Exponent switch
@@ -162,40 +142,32 @@ public partial struct BigRational
         };
     }
 
-    #endregion Cast operators to BigRational
+    #endregion Operators for casting from other number types to BigRational
 
-    #region Cast operators from BigRational
+    #region Operators for casting from BigRational to other number types
 
-    /// <summary>
-    /// Explicit cast from BigRational to sbyte.
-    /// </summary>
+    /// <summary>Cast from BigRational to sbyte.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of sbyte.</exception>
     public static explicit operator sbyte(BigRational br)
     {
         return (sbyte)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to byte.
-    /// </summary>
+    /// <summary>Cast from BigRational to byte.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of byte.</exception>
     public static explicit operator byte(BigRational br)
     {
         return (byte)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to short.
-    /// </summary>
+    /// <summary>Cast from BigRational to short.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of short.</exception>
     public static explicit operator short(BigRational br)
     {
         return (short)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to ushort.
-    /// </summary>
+    /// <summary>Cast from BigRational to ushort.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of
     /// ushort.</exception>
     public static explicit operator ushort(BigRational br)
@@ -203,36 +175,28 @@ public partial struct BigRational
         return (ushort)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicitly cast a BigRational to an int.
-    /// </summary>
+    /// <summary>Explicitly cast a BigRational to an int.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of int.</exception>
     public static explicit operator int(BigRational br)
     {
         return (int)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to uint.
-    /// </summary>
+    /// <summary>Cast from BigRational to uint.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of uint.</exception>
     public static explicit operator uint(BigRational br)
     {
         return (uint)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to long.
-    /// </summary>
+    /// <summary>Cast from BigRational to long.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of long.</exception>
     public static explicit operator long(BigRational br)
     {
         return (long)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to ulong.
-    /// </summary>
+    /// <summary>Cast from BigRational to ulong.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of ulong.</exception>
     public static explicit operator ulong(BigRational br)
     {
@@ -249,7 +213,7 @@ public partial struct BigRational
     }
 
     /// <summary>
-    /// Explicit cast from BigRational to UInt.28.
+    /// Cast from BigRational to UInt.28.
     /// </summary>
     /// <exception cref="OverflowException">If the result is outside the range of UInt128.</exception>
     public static explicit operator UInt128(BigRational br)
@@ -257,59 +221,47 @@ public partial struct BigRational
         return (UInt128)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to Half.
-    /// </summary>
+    /// <summary>Cast from BigRational to Half.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of Half.</exception>
     public static explicit operator Half(BigRational br)
     {
         return (Half)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to float.
-    /// </summary>
+    /// <summary>Cast from BigRational to float.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of float.</exception>
     public static explicit operator float(BigRational br)
     {
         return (float)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to double.
-    /// </summary>
+    /// <summary>Cast from BigRational to double.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of double.</exception>
     public static explicit operator double(BigRational br)
     {
         return (double)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to decimal.
-    /// </summary>
+    /// <summary>Cast from BigRational to decimal.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of decimal.</exception>
     public static explicit operator decimal(BigRational br)
     {
         return (decimal)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to BigInteger.
-    /// </summary>
+    /// <summary>Cast from BigRational to BigInteger.</summary>
     public static explicit operator BigInteger(BigRational br)
     {
         return (BigInteger)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicit cast from BigRational to BigDecimals.
-    /// </summary>
+    /// <summary>Cast from BigRational to BigDecimal.</summary>
     public static explicit operator BigDecimal(BigRational n)
     {
         return (BigDecimal)n.Numerator / (BigDecimal)n.Denominator;
     }
 
-    #endregion Cast operators from BigRational
+    #endregion Operators for casting from BigRational to other number types
 
     #region Helper methods
 
