@@ -24,6 +24,14 @@ public partial struct BigDecimal :
     /// </param>
     public BigDecimal(BigInteger significand, int exponent = 0, bool roundSigFigs = false)
     {
+        // If the significant is 0, make sure the exponent is also 0.
+        if (significand == 0)
+        {
+            Significand = 0;
+            Exponent = 0;
+            return;
+        }
+
         // Round off to the maximum number of significant figures if requested.
         if (roundSigFigs)
         {
@@ -144,124 +152,6 @@ public partial struct BigDecimal :
     public const int DecimalPrecision = 28;
 
     #endregion Static properties
-
-    #region Inspection methods
-
-    /// <summary>
-    /// Checks if the value is in its canonical state.
-    /// In this case, the value should not be evenly divisible by 10. In canonical form, a
-    /// multiple of 10 should be shortened and the exponent increased.
-    /// </summary>
-    public static bool IsCanonical(BigDecimal value)
-    {
-        return value == Zero || value.Significand % 10 != 0;
-    }
-
-    /// <summary>
-    /// Check if the value is a complex number.
-    /// </summary>
-    public static bool IsComplexNumber(BigDecimal value)
-    {
-        return false;
-    }
-
-    /// <summary>
-    /// The value will be an integer if in canonical form and the exponent is >= 0.
-    /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public static bool IsInteger(BigDecimal value)
-    {
-        return value.MakeCanonical().Exponent >= 0;
-    }
-
-    /// <inheritdoc/>
-    public static bool IsOddInteger(BigDecimal value)
-    {
-        return IsInteger(value) && value.Exponent == 0
-            && BigInteger.IsOddInteger(value.Significand);
-    }
-
-    /// <inheritdoc/>
-    public static bool IsEvenInteger(BigDecimal value)
-    {
-        return IsInteger(value)
-            && (value.Exponent > 0 || BigInteger.IsEvenInteger(value.Significand));
-    }
-
-    /// <inheritdoc/>
-    public static bool IsZero(BigDecimal value)
-    {
-        return value.Significand == 0;
-    }
-
-    /// <inheritdoc/>
-    public static bool IsNegative(BigDecimal value)
-    {
-        return value.Significand < 0;
-    }
-
-    /// <inheritdoc/>
-    public static bool IsPositive(BigDecimal value)
-    {
-        return value.Significand > 0;
-    }
-
-    /// <inheritdoc/>
-    public static bool IsFinite(BigDecimal value)
-    {
-        return true;
-    }
-
-    /// <inheritdoc/>
-    public static bool IsInfinity(BigDecimal value)
-    {
-        return false;
-    }
-
-    /// <inheritdoc/>
-    public static bool IsNegativeInfinity(BigDecimal value)
-    {
-        return false;
-    }
-
-    /// <inheritdoc/>
-    public static bool IsPositiveInfinity(BigDecimal value)
-    {
-        return false;
-    }
-
-    /// <inheritdoc/>
-    public static bool IsRealNumber(BigDecimal value)
-    {
-        return true;
-    }
-
-    /// <inheritdoc/>
-    public static bool IsImaginaryNumber(BigDecimal value)
-    {
-        return false;
-    }
-
-    /// <inheritdoc/>
-    public static bool IsNormal(BigDecimal value)
-    {
-        return value != 0;
-    }
-
-    /// <inheritdoc/>
-    public static bool IsSubnormal(BigDecimal value)
-    {
-        return false;
-    }
-
-    /// <inheritdoc/>
-    public static bool IsNaN(BigDecimal value)
-    {
-        return false;
-    }
-
-    #endregion Inspection methods
 
     #region Methods related to data transfer
 
