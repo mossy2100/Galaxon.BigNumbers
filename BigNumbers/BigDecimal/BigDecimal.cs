@@ -12,6 +12,104 @@ public partial struct BigDecimal :
     ITrigonometricFunctions<BigDecimal>,
     IHyperbolicFunctions<BigDecimal>
 {
+    #region Instance fields and properties
+
+    /// <summary>
+    /// The part of a number in scientific notation or in floating-point representation, consisting
+    /// of its significant digits.
+    /// </summary>
+    /// <see href="https://en.wikipedia.org/wiki/Significand">Wikipedia: Significand</see>
+    public BigInteger Significand { get; set; }
+
+    /// <summary>The power of 10.</summary>
+    public int Exponent { get; set; }
+
+    /// <summary>
+    /// The sign of the value. The same convention is used as for BigInteger.
+    /// -1 means negative
+    /// 0 means zero
+    /// 1 means positive
+    /// </summary>
+    /// <see cref="BigInteger.Sign"/>
+    /// <see
+    ///     href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0"/>
+    public readonly int Sign => Significand.Sign;
+
+    /// <summary>
+    /// Get the number of significant figures.
+    /// </summary>
+    public readonly int NumSigFigs => Significand.NumDigits();
+
+    #endregion Instance fields and properties
+
+    #region Static fields and properties
+
+    /// <summary>
+    /// Private backing field for MaxSigFigs.
+    /// </summary>
+    private static int _maxSigFigs = 100;
+
+    /// <summary>
+    /// This property determines the maximum number of significant figures to keep in a BigDecimal
+    /// value.
+    /// After any calculation, the result will be rounded to this many significant figures.
+    /// This not only helps control memory usage by controlling the size of the significand, but
+    /// also determines when to halt numerical methods, e.g. for calculating a square root or
+    /// logarithm.
+    /// If this property is modified, only new objects and calculations are affected by it.
+    /// If you want to reduce the number of significant figures in an existing value, use
+    /// RoundSigFigs().
+    /// </summary>
+    public static int MaxSigFigs
+    {
+        get => _maxSigFigs;
+
+        set
+        {
+            if (value < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(MaxSigFigs), "Must be at least 1.");
+            }
+
+            _maxSigFigs = value;
+        }
+    }
+
+    /// <inheritdoc/>
+    public static BigDecimal Zero { get; } = new (0);
+
+    /// <inheritdoc/>
+    public static BigDecimal One { get; } = new (1);
+
+    /// <inheritdoc/>
+    public static BigDecimal NegativeOne { get; } = new (-1);
+
+    /// <inheritdoc/>
+    public static int Radix { get; } = 10;
+
+    /// <inheritdoc/>
+    public static BigDecimal AdditiveIdentity { get; } = Zero;
+
+    /// <inheritdoc/>
+    public static BigDecimal MultiplicativeIdentity { get; } = One;
+
+    /// <summary>Precision supported by the Half type.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
+    public const int HalfPrecision = 5;
+
+    /// <summary>Precision supported by the float type.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
+    public const int FloatPrecision = 9;
+
+    /// <summary>Precision supported by the double type.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
+    public const int DoublePrecision = 17;
+
+    /// <summary>Precision supported by the decimal type.</summary>
+    public const int DecimalPrecision = 28;
+
+    #endregion Static fields and properties
+
     #region Constructors
 
     /// <summary>
@@ -54,209 +152,4 @@ public partial struct BigDecimal :
     }
 
     #endregion Constructors
-
-    #region Instance properties
-
-    /// <summary>
-    /// The part of a number in scientific notation or in floating-point representation, consisting
-    /// of its significant digits.
-    /// </summary>
-    /// <see href="https://en.wikipedia.org/wiki/Significand">Wikipedia: Significand</see>
-    public BigInteger Significand { get; set; }
-
-    /// <summary>The power of 10.</summary>
-    public int Exponent { get; set; }
-
-    /// <summary>
-    /// The sign of the value. The same convention is used as for BigInteger.
-    /// -1 means negative
-    /// 0 means zero
-    /// 1 means positive
-    /// </summary>
-    /// <see cref="BigInteger.Sign"/>
-    /// <see
-    ///     href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0"/>
-    public readonly int Sign => Significand.Sign;
-
-    /// <summary>
-    /// Get the number of significant figures.
-    /// </summary>
-    public readonly int NumSigFigs => Significand.NumDigits();
-
-    #endregion Instance properties
-
-    #region Static properties
-
-    /// <summary>
-    /// This property determines the maximum number of significant figures to keep in a BigDecimal
-    /// value.
-    /// After any calculation, the result will be rounded to this many significant figures.
-    /// This not only helps control memory usage by controlling the size of the significand, but
-    /// also determines when to halt numerical methods, e.g. for calculating a square root or
-    /// logarithm.
-    /// If this property is modified, only new objects and calculations are affected by it.
-    /// If you want to reduce the number of significant figures in an existing value, use
-    /// RoundSigFigs().
-    /// </summary>
-    public static int MaxSigFigs
-    {
-        get => _maxSigFigs;
-
-        set
-        {
-            if (value < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(MaxSigFigs), "Must be at least 1.");
-            }
-
-            _maxSigFigs = value;
-        }
-    }
-
-    /// <summary>
-    /// Private backing field for MaxSigFigs.
-    /// </summary>
-    private static int _maxSigFigs = 100;
-
-    /// <inheritdoc/>
-    public static BigDecimal Zero { get; } = new (0);
-
-    /// <inheritdoc/>
-    public static BigDecimal One { get; } = new (1);
-
-    /// <inheritdoc/>
-    public static BigDecimal NegativeOne { get; } = new (-1);
-
-    /// <inheritdoc/>
-    public static int Radix { get; } = 10;
-
-    /// <inheritdoc/>
-    public static BigDecimal AdditiveIdentity { get; } = Zero;
-
-    /// <inheritdoc/>
-    public static BigDecimal MultiplicativeIdentity { get; } = One;
-
-    /// <summary>Precision supported by the Half type.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
-    public const int HalfPrecision = 5;
-
-    /// <summary>Precision supported by the float type.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
-    public const int FloatPrecision = 9;
-
-    /// <summary>Precision supported by the double type.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
-    public const int DoublePrecision = 17;
-
-    /// <summary>Precision supported by the decimal type.</summary>
-    public const int DecimalPrecision = 28;
-
-    #endregion Static properties
-
-    #region Methods related to data transfer
-
-    /// <inheritdoc/>
-    public int GetSignificandByteCount()
-    {
-        return Significand.GetByteCount();
-    }
-
-    /// <inheritdoc/>
-    public int GetSignificandBitLength()
-    {
-        return GetSignificandByteCount() * 8;
-    }
-
-    /// <inheritdoc/>
-    public int GetExponentByteCount()
-    {
-        return 4;
-    }
-
-    /// <inheritdoc/>
-    public int GetExponentShortestBitLength()
-    {
-        return 32;
-    }
-
-    /// <inheritdoc/>
-    public readonly bool TryWriteSignificandBigEndian(Span<byte> destination, out int bytesWritten)
-    {
-        return TryWriteBigInteger(Significand, destination, out bytesWritten, true);
-    }
-
-    /// <inheritdoc/>
-    public readonly bool TryWriteSignificandLittleEndian(Span<byte> destination,
-        out int bytesWritten)
-    {
-        return TryWriteBigInteger(Significand, destination, out bytesWritten, false);
-    }
-
-    /// <inheritdoc/>
-    public readonly bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten)
-    {
-        return TryWriteInt(Exponent, destination, out bytesWritten, true);
-    }
-
-    /// <inheritdoc/>
-    public readonly bool TryWriteExponentLittleEndian(Span<byte> destination, out int bytesWritten)
-    {
-        return TryWriteInt(Exponent, destination, out bytesWritten, false);
-    }
-
-    /// <summary>
-    /// Shared logic for:
-    /// <see cref="TryWriteBigInteger"/>
-    /// <see cref="TryWriteInt"/>
-    /// </summary>
-    private static bool TryWrite(byte[] bytes, Span<byte> destination, out int bytesWritten)
-    {
-        try
-        {
-            bytes.CopyTo(destination);
-            bytesWritten = bytes.Length;
-            return true;
-        }
-        catch
-        {
-            bytesWritten = 0;
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// Shared logic for:
-    /// <see cref="TryWriteSignificandBigEndian"/>
-    /// <see cref="TryWriteSignificandLittleEndian"/>
-    /// </summary>
-    private static bool TryWriteBigInteger(BigInteger bi, Span<byte> destination,
-        out int bytesWritten,
-        bool isBigEndian)
-    {
-        var bytes = bi.ToByteArray(false, isBigEndian);
-        return TryWrite(bytes, destination, out bytesWritten);
-    }
-
-    /// <summary>
-    /// Shared logic for:
-    /// <see cref="TryWriteExponentBigEndian"/>
-    /// <see cref="TryWriteExponentLittleEndian"/>
-    /// </summary>
-    private static bool TryWriteInt(int i, Span<byte> destination, out int bytesWritten,
-        bool isBigEndian)
-    {
-        // Get the bytes.
-        var bytes = BitConverter.GetBytes(i);
-
-        // Check if the requested endianness matches the architecture. If not, reverse the array.
-        if (BitConverter.IsLittleEndian && isBigEndian
-            || !BitConverter.IsLittleEndian && !isBigEndian)
-        {
-            bytes = bytes.Reverse().ToArray();
-        }
-
-        return TryWrite(bytes, destination, out bytesWritten);
-    }
-
-    #endregion Methods related to data transfer
 }

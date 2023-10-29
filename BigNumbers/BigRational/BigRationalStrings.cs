@@ -51,6 +51,19 @@ public partial struct BigRational
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
+    public static BigRational Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider,
+        out BigRational result)
+    {
+        throw new NotImplementedException();
+    }
+
     /// <summary>
     /// Try to parse a string into a rational.
     /// This version of the method is required to implement IParsable[BigRational], but it's more
@@ -87,6 +100,20 @@ public partial struct BigRational
     public static bool TryParse(string? s, out BigRational result)
     {
         return TryParse(s, null, out result);
+    }
+
+    /// <inheritdoc/>
+    public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider,
+        out BigRational result)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
+    public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider,
+        out BigRational result)
+    {
+        throw new NotImplementedException();
     }
 
     /// <summary>

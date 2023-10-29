@@ -10,7 +10,7 @@ public partial struct BigComplex :
     ITrigonometricFunctions<BigComplex>,
     IHyperbolicFunctions<BigComplex>
 {
-    #region Core properties
+    #region Instance fields and properties
 
     /// <summary>The real part of the BigComplex number.</summary>
     public BigDecimal Real { get; set; }
@@ -18,19 +18,15 @@ public partial struct BigComplex :
     /// <summary>The imaginary part of the BigComplex number.</summary>
     public BigDecimal Imaginary { get; set; }
 
-    #endregion Core properties
-
-    #region Calculated properties
-
     /// <summary>The magnitude (or absolute value) of the BigComplex number.</summary>
     public readonly BigDecimal Magnitude => Abs(this);
 
     /// <summary>The phase angle of the BigComplex number.</summary>
     public readonly BigDecimal Phase => BigDecimal.Atan2(Imaginary, Real);
 
-    #endregion Calculated properties
+    #endregion Instance fields and properties
 
-    #region Constants
+    #region Static fields and properties
 
     /// <inheritdoc/>
     public static BigComplex Zero { get; } = new (0, 0);
@@ -54,7 +50,7 @@ public partial struct BigComplex :
     /// <inheritdoc/>
     public static BigComplex MultiplicativeIdentity { get; } = One;
 
-    #endregion Constants
+    #endregion Static fields and properties
 
     #region Constructors
 

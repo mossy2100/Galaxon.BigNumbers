@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Numerics;
 
 namespace Galaxon.BigNumbers;
@@ -13,6 +12,41 @@ public partial struct BigRational :
     INumberBase<BigRational>,
     IComparisonOperators<BigRational, BigRational, bool>
 {
+    #region Instance fields and properties
+
+    /// <summary>The numerator of the rational number.</summary>
+    /// <remarks>This can be any integer.</remarks>
+    public BigInteger Numerator { get; set; }
+
+    /// <summary>The denominator of the rational number.</summary>
+    /// <remarks>
+    /// This value should always be positive.
+    /// It should never 0 because this would not be a rational number.
+    /// It should also never be negative. The sign of the rational is determined by the numerator.
+    /// </remarks>
+    public BigInteger Denominator { get; set; }
+
+    #endregion Instance fields and properties
+
+    #region Static fields and properties
+
+    /// <inheritdoc/>
+    public static BigRational Zero => new (0, 1);
+
+    /// <inheritdoc/>
+    public static BigRational One => new (1, 1);
+
+    /// <inheritdoc/>
+    public static int Radix { get; } = 10;
+
+    /// <inheritdoc/>
+    public static BigRational AdditiveIdentity { get; } = Zero;
+
+    /// <inheritdoc/>
+    public static BigRational MultiplicativeIdentity { get; } = One;
+
+    #endregion Instance fields and properties
+
     #region Constructors
 
     /// <summary>
@@ -78,94 +112,4 @@ public partial struct BigRational :
     }
 
     #endregion Constructors
-
-    #region Properties
-
-    public BigInteger Numerator { get; set; }
-
-    public BigInteger Denominator { get; set; }
-
-    /// <inheritdoc/>
-    public static int Radix { get; }
-
-    public static BigRational Zero => new (0, 1);
-
-    /// <inheritdoc/>
-    public static bool TryConvertFromChecked<TOther>(TOther value, out BigRational result)
-        where TOther : INumberBase<TOther>
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryConvertFromSaturating<TOther>(TOther value, out BigRational result)
-        where TOther : INumberBase<TOther>
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryConvertFromTruncating<TOther>(TOther value, out BigRational result)
-        where TOther : INumberBase<TOther>
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryConvertToChecked<TOther>(BigRational value, out TOther result)
-        where TOther : INumberBase<TOther>
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryConvertToSaturating<TOther>(BigRational value, out TOther result)
-        where TOther : INumberBase<TOther>
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryConvertToTruncating<TOther>(BigRational value, out TOther result)
-        where TOther : INumberBase<TOther>
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider,
-        out BigRational result)
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider,
-        out BigRational result)
-    {
-        throw new NotImplementedException();
-    }
-
-    public static BigRational One => new (1, 1);
-
-    #endregion Properties
-
-    /// <inheritdoc/>
-    public static BigRational Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider,
-        out BigRational result)
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static BigRational AdditiveIdentity { get; }
-
-    /// <inheritdoc/>
-    public static BigRational MultiplicativeIdentity { get; }
 }

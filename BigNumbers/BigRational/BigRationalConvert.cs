@@ -335,4 +335,47 @@ public partial struct BigRational
     }
 
     #endregion Helper methods
+
+
+    /// <inheritdoc/>
+    public static bool TryConvertFromChecked<TOther>(TOther value, out BigRational result)
+        where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
+    public static bool TryConvertFromSaturating<TOther>(TOther value, out BigRational result)
+        where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
+    public static bool TryConvertFromTruncating<TOther>(TOther value, out BigRational result)
+        where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
+    public static bool TryConvertToChecked<TOther>(BigRational value, out TOther result)
+        where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
+    public static bool TryConvertToSaturating<TOther>(BigRational value, out TOther result)
+        where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
+    public static bool TryConvertToTruncating<TOther>(BigRational value, out TOther result)
+        where TOther : INumberBase<TOther>
+    {
+        throw new NotImplementedException();
+    }
 }
