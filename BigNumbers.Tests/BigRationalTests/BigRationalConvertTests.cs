@@ -1,9 +1,9 @@
 using System.Diagnostics;
 
-namespace Galaxon.BigNumbers.Tests.BigRationalTests;
+namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
-public class ConvertTests
+public class BigRationalConvertTests
 {
     [TestMethod]
     public void TestCastFromInt()

@@ -11,14 +11,14 @@ public partial struct BigComplex
     /// </summary>
     /// <param name="z">A BigComplex number.</param>
     /// <returns>The magnitude of the argument.</returns>
-    /// <see cref="Complex.Abs" />
+    /// <see cref="Complex.Abs"/>
     public static BigDecimal Abs(BigComplex z)
     {
         return BigDecimal.Hypot(z.Real, z.Imaginary);
     }
 
     /// <summary>This method isn't needed for practical purposes, just for the interface.</summary>
-    /// <inheritdoc />
+    /// <inheritdoc/>
     static BigComplex INumberBase<BigComplex>.Abs(BigComplex z)
     {
         return Abs(z);
@@ -30,7 +30,7 @@ public partial struct BigComplex
     /// <param name="magnitude">The magnitude of the complex number.</param>
     /// <param name="phase">The phase angle in radians.</param>
     /// <returns>The new BigComplex number.</returns>
-    /// <see cref="Complex.FromPolarCoordinates" />
+    /// <see cref="Complex.FromPolarCoordinates"/>
     public static BigComplex FromPolarCoordinates(BigDecimal magnitude, BigDecimal phase)
     {
         return new BigComplex(BigDecimal.PolarToCartesian(magnitude, phase));
@@ -42,7 +42,7 @@ public partial struct BigComplex
 
     /// <summary>Clone method.</summary>
     /// <param name="z">The BigComplex value to clone.</param>
-    /// <returns>A new BigComplex with the same value.</returns>
+    /// <returns>A new BigComplex with the same value as the parameter.</returns>
     public static BigComplex Clone(BigComplex z)
     {
         return new BigComplex(z.Real, z.Imaginary);
@@ -50,7 +50,7 @@ public partial struct BigComplex
 
     /// <summary>Negate method.</summary>
     /// <param name="z">The BigComplex value to negate.</param>
-    /// <returns>The negation of the argument.</returns>
+    /// <returns>The negation of the parameter.</returns>
     public static BigComplex Negate(BigComplex z)
     {
         return new BigComplex(-z.Real, -z.Imaginary);
@@ -115,10 +115,10 @@ public partial struct BigComplex
         return new BigComplex((a * c + b * d) / e, (b * c - a * d) / e);
     }
 
-    /// <summary>Calculate the reciprocal of a BigComplex value..</summary>
+    /// <summary>Calculate the reciprocal of a BigComplex value.</summary>
     /// <param name="z">A BigComplex value.</param>
-    /// <returns>The reciprocal of the parameter.</returns>
-    /// <exception cref="DivideByZeroException">If z == 0</exception>
+    /// <returns>The reciprocal of the BigComplex value.</returns>
+    /// <exception cref="DivideByZeroException">If the BigComplex value is 0.</exception>
     public static BigComplex Reciprocal(BigComplex z)
     {
         return Divide(1, z);
@@ -128,49 +128,49 @@ public partial struct BigComplex
 
     #region Arithmetic operators
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex operator +(BigComplex z)
     {
         return Clone(z);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex operator -(BigComplex z)
     {
         return Negate(z);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex operator +(BigComplex z, BigComplex w)
     {
         return Add(z, w);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex operator -(BigComplex z, BigComplex w)
     {
         return Subtract(z, w);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex operator --(BigComplex z)
     {
         return z - 1;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex operator ++(BigComplex z)
     {
         return z + 1;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex operator *(BigComplex z, BigComplex w)
     {
         return Multiply(z, w);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex operator /(BigComplex z, BigComplex w)
     {
         return Divide(z, w);

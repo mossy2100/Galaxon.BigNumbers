@@ -7,13 +7,13 @@ public partial struct BigDecimal
 {
     #region Adjustment methods
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Abs(BigDecimal bd)
     {
         return new BigDecimal(BigInteger.Abs(bd.Significand), bd.Exponent);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Round(BigDecimal x, int digits = 0,
         MidpointRounding mode = MidpointRounding.ToEven)
     {
@@ -38,20 +38,7 @@ public partial struct BigDecimal
         return new BigDecimal(newSig, -digits);
     }
 
-    /// <inheritdoc />
-    /// <remarks>
-    /// This method should not need to be implemented because it's a static virtual method and the
-    /// default implementation is what we want. However, static virtual methods are not yet
-    /// supported by Rider so we need this here for now.
-    /// </remarks>
-    public static BigDecimal Round(BigDecimal x, MidpointRounding mode)
-    {
-        return Round(x, 0, mode);
-    }
-
-    /// <summary>
-    /// Round off a value to a certain number of significant figures.
-    /// </summary>
+    /// <summary>Round off a value to a certain number of significant figures.</summary>
     public static BigDecimal RoundSigFigs(BigDecimal x, int? maxSigFigs = null,
         MidpointRounding mode = MidpointRounding.ToEven)
     {
@@ -61,7 +48,7 @@ public partial struct BigDecimal
         return new BigDecimal(newSig, newExp);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <remarks>
     /// This method should not need to be implemented because it's a static virtual method and the
     /// default implementation is what we want. However, static virtual methods are not yet
@@ -72,8 +59,8 @@ public partial struct BigDecimal
         return Round(x, 0, MidpointRounding.ToZero);
     }
 
-    /// <summary>
-    /// Return the fractional part of the value.
+    /// <summary>Return the fractional part of the value.</summary>
+    /// <remarks>
     /// There are multiple ways to define the frac() function for negative numbers.
     /// (Refer to the Wikipedia link below.)
     /// The definition used in this implementation simply takes the digits to the right of the
@@ -83,14 +70,14 @@ public partial struct BigDecimal
     /// Frac(-12.345) => -0.345
     /// The following expression will be true for both positive and negative numbers:
     /// x == Truncate(x) + Frac(x)
-    /// </summary>
-    /// <see href="https://en.wikipedia.org/wiki/Fractional_part" />
+    /// </remarks>
+    /// <see href="https://en.wikipedia.org/wiki/Fractional_part"/>
     public static BigDecimal Frac(BigDecimal x)
     {
         return x - Truncate(x);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <remarks>
     /// This method should not need to be implemented because it's a static virtual method and the
     /// default implementation is what we want. However, static virtual methods are not yet
@@ -101,7 +88,7 @@ public partial struct BigDecimal
         return Round(x, 0, MidpointRounding.ToNegativeInfinity);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <remarks>
     /// This method should not need to be implemented because it's a static virtual method and the
     /// default implementation is what we want. However, static virtual methods are not yet
@@ -285,18 +272,16 @@ public partial struct BigDecimal
 
     #region Arithmetic methods
 
-    /// <summary>
-    /// Clone method.
-    /// </summary>
-    /// <returns>A copy of the parameter.</returns>
-    public static BigDecimal Clone(BigDecimal z)
+    /// <summary>Clone method.</summary>
+    /// <param name="bd">The BigComplex value to clone.</param>
+    /// <returns>A new BigComplex with the same value as the parameter.</returns>
+    public static BigDecimal Clone(BigDecimal bd)
     {
-        return new BigDecimal(z.Significand, z.Exponent);
+        return new BigDecimal(bd.Significand, bd.Exponent);
     }
 
-    /// <summary>
-    /// Negate method.
-    /// </summary>
+    /// <summary>Negate method.</summary>
+    /// <param name="bd">The BigDecimal value to negate.</param>
     /// <returns>The negation of the parameter.</returns>
     public static BigDecimal Negate(BigDecimal bd)
     {
@@ -363,7 +348,7 @@ public partial struct BigDecimal
     /// </summary>
     /// <remarks>
     /// Computes division using the Goldschmidt algorithm.
-    /// <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division" />
+    /// <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division"/>
     /// </remarks>
     /// <param name="a">The left-hand BigDecimal number.</param>
     /// <param name="b">The right-hand BigDecimal number.</param>
@@ -454,7 +439,7 @@ public partial struct BigDecimal
     /// <summary>
     /// Compute the arithmetic-geometric mean of two values.
     /// </summary>
-    /// <see href="https://en.wikipedia.org/wiki/Arithmetic%E2%80%93geometric_mean" />
+    /// <see href="https://en.wikipedia.org/wiki/Arithmetic%E2%80%93geometric_mean"/>
     public static BigDecimal ArithmeticGeometricMean(BigDecimal x, BigDecimal y)
     {
         // Guards.
@@ -510,55 +495,55 @@ public partial struct BigDecimal
 
     #region Arithmetic operators
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal operator +(BigDecimal bd)
     {
         return Clone(bd);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal operator -(BigDecimal bd)
     {
         return Negate(bd);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal operator +(BigDecimal a, BigDecimal b)
     {
         return Add(a, b);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal operator -(BigDecimal a, BigDecimal b)
     {
         return Subtract(a, b);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal operator ++(BigDecimal bd)
     {
         return Increment(bd);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal operator --(BigDecimal bd)
     {
         return Decrement(bd);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal operator *(BigDecimal a, BigDecimal b)
     {
         return Multiply(a, b);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal operator /(BigDecimal a, BigDecimal b)
     {
         return Divide(a, b);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal operator %(BigDecimal a, BigDecimal b)
     {
         return Modulus(a, b);

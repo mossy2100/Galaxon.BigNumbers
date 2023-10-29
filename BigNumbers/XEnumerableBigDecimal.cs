@@ -16,7 +16,7 @@ public static class XEnumerableBigDecimal
     /// <summary>
     /// Given a collection of BigDecimal values, get the average (i.e. the arithmetic mean).
     /// </summary>
-    /// <see href="https://en.wikipedia.org/wiki/Arithmetic_mean" />
+    /// <see href="https://en.wikipedia.org/wiki/Arithmetic_mean"/>
     public static BigDecimal Average(this IEnumerable<BigDecimal> source)
     {
         var nums = source.ToList();
@@ -47,7 +47,7 @@ public static class XEnumerableBigDecimal
     /// <summary>
     /// Given a collection of BigDecimal values, get the geometric mean.
     /// </summary>
-    /// <see href="https://en.wikipedia.org/wiki/Geometric_mean" />
+    /// <see href="https://en.wikipedia.org/wiki/Geometric_mean"/>
     public static BigDecimal GeometricMean(this IEnumerable<BigDecimal> source)
     {
         var nums = source.ToList();

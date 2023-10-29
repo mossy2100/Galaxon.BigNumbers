@@ -6,13 +6,13 @@ namespace Galaxon.BigNumbers;
 /// <summary>
 /// Trigonometric methods for BigDecimal.
 /// </summary>
-/// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions" />
-/// <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions" />
+/// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions"/>
+/// <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions"/>
 public partial struct BigDecimal
 {
     #region Trigonometric methods
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Sin(BigDecimal a)
     {
         // Find the equivalent angle in the interval [-π, π).
@@ -61,15 +61,15 @@ public partial struct BigDecimal
         return RoundSigFigs(sum);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal SinPi(BigDecimal a)
     {
         return Sin(a * Pi);
     }
 
-    /// <inheritdoc />
-    /// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions" />
-    /// <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions" />
+    /// <inheritdoc/>
+    /// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions"/>
+    /// <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions"/>
     public static BigDecimal Cos(BigDecimal a)
     {
         // Find the equivalent angle in the interval [-π, π).
@@ -117,25 +117,25 @@ public partial struct BigDecimal
         return RoundSigFigs(sum);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal CosPi(BigDecimal a)
     {
         return Cos(a * Pi);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static (BigDecimal Sin, BigDecimal Cos) SinCos(BigDecimal a)
     {
         return (Sin(a), Cos(a));
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static (BigDecimal SinPi, BigDecimal CosPi) SinCosPi(BigDecimal a)
     {
         return (SinPi(a), CosPi(a));
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Tan(BigDecimal a)
     {
         // Find the equivalent angle in the interval [-π, π).
@@ -152,7 +152,7 @@ public partial struct BigDecimal
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal TanPi(BigDecimal a)
     {
         return Tan(a * Pi);
@@ -162,7 +162,7 @@ public partial struct BigDecimal
 
     #region Inverse trigonometric methods
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Asin(BigDecimal x)
     {
         // Optimization.
@@ -221,25 +221,25 @@ public partial struct BigDecimal
         return RoundSigFigs(sum);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal AsinPi(BigDecimal x)
     {
         return Asin(x) / Pi;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Acos(BigDecimal x)
     {
         return Pi / 2 - Asin(x);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal AcosPi(BigDecimal x)
     {
         return Acos(x) / Pi;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Atan(BigDecimal x)
     {
         // Handle negative arguments.
@@ -284,7 +284,7 @@ public partial struct BigDecimal
         return RoundSigFigs(sum);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal AtanPi(BigDecimal x)
     {
         return Atan(x) / Pi;
@@ -298,12 +298,12 @@ public partial struct BigDecimal
     /// from cartesian coordinates to polar coordinates.
     /// It also avoids division by 0 exceptions.
     /// </summary>
-    /// <see href="https://en.wikipedia.org/wiki/Atan2" />
-    /// <see cref="CartesianToPolar" />
+    /// <see href="https://en.wikipedia.org/wiki/Atan2"/>
+    /// <see cref="CartesianToPolar"/>
     /// <param name="y">The y coordinate.</param>
     /// <param name="x">The x coordinate.</param>
     /// <returns>The polar angle.</returns>
-    /// <see cref="double.Atan2" />
+    /// <see cref="double.Atan2"/>
     public static BigDecimal Atan2(BigDecimal y, BigDecimal x)
     {
         BigDecimal result;
@@ -330,7 +330,7 @@ public partial struct BigDecimal
     /// <param name="x">The x coordinate.</param>
     /// <returns>The polar angle.</returns>
     /// <exception cref="ArgumentInvalidException">If x and y both equal 0.</exception>
-    /// <see cref="double.Atan2Pi" />
+    /// <see cref="double.Atan2Pi"/>
     public static BigDecimal Atan2Pi(BigDecimal y, BigDecimal x)
     {
         return Atan2(y, x) / Pi;
@@ -340,7 +340,7 @@ public partial struct BigDecimal
 
     #region Hyperbolic methods
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Sinh(BigDecimal a)
     {
         // Optimization.
@@ -379,7 +379,7 @@ public partial struct BigDecimal
         return RoundSigFigs(sum);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Cosh(BigDecimal a)
     {
         // Optimization.
@@ -419,7 +419,7 @@ public partial struct BigDecimal
         return RoundSigFigs(sum);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Tanh(BigDecimal a)
     {
         return Sinh(a) / Cosh(a);
@@ -429,19 +429,19 @@ public partial struct BigDecimal
 
     #region Inverse hyperbolic methods
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Asinh(BigDecimal x)
     {
         return Log(x + Sqrt(Sqr(x) + 1));
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Acosh(BigDecimal x)
     {
         return Log(x + Sqrt(Sqr(x) - 1));
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Atanh(BigDecimal x)
     {
         return Log((1 + x) / (1 - x)) / 2;

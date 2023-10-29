@@ -35,26 +35,26 @@ public partial struct BigDecimal
         }
 
         // Scale the value to the range (0..1).
-        int nDigits = a.Significand.NumDigits();
-        int scale = nDigits + a.Exponent;
-        BigDecimal x = a;
+        var nDigits = a.Significand.NumDigits();
+        var scale = nDigits + a.Exponent;
+        var x = a;
         x.Exponent = -nDigits;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
         // Halley's method.
         BigDecimal y0 = 0;
         BigDecimal expY0 = 1;
-        BigDecimal dY0 = 2 * (x - 1) / (x + 1);
+        var dY0 = 2 * (x - 1) / (x + 1);
         BigDecimal result = 0;
 
         while (true)
         {
             // Get the next value.
-            BigDecimal expY1 = expY0 + expY0 * (Exp(dY0) - 1);
-            BigDecimal y1 = y0 + dY0;
+            var expY1 = expY0 + expY0 * (Exp(dY0) - 1);
+            var y1 = y0 + dY0;
 
             // Test for equality.
             if (y0 == y1)
@@ -64,8 +64,8 @@ public partial struct BigDecimal
             }
 
             // Test for equality post-rounding.
-            BigDecimal y0R = RoundSigFigs(y0, prevMaxSigFigs);
-            BigDecimal y1R = RoundSigFigs(y1, prevMaxSigFigs);
+            var y0R = RoundSigFigs(y0, prevMaxSigFigs);
+            var y1R = RoundSigFigs(y1, prevMaxSigFigs);
             if (y0R == y1R)
             {
                 result = y0R;
@@ -79,8 +79,8 @@ public partial struct BigDecimal
             if (BigInteger.Abs(y0R.Significand - y1R.Significand) == 1)
             {
                 // Test both and pick the best one.
-                BigDecimal diff0 = Abs(a - Exp(y0R));
-                BigDecimal diff1 = Abs(a - Exp(y1R));
+                var diff0 = Abs(a - Exp(y0R));
+                var diff1 = Abs(a - Exp(y1R));
                 result = diff0 < diff1 ? y0R : y1R;
                 break;
             }
@@ -129,20 +129,20 @@ public partial struct BigDecimal
         // x.Exponent = -nDigits;
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        int prevMaxSigFigs = MaxSigFigs;
+        var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 3;
 
         // Select a value "m" such that m bits can store the required number of decimal digits.
         // A quick and easy way to find m without using Log() uses 10 bits per 3 decimal digits.
         // m must be an int to avoid recursively calling Log() when we call Exp2() below, so we
         // round up to the nearest integer.
-        int m = (int)double.Ceiling((double)MaxSigFigs / 3 * 10);
+        var m = (int)double.Ceiling((double)MaxSigFigs / 3 * 10);
 
         // Calculate result.
-        BigDecimal s = x * Exp2(m - 2);
-        BigDecimal agm = ArithmeticGeometricMean(1, 1 / s);
-        BigDecimal p = Pi / (2 * agm);
-        BigDecimal result = x == 2
+        var s = x * Exp2(m - 2);
+        var agm = ArithmeticGeometricMean(1, 1 / s);
+        var p = Pi / (2 * agm);
+        var result = x == 2
             ? p / (1 + m)
             : p - m * LogAgm(2);
 

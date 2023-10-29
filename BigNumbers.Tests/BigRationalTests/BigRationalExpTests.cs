@@ -1,7 +1,7 @@
-namespace Galaxon.BigNumbers.Tests.BigRationalTests;
+namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
-public class ExpLogTests
+public class BigRationalExpTests
 {
     [TestMethod]
     public void TestPowWithIntegerExponent()
@@ -28,25 +28,5 @@ public class ExpLogTests
         var g = f ^ -2;
         Assert.AreEqual(9, g.Numerator);
         Assert.AreEqual(4, g.Denominator);
-    }
-
-    [TestMethod]
-    public void TestPowWithBigRationalExponent()
-    {
-        BigRational f = new (4, 9);
-        BigRational g = new (1, 2);
-        var h = f ^ g;
-        Assert.AreEqual(2, h.Numerator);
-        Assert.AreEqual(3, h.Denominator);
-    }
-
-    [TestMethod]
-    public void TestPowWithDoubleExponent()
-    {
-        BigRational f = new (4, 9);
-        var g = 0.5;
-        var h = f ^ g;
-        Assert.AreEqual(2, h.Numerator);
-        Assert.AreEqual(3, h.Denominator);
     }
 }

@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace Galaxon.BigNumbers;
 
 public partial struct BigComplex
@@ -15,7 +13,7 @@ public partial struct BigComplex
         return new BigComplex(a, b);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex SinPi(BigComplex z)
     {
         return Sin(z * Pi);
@@ -30,19 +28,19 @@ public partial struct BigComplex
         return new BigComplex(a, -b);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex CosPi(BigComplex z)
     {
         return Cos(z * Pi);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static (BigComplex Sin, BigComplex Cos) SinCos(BigComplex z)
     {
         return (Sin(z), Cos(z));
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static (BigComplex SinPi, BigComplex CosPi) SinCosPi(BigComplex z)
     {
         return (SinPi(z), CosPi(z));
@@ -57,7 +55,7 @@ public partial struct BigComplex
         return a / b;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex TanPi(BigComplex z)
     {
         return Tan(z * Pi);
@@ -68,7 +66,7 @@ public partial struct BigComplex
     #region Inverse trigonometric methods
 
     /// <summary>
-    ///     <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms" />
+    ///     <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
     /// </summary>
     /// <param name="z"></param>
     /// <returns></returns>
@@ -77,14 +75,14 @@ public partial struct BigComplex
         return I * Log(Sqrt(1 - z * z) - I * z);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex AsinPi(BigComplex z)
     {
         return Asin(z) / Pi;
     }
 
     /// <summary>
-    ///     <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms" />
+    ///     <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
     /// </summary>
     /// <param name="z"></param>
     /// <returns></returns>
@@ -93,14 +91,14 @@ public partial struct BigComplex
         return -I * Log(z + I * Sqrt(1 - z * z));
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex AcosPi(BigComplex z)
     {
         return Acos(z) / Pi;
     }
 
     /// <summary>
-    ///     <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms" />
+    ///     <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
     /// </summary>
     /// <param name="z"></param>
     /// <returns></returns>
@@ -109,7 +107,7 @@ public partial struct BigComplex
         return -I / 2 * Log((I - z) / (I + z));
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex AtanPi(BigComplex z)
     {
         return Atan(z) / Pi;
@@ -150,19 +148,19 @@ public partial struct BigComplex
 
     #region Inverse hyperbolic methods
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex Acosh(BigComplex x)
     {
         throw new NotImplementedException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex Asinh(BigComplex x)
     {
         throw new NotImplementedException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex Atanh(BigComplex x)
     {
         throw new NotImplementedException();

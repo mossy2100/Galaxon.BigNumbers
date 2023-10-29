@@ -106,7 +106,7 @@ public partial struct BigDecimal
     /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(Half n)
     {
-        return ConvertFromFloatingPoint<Half>(n);
+        return ConvertFromFloatingPoint(n);
     }
 
     /// <summary>Cast from float to BigDecimal.</summary>
@@ -119,7 +119,7 @@ public partial struct BigDecimal
     /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(float n)
     {
-        return ConvertFromFloatingPoint<float>(n);
+        return ConvertFromFloatingPoint(n);
     }
 
     /// <summary>Cast from double to BigDecimal.</summary>
@@ -132,7 +132,7 @@ public partial struct BigDecimal
     /// <returns>The equivalent BigDecimal value.</returns>
     public static implicit operator BigDecimal(double n)
     {
-        return ConvertFromFloatingPoint<double>(n);
+        return ConvertFromFloatingPoint(n);
     }
 
     /// <summary>Cast from decimal to BigDecimal.</summary>
@@ -375,7 +375,7 @@ public partial struct BigDecimal
 
     #region TryConvert methods
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryConvertFromChecked<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
@@ -421,6 +421,10 @@ public partial struct BigDecimal
                 result = (UInt128)(object)value;
                 return true;
 
+            case BigInteger:
+                result = (BigInteger)(object)value;
+                return true;
+
             case Half:
                 result = (Half)(object)value;
                 return true;
@@ -444,7 +448,7 @@ public partial struct BigDecimal
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryConvertFromSaturating<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
@@ -452,7 +456,7 @@ public partial struct BigDecimal
         return TryConvertFromChecked(value, out result);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryConvertFromTruncating<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
@@ -460,7 +464,7 @@ public partial struct BigDecimal
         return TryConvertFromChecked(value, out result);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryConvertToChecked<TOther>(BigDecimal value, out TOther result)
         where TOther : INumberBase<TOther>
     {
@@ -531,7 +535,7 @@ public partial struct BigDecimal
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryConvertToSaturating<TOther>(BigDecimal value, out TOther result)
         where TOther : INumberBase<TOther>
     {
@@ -541,86 +545,86 @@ public partial struct BigDecimal
         switch (result)
         {
             case sbyte:
-                sbyte sbResult = (value >= sbyte.MaxValue) ? sbyte.MaxValue :
-                    (value <= sbyte.MinValue) ? sbyte.MinValue : (sbyte)value;
+                var sbResult = value >= sbyte.MaxValue ? sbyte.MaxValue :
+                    value <= sbyte.MinValue ? sbyte.MinValue : (sbyte)value;
                 result = (TOther)(object)sbResult;
                 return true;
 
             case byte:
-                byte bResult = (value >= byte.MaxValue) ? byte.MaxValue :
-                    (value <= byte.MinValue) ? byte.MinValue : (byte)value;
+                var bResult = value >= byte.MaxValue ? byte.MaxValue :
+                    value <= byte.MinValue ? byte.MinValue : (byte)value;
                 result = (TOther)(object)bResult;
                 return true;
 
             case short:
-                short sResult = (value >= short.MaxValue) ? short.MaxValue :
-                    (value <= short.MinValue) ? short.MinValue : (short)value;
+                var sResult = value >= short.MaxValue ? short.MaxValue :
+                    value <= short.MinValue ? short.MinValue : (short)value;
                 result = (TOther)(object)sResult;
                 return true;
 
             case ushort:
-                ushort usResult = (value >= ushort.MaxValue) ? ushort.MaxValue :
-                    (value <= ushort.MinValue) ? ushort.MinValue : (ushort)value;
+                var usResult = value >= ushort.MaxValue ? ushort.MaxValue :
+                    value <= ushort.MinValue ? ushort.MinValue : (ushort)value;
                 result = (TOther)(object)usResult;
                 return true;
 
             case int:
-                int iResult = (value >= int.MaxValue) ? int.MaxValue :
-                    (value <= int.MinValue) ? int.MinValue : (int)value;
+                var iResult = value >= int.MaxValue ? int.MaxValue :
+                    value <= int.MinValue ? int.MinValue : (int)value;
                 result = (TOther)(object)iResult;
                 return true;
 
             case uint:
-                uint uiResult = (value >= uint.MaxValue) ? uint.MaxValue :
-                    (value <= uint.MinValue) ? uint.MinValue : (uint)value;
+                var uiResult = value >= uint.MaxValue ? uint.MaxValue :
+                    value <= uint.MinValue ? uint.MinValue : (uint)value;
                 result = (TOther)(object)uiResult;
                 return true;
 
             case long:
-                long lResult = (value >= long.MaxValue) ? long.MaxValue :
-                    (value <= long.MinValue) ? long.MinValue : (long)value;
+                var lResult = value >= long.MaxValue ? long.MaxValue :
+                    value <= long.MinValue ? long.MinValue : (long)value;
                 result = (TOther)(object)lResult;
                 return true;
 
             case ulong:
-                ulong ulResult = (value >= ulong.MaxValue) ? ulong.MaxValue :
-                    (value <= ulong.MinValue) ? ulong.MinValue : (ulong)value;
+                var ulResult = value >= ulong.MaxValue ? ulong.MaxValue :
+                    value <= ulong.MinValue ? ulong.MinValue : (ulong)value;
                 result = (TOther)(object)ulResult;
                 return true;
 
             case Int128:
-                Int128 i128Result = (value >= Int128.MaxValue) ? Int128.MaxValue :
-                    (value <= Int128.MinValue) ? Int128.MinValue : (Int128)value;
+                var i128Result = value >= Int128.MaxValue ? Int128.MaxValue :
+                    value <= Int128.MinValue ? Int128.MinValue : (Int128)value;
                 result = (TOther)(object)i128Result;
                 return true;
 
             case UInt128:
-                UInt128 ui128Result = (value >= UInt128.MaxValue) ? UInt128.MaxValue :
-                    (value <= UInt128.MinValue) ? UInt128.MinValue : (UInt128)value;
+                var ui128Result = value >= UInt128.MaxValue ? UInt128.MaxValue :
+                    value <= UInt128.MinValue ? UInt128.MinValue : (UInt128)value;
                 result = (TOther)(object)ui128Result;
                 return true;
 
             case Half:
-                Half hResult = (value >= Half.MaxValue) ? Half.MaxValue :
-                    (value <= Half.MinValue) ? Half.MinValue : (Half)value;
+                var hResult = value >= Half.MaxValue ? Half.MaxValue :
+                    value <= Half.MinValue ? Half.MinValue : (Half)value;
                 result = (TOther)(object)hResult;
                 return true;
 
             case float:
-                float fResult = (value >= float.MaxValue) ? float.MaxValue :
-                    (value <= float.MinValue) ? float.MinValue : (float)value;
+                var fResult = value >= float.MaxValue ? float.MaxValue :
+                    value <= float.MinValue ? float.MinValue : (float)value;
                 result = (TOther)(object)fResult;
                 return true;
 
             case double:
-                double dResult = (value >= double.MaxValue) ? double.MaxValue :
-                    (value <= double.MinValue) ? double.MinValue : (double)value;
+                var dResult = value >= double.MaxValue ? double.MaxValue :
+                    value <= double.MinValue ? double.MinValue : (double)value;
                 result = (TOther)(object)dResult;
                 return true;
 
             case decimal:
-                decimal mResult = (value >= decimal.MaxValue) ? decimal.MaxValue :
-                    (value <= decimal.MinValue) ? decimal.MinValue : (decimal)value;
+                var mResult = value >= decimal.MaxValue ? decimal.MaxValue :
+                    value <= decimal.MinValue ? decimal.MinValue : (decimal)value;
                 result = (TOther)(object)mResult;
                 return true;
 
@@ -630,7 +634,7 @@ public partial struct BigDecimal
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <see cref="BigDecimal.explicit operator BigInteger(BigDecimal)"/>
     public static bool TryConvertToTruncating<TOther>(BigDecimal value, out TOther result)
         where TOther : INumberBase<TOther>

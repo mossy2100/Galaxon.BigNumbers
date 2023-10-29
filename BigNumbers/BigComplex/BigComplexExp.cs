@@ -8,8 +8,8 @@ public partial struct BigComplex
     #region Power functions
 
     /// <summary>Complex exponentiation.</summary>
-    /// <remarks>Only the principal value is returned.</remarks>>
-    /// <see href="https://en.wikipedia.org/wiki/Exponentiation#Complex_exponentiation" />
+    /// <remarks>Only the principal value is returned.</remarks>
+    /// <see href="https://en.wikipedia.org/wiki/Exponentiation#Complex_exponentiation"/>
     /// <param name="z">The base.</param>
     /// <param name="w">The exponent.</param>
     /// <returns>The result of the exponentiation.</returns>
@@ -80,13 +80,13 @@ public partial struct BigComplex
 
     #region Root functions
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex Hypot(BigComplex x, BigComplex y)
     {
         return Sqrt(Sqr(x) + Sqr(y));
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex RootN(BigComplex z, int n)
     {
         // The 0th root is undefined.
@@ -106,9 +106,9 @@ public partial struct BigComplex
     }
 
     /// <summary>Computes the n-th roots of a complex value.</summary>
-    /// <param name="z">The value whose <paramref name="n" />-th roots are to be computed.</param>
+    /// <param name="z">The value whose <paramref name="n"/>-th roots are to be computed.</param>
     /// <param name="n">The degree of the roots to be computed.</param>
-    /// <returns>The <paramref name="n" />-th roots of <paramref name="z" />.</returns>
+    /// <returns>The <paramref name="n"/>-th roots of <paramref name="z"/>.</returns>
     public static BigComplex[] Roots(BigComplex z, int n)
     {
         // The 0th root is undefined.
@@ -134,10 +134,10 @@ public partial struct BigComplex
         var beta = BigDecimal.Tau / n;
 
         // Calculate all the roots as complex numbers.
-        var midPoint = (int)decimal.Ceiling(n / 2m);
+        var midpoint = (n + n % 2) / 2;
         for (var k = 0; k < n; k++)
         {
-            if (k < midPoint)
+            if (k < midpoint)
             {
                 // Calculate the root.
                 var alpha = iota + k * beta;
@@ -159,9 +159,9 @@ public partial struct BigComplex
     /// You can use this method to get the square root of a negative value (including a BigDecimal
     /// value).
     /// e.g. BigComplex z = BigComplex.Sqrt(-5);
-    /// <see cref="System.Math.Sqrt" />
-    /// <see cref="System.Numerics.Complex.Sqrt" />
-    /// <see cref="BigDecimal.Sqrt" />
+    /// <see cref="System.Math.Sqrt"/>
+    /// <see cref="System.Numerics.Complex.Sqrt"/>
+    /// <see cref="BigDecimal.Sqrt"/>
     /// </summary>
     /// <param name="z">A BigComplex number.</param>
     /// <returns>The positive square root as a BigComplex number.</returns>
@@ -253,7 +253,7 @@ public partial struct BigComplex
         return new BigComplex(BigDecimal.Log(z.Magnitude), z.Phase);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex Log(BigComplex x, BigComplex newBase)
     {
         throw new NotImplementedException();
@@ -261,8 +261,8 @@ public partial struct BigComplex
 
     /// <summary>
     /// Logarithm of a complex number in a specified base.
-    /// <see cref="Log(BigComplex)" />
-    /// <see cref="BigDecimal.Log(BigDecimal, BigDecimal)" />
+    /// <see cref="Log(BigComplex)"/>
+    /// <see cref="BigDecimal.Log(BigDecimal, BigDecimal)"/>
     /// </summary>
     /// <param name="z">The complex arg.</param>
     /// <param name="b">The base.</param>
@@ -284,7 +284,7 @@ public partial struct BigComplex
 
     /// <summary>
     /// Logarithm of a complex number in base 2.
-    /// <see cref="BigDecimal.Log2" />
+    /// <see cref="BigDecimal.Log2"/>
     /// </summary>
     /// <param name="z">The complex arg.</param>
     /// <returns>The logarithm of z in base 2.</returns>
@@ -295,9 +295,9 @@ public partial struct BigComplex
 
     /// <summary>
     /// Logarithm of a complex number in base 10.
-    /// <see cref="BigDecimal.Log10" />
-    /// <see href="https://en.wikipedia.org/wiki/Euler%27s_identity" />
-    /// <see href="https://tauday.com/tau-manifesto#sec-euler_s_identity" />
+    /// <see cref="BigDecimal.Log10"/>
+    /// <see href="https://en.wikipedia.org/wiki/Euler%27s_identity"/>
+    /// <see href="https://tauday.com/tau-manifesto#sec-euler_s_identity"/>
     /// </summary>
     /// <param name="z">The complex arg.</param>
     /// <returns>The logarithm of z in base 10.</returns>

@@ -1,20 +1,20 @@
 using System.Diagnostics;
 using Galaxon.Core.Numbers;
 
-namespace Galaxon.BigNumbers.Tests.BigDecimalTests;
+namespace Galaxon.BigNumbers.Tests;
 
 /// <summary>
 /// Test conversions between BigDecimal and the standard number types.
 /// </summary>
 [TestClass]
-public class ConvertTests
+public class BigDecimalConvertTests
 {
     #region Conversion to and from sbyte
 
     /// <summary>
     /// A few test values for sbyte.
     /// </summary>
-    private sbyte[] _sbyteTestValues = { sbyte.MinValue, -1, 0, 1, sbyte.MaxValue };
+    private readonly sbyte[] _sbyteTestValues = { sbyte.MinValue, -1, 0, 1, sbyte.MaxValue };
 
     /// <summary>
     /// Test casting from BigDecimal to sbyte and back.
@@ -24,7 +24,7 @@ public class ConvertTests
     {
         foreach (var i in _sbyteTestValues)
         {
-            BigDecimal bd = (BigDecimal)i;
+            BigDecimal bd = i;
             var j = (sbyte)bd;
             Assert.AreEqual(i, j);
         }
@@ -60,7 +60,7 @@ public class ConvertTests
         {
             var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
             Assert.IsTrue(ok);
-            sbyte j = (sbyte)bd;
+            var j = (sbyte)bd;
             Assert.AreEqual(i, j);
         }
     }
@@ -137,7 +137,7 @@ public class ConvertTests
     /// <summary>
     /// A few test values for byte.
     /// </summary>
-    private byte[] _byteTestValues = { 0, 1, byte.MaxValue };
+    private readonly byte[] _byteTestValues = { 0, 1, byte.MaxValue };
 
     /// <summary>
     /// Test casting from BigDecimal to byte and back.
@@ -147,7 +147,7 @@ public class ConvertTests
     {
         foreach (var i in _byteTestValues)
         {
-            BigDecimal bd = (BigDecimal)i;
+            BigDecimal bd = i;
             var j = (byte)bd;
             Assert.AreEqual(i, j);
         }
@@ -183,7 +183,7 @@ public class ConvertTests
         {
             var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
             Assert.IsTrue(ok);
-            byte j = (byte)bd;
+            var j = (byte)bd;
             Assert.AreEqual(i, j);
         }
     }
@@ -260,7 +260,7 @@ public class ConvertTests
     /// <summary>
     /// A few test values for short.
     /// </summary>
-    private short[] _shortTestValues = { short.MinValue, -1, 0, 1, short.MaxValue };
+    private readonly short[] _shortTestValues = { short.MinValue, -1, 0, 1, short.MaxValue };
 
     /// <summary>
     /// Test casting from BigDecimal to short and back.
@@ -270,7 +270,7 @@ public class ConvertTests
     {
         foreach (var i in _shortTestValues)
         {
-            BigDecimal bd = (BigDecimal)i;
+            BigDecimal bd = i;
             var j = (short)bd;
             Assert.AreEqual(i, j);
         }
@@ -306,7 +306,7 @@ public class ConvertTests
         {
             var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
             Assert.IsTrue(ok);
-            short j = (short)bd;
+            var j = (short)bd;
             Assert.AreEqual(i, j);
         }
     }
@@ -383,7 +383,7 @@ public class ConvertTests
     /// <summary>
     /// A few test values for ushort.
     /// </summary>
-    private ushort[] _ushortTestValues = { 0, 1, ushort.MaxValue };
+    private readonly ushort[] _ushortTestValues = { 0, 1, ushort.MaxValue };
 
     /// <summary>
     /// Test casting from BigDecimal to ushort and back.
@@ -393,7 +393,7 @@ public class ConvertTests
     {
         foreach (var i in _ushortTestValues)
         {
-            BigDecimal bd = (BigDecimal)i;
+            BigDecimal bd = i;
             var j = (ushort)bd;
             Assert.AreEqual(i, j);
         }
@@ -429,7 +429,7 @@ public class ConvertTests
         {
             var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
             Assert.IsTrue(ok);
-            ushort j = (ushort)bd;
+            var j = (ushort)bd;
             Assert.AreEqual(i, j);
         }
     }
@@ -506,7 +506,7 @@ public class ConvertTests
     /// <summary>
     /// A few test values for int.
     /// </summary>
-    private int[] _intTestValues = { int.MinValue, -1, 0, 1, int.MaxValue };
+    private readonly int[] _intTestValues = { int.MinValue, -1, 0, 1, int.MaxValue };
 
     /// <summary>
     /// Test casting from BigDecimal to int and back.
@@ -516,7 +516,7 @@ public class ConvertTests
     {
         foreach (var i in _intTestValues)
         {
-            BigDecimal bd = (BigDecimal)i;
+            BigDecimal bd = i;
             var j = (int)bd;
             Assert.AreEqual(i, j);
         }
@@ -552,7 +552,7 @@ public class ConvertTests
         {
             var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
             Assert.IsTrue(ok);
-            int j = (int)bd;
+            var j = (int)bd;
             Assert.AreEqual(i, j);
         }
     }
@@ -629,7 +629,7 @@ public class ConvertTests
     /// <summary>
     /// A few test values for uint.
     /// </summary>
-    private uint[] _uintTestValues = { 0, 1, uint.MaxValue };
+    private readonly uint[] _uintTestValues = { 0, 1, uint.MaxValue };
 
     /// <summary>
     /// Test casting from BigDecimal to uint and back.
@@ -639,7 +639,7 @@ public class ConvertTests
     {
         foreach (var i in _uintTestValues)
         {
-            BigDecimal bd = (BigDecimal)i;
+            BigDecimal bd = i;
             var j = (uint)bd;
             Assert.AreEqual(i, j);
         }
@@ -675,7 +675,7 @@ public class ConvertTests
         {
             var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
             Assert.IsTrue(ok);
-            uint j = (uint)bd;
+            var j = (uint)bd;
             Assert.AreEqual(i, j);
         }
     }
@@ -752,7 +752,7 @@ public class ConvertTests
     /// <summary>
     /// A few test values for long.
     /// </summary>
-    private long[] _longTestValues = { long.MinValue, -1, 0, 1, long.MaxValue };
+    private readonly long[] _longTestValues = { long.MinValue, -1, 0, 1, long.MaxValue };
 
     /// <summary>
     /// Test casting from BigDecimal to long and back.
@@ -762,7 +762,7 @@ public class ConvertTests
     {
         foreach (var i in _longTestValues)
         {
-            BigDecimal bd = (BigDecimal)i;
+            BigDecimal bd = i;
             var j = (long)bd;
             Assert.AreEqual(i, j);
         }
@@ -799,7 +799,7 @@ public class ConvertTests
         {
             var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
             Assert.IsTrue(ok);
-            long j = (long)bd;
+            var j = (long)bd;
             Assert.AreEqual(i, j);
         }
     }
@@ -876,7 +876,7 @@ public class ConvertTests
     /// <summary>
     /// A few test values for ulong.
     /// </summary>
-    private ulong[] _ulongTestValues = { 0, 1, ulong.MaxValue };
+    private readonly ulong[] _ulongTestValues = { 0, 1, ulong.MaxValue };
 
     /// <summary>
     /// Test casting from BigDecimal to ulong and back.
@@ -886,7 +886,7 @@ public class ConvertTests
     {
         foreach (var i in _ulongTestValues)
         {
-            BigDecimal bd = (BigDecimal)i;
+            BigDecimal bd = i;
             var j = (ulong)bd;
             Assert.AreEqual(i, j);
         }
@@ -922,7 +922,7 @@ public class ConvertTests
         {
             var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
             Assert.IsTrue(ok);
-            ulong j = (ulong)bd;
+            var j = (ulong)bd;
             Assert.AreEqual(i, j);
         }
     }
@@ -999,7 +999,7 @@ public class ConvertTests
     /// <summary>
     /// A few test values for Int128.
     /// </summary>
-    private Int128[] _int128TestValues = { Int128.MinValue, -1, 0, 1, Int128.MaxValue };
+    private readonly Int128[] _int128TestValues = { Int128.MinValue, -1, 0, 1, Int128.MaxValue };
 
     /// <summary>
     /// Test casting from BigDecimal to Int128 and back.
@@ -1009,7 +1009,7 @@ public class ConvertTests
     {
         foreach (var i in _int128TestValues)
         {
-            BigDecimal bd = (BigDecimal)i;
+            BigDecimal bd = i;
             var j = (Int128)bd;
             Assert.AreEqual(i, j);
         }
@@ -1045,7 +1045,7 @@ public class ConvertTests
         {
             var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
             Assert.IsTrue(ok);
-            Int128 j = (Int128)bd;
+            var j = (Int128)bd;
             Assert.AreEqual(i, j);
         }
     }
@@ -1122,7 +1122,7 @@ public class ConvertTests
     /// <summary>
     /// A few test values for UInt128.
     /// </summary>
-    private UInt128[] _uint128TestValues = { 0, 1, UInt128.MaxValue };
+    private readonly UInt128[] _uint128TestValues = { 0, 1, UInt128.MaxValue };
 
     /// <summary>
     /// Test casting from BigDecimal to UInt128 and back.
@@ -1132,7 +1132,7 @@ public class ConvertTests
     {
         foreach (var i in _uint128TestValues)
         {
-            BigDecimal bd = (BigDecimal)i;
+            BigDecimal bd = i;
             var j = (UInt128)bd;
             Assert.AreEqual(i, j);
         }
@@ -1168,7 +1168,7 @@ public class ConvertTests
         {
             var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
             Assert.IsTrue(ok);
-            UInt128 j = (UInt128)bd;
+            var j = (UInt128)bd;
             Assert.AreEqual(i, j);
         }
     }
@@ -1268,12 +1268,12 @@ public class ConvertTests
     /// <summary>
     /// Test value for negative overflow for Half.
     /// </summary>
-    private static BigDecimal _halfNegInf = (BigDecimal)Half.MinValue - 1;
+    private static readonly BigDecimal _halfNegInf = (BigDecimal)Half.MinValue - 1;
 
     /// <summary>
     /// Test value for positive overflow for Half.
     /// </summary>
-    private static BigDecimal _halfPosInf = (BigDecimal)Half.MaxValue + 1;
+    private static readonly BigDecimal _halfPosInf = (BigDecimal)Half.MaxValue + 1;
 
     /// <summary>
     /// Test casting from BigDecimal to Half and back.
@@ -1284,7 +1284,7 @@ public class ConvertTests
         foreach (var f in GetHalfTestValues())
         {
             Trace.WriteLine($"f = {f:E5}");
-            BigDecimal bd = (BigDecimal)f;
+            BigDecimal bd = f;
             Trace.WriteLine($"bd = {bd:E5}");
             var g = (Half)bd;
             Trace.WriteLine($"g = {g:E5}");
@@ -1306,7 +1306,7 @@ public class ConvertTests
             var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
             Trace.WriteLine($"bd = {bd:E5}");
             Assert.IsTrue(ok);
-            Half g = (Half)bd;
+            var g = (Half)bd;
             Trace.WriteLine($"g = {g:E5}");
             Assert.AreEqual(f, g);
             Trace.WriteLine("");
@@ -1421,15 +1421,15 @@ public class ConvertTests
         return new[]
         {
             float.MinValue,
-            (float)(-1),
+            -1,
             -minPosNorm,
             -maxPosSub,
             -float.Epsilon,
-            (float)0,
+            0,
             float.Epsilon,
             maxPosSub,
             minPosNorm,
-            (float)1,
+            1,
             float.MaxValue,
         };
     }
@@ -1437,12 +1437,12 @@ public class ConvertTests
     /// <summary>
     /// Test value for negative overflow for float.
     /// </summary>
-    private static BigDecimal _floatNegInf = (BigDecimal)float.MinValue - 1e29;
+    private static readonly BigDecimal _floatNegInf = (BigDecimal)float.MinValue - 1e29;
 
     /// <summary>
     /// Test value for positive overflow for float.
     /// </summary>
-    private static BigDecimal _floatPosInf = (BigDecimal)float.MaxValue + 1e29;
+    private static readonly BigDecimal _floatPosInf = (BigDecimal)float.MaxValue + 1e29;
 
     /// <summary>
     /// Test casting from BigDecimal to float and back.
@@ -1453,7 +1453,7 @@ public class ConvertTests
         foreach (var f in GetFloatTestValues())
         {
             Trace.WriteLine($"f = {f:E9}");
-            BigDecimal bd = (BigDecimal)f;
+            BigDecimal bd = f;
             Trace.WriteLine($"bd = {bd:E9}");
             var g = (float)bd;
             Trace.WriteLine($"g = {g:E9}");
@@ -1498,7 +1498,7 @@ public class ConvertTests
             var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
             Trace.WriteLine($"bd = {bd:E9}");
             Assert.IsTrue(ok);
-            float g = (float)bd;
+            var g = (float)bd;
             Trace.WriteLine($"g = {g:E9}");
             Assert.AreEqual(f, g);
             Trace.WriteLine("");
@@ -1613,15 +1613,15 @@ public class ConvertTests
         return new[]
         {
             double.MinValue,
-            (double)(-1),
+            -1,
             -minPosNorm,
             -maxPosSub,
             -double.Epsilon,
-            (double)0,
+            0,
             double.Epsilon,
             maxPosSub,
             minPosNorm,
-            (double)1,
+            1,
             double.MaxValue,
         };
     }
@@ -1629,12 +1629,12 @@ public class ConvertTests
     /// <summary>
     /// Test value for negative overflow for double.
     /// </summary>
-    private static BigDecimal _doubleNegInf = (BigDecimal)double.MinValue - 1e291;
+    private static readonly BigDecimal _doubleNegInf = (BigDecimal)double.MinValue - 1e291;
 
     /// <summary>
     /// Test value for positive overflow for double.
     /// </summary>
-    private static BigDecimal _doublePosInf = (BigDecimal)double.MaxValue + 1e291;
+    private static readonly BigDecimal _doublePosInf = (BigDecimal)double.MaxValue + 1e291;
 
     /// <summary>
     /// Test casting from BigDecimal to double and back.
@@ -1645,7 +1645,7 @@ public class ConvertTests
         foreach (var f in GetDoubleTestValues())
         {
             Trace.WriteLine($"f = {f:E17}");
-            BigDecimal bd = (BigDecimal)f;
+            BigDecimal bd = f;
             Trace.WriteLine($"bd = {bd:E17}");
             var g = (double)bd;
             Trace.WriteLine($"g = {g:E17}");
@@ -1690,7 +1690,7 @@ public class ConvertTests
             var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
             Trace.WriteLine($"bd = {bd:E17}");
             Assert.IsTrue(ok);
-            double g = (double)bd;
+            var g = (double)bd;
             Trace.WriteLine($"g = {g:E17}");
             Assert.AreEqual(f, g);
             Trace.WriteLine("");
@@ -1803,9 +1803,9 @@ public class ConvertTests
         return new[]
         {
             decimal.MinValue,
-            (decimal)(-1),
-            (decimal)0,
-            (decimal)1,
+            -1,
+            0,
+            1,
             decimal.MaxValue,
         };
     }
@@ -1813,12 +1813,12 @@ public class ConvertTests
     /// <summary>
     /// Test value for negative overflow for decimal.
     /// </summary>
-    private static BigDecimal _decimalNegInf = (BigDecimal)decimal.MinValue - 1;
+    private static readonly BigDecimal _decimalNegInf = (BigDecimal)decimal.MinValue - 1;
 
     /// <summary>
     /// Test value for positive overflow for decimal.
     /// </summary>
-    private static BigDecimal _decimalPosInf = (BigDecimal)decimal.MaxValue + 1;
+    private static readonly BigDecimal _decimalPosInf = (BigDecimal)decimal.MaxValue + 1;
 
     /// <summary>
     /// Test casting from BigDecimal to decimal and back.
@@ -1829,7 +1829,7 @@ public class ConvertTests
         foreach (var f in GetDecimalTestValues())
         {
             Trace.WriteLine($"f = {f:E17}");
-            BigDecimal bd = (BigDecimal)f;
+            BigDecimal bd = f;
             Trace.WriteLine($"bd = {bd:E17}");
             var g = (decimal)bd;
             Trace.WriteLine($"g = {g:E17}");
@@ -1870,7 +1870,7 @@ public class ConvertTests
             var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
             Trace.WriteLine($"bd = {bd:E17}");
             Assert.IsTrue(ok);
-            decimal g = (decimal)bd;
+            var g = (decimal)bd;
             Trace.WriteLine($"g = {g:E17}");
             Assert.AreEqual(f, g);
             Trace.WriteLine("");

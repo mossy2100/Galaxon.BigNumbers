@@ -14,7 +14,7 @@ public partial struct BigDecimal
     /// </summary>
     private static BigDecimal _e;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal E
     {
         get
@@ -42,7 +42,7 @@ public partial struct BigDecimal
     /// </summary>
     private static BigDecimal _pi;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Pi
     {
         get
@@ -66,7 +66,7 @@ public partial struct BigDecimal
     /// Compute π.
     /// The Chudnovsky algorithm used here was the one used to generate π to 6.2 trillion decimal
     /// places, the current world record.
-    /// See: <see href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" />
+    /// See: <see href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm"/>
     /// </summary>
     public static BigDecimal ComputePi()
     {
@@ -121,7 +121,7 @@ public partial struct BigDecimal
     /// </summary>
     private static BigDecimal _tau;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Tau
     {
         get

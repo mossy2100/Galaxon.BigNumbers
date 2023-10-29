@@ -65,9 +65,9 @@ public partial struct BigDecimal :
     /// 0 means zero
     /// 1 means positive
     /// </summary>
-    /// <see cref="BigInteger.Sign" />
+    /// <see cref="BigInteger.Sign"/>
     /// <see
-    ///     href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0" />
+    ///     href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0"/>
     public readonly int Sign => Significand.Sign;
 
     /// <summary>
@@ -110,34 +110,34 @@ public partial struct BigDecimal :
     /// </summary>
     private static int _maxSigFigs = 100;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Zero { get; } = new (0);
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal One { get; } = new (1);
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal NegativeOne { get; } = new (-1);
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static int Radix { get; } = 10;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal AdditiveIdentity { get; } = Zero;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal MultiplicativeIdentity { get; } = One;
 
     /// <summary>Precision supported by the Half type.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation" />
+    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
     public const int HalfPrecision = 5;
 
     /// <summary>Precision supported by the float type.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation" />
+    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
     public const int FloatPrecision = 9;
 
     /// <summary>Precision supported by the double type.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation" />
+    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
     public const int DoublePrecision = 17;
 
     /// <summary>Precision supported by the decimal type.</summary>
@@ -175,87 +175,87 @@ public partial struct BigDecimal :
         return value.MakeCanonical().Exponent >= 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsOddInteger(BigDecimal value)
     {
         return IsInteger(value) && value.Exponent == 0
             && BigInteger.IsOddInteger(value.Significand);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsEvenInteger(BigDecimal value)
     {
         return IsInteger(value)
             && (value.Exponent > 0 || BigInteger.IsEvenInteger(value.Significand));
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsZero(BigDecimal value)
     {
         return value.Significand == 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsNegative(BigDecimal value)
     {
         return value.Significand < 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsPositive(BigDecimal value)
     {
         return value.Significand > 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsFinite(BigDecimal value)
     {
         return true;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsInfinity(BigDecimal value)
     {
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsNegativeInfinity(BigDecimal value)
     {
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsPositiveInfinity(BigDecimal value)
     {
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsRealNumber(BigDecimal value)
     {
         return true;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsImaginaryNumber(BigDecimal value)
     {
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsNormal(BigDecimal value)
     {
         return value != 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsSubnormal(BigDecimal value)
     {
         return false;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool IsNaN(BigDecimal value)
     {
         return false;
@@ -265,50 +265,50 @@ public partial struct BigDecimal :
 
     #region Methods related to data transfer
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int GetSignificandByteCount()
     {
         return Significand.GetByteCount();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int GetSignificandBitLength()
     {
         return GetSignificandByteCount() * 8;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int GetExponentByteCount()
     {
         return 4;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public int GetExponentShortestBitLength()
     {
         return 32;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public readonly bool TryWriteSignificandBigEndian(Span<byte> destination, out int bytesWritten)
     {
         return TryWriteBigInteger(Significand, destination, out bytesWritten, true);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public readonly bool TryWriteSignificandLittleEndian(Span<byte> destination,
         out int bytesWritten)
     {
         return TryWriteBigInteger(Significand, destination, out bytesWritten, false);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public readonly bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten)
     {
         return TryWriteInt(Exponent, destination, out bytesWritten, true);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public readonly bool TryWriteExponentLittleEndian(Span<byte> destination, out int bytesWritten)
     {
         return TryWriteInt(Exponent, destination, out bytesWritten, false);
@@ -316,8 +316,8 @@ public partial struct BigDecimal :
 
     /// <summary>
     /// Shared logic for:
-    /// <see cref="TryWriteBigInteger" />
-    /// <see cref="TryWriteInt" />
+    /// <see cref="TryWriteBigInteger"/>
+    /// <see cref="TryWriteInt"/>
     /// </summary>
     private static bool TryWrite(byte[] bytes, Span<byte> destination, out int bytesWritten)
     {
@@ -336,8 +336,8 @@ public partial struct BigDecimal :
 
     /// <summary>
     /// Shared logic for:
-    /// <see cref="TryWriteSignificandBigEndian" />
-    /// <see cref="TryWriteSignificandLittleEndian" />
+    /// <see cref="TryWriteSignificandBigEndian"/>
+    /// <see cref="TryWriteSignificandLittleEndian"/>
     /// </summary>
     private static bool TryWriteBigInteger(BigInteger bi, Span<byte> destination,
         out int bytesWritten,
@@ -349,8 +349,8 @@ public partial struct BigDecimal :
 
     /// <summary>
     /// Shared logic for:
-    /// <see cref="TryWriteExponentBigEndian" />
-    /// <see cref="TryWriteExponentLittleEndian" />
+    /// <see cref="TryWriteExponentBigEndian"/>
+    /// <see cref="TryWriteExponentLittleEndian"/>
     /// </summary>
     private static bool TryWriteInt(int i, Span<byte> destination, out int bytesWritten,
         bool isBigEndian)

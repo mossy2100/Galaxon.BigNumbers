@@ -1,7 +1,7 @@
-namespace Galaxon.BigNumbers.Tests.BigRationalTests;
+namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
-public class StringsTests
+public class BigRationalStringsTests
 {
     [TestMethod]
     public void TestToString()

@@ -258,7 +258,7 @@ public partial struct BigRational
     /// <summary>Cast from BigRational to BigDecimal.</summary>
     public static explicit operator BigDecimal(BigRational n)
     {
-        return (BigDecimal)n.Numerator / (BigDecimal)n.Denominator;
+        return n.Numerator / (BigDecimal)n.Denominator;
     }
 
     #endregion Operators for casting from BigRational to other number types
@@ -299,7 +299,7 @@ public partial struct BigRational
         if (x == T.Zero) return Zero;
 
         // Get the parts of the floating point value.
-        var (signBit, expBits, fracBits) = x.Disassemble<T>();
+        var (signBit, expBits, fracBits) = x.Disassemble();
 
         // Convert the fraction bits to a denominator.
         var nFracBits = XFloatingPoint.GetNumFracBits<T>();

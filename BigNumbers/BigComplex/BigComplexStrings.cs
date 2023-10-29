@@ -4,52 +4,52 @@ namespace Galaxon.BigNumbers;
 
 public partial struct BigComplex
 {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex Parse(string s, IFormatProvider? provider)
     {
         throw new NotImplementedException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
         throw new NotImplementedException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex Parse(string s, NumberStyles style, IFormatProvider? provider)
     {
         throw new NotImplementedException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex Parse(ReadOnlySpan<char> s, NumberStyles style,
         IFormatProvider? provider)
     {
         throw new NotImplementedException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryParse(string? s, IFormatProvider? provider, out BigComplex result)
     {
         throw new NotImplementedException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider,
         out BigComplex result)
     {
         throw new NotImplementedException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider,
         out BigComplex result)
     {
         throw new NotImplementedException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider,
         out BigComplex result)
     {
@@ -103,13 +103,13 @@ public partial struct BigComplex
         return $"{realPart}{sign}{imagPart}";
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         throw new NotImplementedException();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {

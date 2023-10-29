@@ -1,7 +1,7 @@
-namespace Galaxon.BigNumbers.Tests.BigDecimalTests;
+namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
-public class CompareTests
+public class BigDecimalCompareTests
 {
     private static IEnumerable<object[]> LessThanInts =>
         new[]

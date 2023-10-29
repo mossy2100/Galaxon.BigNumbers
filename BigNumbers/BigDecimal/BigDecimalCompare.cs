@@ -7,9 +7,46 @@ namespace Galaxon.BigNumbers;
 /// </summary>
 public partial struct BigDecimal
 {
+    #region Equality methods
+
+    /// <inheritdoc/>
+    public override bool Equals(object? obj)
+    {
+        if (obj is BigDecimal bd)
+        {
+            return Equals(bd);
+        }
+        return false;
+    }
+
+    /// <inheritdoc/>
+    public bool Equals(BigDecimal other)
+    {
+        return CompareTo(other) == 0;
+    }
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Significand, Exponent);
+    }
+
+    #endregion Equality methods
+
     #region Comparison methods
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
+    public int CompareTo(object? obj)
+    {
+        if (obj is not BigDecimal other)
+        {
+            throw new ArgumentInvalidException(nameof(obj), "Must be a BigDecimal.");
+        }
+
+        return CompareTo(other);
+    }
+
+    /// <inheritdoc/>
     public int CompareTo(BigDecimal other)
     {
         if (Sign < other.Sign)
@@ -24,58 +61,25 @@ public partial struct BigDecimal
         return x.Significand.CompareTo(y.Significand);
     }
 
-    /// <inheritdoc />
-    public int CompareTo(object? obj)
-    {
-        if (obj is not BigDecimal other)
-        {
-            throw new ArgumentInvalidException(nameof(obj), "Must be a BigDecimal.");
-        }
-
-        return CompareTo(other);
-    }
-
-    /// <inheritdoc />
-    public bool Equals(BigDecimal other)
-    {
-        return CompareTo(other) == 0;
-    }
-
-    /// <inheritdoc />
-    public override bool Equals(object? obj)
-    {
-        if (obj is BigDecimal bd)
-        {
-            return Equals(bd);
-        }
-        return false;
-    }
-
-    /// <inheritdoc />
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Significand, Exponent);
-    }
-
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal MaxMagnitude(BigDecimal x, BigDecimal y)
     {
         return x > y ? x : y;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal MaxMagnitudeNumber(BigDecimal x, BigDecimal y)
     {
         return MaxMagnitude(x, y);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal MinMagnitude(BigDecimal x, BigDecimal y)
     {
         return x < y ? x : y;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal MinMagnitudeNumber(BigDecimal x, BigDecimal y)
     {
         return MinMagnitude(x, y);
@@ -85,37 +89,37 @@ public partial struct BigDecimal
 
     #region Comparison operators
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool operator ==(BigDecimal x, BigDecimal y)
     {
         return x.Equals(y);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool operator !=(BigDecimal x, BigDecimal y)
     {
         return !x.Equals(y);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool operator <(BigDecimal x, BigDecimal y)
     {
         return x.CompareTo(y) < 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool operator <=(BigDecimal x, BigDecimal y)
     {
         return x.CompareTo(y) <= 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool operator >(BigDecimal x, BigDecimal y)
     {
         return x.CompareTo(y) > 0;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool operator >=(BigDecimal x, BigDecimal y)
     {
         return x.CompareTo(y) >= 0;

@@ -1,7 +1,7 @@
-namespace Galaxon.BigNumbers.Tests.BigDecimalTests;
+namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
-public class ConstantsTests
+public class BigDecimalConstantsTests
 {
     [TestMethod]
     public void TestComputeE50()
@@ -133,7 +133,7 @@ public class ConstantsTests
     /// This takes a few minutes (about 7 on my computer at the time of typing), so sit back, relax,
     /// sip your coffee, and enjoy the relentless march of time.
     /// </remarks>
-    /// <see href="http://newton.ex.ac.uk/research/qsystems/collabs/pi/pi5.txt" />
+    /// <see href="http://newton.ex.ac.uk/research/qsystems/collabs/pi/pi5.txt"/>
     [TestMethod]
     [Ignore]
     public void TestComputePi10000()

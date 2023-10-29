@@ -11,18 +11,14 @@ public partial struct BigDecimal
 {
     #region Power functions
 
-    /// <summary>
-    /// Calculate the value of x^y where x and y are both BigDecimal values.
-    /// </summary>
+    /// <summary>Calculate the value of x^y where x and y are both BigDecimal values.</summary>
     /// <param name="x">The base.</param>
     /// <param name="y">The exponent.</param>
     /// <returns>
-    /// The result of the calculation, rounded off to the current value of
-    /// MaxSigFigs.
+    /// The result of the calculation, rounded off to the current value of MaxSigFigs.
     /// </returns>
     /// <exception cref="ArithmeticException">
-    /// If there is no real result or a real result cannot
-    /// otherwise be computed.
+    /// If there is no real result or a real result cannot otherwise be computed.
     /// </exception>
     public static BigDecimal Pow(BigDecimal x, BigDecimal y)
     {
@@ -61,14 +57,19 @@ public partial struct BigDecimal
         // For positive x with non-integer exponent, compute the result using Exp() and Log().
         if (x > 0) return Exp(y * Log(x));
 
-        // For negative x with non-integer exponent, we can't easily compute a real result.
-        // However, one may exist, e.g. Pow(-243, 0.2) == -3
-        // We can use the complex methods, and check if the result is real.
-        // TODO Test!
-        var z = BigComplex.Exp(y * BigComplex.Log(x));
-
-        // See if the result is real.
-        if (z.Imaginary == 0) return z.Real;
+        // x < 0 and y is not an integer.
+        // Get y as a BigRational.
+        // We can compute a real result only if the numerator is even or if the denominator is odd
+        // and can be converted to a 32-bit int.
+        // We cannot compute a real result if the numerator is odd and the denominator is even or
+        // outside the valid range for int.
+        // (Note, since BigRationals are reduced automatically, the numerator and denominator should
+        // never both be even.)
+        var (n, d) = ((BigRational)y).ToTuple();
+        if (IsEvenInteger(n) || IsOddInteger(d) && d >= int.MinValue && d <= int.MaxValue)
+        {
+            return RootN(Pow(x, n), (int)d);
+        }
 
         throw new ArithmeticException("Cannot compute a real result. Try BigComplex.Pow().");
     }
@@ -97,7 +98,7 @@ public partial struct BigDecimal
 
     #region Root functions
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <exception cref="ArithmeticException"></exception>
     /// <exception cref="ArgumentInvalidException"></exception>
     public static BigDecimal RootN(BigDecimal x, int n)
@@ -188,8 +189,7 @@ public partial struct BigDecimal
             return RoundSigFigs(result);
         }
 
-        // At this point, x < 0.
-
+        // x < 0.
         // If n is even, a negative value for x is unsupported as there will be no real results,
         // only complex ones.
         if (int.IsEvenInteger(n))
@@ -198,18 +198,8 @@ public partial struct BigDecimal
                 "Negative numbers have no real even roots, only complex ones. Try BigComplex.Roots().");
         }
 
-        // Get all the roots, real and complex.
-        var roots = BigComplex.Roots(x, n);
-
-        // Find the first real root, if present. We only need to check the first half of the
-        // values, because the second half will just be complex conjugates of those.
-        for (var i = 0; i < (int)Ceiling(n / 2); i++)
-        {
-            if (roots[i].Imaginary == 0) return RoundSigFigs(roots[i].Real);
-        }
-
-        // No solution found.
-        throw new ArithmeticException("No real root found. Try BigComplex.Roots().");
+        // Calculate the only real root, which will be negative.
+        return RoundSigFigs(-RootN(-x, n));
     }
 
     /// <summary>
@@ -244,35 +234,11 @@ public partial struct BigDecimal
         return Sqrt(Sqr(x) + Sqr(y));
     }
 
-    /// <summary>
-    /// Get the first root of a complex number.
-    /// </summary>
-    /// <param name="z">The complex value.</param>
-    /// <param name="n">The degree of the roots to be computed.</param>
-    /// <returns>A BigComplex representing the first root.</returns>
-    public static BigComplex FirstComplexRoot(BigComplex z, int n)
-    {
-        // The 0th root is undefined.
-        if (n == 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(n),
-                "The 0th root is undefined since any number to the power of 0 is 1.");
-        }
-
-        // The first root of a number is itself.
-        if (n == 1) return z;
-
-        // Calculate the root.
-        var s = RootN(z.Magnitude, n);
-        var iota = z.Phase / n;
-        return new BigComplex(s * Cos(iota), s * Sin(iota));
-    }
-
     #endregion Root functions
 
     #region Exponential functions
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Exp(BigDecimal x)
     {
         // Optimizations.
@@ -324,13 +290,13 @@ public partial struct BigDecimal
         return RoundSigFigs(sum);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Exp2(BigDecimal x)
     {
         return Pow(2, x);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Exp10(BigDecimal x)
     {
         return Pow(10, x);
@@ -340,7 +306,7 @@ public partial struct BigDecimal
 
     #region Logarithmic functions
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Log(BigDecimal x)
     {
         // Guards.
@@ -416,7 +382,7 @@ public partial struct BigDecimal
         return RoundSigFigs(result);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Log(BigDecimal x, BigDecimal b)
     {
         if (b == 1)
@@ -435,13 +401,13 @@ public partial struct BigDecimal
         return Log(x) / Log(b);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Log2(BigDecimal x)
     {
         return Log(x, 2);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Log10(BigDecimal x)
     {
         return Log(x, 10);

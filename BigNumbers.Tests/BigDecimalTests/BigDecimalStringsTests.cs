@@ -2,10 +2,10 @@ using System.Numerics;
 using Galaxon.Core.Exceptions;
 using Galaxon.Core.Strings;
 
-namespace Galaxon.BigNumbers.Tests.BigDecimalTests;
+namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
-public class StringsTests
+public class BigDecimalStringsTests
 {
     [TestMethod]
     public void TestToStringD()

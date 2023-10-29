@@ -430,18 +430,12 @@ public partial struct BigComplex
 
     #region TryConvert methods
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryConvertFromChecked<TOther>(TOther value, out BigComplex result)
         where TOther : INumberBase<TOther>
     {
         // Set a default result.
         result = Zero;
-
-        // // Check for supported type.
-        // if (!IsTypeSupported(typeof(TOther)))
-        // {
-        //     return false;
-        // }
 
         // See if we can cast it.
         if (XReflection.CanCast<TOther, BigComplex>())
@@ -456,7 +450,7 @@ public partial struct BigComplex
             $"The cast operation from {typeof(TOther).Name} to BigComplex has not been implemented.");
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryConvertFromSaturating<TOther>(TOther value, out BigComplex result)
         where TOther : INumberBase<TOther>
     {
@@ -464,7 +458,7 @@ public partial struct BigComplex
         return TryConvertFromChecked(value, out result);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryConvertFromTruncating<TOther>(TOther value, out BigComplex result)
         where TOther : INumberBase<TOther>
     {
@@ -472,7 +466,7 @@ public partial struct BigComplex
         return TryConvertFromChecked(value, out result);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryConvertToChecked<TOther>(BigComplex value, out TOther result)
         where TOther : INumberBase<TOther>
     {
@@ -498,7 +492,7 @@ public partial struct BigComplex
             $"The value is outside the valid range for the {typeof(TOther).Name} type.");
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryConvertToSaturating<TOther>(BigComplex value, out TOther result)
         where TOther : INumberBase<TOther>
     {
@@ -511,7 +505,7 @@ public partial struct BigComplex
             // Convert real and imaginary parts to doubles, with saturation.
             BigDecimal.TryConvertToSaturating(value.Real, out double real);
             BigDecimal.TryConvertToSaturating(value.Imaginary, out double imag);
-            result = (TOther)(object)(new Complex(real, imag));
+            result = (TOther)(object)new Complex(real, imag);
             return true;
         }
 
@@ -519,7 +513,7 @@ public partial struct BigComplex
         return BigDecimal.TryConvertToSaturating(value.Real, out result);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryConvertToTruncating<TOther>(BigComplex value, out TOther result)
         where TOther : INumberBase<TOther>
     {

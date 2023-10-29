@@ -3,7 +3,7 @@ using System.Diagnostics;
 namespace Galaxon.BigNumbers;
 
 [TestClass]
-public class ConvertTests2
+public class BigRationalConvertTests2
 {
     [TestMethod]
     public void TestFindSingleDigit()

@@ -12,7 +12,7 @@ public partial struct BigDecimal
     /// Format the BigDecimal as a string.
     /// Supported formats are the usual: D, E, F, G, N, P, and R.
     /// <see
-    ///     href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings" />
+    ///     href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings"/>
     /// Although "D" is normally only used by integral types, in this case both the significand and
     /// exponent will be formatted as integers.
     /// An secondary code "U" is provided, which follows the precision (if given).
@@ -108,17 +108,17 @@ public partial struct BigDecimal
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <remarks>
     /// Override of ValueType.ToString(). Needed for debugging and string interpolation.
     /// </remarks>
-    /// <see cref="ValueType.ToString" />
+    /// <see cref="ValueType.ToString"/>
     public override string ToString()
     {
         return ToString("G");
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
         IFormatProvider? provider)
     {
@@ -136,7 +136,7 @@ public partial struct BigDecimal
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Parse(string strBigDecimal, IFormatProvider? provider)
     {
         // Get a NumberFormatInfo object so we know what characters to look for.
@@ -181,20 +181,20 @@ public partial struct BigDecimal
         return Parse(str, NumberFormatInfo.InvariantInfo);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <remarks>Ignoring style parameter for now.</remarks>
     public static BigDecimal Parse(string str, NumberStyles style, IFormatProvider? provider)
     {
         return Parse(str, provider);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigDecimal Parse(ReadOnlySpan<char> span, IFormatProvider? provider)
     {
         return Parse(new string(span), provider);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <remarks>Ignoring style parameter for now.</remarks>
     public static BigDecimal Parse(ReadOnlySpan<char> span, NumberStyles style,
         IFormatProvider? provider)
@@ -202,7 +202,7 @@ public partial struct BigDecimal
         return Parse(new string(span), provider);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryParse(string? str, IFormatProvider? provider, out BigDecimal result)
     {
         if (str == null)
@@ -231,7 +231,7 @@ public partial struct BigDecimal
         return TryParse(str, NumberFormatInfo.InvariantInfo, out result);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <remarks>Ignoring style parameter for now.</remarks>
     public static bool TryParse(string? str, NumberStyles style, IFormatProvider? provider,
         out BigDecimal result)
@@ -239,14 +239,14 @@ public partial struct BigDecimal
         return TryParse(str, provider, out result);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> span, IFormatProvider? provider,
         out BigDecimal result)
     {
         return TryParse(new string(span), provider, out result);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     /// <remarks>Ignoring style parameter for now.</remarks>
     public static bool TryParse(ReadOnlySpan<char> span, NumberStyles style,
         IFormatProvider? provider,

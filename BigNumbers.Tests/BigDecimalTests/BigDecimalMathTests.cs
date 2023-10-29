@@ -1,10 +1,10 @@
 using System.Diagnostics;
 using System.Numerics;
 
-namespace Galaxon.BigNumbers.Tests.BigDecimalTests;
+namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
-public class MathTests
+public class BigDecimalMathTests
 {
     [TestMethod]
     public void TestMultiplySmallInts()

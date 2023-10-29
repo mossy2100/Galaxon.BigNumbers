@@ -2,13 +2,13 @@ namespace Galaxon.BigNumbers;
 
 public partial struct BigComplex
 {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex E => new (BigDecimal.E);
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex Pi => new (BigDecimal.Pi);
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public static BigComplex Tau => new (BigDecimal.Tau);
 
     /// <summary>

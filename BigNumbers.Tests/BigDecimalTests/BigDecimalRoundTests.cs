@@ -1,7 +1,7 @@
-namespace Galaxon.BigNumbers.Tests.BigDecimalTests;
+namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
-public class RoundTests
+public class BigDecimalRoundTests
 {
     /// <summary>
     /// Check BigDecimal.Round() matches decimal.Round() for all rounding methods.
