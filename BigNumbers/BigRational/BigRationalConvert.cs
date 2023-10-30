@@ -336,7 +336,6 @@ public partial struct BigRational
 
     #endregion Helper methods
 
-
     /// <inheritdoc/>
     public static bool TryConvertFromChecked<TOther>(TOther value, out BigRational result)
         where TOther : INumberBase<TOther>

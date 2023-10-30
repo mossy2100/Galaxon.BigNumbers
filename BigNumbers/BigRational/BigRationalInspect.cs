@@ -7,8 +7,8 @@ public partial struct BigRational
     /// <inheritdoc/>
     /// <remarks>
     /// A BigRational value should always be kept in canonical form, which means:
-    ///     - reduced to the simplest possible ratio of integers
-    ///     - the denominator should be positive
+    /// - reduced to the simplest possible ratio of integers
+    /// - the denominator should be positive
     /// </remarks>
     public static bool IsCanonical(BigRational value)
     {

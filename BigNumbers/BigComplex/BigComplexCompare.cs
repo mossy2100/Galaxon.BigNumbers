@@ -7,28 +7,13 @@ public partial struct BigComplex
     /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
-        // Null check.
-        if (obj == null)
-        {
-            return false;
-        }
-
-        // Try to convert the object to a BigComplex.
-        try
-        {
-            var z = (BigComplex)obj;
-            return Equals(z);
-        }
-        catch (Exception)
-        {
-            return false;
-        }
+        return obj is BigComplex bc && Equals(bc);
     }
 
     /// <inheritdoc/>
-    public bool Equals(BigComplex other)
+    public bool Equals(BigComplex bc)
     {
-        return Real == other.Real && Imaginary == other.Imaginary;
+        return Real == bc.Real && Imaginary == bc.Imaginary;
     }
 
     /// <inheritdoc/>
@@ -42,27 +27,31 @@ public partial struct BigComplex
     #region Comparison methods
 
     /// <inheritdoc/>
-    public static BigComplex MaxMagnitude(BigComplex x, BigComplex y)
+    public static BigComplex MaxMagnitude(BigComplex bc, BigComplex bc2)
     {
-        return x.Magnitude > y.Magnitude ? x : y;
+        var absX = bc.Magnitude;
+        var absY = bc2.Magnitude;
+        return absX > absY ? absX : absY;
     }
 
     /// <inheritdoc/>
-    public static BigComplex MaxMagnitudeNumber(BigComplex x, BigComplex y)
+    public static BigComplex MaxMagnitudeNumber(BigComplex bc, BigComplex bc2)
     {
-        return MaxMagnitude(x, y);
+        return MaxMagnitude(bc, bc2);
     }
 
     /// <inheritdoc/>
-    public static BigComplex MinMagnitude(BigComplex x, BigComplex y)
+    public static BigComplex MinMagnitude(BigComplex bc, BigComplex bc2)
     {
-        return x.Magnitude < y.Magnitude ? x : y;
+        var absX = bc.Magnitude;
+        var absY = bc2.Magnitude;
+        return absX < absY ? absX : absY;
     }
 
     /// <inheritdoc/>
-    public static BigComplex MinMagnitudeNumber(BigComplex x, BigComplex y)
+    public static BigComplex MinMagnitudeNumber(BigComplex bc, BigComplex bc2)
     {
-        return MinMagnitude(x, y);
+        return MinMagnitude(bc, bc2);
     }
 
     #endregion Comparison methods
@@ -70,15 +59,15 @@ public partial struct BigComplex
     #region Comparison operators
 
     /// <inheritdoc/>
-    public static bool operator ==(BigComplex z1, BigComplex z2)
+    public static bool operator ==(BigComplex bc, BigComplex bc2)
     {
-        return z1.Equals(z2);
+        return bc.Equals(bc2);
     }
 
     /// <inheritdoc/>
-    public static bool operator !=(BigComplex z1, BigComplex z2)
+    public static bool operator !=(BigComplex bc, BigComplex bc2)
     {
-        return !z1.Equals(z2);
+        return !bc.Equals(bc2);
     }
 
     #endregion Comparison operators

@@ -10,6 +10,8 @@ namespace Galaxon.BigNumbers;
 /// </summary>
 public partial struct BigRational :
     INumberBase<BigRational>,
+    IComparable,
+    IComparable<BigRational>,
     IComparisonOperators<BigRational, BigRational, bool>
 {
     #region Instance fields and properties
@@ -25,6 +27,16 @@ public partial struct BigRational :
     /// It should also never be negative. The sign of the rational is determined by the numerator.
     /// </remarks>
     public BigInteger Denominator { get; set; }
+
+    /// <summary>The sign of the value.</summary>
+    /// <remarks>
+    /// The same convention is used as for BigInteger:
+    ///    -1 means negative
+    ///     0 means zero
+    ///     1 means positive
+    /// </remarks>
+    /// <see cref="BigInteger.Sign"/>
+    public readonly int Sign => Numerator.Sign;
 
     #endregion Instance fields and properties
 

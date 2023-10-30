@@ -24,15 +24,14 @@ public partial struct BigDecimal :
     /// <summary>The power of 10.</summary>
     public int Exponent { get; set; }
 
-    /// <summary>
-    /// The sign of the value. The same convention is used as for BigInteger.
-    /// -1 means negative
-    /// 0 means zero
-    /// 1 means positive
-    /// </summary>
+    /// <summary>The sign of the value.</summary>
+    /// <remarks>
+    /// The same convention is used as for BigInteger:
+    ///    -1 means negative
+    ///     0 means zero
+    ///     1 means positive
+    /// </remarks>
     /// <see cref="BigInteger.Sign"/>
-    /// <see
-    ///     href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.biginteger.sign?view=net-7.0"/>
     public readonly int Sign => Significand.Sign;
 
     /// <summary>

@@ -211,10 +211,7 @@ public partial struct BigDecimal
     private static (BigDecimal, BigDecimal) Align(BigDecimal x, BigDecimal y)
     {
         // See if there's anything to do.
-        if (x.Exponent == y.Exponent)
-        {
-            return (x, y);
-        }
+        if (x.Exponent == y.Exponent) return (x, y);
 
         // Shift the value with the larger exponent so both have the same exponents.
         if (y.Exponent > x.Exponent)
