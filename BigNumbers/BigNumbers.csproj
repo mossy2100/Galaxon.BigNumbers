@@ -20,6 +20,7 @@
 
     <ItemGroup>
         <Compile Remove="BigDecimalOld.cs"/>
+        <Compile Remove="BigDecimal\BigDecimal.Old.cs" />
     </ItemGroup>
 
     <ItemGroup>

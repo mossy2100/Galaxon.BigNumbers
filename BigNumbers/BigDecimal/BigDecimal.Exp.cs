@@ -22,20 +22,30 @@ public partial struct BigDecimal
     /// </exception>
     public static BigDecimal Pow(BigDecimal x, BigDecimal y)
     {
-        // Handle negative y.
-        if (y < 0) return 1 / Pow(x, -y);
-
         // Anything to the power of 0 (including 0) is 1.
         if (y == 0) return 1;
 
         // Anything to the power of 1 is itself.
         if (y == 1) return x;
 
-        // 0 to any power other than 0 is 0.
-        if (x == 0) return 0;
+        // Handle zero base.
+        if (x == 0)
+        {
+            if (y < 0)
+            {
+                throw new ArithmeticException("0 raised to a negative power is undefined.");
+            }
+
+            // We've already handled 0^0, which is 1.
+            // 0 to any positive power is 0.
+            return 0;
+        }
 
         // 1 to any power is 1.
         if (x == 1) return 1;
+
+        // Handle negative y.
+        if (y < 0) return 1 / Pow(x, -y);
 
         // If the exponent is an integer we can compute a result reasonably quickly with
         // exponentiation by squaring (recursion).
@@ -47,10 +57,11 @@ public partial struct BigDecimal
                 return new BigDecimal(1, (int)y);
             }
 
-            // Even integer powers.
+            // Even integer powers. x^y = (x^2)^(y/2)
             if (IsEvenInteger(y)) return Pow(Sqr(x), y / 2);
 
-            // Odd integer powers. (We know y >= 3 at this point.)
+            // Odd integer powers. x^y = x * x^(y-1)
+            // We know y >= 3 at this point.
             return x * Pow(x, y - 1);
         }
 
@@ -58,7 +69,8 @@ public partial struct BigDecimal
         if (x > 0) return Exp(y * Log(x));
 
         // x < 0 and y is not an integer.
-        // Get y as a BigRational.
+        // Get y as a BigRational and try solving using x^y = x^(n/d) = (x^n)^(1/d)
+        // This will only work if the denominator is within the valid range for int.
         // We can compute a real result only if the numerator is even or if the denominator is odd
         // and can be converted to a 32-bit int.
         // We cannot compute a real result if the numerator is odd and the denominator is even or
@@ -66,12 +78,12 @@ public partial struct BigDecimal
         // (Note, since BigRationals are reduced automatically, the numerator and denominator should
         // never both be even.)
         var (n, d) = ((BigRational)y).ToTuple();
-        if (IsEvenInteger(n) || IsOddInteger(d) && d >= int.MinValue && d <= int.MaxValue)
+        if ((IsEvenInteger(n) || IsOddInteger(d)) && d >= int.MinValue && d <= int.MaxValue)
         {
             return RootN(Pow(x, n), (int)d);
         }
 
-        throw new ArithmeticException("Cannot compute a real result. Try BigComplex.Pow().");
+        throw new ArithmeticException("Cannot compute a real result. Try BigComplex.Pow() if you want to find complex results.");
     }
 
     /// <summary>
