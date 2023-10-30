@@ -113,17 +113,14 @@ public partial struct BigRational
     /// <summary>Cast BigDecimal to BigRational.</summary>
     public static implicit operator BigRational(BigDecimal x)
     {
-        return x.Exponent switch
-        {
-            // Zero exponent.
-            0 => new BigRational(x.Significand),
+        // Zero exponent.
+        if (x.Exponent == 0) return new BigRational(x.Significand);
 
-            // Positive exponent.
-            > 0 => new BigRational(x.Significand * BigInteger.Pow(10, x.Exponent)),
+        // Negative exponent.
+        if (x.Exponent < 0) return new BigRational(x.Significand, BigInteger.Pow(10, -x.Exponent));
 
-            // Negative exponent.
-            < 0 => new BigRational(x.Significand, BigInteger.Pow(10, -x.Exponent)),
-        };
+        // Positive exponent.
+        return new BigRational(x.Significand * BigInteger.Pow(10, x.Exponent));
     }
 
     #endregion Casting to BigRational

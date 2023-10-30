@@ -287,23 +287,6 @@ public partial struct BigDecimal
         return (strAbsSig[..^-Exponent], strAbsSig[^-Exponent..]);
     }
 
-    // /// <summary>
-    // /// From a BigDecimal, extract the significand and the exponent needed to write the number using
-    // /// scientific notation.
-    // /// Sign is ignored.
-    // /// </summary>
-    // private (string strSig, int exp) PreformatScientific()
-    // {
-    //     string strAbsSig = BigInteger.Abs(Significand).ToString();
-    //     if (strAbsSig.Length == 1)
-    //     {
-    //         return (strAbsSig, Exponent);
-    //     }
-    //     string strSig = strAbsSig[..1] + '.' + strAbsSig[1..];
-    //     int exp = Exponent + strAbsSig.Length - 1;
-    //     return (strSig, exp);
-    // }
-
     private string FormatFixed(string format, int? precision, IFormatProvider? provider = null)
     {
         // Get a NumberFormatInfo we can use for special characters.

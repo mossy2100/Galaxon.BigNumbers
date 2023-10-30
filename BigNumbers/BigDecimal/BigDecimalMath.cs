@@ -113,10 +113,7 @@ public partial struct BigDecimal
             _ => false,
         };
 
-        if (increment)
-        {
-            q++;
-        }
+        if (increment) q++;
 
         return sign * q;
     }
@@ -161,21 +158,18 @@ public partial struct BigDecimal
     /// </summary>
     private void ShiftBy(int nPlaces)
     {
-        switch (nPlaces)
+        // Guard.
+        if (nPlaces < 0)
         {
-            // Guard.
-            case < 0:
-                throw new ArgumentOutOfRangeException(nameof(nPlaces), "Cannot be negative.");
-
-            // See if there's anything to do.
-            case 0:
-                return;
-
-            default:
-                Significand *= BigInteger.Pow(10, nPlaces);
-                Exponent -= nPlaces;
-                break;
+            throw new ArgumentOutOfRangeException(nameof(nPlaces), "Cannot be negative.");
         }
+
+        // See if there's anything to do.
+        if (nPlaces == 0) return;
+
+        // Shift.
+        Significand *= BigInteger.Pow(10, nPlaces);
+        Exponent -= nPlaces;
     }
 
     /// <summary>

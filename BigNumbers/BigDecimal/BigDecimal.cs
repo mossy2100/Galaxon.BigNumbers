@@ -111,15 +111,13 @@ public partial struct BigDecimal :
 
     #region Constructors
 
-    /// <summary>
-    /// Main constructor.
-    /// </summary>
+    /// <summary>Main constructor.</summary>
     /// <param name="significand">The significand or mantissa.</param>
     /// <param name="exponent">The exponent.</param>
     /// <param name="roundSigFigs">
     /// If the value should be rounded off to the current value of MaxSigFigs.
     /// </param>
-    public BigDecimal(BigInteger significand, int exponent = 0, bool roundSigFigs = false)
+    public BigDecimal(BigInteger significand, int exponent, bool roundSigFigs = false)
     {
         // If the significant is 0, make sure the exponent is also 0.
         if (significand == 0)
@@ -144,9 +142,16 @@ public partial struct BigDecimal :
     }
 
     /// <summary>
-    /// Default constructor.
+    /// Constructor for integers. Sets default value of exponent to 0.
     /// </summary>
-    public BigDecimal() : this(0)
+    public BigDecimal(BigInteger significand) : this(significand, 0)
+    {
+    }
+
+    /// <summary>
+    /// Zero constructor.
+    /// </summary>
+    public BigDecimal() : this(0, 0)
     {
     }
 
