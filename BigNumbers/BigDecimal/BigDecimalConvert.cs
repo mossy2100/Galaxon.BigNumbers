@@ -9,91 +9,91 @@ public partial struct BigDecimal
     #region Casting to BigDecimal
 
     /// <summary>Cast sbyte to BigDecimal.</summary>
-    /// <param name="n">The sbyte value.</param>
+    /// <param name="x">The sbyte value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(sbyte n)
+    public static implicit operator BigDecimal(sbyte x)
     {
-        return new BigDecimal(n);
+        return new BigDecimal(x);
     }
 
     /// <summary>Cast byte to BigDecimal.</summary>
-    /// <param name="n">The byte value.</param>
+    /// <param name="x">The byte value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(byte n)
+    public static implicit operator BigDecimal(byte x)
     {
-        return new BigDecimal(n);
+        return new BigDecimal(x);
     }
 
     /// <summary>Cast short to BigDecimal.</summary>
-    /// <param name="n">The short value.</param>
+    /// <param name="x">The short value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(short n)
+    public static implicit operator BigDecimal(short x)
     {
-        return new BigDecimal(n);
+        return new BigDecimal(x);
     }
 
     /// <summary>Cast ushort to BigDecimal.</summary>
-    /// <param name="n">The ushort value.</param>
+    /// <param name="x">The ushort value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(ushort n)
+    public static implicit operator BigDecimal(ushort x)
     {
-        return new BigDecimal(n);
+        return new BigDecimal(x);
     }
 
     /// <summary>Cast int to BigDecimal.</summary>
-    /// <param name="n">The int value.</param>
+    /// <param name="x">The int value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(int n)
+    public static implicit operator BigDecimal(int x)
     {
-        return new BigDecimal(n);
+        return new BigDecimal(x);
     }
 
     /// <summary>Cast uint to BigDecimal.</summary>
-    /// <param name="n">The uint value.</param>
+    /// <param name="x">The uint value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(uint n)
+    public static implicit operator BigDecimal(uint x)
     {
-        return new BigDecimal(n);
+        return new BigDecimal(x);
     }
 
     /// <summary>Cast long to BigDecimal.</summary>
-    /// <param name="n">The long value.</param>
+    /// <param name="x">The long value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(long n)
+    public static implicit operator BigDecimal(long x)
     {
-        return new BigDecimal(n);
+        return new BigDecimal(x);
     }
 
     /// <summary>Cast ulong to BigDecimal.</summary>
-    /// <param name="n">The ulong value.</param>
+    /// <param name="x">The ulong value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(ulong n)
+    public static implicit operator BigDecimal(ulong x)
     {
-        return new BigDecimal(n);
+        return new BigDecimal(x);
     }
 
     /// <summary>Cast Int128 to BigDecimal.</summary>
-    /// <param name="n">The Int128 value.</param>
+    /// <param name="x">The Int128 value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(Int128 n)
+    public static implicit operator BigDecimal(Int128 x)
     {
-        return new BigDecimal(n);
+        return new BigDecimal(x);
     }
 
     /// <summary>Cast UInt128 to BigDecimal.</summary>
-    /// <param name="n">The UInt128 value.</param>
+    /// <param name="x">The UInt128 value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(UInt128 n)
+    public static implicit operator BigDecimal(UInt128 x)
     {
-        return new BigDecimal(n);
+        return new BigDecimal(x);
     }
 
     /// <summary>Cast BigInteger to BigDecimal.</summary>
-    /// <param name="n">The BigInteger value.</param>
+    /// <param name="x">The BigInteger value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(BigInteger n)
+    public static implicit operator BigDecimal(BigInteger x)
     {
-        return new BigDecimal(n);
+        return new BigDecimal(x);
     }
 
     /// <summary>Cast Half to BigDecimal.</summary>
@@ -102,11 +102,11 @@ public partial struct BigDecimal
     /// exactly match the value *assigned* to the Half, due to limitations of binary floating point
     /// representation.
     /// </remarks>
-    /// <param name="n">The Half value.</param>
+    /// <param name="x">The Half value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(Half n)
+    public static implicit operator BigDecimal(Half x)
     {
-        return ConvertFromFloatingPoint<Half>(n);
+        return ConvertFromFloatingPoint<Half>(x);
     }
 
     /// <summary>Cast float to BigDecimal.</summary>
@@ -115,11 +115,11 @@ public partial struct BigDecimal
     /// exactly match the value *assigned* to the float, due to limitations of binary floating point
     /// representation.
     /// </remarks>
-    /// <param name="n">The float value.</param>
+    /// <param name="x">The float value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(float n)
+    public static implicit operator BigDecimal(float x)
     {
-        return ConvertFromFloatingPoint<float>(n);
+        return ConvertFromFloatingPoint<float>(x);
     }
 
     /// <summary>Cast double to BigDecimal.</summary>
@@ -128,19 +128,19 @@ public partial struct BigDecimal
     /// exactly match the value *assigned* to the double, due to limitations of binary floating
     /// point representation.
     /// </remarks>
-    /// <param name="n">The double value.</param>
+    /// <param name="x">The double value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(double n)
+    public static implicit operator BigDecimal(double x)
     {
-        return ConvertFromFloatingPoint<double>(n);
+        return ConvertFromFloatingPoint<double>(x);
     }
 
     /// <summary>Cast decimal to BigDecimal.</summary>
-    /// <param name="n">The double value.</param>
+    /// <param name="x">The double value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(decimal n)
+    public static implicit operator BigDecimal(decimal x)
     {
-        var parts = decimal.GetBits(n);
+        var parts = decimal.GetBits(x);
 
         // Get the sign and scale from the bits.
         var sign = (parts[3] & 0x80000000) == 0 ? 1 : -1;
@@ -284,8 +284,8 @@ public partial struct BigDecimal
 
     /// <summary>Cast BigDecimal to Half.</summary>
     /// <remarks>
-    /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
-    /// valid range for Half.
+    /// For values outside the valid range for Half, this method will return ±∞ and not throw an
+    /// OverflowException.
     /// </remarks>
     /// <param name="bd">The BigDecimal value.</param>
     /// <returns>The closest Half value.</returns>
@@ -296,8 +296,8 @@ public partial struct BigDecimal
 
     /// <summary>Cast BigDecimal to float.</summary>
     /// <remarks>
-    /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
-    /// valid range for float.
+    /// For values outside the valid range for float, this method will return ±∞ and not throw an
+    /// OverflowException.
     /// </remarks>
     /// <param name="bd">The BigDecimal value.</param>
     /// <returns>The closest float value.</returns>
@@ -308,8 +308,8 @@ public partial struct BigDecimal
 
     /// <summary>Cast BigDecimal to double.</summary>
     /// <remarks>
-    /// This method will not throw an OverflowException, but will return ±∞ for a value outside the
-    /// valid range for double.
+    /// For values outside the valid range for double, this method will return ±∞ and not throw an
+    /// OverflowException.
     /// </remarks>
     /// <param name="bd">The BigDecimal value.</param>
     /// <returns>The closest double value.</returns>
@@ -333,13 +333,10 @@ public partial struct BigDecimal
         }
 
         // If the exponent is greater than 0, shift to exponent 0 to get the correct scale.
-        if (bd.Exponent > 0)
-        {
-            bd.ShiftToExp(0);
-        }
+        if (bd.Exponent > 0) bd.ShiftToExp(0);
 
         // Get the scale.
-        var scale = (byte)-bd.Exponent;
+        var scale = (byte)(-bd.Exponent);
 
         // Check the scale is not too large.
         if (scale > DecimalPrecision)
@@ -376,7 +373,7 @@ public partial struct BigDecimal
     #region Convert to object
 
     /// <summary>Convert BigDecimal to tuple.</summary>
-    /// <returns>The equivalent tuple.</returns>
+    /// <returns>A tuple containing the significand and exponent.</returns>
     public readonly (BigInteger, int) ToTuple()
     {
         return (Significand, Exponent);
@@ -674,16 +671,16 @@ public partial struct BigDecimal
     /// BigDecimal.
     /// </summary>
     /// <exception cref="InvalidCastException"></exception>
-    private static BigDecimal ConvertFromFloatingPoint<T>(T n) where T : IFloatingPointIeee754<T>
+    private static BigDecimal ConvertFromFloatingPoint<T>(T x) where T : IFloatingPointIeee754<T>
     {
         // Guard.
-        if (!T.IsFinite(n))
+        if (!T.IsFinite(x))
         {
             throw new InvalidCastException("Cannot convert ±∞ or NaN to BigDecimal.");
         }
 
         // Get the value's parts.
-        var (signBit, expBits, fracBits) = n.Disassemble();
+        var (signBit, expBits, fracBits) = x.Disassemble();
 
         // Check for ±0.
         if (expBits == 0 && fracBits == 0) return 0;

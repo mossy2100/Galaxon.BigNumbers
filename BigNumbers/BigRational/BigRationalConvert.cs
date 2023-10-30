@@ -8,69 +8,69 @@ public partial struct BigRational
     #region Casting to BigRational
 
     /// <summary>Cast sbyte to BigRational.</summary>
-    public static implicit operator BigRational(sbyte num)
+    public static implicit operator BigRational(sbyte x)
     {
-        return new BigRational(num);
+        return new BigRational(x);
     }
 
     /// <summary>Cast byte to BigRational.</summary>
-    public static implicit operator BigRational(byte num)
+    public static implicit operator BigRational(byte x)
     {
-        return new BigRational(num);
+        return new BigRational(x);
     }
 
     /// <summary>Cast short to BigRational.</summary>
-    public static implicit operator BigRational(short num)
+    public static implicit operator BigRational(short x)
     {
-        return new BigRational(num);
+        return new BigRational(x);
     }
 
     /// <summary>Cast ushort to BigRational.</summary>
-    public static implicit operator BigRational(ushort num)
+    public static implicit operator BigRational(ushort x)
     {
-        return new BigRational(num);
+        return new BigRational(x);
     }
 
     /// <summary>Cast int to BigRational.</summary>
-    public static implicit operator BigRational(int num)
+    public static implicit operator BigRational(int x)
     {
-        return new BigRational(num);
+        return new BigRational(x);
     }
 
     /// <summary>Cast uint to BigRational.</summary>
-    public static implicit operator BigRational(uint num)
+    public static implicit operator BigRational(uint x)
     {
-        return new BigRational(num);
+        return new BigRational(x);
     }
 
     /// <summary>Cast long to BigRational.</summary>
-    public static implicit operator BigRational(long num)
+    public static implicit operator BigRational(long x)
     {
-        return new BigRational(num);
+        return new BigRational(x);
     }
 
     /// <summary>Cast ulong to BigRational.</summary>
-    public static implicit operator BigRational(ulong num)
+    public static implicit operator BigRational(ulong x)
     {
-        return new BigRational(num);
+        return new BigRational(x);
     }
 
     /// <summary>Cast Int128 to BigRational.</summary>
-    public static implicit operator BigRational(Int128 num)
+    public static implicit operator BigRational(Int128 x)
     {
-        return new BigRational(num);
+        return new BigRational(x);
     }
 
     /// <summary>Cast UInt128 to BigRational.</summary>
-    public static implicit operator BigRational(UInt128 num)
+    public static implicit operator BigRational(UInt128 x)
     {
-        return new BigRational(num);
+        return new BigRational(x);
     }
 
     /// <summary>Cast BigInteger to BigRational.</summary>
-    public static implicit operator BigRational(BigInteger num)
+    public static implicit operator BigRational(BigInteger x)
     {
-        return new BigRational(num);
+        return new BigRational(x);
     }
 
     /// <summary>Cast Half to BigRational.</summary>
@@ -111,18 +111,18 @@ public partial struct BigRational
     }
 
     /// <summary>Cast BigDecimal to BigRational.</summary>
-    public static implicit operator BigRational(BigDecimal n)
+    public static implicit operator BigRational(BigDecimal x)
     {
-        return n.Exponent switch
+        return x.Exponent switch
         {
             // Zero exponent.
-            0 => new BigRational(n.Significand),
+            0 => new BigRational(x.Significand),
 
             // Positive exponent.
-            > 0 => new BigRational(n.Significand * BigInteger.Pow(10, n.Exponent)),
+            > 0 => new BigRational(x.Significand * BigInteger.Pow(10, x.Exponent)),
 
             // Negative exponent.
-            < 0 => new BigRational(n.Significand, BigInteger.Pow(10, -n.Exponent)),
+            < 0 => new BigRational(x.Significand, BigInteger.Pow(10, -x.Exponent)),
         };
     }
 
@@ -241,9 +241,9 @@ public partial struct BigRational
     }
 
     /// <summary>Cast BigRational to BigDecimal.</summary>
-    public static explicit operator BigDecimal(BigRational n)
+    public static explicit operator BigDecimal(BigRational br)
     {
-        return (BigDecimal)n.Numerator / (BigDecimal)n.Denominator;
+        return (BigDecimal)br.Numerator / (BigDecimal)br.Denominator;
     }
 
     #endregion Casting from BigRational
@@ -251,14 +251,14 @@ public partial struct BigRational
     #region Convert to object
 
     /// <summary>Convert BigRational to array.</summary>
-    /// <returns>The equivalent array.</returns>
+    /// <returns>An array of 2 BigIntegers, equal to the numerator and denominator.</returns>
     public readonly BigInteger[] ToArray()
     {
         return new[] { Numerator, Denominator };
     }
 
     /// <summary>Convert BigRational to tuple.</summary>
-    /// <returns>The equivalent tuple.</returns>
+    /// <returns>A tuple with 2 BigIntegers, equal to the numerator and denominator.</returns>
     public readonly (BigInteger, BigInteger) ToTuple()
     {
         return (Numerator, Denominator);
