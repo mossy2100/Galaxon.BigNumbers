@@ -1,10 +1,31 @@
+using System.Numerics;
+
 namespace Galaxon.BigNumbers;
 
 /// <summary>
 /// LINQ methods for IEnumerable{BigDecimal}.
 /// </summary>
-public static class XEnumerableBigDecimal
+public static class XEnumerableBigNumbers
 {
+    #region Extension methods for IEnumerable<BigInteger>
+
+    /// <summary>
+    /// Get the sum of all values in the collection.
+    /// </summary>
+    public static BigInteger Sum(this IEnumerable<BigInteger> nums) =>
+        nums.Aggregate<BigInteger, BigInteger>((BigInteger)0, (sum, num) => sum + num);
+
+    /// <summary>
+    /// Get the sum of all values in the collection, transformed by the supplied function.
+    /// </summary>
+    public static BigInteger Sum(this IEnumerable<BigInteger> source,
+        Func<BigInteger, BigInteger> func) =>
+        source.Aggregate((BigInteger)0, (sum, value) => sum + func(value));
+
+    #endregion Extension methods for IEnumerable<BigInteger>
+
+    #region Extension methods for IEnumerable<BigDecimal>
+
     /// <summary>
     /// Given a collection of BigDecimal values, get the sum of the values.
     /// </summary>
@@ -68,4 +89,6 @@ public static class XEnumerableBigDecimal
 
         return BigDecimal.RootN(nums.Product(), nums.Count);
     }
+
+    #endregion Extension methods for IEnumerable<BigDecimal>
 }

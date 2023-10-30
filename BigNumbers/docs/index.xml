@@ -831,7 +831,7 @@
             <summary>
             Shared logic for:
             <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteBigInteger(System.Numerics.BigInteger,System.Span{System.Byte},System.Int32@,System.Boolean)"/>
-            <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteInt(System.Int32,System.Span{System.Byte},System.Int32@,System.Boolean)"/>
+            <see cref="!:TryWriteInt"/>
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteBigInteger(System.Numerics.BigInteger,System.Span{System.Byte},System.Int32@,System.Boolean)">
@@ -839,13 +839,6 @@
             Shared logic for:
             <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteSignificandBigEndian(System.Span{System.Byte},System.Int32@)"/>
             <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteSignificandLittleEndian(System.Span{System.Byte},System.Int32@)"/>
-            </summary>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteInt(System.Int32,System.Span{System.Byte},System.Int32@,System.Boolean)">
-            <summary>
-            Shared logic for:
-            <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteExponentBigEndian(System.Span{System.Byte},System.Int32@)"/>
-            <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteExponentLittleEndian(System.Span{System.Byte},System.Int32@)"/>
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Equals(System.Object)">
@@ -2382,28 +2375,117 @@
         <member name="M:Galaxon.BigNumbers.BigRational.TryFormat(System.Span{System.Char},System.Int32@,System.ReadOnlySpan{System.Char},System.IFormatProvider)">
             <inheritdoc/>
         </member>
-        <member name="T:Galaxon.BigNumbers.XEnumerableBigDecimal">
+        <member name="T:Galaxon.BigNumbers.XBigInteger">
+            <summary>Extension methods for BigInteger.</summary>
+        </member>
+        <member name="F:Galaxon.BigNumbers.XBigInteger.s_gcdCache">
+            <summary>
+            Cache for GreatestCommonDivisor().
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.XBigInteger.ToUnsigned(System.Numerics.BigInteger)">
+            <summary>
+            Get the unsigned, twos-complement version of the value, containing the fewest number of
+            bytes.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.XBigInteger.Reverse(System.Numerics.BigInteger)">
+            <summary>
+            Reverse a BigInteger.
+            e.g. 123 becomes 321.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.XBigInteger.IsPalindromic(System.Numerics.BigInteger)">
+            <summary>
+            Check if a BigInteger is palindromic.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.XBigInteger.DigitSum(System.Numerics.BigInteger)">
+            <summary>
+            Sum of the digits in a BigInteger.
+            If present, a negative sign is ignored.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.XBigInteger.NumDigits(System.Numerics.BigInteger)">
+            <summary>
+            Get the number of digits in the BigInteger.
+            The result will be the same for a positive or negative value.
+            I tried doing this with double.Log() but because double is imprecise it gives wrong results
+            for values close to but less than powers of 10.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.XBigInteger.LeastCommonMultiple(System.Numerics.BigInteger,System.Numerics.BigInteger)">
+            <summary>
+            Find the smallest integer which is a multiple of both arguments.
+            Synonyms: lowest common multiple, smallest common multiple.
+            For example, the LCM of 4 and 6 is 12.
+            When adding fractions, the lowest common denominator is equal to the LCM of the
+            denominators.
+            </summary>
+            <param name="a">First integer.</param>
+            <param name="b">Second integer.</param>
+            <returns>The least common multiple.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.XBigInteger.GreatestCommonDivisor(System.Numerics.BigInteger,System.Numerics.BigInteger)">
+            <summary>
+            Determine the greatest common divisor of two integers.
+            Synonyms: greatest common factor, highest common factor.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.XBigInteger.Pow(System.Numerics.BigInteger,System.Numerics.BigInteger)">
+            <summary>Calculate the value of x^y where x and y are BigIntegers.</summary>
+            <remarks>
+            BigInteger provides a Pow() method, but it only permits an int as the exponent.
+            Uses exponentiation by squaring.
+            </remarks>
+            <param name="x">The base (BigRational).</param>
+            <param name="y">The exponent (BigInteger).</param>
+            <returns>The result of the calculation.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">If y is negative.</exception>
+            <see cref="M:System.Numerics.BigInteger.Pow(System.Numerics.BigInteger,System.Int32)"/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.XBigInteger.Exp2(System.Numerics.BigInteger)">
+            <summary>Compute 2 raised to a given power.</summary>
+            <param name="y">The power to which 2 is raised.</param>
+            <returns>2 raised to the given BigInteger value.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.XBigInteger.Exp10(System.Numerics.BigInteger)">
+            <summary>Compute 10 raised to a given power.</summary>
+            <param name="y">The power to which 10 is raised.</param>
+            <returns>10 raised to the given BigInteger value.</returns>
+        </member>
+        <member name="T:Galaxon.BigNumbers.XEnumerableBigNumbers">
             <summary>
             LINQ methods for IEnumerable{BigDecimal}.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.XEnumerableBigDecimal.Sum(System.Collections.Generic.IEnumerable{Galaxon.BigNumbers.BigDecimal})">
+        <member name="M:Galaxon.BigNumbers.XEnumerableBigNumbers.Sum(System.Collections.Generic.IEnumerable{System.Numerics.BigInteger})">
+            <summary>
+            Get the sum of all values in the collection.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.XEnumerableBigNumbers.Sum(System.Collections.Generic.IEnumerable{System.Numerics.BigInteger},System.Func{System.Numerics.BigInteger,System.Numerics.BigInteger})">
+            <summary>
+            Get the sum of all values in the collection, transformed by the supplied function.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.XEnumerableBigNumbers.Sum(System.Collections.Generic.IEnumerable{Galaxon.BigNumbers.BigDecimal})">
             <summary>
             Given a collection of BigDecimal values, get the sum of the values.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.XEnumerableBigDecimal.Average(System.Collections.Generic.IEnumerable{Galaxon.BigNumbers.BigDecimal})">
+        <member name="M:Galaxon.BigNumbers.XEnumerableBigNumbers.Average(System.Collections.Generic.IEnumerable{Galaxon.BigNumbers.BigDecimal})">
             <summary>
             Given a collection of BigDecimal values, get the average (i.e. the arithmetic mean).
             </summary>
             <see href="https://en.wikipedia.org/wiki/Arithmetic_mean"/>
         </member>
-        <member name="M:Galaxon.BigNumbers.XEnumerableBigDecimal.Product(System.Collections.Generic.IEnumerable{Galaxon.BigNumbers.BigDecimal})">
+        <member name="M:Galaxon.BigNumbers.XEnumerableBigNumbers.Product(System.Collections.Generic.IEnumerable{Galaxon.BigNumbers.BigDecimal})">
             <summary>
             Given a collection of BigDecimal values, get the product of the values.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.XEnumerableBigDecimal.GeometricMean(System.Collections.Generic.IEnumerable{Galaxon.BigNumbers.BigDecimal})">
+        <member name="M:Galaxon.BigNumbers.XEnumerableBigNumbers.GeometricMean(System.Collections.Generic.IEnumerable{Galaxon.BigNumbers.BigDecimal})">
             <summary>
             Given a collection of BigDecimal values, get the geometric mean.
             </summary>

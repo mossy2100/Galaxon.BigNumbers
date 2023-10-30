@@ -84,7 +84,7 @@ public partial struct BigDecimal
     private static BigInteger RoundSignificand(BigInteger sig, BigInteger nDigitsToCut,
         MidpointRounding mode = MidpointRounding.ToEven)
     {
-        var pow = XBigInteger.Pow(10, nDigitsToCut);
+        var pow = XBigInteger.Exp10(nDigitsToCut);
         var absSig = BigInteger.Abs(sig);
         var sign = sig.Sign;
         var q = absSig / pow;
@@ -157,7 +157,7 @@ public partial struct BigDecimal
         if (nPlaces == 0) return;
 
         // Shift.
-        Significand *= XBigInteger.Pow(10, nPlaces);
+        Significand *= XBigInteger.Exp10(nPlaces);
         Exponent -= nPlaces;
     }
 
