@@ -5,56 +5,40 @@ namespace Galaxon.BigNumbers;
 public partial struct BigComplex
 {
     /// <inheritdoc/>
-    public static BigComplex Parse(string s, IFormatProvider? provider)
-    {
+    public static BigComplex Parse(string s, IFormatProvider? provider) =>
         throw new NotImplementedException();
-    }
 
     /// <inheritdoc/>
-    public static BigComplex Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-    {
+    public static BigComplex Parse(ReadOnlySpan<char> s, IFormatProvider? provider) =>
         throw new NotImplementedException();
-    }
 
     /// <inheritdoc/>
-    public static BigComplex Parse(string s, NumberStyles style, IFormatProvider? provider)
-    {
+    public static BigComplex Parse(string s, NumberStyles style, IFormatProvider? provider) =>
         throw new NotImplementedException();
-    }
 
     /// <inheritdoc/>
     public static BigComplex Parse(ReadOnlySpan<char> s, NumberStyles style,
-        IFormatProvider? provider)
-    {
+        IFormatProvider? provider) =>
         throw new NotImplementedException();
-    }
 
     /// <inheritdoc/>
-    public static bool TryParse(string? s, IFormatProvider? provider, out BigComplex result)
-    {
+    public static bool TryParse(string? s, IFormatProvider? provider, out BigComplex result) =>
         throw new NotImplementedException();
-    }
 
     /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider,
-        out BigComplex result)
-    {
+        out BigComplex result) =>
         throw new NotImplementedException();
-    }
 
     /// <inheritdoc/>
     public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider,
-        out BigComplex result)
-    {
+        out BigComplex result) =>
         throw new NotImplementedException();
-    }
 
     /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider,
-        out BigComplex result)
-    {
+        out BigComplex result) =>
         throw new NotImplementedException();
-    }
 
     /// <summary>
     /// Express the complex number as a string in the usual algebraic format.
@@ -104,15 +88,11 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public string ToString(string? format, IFormatProvider? formatProvider)
-    {
+    public string ToString(string? format, IFormatProvider? formatProvider) =>
         throw new NotImplementedException();
-    }
 
     /// <inheritdoc/>
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
-        IFormatProvider? provider)
-    {
+        IFormatProvider? provider) =>
         throw new NotImplementedException();
-    }
 }

@@ -10,22 +10,13 @@ public partial struct BigDecimal
     #region Equality methods
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj)
-    {
-        return obj is BigDecimal bd && Equals(bd);
-    }
+    public override bool Equals(object? obj) => obj is BigDecimal bd && Equals(bd);
 
     /// <inheritdoc/>
-    public bool Equals(BigDecimal bd)
-    {
-        return CompareTo(bd) == 0;
-    }
+    public bool Equals(BigDecimal bd) => CompareTo(bd) == 0;
 
     /// <inheritdoc/>
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Significand, Exponent);
-    }
+    public override int GetHashCode() => HashCode.Combine(Significand, Exponent);
 
     #endregion Equality methods
 
@@ -44,9 +35,9 @@ public partial struct BigDecimal
     /// Although the specification says any negative value indicates the "this" operand comes before
     /// the "other" operand (similar for positive values), in this method the result is constrained
     /// to only 3 possible values:
-    ///     -1 means "this" comes before (and is less than) "other"
-    ///      0 means they are equal
-    ///      1 means "this" comes after (and is greater than) "other"
+    /// -1 means "this" comes before (and is less than) "other"
+    /// 0 means they are equal
+    /// 1 means "this" comes after (and is greater than) "other"
     /// </remarks>
     public int CompareTo(BigDecimal bd)
     {
@@ -68,10 +59,8 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc/>
-    public static BigDecimal MaxMagnitudeNumber(BigDecimal bd, BigDecimal bd2)
-    {
-        return MaxMagnitude(bd, bd2);
-    }
+    public static BigDecimal MaxMagnitudeNumber(BigDecimal bd, BigDecimal bd2) =>
+        MaxMagnitude(bd, bd2);
 
     /// <inheritdoc/>
     public static BigDecimal MinMagnitude(BigDecimal bd, BigDecimal bd2)
@@ -82,50 +71,30 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc/>
-    public static BigDecimal MinMagnitudeNumber(BigDecimal bd, BigDecimal bd2)
-    {
-        return MinMagnitude(bd, bd2);
-    }
+    public static BigDecimal MinMagnitudeNumber(BigDecimal bd, BigDecimal bd2) =>
+        MinMagnitude(bd, bd2);
 
     #endregion Comparison methods
 
     #region Comparison operators
 
     /// <inheritdoc/>
-    public static bool operator ==(BigDecimal bd, BigDecimal bd2)
-    {
-        return bd.CompareTo(bd2) == 0;
-    }
+    public static bool operator ==(BigDecimal bd, BigDecimal bd2) => bd.CompareTo(bd2) == 0;
 
     /// <inheritdoc/>
-    public static bool operator !=(BigDecimal bd, BigDecimal bd2)
-    {
-        return bd.CompareTo(bd2) != 0;
-    }
+    public static bool operator !=(BigDecimal bd, BigDecimal bd2) => bd.CompareTo(bd2) != 0;
 
     /// <inheritdoc/>
-    public static bool operator <(BigDecimal bd, BigDecimal bd2)
-    {
-        return bd.CompareTo(bd2) < 0;
-    }
+    public static bool operator <(BigDecimal bd, BigDecimal bd2) => bd.CompareTo(bd2) < 0;
 
     /// <inheritdoc/>
-    public static bool operator <=(BigDecimal bd, BigDecimal bd2)
-    {
-        return bd.CompareTo(bd2) <= 0;
-    }
+    public static bool operator <=(BigDecimal bd, BigDecimal bd2) => bd.CompareTo(bd2) <= 0;
 
     /// <inheritdoc/>
-    public static bool operator >(BigDecimal bd, BigDecimal bd2)
-    {
-        return bd.CompareTo(bd2) > 0;
-    }
+    public static bool operator >(BigDecimal bd, BigDecimal bd2) => bd.CompareTo(bd2) > 0;
 
     /// <inheritdoc/>
-    public static bool operator >=(BigDecimal bd, BigDecimal bd2)
-    {
-        return bd.CompareTo(bd2) >= 0;
-    }
+    public static bool operator >=(BigDecimal bd, BigDecimal bd2) => bd.CompareTo(bd2) >= 0;
 
     #endregion Comparison operators
 }

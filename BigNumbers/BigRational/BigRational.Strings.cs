@@ -9,10 +9,8 @@ namespace Galaxon.BigNumbers;
 public partial struct BigRational
 {
     /// <inheritdoc/>
-    public static BigRational Parse(string s, NumberStyles style, IFormatProvider? provider)
-    {
+    public static BigRational Parse(string s, NumberStyles style, IFormatProvider? provider) =>
         throw new NotImplementedException();
-    }
 
     /// <summary>
     /// Parse a string into a rational.
@@ -46,23 +44,17 @@ public partial struct BigRational
 
     /// <inheritdoc/>
     public static BigRational Parse(ReadOnlySpan<char> s, NumberStyles style,
-        IFormatProvider? provider)
-    {
+        IFormatProvider? provider) =>
         throw new NotImplementedException();
-    }
 
     /// <inheritdoc/>
-    public static BigRational Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
-    {
+    public static BigRational Parse(ReadOnlySpan<char> s, IFormatProvider? provider) =>
         throw new NotImplementedException();
-    }
 
     /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider,
-        out BigRational result)
-    {
+        out BigRational result) =>
         throw new NotImplementedException();
-    }
 
     /// <summary>
     /// Try to parse a string into a rational.
@@ -97,24 +89,17 @@ public partial struct BigRational
     /// Try to parse a string into a rational.
     /// </summary>
     /// <exception cref="ArgumentNullException"></exception>
-    public static bool TryParse(string? s, out BigRational result)
-    {
-        return TryParse(s, null, out result);
-    }
+    public static bool TryParse(string? s, out BigRational result) => TryParse(s, null, out result);
 
     /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider,
-        out BigRational result)
-    {
+        out BigRational result) =>
         throw new NotImplementedException();
-    }
 
     /// <inheritdoc/>
     public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider,
-        out BigRational result)
-    {
+        out BigRational result) =>
         throw new NotImplementedException();
-    }
 
     /// <summary>
     /// Format the rational as a string.
@@ -177,24 +162,16 @@ public partial struct BigRational
     /// <summary>
     /// Format the rational as a string.
     /// </summary>
-    public string ToString(string format)
-    {
-        return ToString(format, CultureInfo.CurrentCulture);
-    }
+    public string ToString(string format) => ToString(format, CultureInfo.CurrentCulture);
 
     /// <summary>
     /// Format the rational as a string.
     /// The is the default override version, which uses Unicode characters for a nicer format.
     /// </summary>
-    public override string ToString()
-    {
-        return ToString("U", CultureInfo.CurrentCulture);
-    }
+    public override string ToString() => ToString("U", CultureInfo.CurrentCulture);
 
     /// <inheritdoc/>
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
-        IFormatProvider? provider)
-    {
+        IFormatProvider? provider) =>
         throw new NotImplementedException();
-    }
 }

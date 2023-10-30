@@ -113,10 +113,7 @@ public partial struct BigDecimal
     /// Override of ValueType.ToString(). Needed for debugging and string interpolation.
     /// </remarks>
     /// <see cref="ValueType.ToString"/>
-    public override string ToString()
-    {
-        return ToString("G");
-    }
+    public override string ToString() => ToString("G");
 
     /// <inheritdoc/>
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
@@ -176,31 +173,22 @@ public partial struct BigDecimal
     /// <summary>
     /// More convenient version of Parse().
     /// </summary>
-    public static BigDecimal Parse(string str)
-    {
-        return Parse(str, NumberFormatInfo.InvariantInfo);
-    }
+    public static BigDecimal Parse(string str) => Parse(str, NumberFormatInfo.InvariantInfo);
 
     /// <inheritdoc/>
     /// <remarks>Ignoring style parameter for now.</remarks>
-    public static BigDecimal Parse(string str, NumberStyles style, IFormatProvider? provider)
-    {
-        return Parse(str, provider);
-    }
+    public static BigDecimal Parse(string str, NumberStyles style, IFormatProvider? provider) =>
+        Parse(str, provider);
 
     /// <inheritdoc/>
-    public static BigDecimal Parse(ReadOnlySpan<char> span, IFormatProvider? provider)
-    {
-        return Parse(new string(span), provider);
-    }
+    public static BigDecimal Parse(ReadOnlySpan<char> span, IFormatProvider? provider) =>
+        Parse(new string(span), provider);
 
     /// <inheritdoc/>
     /// <remarks>Ignoring style parameter for now.</remarks>
     public static BigDecimal Parse(ReadOnlySpan<char> span, NumberStyles style,
-        IFormatProvider? provider)
-    {
-        return Parse(new string(span), provider);
-    }
+        IFormatProvider? provider) =>
+        Parse(new string(span), provider);
 
     /// <inheritdoc/>
     public static bool TryParse(string? str, IFormatProvider? provider, out BigDecimal result)
@@ -226,34 +214,26 @@ public partial struct BigDecimal
     /// <summary>
     /// More convenient version of TryParse().
     /// </summary>
-    public static bool TryParse(string? str, out BigDecimal result)
-    {
-        return TryParse(str, NumberFormatInfo.InvariantInfo, out result);
-    }
+    public static bool TryParse(string? str, out BigDecimal result) =>
+        TryParse(str, NumberFormatInfo.InvariantInfo, out result);
 
     /// <inheritdoc/>
     /// <remarks>Ignoring style parameter for now.</remarks>
     public static bool TryParse(string? str, NumberStyles style, IFormatProvider? provider,
-        out BigDecimal result)
-    {
-        return TryParse(str, provider, out result);
-    }
+        out BigDecimal result) =>
+        TryParse(str, provider, out result);
 
     /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> span, IFormatProvider? provider,
-        out BigDecimal result)
-    {
-        return TryParse(new string(span), provider, out result);
-    }
+        out BigDecimal result) =>
+        TryParse(new string(span), provider, out result);
 
     /// <inheritdoc/>
     /// <remarks>Ignoring style parameter for now.</remarks>
     public static bool TryParse(ReadOnlySpan<char> span, NumberStyles style,
         IFormatProvider? provider,
-        out BigDecimal result)
-    {
-        return TryParse(new string(span), provider, out result);
-    }
+        out BigDecimal result) =>
+        TryParse(new string(span), provider, out result);
 
     /// <summary>
     /// From a BigDecimal, extract two strings of digits that would appear if the number was written
@@ -402,4 +382,65 @@ public partial struct BigDecimal
     [GeneratedRegex("^(?<format>[DEFGNPR])(?<precision>\\d*)(?<unicode>U?)$",
         RegexOptions.IgnoreCase, "en-AU")]
     private static partial Regex FormatRegex();
+
+    #region Helper methods
+
+    /// <summary>
+    /// Generate a string of '0' characters using doubling.
+    /// </summary>
+    /// <remarks>
+    /// Rather than using a simple loop, the methods saves time by using doubling.
+    /// Thus, a string of ~1000 characters requires fewer than 10 iterations instead of ~1000.
+    /// </remarks>
+    /// <param name="n">The number of '0' characters in the string.</param>
+    /// <returns>The string of '0' characters.</returns>
+    private static string StringOfZeros(BigInteger n)
+    {
+        // Terminating conditions and quick answers.
+        // This will handle most (if not all) practical uses of the method.
+        if (n == 0) return "";
+        if (n == 1) return "0";
+        if (n == 2) return "00";
+        if (n == 3) return "000";
+        if (n == 4) return "0000";
+        if (n == 5) return "00000";
+        if (n == 6) return "000000";
+        if (n == 7) return "0000000";
+        if (n == 8) return "00000000";
+        if (n == 9) return "000000000";
+
+        // See if n is even.
+        string str2;
+        if (BigInteger.IsEvenInteger(n))
+        {
+            str2 = StringOfZeros(n / 2);
+            return str2 + str2;
+        }
+
+        // n is odd.
+        str2 = StringOfZeros((n - 1) / 2);
+        return '0' + str2 + str2;
+    }
+
+    /// <summary>
+    /// Pad a string on the left with '0' characters up to a minimum width.
+    /// </summary>
+    /// <remarks>
+    /// I created this method rather than using String.PadRight() because of the need to support
+    /// BigInteger string widths, which comes from exponents being BigIntegers. I realise it's
+    /// ridiculous to imagine a string of more than int.MaxValue zeros, but it seemed like a better
+    /// solution to implement this method than throw an exception if the string width is too big.
+    /// </remarks>
+    /// <param name="str">The string.</param>
+    /// <param name="width">The minimum number of characters in the the result.</param>
+    /// <returns>The zero-padded string.</returns>
+    public static string ZeroPadLeft(string str, BigInteger width)
+    {
+        var nZerosNeeded = width - str.Length;
+        if (nZerosNeeded <= 0) return str;
+
+        return StringOfZeros(nZerosNeeded) + str;
+    }
+
+    #endregion Helper methods
 }

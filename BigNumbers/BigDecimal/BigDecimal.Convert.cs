@@ -11,90 +11,57 @@ public partial struct BigDecimal
     /// <summary>Cast sbyte to BigDecimal.</summary>
     /// <param name="x">The sbyte value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(sbyte x)
-    {
-        return new BigDecimal(x);
-    }
+    public static implicit operator BigDecimal(sbyte x) => new (x);
 
     /// <summary>Cast byte to BigDecimal.</summary>
     /// <param name="x">The byte value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(byte x)
-    {
-        return new BigDecimal(x);
-    }
+    public static implicit operator BigDecimal(byte x) => new (x);
 
     /// <summary>Cast short to BigDecimal.</summary>
     /// <param name="x">The short value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(short x)
-    {
-        return new BigDecimal(x);
-    }
+    public static implicit operator BigDecimal(short x) => new (x);
 
     /// <summary>Cast ushort to BigDecimal.</summary>
     /// <param name="x">The ushort value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(ushort x)
-    {
-        return new BigDecimal(x);
-    }
+    public static implicit operator BigDecimal(ushort x) => new (x);
 
     /// <summary>Cast int to BigDecimal.</summary>
     /// <param name="x">The int value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(int x)
-    {
-        return new BigDecimal(x);
-    }
+    public static implicit operator BigDecimal(int x) => new (x);
 
     /// <summary>Cast uint to BigDecimal.</summary>
     /// <param name="x">The uint value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(uint x)
-    {
-        return new BigDecimal(x);
-    }
+    public static implicit operator BigDecimal(uint x) => new (x);
 
     /// <summary>Cast long to BigDecimal.</summary>
     /// <param name="x">The long value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(long x)
-    {
-        return new BigDecimal(x);
-    }
+    public static implicit operator BigDecimal(long x) => new (x);
 
     /// <summary>Cast ulong to BigDecimal.</summary>
     /// <param name="x">The ulong value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(ulong x)
-    {
-        return new BigDecimal(x);
-    }
+    public static implicit operator BigDecimal(ulong x) => new (x);
 
     /// <summary>Cast Int128 to BigDecimal.</summary>
     /// <param name="x">The Int128 value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(Int128 x)
-    {
-        return new BigDecimal(x);
-    }
+    public static implicit operator BigDecimal(Int128 x) => new (x);
 
     /// <summary>Cast UInt128 to BigDecimal.</summary>
     /// <param name="x">The UInt128 value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(UInt128 x)
-    {
-        return new BigDecimal(x);
-    }
+    public static implicit operator BigDecimal(UInt128 x) => new (x);
 
     /// <summary>Cast BigInteger to BigDecimal.</summary>
     /// <param name="x">The BigInteger value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(BigInteger x)
-    {
-        return new BigDecimal(x);
-    }
+    public static implicit operator BigDecimal(BigInteger x) => new (x);
 
     /// <summary>Cast Half to BigDecimal.</summary>
     /// <remarks>
@@ -104,10 +71,7 @@ public partial struct BigDecimal
     /// </remarks>
     /// <param name="x">The Half value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(Half x)
-    {
-        return ConvertFromFloatingPoint<Half>(x);
-    }
+    public static implicit operator BigDecimal(Half x) => ConvertFromFloatingPoint(x);
 
     /// <summary>Cast float to BigDecimal.</summary>
     /// <remarks>
@@ -117,10 +81,7 @@ public partial struct BigDecimal
     /// </remarks>
     /// <param name="x">The float value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(float x)
-    {
-        return ConvertFromFloatingPoint<float>(x);
-    }
+    public static implicit operator BigDecimal(float x) => ConvertFromFloatingPoint(x);
 
     /// <summary>Cast double to BigDecimal.</summary>
     /// <remarks>
@@ -130,10 +91,7 @@ public partial struct BigDecimal
     /// </remarks>
     /// <param name="x">The double value.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static implicit operator BigDecimal(double x)
-    {
-        return ConvertFromFloatingPoint<double>(x);
-    }
+    public static implicit operator BigDecimal(double x) => ConvertFromFloatingPoint(x);
 
     /// <summary>Cast decimal to BigDecimal.</summary>
     /// <param name="x">The double value.</param>
@@ -144,7 +102,7 @@ public partial struct BigDecimal
 
         // Get the sign and scale from the bits.
         var sign = (parts[3] & 0x80000000) == 0 ? 1 : -1;
-        var scale = (byte)(parts[3] >> 16 & 0x7F);
+        var scale = (byte)((parts[3] >> 16) & 0x7F);
 
         // Calculate the significand.
         BigInteger sig = 0;
@@ -168,10 +126,7 @@ public partial struct BigDecimal
     /// <exception cref="OverflowException">
     /// If the truncated value is outside the valid range for sbyte.
     /// </exception>
-    public static explicit operator sbyte(BigDecimal bd)
-    {
-        return (sbyte)(BigInteger)bd;
-    }
+    public static explicit operator sbyte(BigDecimal bd) => (sbyte)(BigInteger)bd;
 
     /// <summary>Cast BigDecimal to byte.</summary>
     /// <param name="bd">The BigDecimal value.</param>
@@ -179,10 +134,7 @@ public partial struct BigDecimal
     /// <exception cref="OverflowException">
     /// If the truncated value is outside the valid range for sbyte.
     /// </exception>
-    public static explicit operator byte(BigDecimal bd)
-    {
-        return (byte)(BigInteger)bd;
-    }
+    public static explicit operator byte(BigDecimal bd) => (byte)(BigInteger)bd;
 
     /// <summary>Cast BigDecimal to short.</summary>
     /// <param name="bd">The BigDecimal value.</param>
@@ -190,10 +142,7 @@ public partial struct BigDecimal
     /// <exception cref="OverflowException">
     /// If the truncated value is outside the valid range for short.
     /// </exception>
-    public static explicit operator short(BigDecimal bd)
-    {
-        return (short)(BigInteger)bd;
-    }
+    public static explicit operator short(BigDecimal bd) => (short)(BigInteger)bd;
 
     /// <summary>Cast BigDecimal to ushort.</summary>
     /// <param name="bd">The BigDecimal value.</param>
@@ -201,10 +150,7 @@ public partial struct BigDecimal
     /// <exception cref="OverflowException">
     /// If the truncated value is outside the valid range for ushort.
     /// </exception>
-    public static explicit operator ushort(BigDecimal bd)
-    {
-        return (ushort)(BigInteger)bd;
-    }
+    public static explicit operator ushort(BigDecimal bd) => (ushort)(BigInteger)bd;
 
     /// <summary>Cast BigDecimal to int.</summary>
     /// <param name="bd">The BigDecimal value.</param>
@@ -212,10 +158,7 @@ public partial struct BigDecimal
     /// <exception cref="OverflowException">
     /// If the truncated value is outside the valid range for int.
     /// </exception>
-    public static explicit operator int(BigDecimal bd)
-    {
-        return (int)(BigInteger)bd;
-    }
+    public static explicit operator int(BigDecimal bd) => (int)(BigInteger)bd;
 
     /// <summary>Cast BigDecimal to uint.</summary>
     /// <param name="bd">The BigDecimal value.</param>
@@ -223,10 +166,7 @@ public partial struct BigDecimal
     /// <exception cref="OverflowException">
     /// If the truncated value is outside the valid range for uint.
     /// </exception>
-    public static explicit operator uint(BigDecimal bd)
-    {
-        return (uint)(BigInteger)bd;
-    }
+    public static explicit operator uint(BigDecimal bd) => (uint)(BigInteger)bd;
 
     /// <summary>Cast BigDecimal to long.</summary>
     /// <param name="bd">The BigDecimal value.</param>
@@ -234,10 +174,7 @@ public partial struct BigDecimal
     /// <exception cref="OverflowException">
     /// If the truncated value is outside the valid range for long.
     /// </exception>
-    public static explicit operator long(BigDecimal bd)
-    {
-        return (long)(BigInteger)bd;
-    }
+    public static explicit operator long(BigDecimal bd) => (long)(BigInteger)bd;
 
     /// <summary>Cast BigDecimal to ulong.</summary>
     /// <param name="bd">The BigDecimal value.</param>
@@ -245,10 +182,7 @@ public partial struct BigDecimal
     /// <exception cref="OverflowException">
     /// If the truncated value is outside the valid range for ulong.
     /// </exception>
-    public static explicit operator ulong(BigDecimal bd)
-    {
-        return (ulong)(BigInteger)bd;
-    }
+    public static explicit operator ulong(BigDecimal bd) => (ulong)(BigInteger)bd;
 
     /// <summary>Cast BigDecimal to Int128.</summary>
     /// <param name="bd">The BigDecimal value.</param>
@@ -256,10 +190,7 @@ public partial struct BigDecimal
     /// <exception cref="OverflowException">
     /// If the truncated value is outside the valid range for Int128.
     /// </exception>
-    public static explicit operator Int128(BigDecimal bd)
-    {
-        return (Int128)(BigInteger)bd;
-    }
+    public static explicit operator Int128(BigDecimal bd) => (Int128)(BigInteger)bd;
 
     /// <summary>Cast BigDecimal to UInt128.</summary>
     /// <param name="bd">The BigDecimal value.</param>
@@ -267,10 +198,7 @@ public partial struct BigDecimal
     /// <exception cref="OverflowException">
     /// If the truncated value is outside the valid range for UInt128.
     /// </exception>
-    public static explicit operator UInt128(BigDecimal bd)
-    {
-        return (UInt128)(BigInteger)bd;
-    }
+    public static explicit operator UInt128(BigDecimal bd) => (UInt128)(BigInteger)bd;
 
     /// <summary>Cast BigDecimal to BigInteger.</summary>
     /// <param name="bd">The BigDecimal value.</param>
@@ -289,10 +217,7 @@ public partial struct BigDecimal
     /// </remarks>
     /// <param name="bd">The BigDecimal value.</param>
     /// <returns>The closest Half value.</returns>
-    public static explicit operator Half(BigDecimal bd)
-    {
-        return ConvertToFloatingPoint<Half>(bd);
-    }
+    public static explicit operator Half(BigDecimal bd) => ConvertToFloatingPoint<Half>(bd);
 
     /// <summary>Cast BigDecimal to float.</summary>
     /// <remarks>
@@ -301,10 +226,7 @@ public partial struct BigDecimal
     /// </remarks>
     /// <param name="bd">The BigDecimal value.</param>
     /// <returns>The closest float value.</returns>
-    public static explicit operator float(BigDecimal bd)
-    {
-        return ConvertToFloatingPoint<float>(bd);
-    }
+    public static explicit operator float(BigDecimal bd) => ConvertToFloatingPoint<float>(bd);
 
     /// <summary>Cast BigDecimal to double.</summary>
     /// <remarks>
@@ -313,10 +235,7 @@ public partial struct BigDecimal
     /// </remarks>
     /// <param name="bd">The BigDecimal value.</param>
     /// <returns>The closest double value.</returns>
-    public static explicit operator double(BigDecimal bd)
-    {
-        return ConvertToFloatingPoint<double>(bd);
-    }
+    public static explicit operator double(BigDecimal bd) => ConvertToFloatingPoint<double>(bd);
 
     /// <summary>Cast BigDecimal to decimal.</summary>
     /// <param name="bd">The BigDecimal value.</param>
@@ -336,7 +255,7 @@ public partial struct BigDecimal
         if (bd.Exponent > 0) bd.ShiftToExp(0);
 
         // Get the scale.
-        var scale = (byte)(-bd.Exponent);
+        var scale = (byte)-bd.Exponent;
 
         // Check the scale is not too large.
         if (scale > DecimalPrecision)
@@ -359,7 +278,7 @@ public partial struct BigDecimal
         for (var i = 0; i < 12; i++)
         {
             var b = i < sigBytes.Length ? sigBytes[i] : (byte)0;
-            decInts[i / 4] |= b << i % 4 * 8;
+            decInts[i / 4] |= b << (i % 4 * 8);
         }
 
         // Get the sign.
@@ -374,10 +293,7 @@ public partial struct BigDecimal
 
     /// <summary>Convert BigDecimal to tuple.</summary>
     /// <returns>A tuple containing the significand and exponent.</returns>
-    public readonly (BigInteger, int) ToTuple()
-    {
-        return (Significand, Exponent);
-    }
+    public readonly (BigInteger, int) ToTuple() => (Significand, Exponent);
 
     #endregion Convert to object
 
@@ -458,19 +374,15 @@ public partial struct BigDecimal
 
     /// <inheritdoc/>
     public static bool TryConvertFromSaturating<TOther>(TOther value, out BigDecimal result)
-        where TOther : INumberBase<TOther>
-    {
+        where TOther : INumberBase<TOther> =>
         // No saturation needed, as BigDecimal does not specify a min or max value.
-        return TryConvertFromChecked(value, out result);
-    }
+        TryConvertFromChecked(value, out result);
 
     /// <inheritdoc/>
     public static bool TryConvertFromTruncating<TOther>(TOther value, out BigDecimal result)
-        where TOther : INumberBase<TOther>
-    {
+        where TOther : INumberBase<TOther> =>
         // No truncation needed, as BigDecimal isn't an integer type.
-        return TryConvertFromChecked(value, out result);
-    }
+        TryConvertFromChecked(value, out result);
 
     /// <inheritdoc/>
     public static bool TryConvertToChecked<TOther>(BigDecimal value, out TOther result)
@@ -653,14 +565,12 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     /// <see cref="BigDecimal.explicit operator BigInteger(BigDecimal)"/>
     public static bool TryConvertToTruncating<TOther>(BigDecimal value, out TOther result)
-        where TOther : INumberBase<TOther>
-    {
+        where TOther : INumberBase<TOther> =>
         // Integers will be truncated in the cast to BigInteger.
         // The documentation doesn't mention throwing overflow exceptions for this method, but
         // that's what is done for integer, so we'll do the same thing here.
         // See: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/Int32.cs
-        return TryConvertToChecked(value, out result);
-    }
+        TryConvertToChecked(value, out result);
 
     #endregion TryConvert methods
 
@@ -702,7 +612,7 @@ public partial struct BigDecimal
         BigDecimal pow = 1;
         for (var i = 0; i < nFracBits; i++)
         {
-            if ((fracBits & 1ul << i) != 0)
+            if ((fracBits & (1ul << i)) != 0)
             {
                 sig += pow;
             }
@@ -782,7 +692,7 @@ public partial struct BigDecimal
         // Round up if necessary, using MidpointRounding.ToEven method.
         var rollover = (ulong)Exp2(nFracBits);
         var maxFraction = rollover * 2 - 1;
-        if (nextBit == 1 && sig >= 0.5 || nextBit == 0 && sig > 0.5)
+        if ((nextBit == 1 && sig >= 0.5) || (nextBit == 0 && sig > 0.5))
         {
             // Don't go over 24 bits.
             if (fracBits == maxFraction)

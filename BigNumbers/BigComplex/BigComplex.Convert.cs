@@ -10,138 +10,87 @@ public partial struct BigComplex
     /// <summary>Cast sbyte to BigComplex.</summary>
     /// <param name="x">The sbyte value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(sbyte x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(sbyte x) => new (x);
 
     /// <summary>Cast byte to BigDecimal.</summary>
     /// <param name="x">The byte value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(byte x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(byte x) => new (x);
 
     /// <summary>Cast short to BigDecimal.</summary>
     /// <param name="x">The short value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(short x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(short x) => new (x);
 
     /// <summary>Cast ushort to BigDecimal.</summary>
     /// <param name="x">The ushort value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(ushort x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(ushort x) => new (x);
 
     /// <summary>Cast int to BigDecimal.</summary>
     /// <param name="x">The int value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(int x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(int x) => new (x);
 
     /// <summary>Cast uint to BigDecimal.</summary>
     /// <param name="x">The uint value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(uint x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(uint x) => new (x);
 
     /// <summary>Cast long to BigDecimal.</summary>
     /// <param name="x">The long value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(long x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(long x) => new (x);
 
     /// <summary>Cast ulong to BigDecimal.</summary>
     /// <param name="x">The ulong value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(ulong x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(ulong x) => new (x);
 
     /// <summary>Cast Int128 to BigDecimal.</summary>
     /// <param name="x">The Int128 value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(Int128 x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(Int128 x) => new (x);
 
     /// <summary>Cast UInt128 to BigDecimal.</summary>
     /// <param name="x">The UInt128 value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(UInt128 x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(UInt128 x) => new (x);
 
     /// <summary>Cast BigInteger to BigDecimal.</summary>
     /// <param name="x">The BigInteger value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(BigInteger x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(BigInteger x) => new (x);
 
     /// <summary>Cast Half to BigDecimal.</summary>
     /// <param name="x">The Half value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(Half x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(Half x) => new (x);
 
     /// <summary>Cast float to BigDecimal.</summary>
     /// <param name="x">The float value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(float x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(float x) => new (x);
 
     /// <summary>Cast double to BigDecimal.</summary>
     /// <param name="x">The double value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(double x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(double x) => new (x);
 
     /// <summary>Cast decimal to BigDecimal.</summary>
     /// <param name="x">The decimal value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(decimal x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(decimal x) => new (x);
 
     /// <summary>Cast Complex to BigComplex.</summary>
     /// <param name="x">The Complex value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(Complex x)
-    {
-        return new BigComplex(x.Real, x.Imaginary);
-    }
+    public static implicit operator BigComplex(Complex x) => new (x.Real, x.Imaginary);
 
     /// <summary>Cast BigDecimal to BigComplex.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The equivalent BigComplex value.</returns>
-    public static implicit operator BigComplex(BigDecimal x)
-    {
-        return new BigComplex(x);
-    }
+    public static implicit operator BigComplex(BigDecimal x) => new (x);
 
     /// <summary>Cast BigRational to BigComplex.</summary>
     /// <remarks>
@@ -150,10 +99,7 @@ public partial struct BigComplex
     /// </remarks>
     /// <param name="x">The BigRational value.</param>
     /// <returns>The closest BigComplex value.</returns>
-    public static explicit operator BigComplex(BigRational x)
-    {
-        return new BigComplex((BigDecimal)x);
-    }
+    public static explicit operator BigComplex(BigRational x) => new ((BigDecimal)x);
 
     #endregion Casting to BigComplex
 
@@ -168,10 +114,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator sbyte(BigComplex bc)
-    {
-        return ConvertToReal<sbyte>(bc);
-    }
+    public static explicit operator sbyte(BigComplex bc) => ConvertToReal<sbyte>(bc);
 
     /// <summary>Cast BigComplex to byte.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -182,10 +125,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator byte(BigComplex bc)
-    {
-        return ConvertToReal<byte>(bc);
-    }
+    public static explicit operator byte(BigComplex bc) => ConvertToReal<byte>(bc);
 
     /// <summary>Cast BigComplex to short.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -196,10 +136,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator short(BigComplex bc)
-    {
-        return ConvertToReal<short>(bc);
-    }
+    public static explicit operator short(BigComplex bc) => ConvertToReal<short>(bc);
 
     /// <summary>Cast BigComplex to ushort.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -210,10 +147,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator ushort(BigComplex bc)
-    {
-        return ConvertToReal<ushort>(bc);
-    }
+    public static explicit operator ushort(BigComplex bc) => ConvertToReal<ushort>(bc);
 
     /// <summary>Cast BigComplex to int.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -224,10 +158,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator int(BigComplex bc)
-    {
-        return ConvertToReal<int>(bc);
-    }
+    public static explicit operator int(BigComplex bc) => ConvertToReal<int>(bc);
 
     /// <summary>Cast BigComplex to uint.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -238,10 +169,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator uint(BigComplex bc)
-    {
-        return ConvertToReal<uint>(bc);
-    }
+    public static explicit operator uint(BigComplex bc) => ConvertToReal<uint>(bc);
 
     /// <summary>Cast BigComplex to long.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -252,10 +180,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator long(BigComplex bc)
-    {
-        return ConvertToReal<long>(bc);
-    }
+    public static explicit operator long(BigComplex bc) => ConvertToReal<long>(bc);
 
     /// <summary>Cast BigComplex to ulong.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -266,10 +191,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator ulong(BigComplex bc)
-    {
-        return ConvertToReal<ulong>(bc);
-    }
+    public static explicit operator ulong(BigComplex bc) => ConvertToReal<ulong>(bc);
 
     /// <summary>Cast BigComplex to Int128.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -280,10 +202,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator Int128(BigComplex bc)
-    {
-        return ConvertToReal<Int128>(bc);
-    }
+    public static explicit operator Int128(BigComplex bc) => ConvertToReal<Int128>(bc);
 
     /// <summary>Cast BigComplex to UInt128.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -294,10 +213,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator UInt128(BigComplex bc)
-    {
-        return ConvertToReal<UInt128>(bc);
-    }
+    public static explicit operator UInt128(BigComplex bc) => ConvertToReal<UInt128>(bc);
 
     /// <summary>Cast BigComplex to BigInteger.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -305,10 +221,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator BigInteger(BigComplex bc)
-    {
-        return ConvertToReal<BigInteger>(bc);
-    }
+    public static explicit operator BigInteger(BigComplex bc) => ConvertToReal<BigInteger>(bc);
 
     /// <summary>Cast BigComplex to Half.</summary>
     /// <remarks>
@@ -320,10 +233,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator Half(BigComplex bc)
-    {
-        return ConvertToReal<Half>(bc);
-    }
+    public static explicit operator Half(BigComplex bc) => ConvertToReal<Half>(bc);
 
     /// <summary>Cast BigComplex to float.</summary>
     /// <remarks>
@@ -335,10 +245,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator float(BigComplex bc)
-    {
-        return ConvertToReal<float>(bc);
-    }
+    public static explicit operator float(BigComplex bc) => ConvertToReal<float>(bc);
 
     /// <summary>Cast BigComplex to double.</summary>
     /// <remarks>
@@ -350,10 +257,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator double(BigComplex bc)
-    {
-        return ConvertToReal<double>(bc);
-    }
+    public static explicit operator double(BigComplex bc) => ConvertToReal<double>(bc);
 
     /// <summary>Cast BigComplex to decimal.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -364,10 +268,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary part.
     /// </exception>
-    public static explicit operator decimal(BigComplex bc)
-    {
-        return ConvertToReal<decimal>(bc);
-    }
+    public static explicit operator decimal(BigComplex bc) => ConvertToReal<decimal>(bc);
 
     /// <summary>Cast of BigComplex to Complex.</summary>
     /// <remarks>
@@ -377,10 +278,8 @@ public partial struct BigComplex
     /// </remarks>
     /// <param name="bc">The BigComplex value.</param>
     /// <returns>The equivalent Complex value.</returns>
-    public static explicit operator Complex(BigComplex bc)
-    {
-        return new Complex((double)bc.Real, (double)bc.Imaginary);
-    }
+    public static explicit operator Complex(BigComplex bc) =>
+        new ((double)bc.Real, (double)bc.Imaginary);
 
     /// <summary>Cast BigComplex to BigDecimal.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -388,10 +287,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary component.
     /// </exception>
-    public static explicit operator BigDecimal(BigComplex bc)
-    {
-        return ConvertToReal<BigDecimal>(bc);
-    }
+    public static explicit operator BigDecimal(BigComplex bc) => ConvertToReal<BigDecimal>(bc);
 
     /// <summary>Cast BigComplex to BigRational.</summary>
     /// <param name="bc">The BigComplex value.</param>
@@ -399,10 +295,7 @@ public partial struct BigComplex
     /// <exception cref="InvalidCastException">
     /// If the BigComplex value has an imaginary component.
     /// </exception>
-    public static explicit operator BigRational(BigComplex bc)
-    {
-        return ConvertToReal<BigRational>(bc);
-    }
+    public static explicit operator BigRational(BigComplex bc) => ConvertToReal<BigRational>(bc);
 
     #endregion Casting from BigComplex
 
@@ -410,17 +303,11 @@ public partial struct BigComplex
 
     /// <summary>Convert BigComplex to array.</summary>
     /// <returns>The equivalent array.</returns>
-    public readonly BigDecimal[] ToArray()
-    {
-        return new[] { Real, Imaginary };
-    }
+    public readonly BigDecimal[] ToArray() => new[] { Real, Imaginary };
 
     /// <summary>Convert BigComplex to tuple.</summary>
     /// <returns>The equivalent tuple.</returns>
-    public readonly (BigDecimal, BigDecimal) ToTuple()
-    {
-        return (Real, Imaginary);
-    }
+    public readonly (BigDecimal, BigDecimal) ToTuple() => (Real, Imaginary);
 
     #endregion Convert to object
 
@@ -448,19 +335,15 @@ public partial struct BigComplex
 
     /// <inheritdoc/>
     public static bool TryConvertFromSaturating<TOther>(TOther value, out BigComplex result)
-        where TOther : INumberBase<TOther>
-    {
+        where TOther : INumberBase<TOther> =>
         // No saturation needed, as BigDecimal does not specify a min or max value.
-        return TryConvertFromChecked(value, out result);
-    }
+        TryConvertFromChecked(value, out result);
 
     /// <inheritdoc/>
     public static bool TryConvertFromTruncating<TOther>(TOther value, out BigComplex result)
-        where TOther : INumberBase<TOther>
-    {
+        where TOther : INumberBase<TOther> =>
         // No truncation needed, as BigDecimal isn't an integer type.
-        return TryConvertFromChecked(value, out result);
-    }
+        TryConvertFromChecked(value, out result);
 
     /// <inheritdoc/>
     public static bool TryConvertToChecked<TOther>(BigComplex value, out TOther result)
@@ -511,11 +394,9 @@ public partial struct BigComplex
 
     /// <inheritdoc/>
     public static bool TryConvertToTruncating<TOther>(BigComplex value, out TOther result)
-        where TOther : INumberBase<TOther>
-    {
+        where TOther : INumberBase<TOther> =>
         // TODO This should work fine, need to test.
-        return TryConvertToChecked(value, out result);
-    }
+        TryConvertToChecked(value, out result);
 
     #endregion TryConvert methods
 

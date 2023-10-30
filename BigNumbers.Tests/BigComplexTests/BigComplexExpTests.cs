@@ -91,10 +91,8 @@ public class BigComplexExpTests
     }
 
     [TestMethod]
-    public void LnThrowsExceptionIfArgZero()
-    {
+    public void LnThrowsExceptionIfArgZero() =>
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => BigComplex.Log(BigComplex.Zero));
-    }
 
     [TestMethod]
     public void DecimalComplexLnMatchesComplexLog()
@@ -212,16 +210,11 @@ public class BigComplexExpTests
 
     [TestMethod]
     [ExpectedException(typeof(ArithmeticException))]
-    public void PowThrowsWhenZeroRaisedToImagNum()
-    {
-        BigComplex.Pow(0, BigComplex.I);
-    }
+    public void PowThrowsWhenZeroRaisedToImagNum() => BigComplex.Pow(0, BigComplex.I);
 
     [TestMethod]
-    public void PowThrowsWhenZeroRaisedToNegNum()
-    {
+    public void PowThrowsWhenZeroRaisedToNegNum() =>
         Assert.ThrowsException<ArithmeticException>(() => BigComplex.Pow(0, -1));
-    }
 
     [TestMethod]
     public void PowTest()

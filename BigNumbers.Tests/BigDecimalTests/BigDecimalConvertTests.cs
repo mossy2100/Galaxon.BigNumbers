@@ -1261,7 +1261,7 @@ public class BigDecimalConvertTests
             maxPosSub,
             minPosNorm,
             (Half)1,
-            Half.MaxValue,
+            Half.MaxValue
         };
     }
 
@@ -1430,7 +1430,7 @@ public class BigDecimalConvertTests
             maxPosSub,
             minPosNorm,
             1,
-            float.MaxValue,
+            float.MaxValue
         };
     }
 
@@ -1622,7 +1622,7 @@ public class BigDecimalConvertTests
             maxPosSub,
             minPosNorm,
             1,
-            double.MaxValue,
+            double.MaxValue
         };
     }
 
@@ -1798,17 +1798,15 @@ public class BigDecimalConvertTests
     /// <summary>
     /// A few test values for decimal.
     /// </summary>
-    private static decimal[] GetDecimalTestValues()
-    {
-        return new[]
+    private static decimal[] GetDecimalTestValues() =>
+        new[]
         {
             decimal.MinValue,
             -1,
             0,
             1,
-            decimal.MaxValue,
+            decimal.MaxValue
         };
-    }
 
     /// <summary>
     /// Test value for negative overflow for decimal.

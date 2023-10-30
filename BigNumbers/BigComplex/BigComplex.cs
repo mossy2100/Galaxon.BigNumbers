@@ -70,20 +70,14 @@ public partial struct BigComplex :
     /// Construct a BigComplex from a single BigDecimal value, taken to be the real part.
     /// </summary>
     /// <param name="real">The real part.</param>
-    public BigComplex(BigDecimal real) : this(real, 0)
-    {
-    }
+    public BigComplex(BigDecimal real) : this(real, 0) { }
 
     /// <summary>Construct a zero BigComplex.</summary>
-    public BigComplex() : this(0, 0)
-    {
-    }
+    public BigComplex() : this(0, 0) { }
 
     /// <summary>Construct BigComplex from an tuple of 2 BigDecimal values.</summary>
     /// <param name="complex">The tuple.</param>
-    public BigComplex((BigDecimal, BigDecimal) complex) : this(complex.Item1, complex.Item2)
-    {
-    }
+    public BigComplex((BigDecimal, BigDecimal) complex) : this(complex.Item1, complex.Item2) { }
 
     /// <summary>Construct BigComplex from an array of 2 BigDecimal values.</summary>
     /// <param name="complex">The array.</param>

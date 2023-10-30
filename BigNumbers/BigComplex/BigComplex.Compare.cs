@@ -5,22 +5,13 @@ public partial struct BigComplex
     #region Equality methods
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj)
-    {
-        return obj is BigComplex bc && Equals(bc);
-    }
+    public override bool Equals(object? obj) => obj is BigComplex bc && Equals(bc);
 
     /// <inheritdoc/>
-    public bool Equals(BigComplex bc)
-    {
-        return Real == bc.Real && Imaginary == bc.Imaginary;
-    }
+    public bool Equals(BigComplex bc) => Real == bc.Real && Imaginary == bc.Imaginary;
 
     /// <inheritdoc/>
-    public readonly override int GetHashCode()
-    {
-        return HashCode.Combine(Real, Imaginary);
-    }
+    public readonly override int GetHashCode() => HashCode.Combine(Real, Imaginary);
 
     #endregion Equality methods
 
@@ -35,10 +26,8 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex MaxMagnitudeNumber(BigComplex bc, BigComplex bc2)
-    {
-        return MaxMagnitude(bc, bc2);
-    }
+    public static BigComplex MaxMagnitudeNumber(BigComplex bc, BigComplex bc2) =>
+        MaxMagnitude(bc, bc2);
 
     /// <inheritdoc/>
     public static BigComplex MinMagnitude(BigComplex bc, BigComplex bc2)
@@ -49,26 +38,18 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex MinMagnitudeNumber(BigComplex bc, BigComplex bc2)
-    {
-        return MinMagnitude(bc, bc2);
-    }
+    public static BigComplex MinMagnitudeNumber(BigComplex bc, BigComplex bc2) =>
+        MinMagnitude(bc, bc2);
 
     #endregion Comparison methods
 
     #region Comparison operators
 
     /// <inheritdoc/>
-    public static bool operator ==(BigComplex bc, BigComplex bc2)
-    {
-        return bc.Equals(bc2);
-    }
+    public static bool operator ==(BigComplex bc, BigComplex bc2) => bc.Equals(bc2);
 
     /// <inheritdoc/>
-    public static bool operator !=(BigComplex bc, BigComplex bc2)
-    {
-        return !bc.Equals(bc2);
-    }
+    public static bool operator !=(BigComplex bc, BigComplex bc2) => !bc.Equals(bc2);
 
     #endregion Comparison operators
 }

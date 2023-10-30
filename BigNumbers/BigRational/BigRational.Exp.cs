@@ -37,18 +37,12 @@ public partial struct BigRational
     /// <summary>Calculate the square of a BigRational number.</summary>
     /// <param name="x">A BigRational value.</param>
     /// <returns>The square of the parameter.</returns>
-    public static BigRational Sqr(BigRational x)
-    {
-        return x * x;
-    }
+    public static BigRational Sqr(BigRational x) => x * x;
 
     /// <summary>Calculate the cube of a BigRational number.</summary>
     /// <param name="x">A BigRational value.</param>
     /// <returns>The cube of the parameter.</returns>
-    public static BigRational Cube(BigRational x)
-    {
-        return x * x * x;
-    }
+    public static BigRational Cube(BigRational x) => x * x * x;
 
     #endregion Power functions
 }

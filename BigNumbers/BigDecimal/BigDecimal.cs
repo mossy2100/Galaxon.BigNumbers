@@ -27,9 +27,9 @@ public partial struct BigDecimal :
     /// <summary>The sign of the value.</summary>
     /// <remarks>
     /// The same convention is used as for BigInteger:
-    ///    -1 means negative
-    ///     0 means zero
-    ///     1 means positive
+    /// -1 means negative
+    /// 0 means zero
+    /// 1 means positive
     /// </remarks>
     /// <see cref="BigInteger.Sign"/>
     public readonly int Sign => Significand.Sign;
@@ -144,16 +144,12 @@ public partial struct BigDecimal :
     /// <summary>
     /// Constructor for integers. Sets default value of exponent to 0.
     /// </summary>
-    public BigDecimal(BigInteger significand) : this(significand, 0)
-    {
-    }
+    public BigDecimal(BigInteger significand) : this(significand, 0) { }
 
     /// <summary>
     /// Zero constructor.
     /// </summary>
-    public BigDecimal() : this(0, 0)
-    {
-    }
+    public BigDecimal() : this(0, 0) { }
 
     #endregion Constructors
 }

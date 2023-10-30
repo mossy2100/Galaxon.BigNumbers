@@ -1,6 +1,4 @@
 namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
-public class BigDecimalCoreTests
-{
-}
+public class BigDecimalCoreTests { }

@@ -31,9 +31,9 @@ public partial struct BigRational :
     /// <summary>The sign of the value.</summary>
     /// <remarks>
     /// The same convention is used as for BigInteger:
-    ///    -1 means negative
-    ///     0 means zero
-    ///     1 means positive
+    /// -1 means negative
+    /// 0 means zero
+    /// 1 means positive
     /// </remarks>
     /// <see cref="BigInteger.Sign"/>
     public readonly int Sign => Numerator.Sign;
@@ -82,24 +82,18 @@ public partial struct BigRational :
     /// Construct a BigRational from a single integer, taken to be the numerator.
     /// </summary>
     /// <param name="num">The numerator.</param>
-    public BigRational(BigInteger num) : this(num, 1)
-    {
-    }
+    public BigRational(BigInteger num) : this(num, 1) { }
 
     /// <summary>
     /// Construct a zero BigRational.
     /// </summary>
-    public BigRational() : this(0, 1)
-    {
-    }
+    public BigRational() : this(0, 1) { }
 
     /// <summary>
     /// Construct a BigRational from a tuple of 2 BigInteger values.
     /// </summary>
     /// <param name="rational">The tuple.</param>
-    public BigRational((BigInteger, BigInteger) rational) : this(rational.Item1, rational.Item2)
-    {
-    }
+    public BigRational((BigInteger, BigInteger) rational) : this(rational.Item1, rational.Item2) { }
 
     /// <summary>
     /// Construct a BigRational from an array of 2 BigInteger values.

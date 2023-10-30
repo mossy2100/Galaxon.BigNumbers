@@ -12,7 +12,7 @@ public class BigDecimalRoundTests
         decimal[] values =
         {
             -2.6m, -2.51m, -2.5m, -2.49m, -2.4m, -1.6m, -1.51m, -1.5m, -1.49m, -1.4m,
-            1.4m, 1.49m, 1.5m, 1.51m, 1.6m, 2.4m, 2.49m, 2.5m, 2.51m, 2.6m,
+            1.4m, 1.49m, 1.5m, 1.51m, 1.6m, 2.4m, 2.49m, 2.5m, 2.51m, 2.6m
         };
         foreach (var value in values)
         {

@@ -53,26 +53,18 @@ public partial struct BigRational
     }
 
     /// <inheritdoc/>
-    public static BigRational Abs(BigRational br)
-    {
-        return new BigRational(BigInteger.Abs(br.Numerator), br.Denominator);
-    }
+    public static BigRational Abs(BigRational br) =>
+        new (BigInteger.Abs(br.Numerator), br.Denominator);
 
     /// <summary>Clone method.</summary>
     /// <param name="br">The BigRational value to clone.</param>
     /// <returns>A new BigRational with the same value as the parameter.</returns>
-    public static BigRational Clone(BigRational br)
-    {
-        return new BigRational(br.Numerator, br.Denominator);
-    }
+    public static BigRational Clone(BigRational br) => new (br.Numerator, br.Denominator);
 
     /// <summary>Negate method.</summary>
     /// <param name="br">The BigRational value to negate.</param>
     /// <returns>The negation of the parameter.</returns>
-    public static BigRational Negate(BigRational br)
-    {
-        return new BigRational(-br.Numerator, br.Denominator);
-    }
+    public static BigRational Negate(BigRational br) => new (-br.Numerator, br.Denominator);
 
     /// <summary>Addition method.</summary>
     /// <param name="br">The left-hand operand.</param>
@@ -89,102 +81,65 @@ public partial struct BigRational
     /// <param name="br">The left-hand operand.</param>
     /// <param name="br2">The right-hand operand.</param>
     /// <returns>The subtraction of the arguments.</returns>
-    public static BigRational Subtract(BigRational br, BigRational br2)
-    {
-        return br + -br2;
-    }
+    public static BigRational Subtract(BigRational br, BigRational br2) => br + -br2;
 
     /// <summary>Multiply two BigRational values.</summary>
     /// <param name="br">The left-hand operand.</param>
     /// <param name="br2">The right-hand operand.</param>
     /// <returns>The multiplication of the arguments.</returns>
-    public static BigRational Multiply(BigRational br, BigRational br2)
-    {
-        return new BigRational(br.Numerator * br2.Numerator, br.Denominator * br2.Denominator);
-    }
+    public static BigRational Multiply(BigRational br, BigRational br2) =>
+        new (br.Numerator * br2.Numerator, br.Denominator * br2.Denominator);
 
     /// <summary>Divide one BigRational by another.</summary>
     /// <param name="br">The left-hand operand.</param>
     /// <param name="br2">The right-hand operand.</param>
     /// <returns>The division of the arguments.</returns>
     /// <exception cref="DivideByZeroException">If w == 0</exception>
-    public static BigRational Divide(BigRational br, BigRational br2)
-    {
-        return new BigRational(br.Numerator * br2.Denominator, br.Denominator * br2.Numerator);
-    }
+    public static BigRational Divide(BigRational br, BigRational br2) =>
+        new (br.Numerator * br2.Denominator, br.Denominator * br2.Numerator);
 
     /// <summary>Calculate the reciprocal of a BigRational value.</summary>
     /// <param name="br">A BigRational value.</param>
     /// <returns>The reciprocal of the BigRational value.</returns>
     /// <exception cref="ArgumentOutOfRangeException">If the BigRational value is 0.</exception>
-    public static BigRational Reciprocal(BigRational br)
-    {
-        return new BigRational(br.Denominator, br.Numerator);
-    }
+    public static BigRational Reciprocal(BigRational br) => new (br.Denominator, br.Numerator);
 
     #endregion Arithmetic methods
 
     #region Arithmetic operators
 
     /// <inheritdoc/>
-    public static BigRational operator +(BigRational br)
-    {
-        return Clone(br);
-    }
+    public static BigRational operator +(BigRational br) => Clone(br);
 
     /// <inheritdoc/>
-    public static BigRational operator -(BigRational br)
-    {
-        return Negate(br);
-    }
+    public static BigRational operator -(BigRational br) => Negate(br);
 
     /// <inheritdoc/>
-    public static BigRational operator +(BigRational br, BigRational br2)
-    {
-        return Add(br, br2);
-    }
+    public static BigRational operator +(BigRational br, BigRational br2) => Add(br, br2);
 
     /// <inheritdoc/>
-    public static BigRational operator -(BigRational br, BigRational br2)
-    {
-        return Subtract(br, br2);
-    }
+    public static BigRational operator -(BigRational br, BigRational br2) => Subtract(br, br2);
 
     /// <inheritdoc/>
-    public static BigRational operator ++(BigRational br)
-    {
-        return Add(br, 1);
-    }
+    public static BigRational operator ++(BigRational br) => Add(br, 1);
 
     /// <inheritdoc/>
-    public static BigRational operator --(BigRational br)
-    {
-        return Subtract(br, 1);
-    }
+    public static BigRational operator --(BigRational br) => Subtract(br, 1);
 
     /// <summary>
     /// Multiply a rational by a rational.
     /// </summary>
-    public static BigRational operator *(BigRational br, BigRational br2)
-    {
-        return Multiply(br, br2);
-    }
+    public static BigRational operator *(BigRational br, BigRational br2) => Multiply(br, br2);
 
     /// <summary>
     /// Divide a rational by a rational.
     /// </summary>
-    public static BigRational operator /(BigRational br, BigRational br2)
-    {
-        return Divide(br, br2);
-    }
+    public static BigRational operator /(BigRational br, BigRational br2) => Divide(br, br2);
 
     /// <summary>
     /// Exponentiation operator.
     /// </summary>
-    public static BigRational operator ^(BigRational br, BigInteger bi)
-    {
-        return Pow(br, bi);
-    }
+    public static BigRational operator ^(BigRational br, BigInteger bi) => Pow(br, bi);
 
     #endregion Arithmetic operators
 }

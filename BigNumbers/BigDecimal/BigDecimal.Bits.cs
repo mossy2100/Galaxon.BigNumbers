@@ -5,53 +5,35 @@ namespace Galaxon.BigNumbers;
 public partial struct BigDecimal
 {
     /// <inheritdoc/>
-    public int GetSignificandByteCount()
-    {
-        return Significand.GetByteCount();
-    }
+    public int GetSignificandByteCount() => Significand.GetByteCount();
 
     /// <inheritdoc/>
-    public int GetSignificandBitLength()
-    {
-        return GetSignificandByteCount() * 8;
-    }
+    public int GetSignificandBitLength() => GetSignificandByteCount() * 8;
 
     /// <inheritdoc/>
-    public int GetExponentByteCount()
-    {
-        return 4;
-    }
+    public int GetExponentByteCount() => 4;
 
     /// <inheritdoc/>
-    public int GetExponentShortestBitLength()
-    {
-        return 32;
-    }
+    public int GetExponentShortestBitLength() => 32;
 
     /// <inheritdoc/>
-    public readonly bool TryWriteSignificandBigEndian(Span<byte> destination, out int bytesWritten)
-    {
-        return TryWriteBigInteger(Significand, destination, out bytesWritten, true);
-    }
+    public readonly bool
+        TryWriteSignificandBigEndian(Span<byte> destination, out int bytesWritten) =>
+        TryWriteBigInteger(Significand, destination, out bytesWritten, true);
 
     /// <inheritdoc/>
     public readonly bool TryWriteSignificandLittleEndian(Span<byte> destination,
-        out int bytesWritten)
-    {
-        return TryWriteBigInteger(Significand, destination, out bytesWritten, false);
-    }
+        out int bytesWritten) =>
+        TryWriteBigInteger(Significand, destination, out bytesWritten, false);
 
     /// <inheritdoc/>
-    public readonly bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten)
-    {
-        return TryWriteInt(Exponent, destination, out bytesWritten, true);
-    }
+    public readonly bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten) =>
+        TryWriteInt(Exponent, destination, out bytesWritten, true);
 
     /// <inheritdoc/>
-    public readonly bool TryWriteExponentLittleEndian(Span<byte> destination, out int bytesWritten)
-    {
-        return TryWriteInt(Exponent, destination, out bytesWritten, false);
-    }
+    public readonly bool
+        TryWriteExponentLittleEndian(Span<byte> destination, out int bytesWritten) =>
+        TryWriteInt(Exponent, destination, out bytesWritten, false);
 
     /// <summary>
     /// Shared logic for:
@@ -98,8 +80,8 @@ public partial struct BigDecimal
         var bytes = BitConverter.GetBytes(i);
 
         // Check if the requested endianness matches the architecture. If not, reverse the array.
-        if (BitConverter.IsLittleEndian && isBigEndian
-            || !BitConverter.IsLittleEndian && !isBigEndian)
+        if ((BitConverter.IsLittleEndian && isBigEndian)
+            || (!BitConverter.IsLittleEndian && !isBigEndian))
         {
             bytes = bytes.Reverse().ToArray();
         }

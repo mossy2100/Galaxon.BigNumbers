@@ -15,10 +15,7 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex SinPi(BigComplex z)
-    {
-        return Sin(z * Pi);
-    }
+    public static BigComplex SinPi(BigComplex z) => Sin(z * Pi);
 
     /// <inheritdoc/>
     public static BigComplex Cos(BigComplex z)
@@ -31,22 +28,14 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex CosPi(BigComplex z)
-    {
-        return Cos(z * Pi);
-    }
+    public static BigComplex CosPi(BigComplex z) => Cos(z * Pi);
 
     /// <inheritdoc/>
-    public static (BigComplex Sin, BigComplex Cos) SinCos(BigComplex z)
-    {
-        return (Sin(z), Cos(z));
-    }
+    public static (BigComplex Sin, BigComplex Cos) SinCos(BigComplex z) => (Sin(z), Cos(z));
 
     /// <inheritdoc/>
-    public static (BigComplex SinPi, BigComplex CosPi) SinCosPi(BigComplex z)
-    {
-        return (SinPi(z), CosPi(z));
-    }
+    public static (BigComplex SinPi, BigComplex CosPi) SinCosPi(BigComplex z) =>
+        (SinPi(z), CosPi(z));
 
     /// <inheritdoc/>
     public static BigComplex Tan(BigComplex z)
@@ -59,10 +48,7 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex TanPi(BigComplex z)
-    {
-        return Tan(z * Pi);
-    }
+    public static BigComplex TanPi(BigComplex z) => Tan(z * Pi);
 
     #endregion Trigonometric methods
 
@@ -70,42 +56,24 @@ public partial struct BigComplex
 
     /// <inheritdoc/>
     /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
-    public static BigComplex Asin(BigComplex z)
-    {
-        return I * Log(Sqrt(1 - z * z) - I * z);
-    }
+    public static BigComplex Asin(BigComplex z) => I * Log(Sqrt(1 - z * z) - I * z);
 
     /// <inheritdoc/>
-    public static BigComplex AsinPi(BigComplex z)
-    {
-        return Asin(z) / Pi;
-    }
+    public static BigComplex AsinPi(BigComplex z) => Asin(z) / Pi;
 
     /// <inheritdoc/>
     /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
-    public static BigComplex Acos(BigComplex z)
-    {
-        return -I * Log(z + I * Sqrt(1 - z * z));
-    }
+    public static BigComplex Acos(BigComplex z) => -I * Log(z + I * Sqrt(1 - z * z));
 
     /// <inheritdoc/>
-    public static BigComplex AcosPi(BigComplex z)
-    {
-        return Acos(z) / Pi;
-    }
+    public static BigComplex AcosPi(BigComplex z) => Acos(z) / Pi;
 
     /// <inheritdoc/>
     /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
-    public static BigComplex Atan(BigComplex z)
-    {
-        return -I / 2 * Log((I - z) / (I + z));
-    }
+    public static BigComplex Atan(BigComplex z) => -I / 2 * Log((I - z) / (I + z));
 
     /// <inheritdoc/>
-    public static BigComplex AtanPi(BigComplex z)
-    {
-        return Atan(z) / Pi;
-    }
+    public static BigComplex AtanPi(BigComplex z) => Atan(z) / Pi;
 
     #endregion Inverse trigonometric methods
 
@@ -146,22 +114,13 @@ public partial struct BigComplex
     #region Inverse hyperbolic methods
 
     /// <inheritdoc/>
-    public static BigComplex Acosh(BigComplex x)
-    {
-        throw new NotImplementedException();
-    }
+    public static BigComplex Acosh(BigComplex x) => throw new NotImplementedException();
 
     /// <inheritdoc/>
-    public static BigComplex Asinh(BigComplex x)
-    {
-        throw new NotImplementedException();
-    }
+    public static BigComplex Asinh(BigComplex x) => throw new NotImplementedException();
 
     /// <inheritdoc/>
-    public static BigComplex Atanh(BigComplex x)
-    {
-        throw new NotImplementedException();
-    }
+    public static BigComplex Atanh(BigComplex x) => throw new NotImplementedException();
 
     #endregion Inverse hyperbolic methods
 }

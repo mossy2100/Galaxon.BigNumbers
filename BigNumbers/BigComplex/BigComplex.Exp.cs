@@ -63,28 +63,19 @@ public partial struct BigComplex
     /// <summary>Calculate the square of a BigComplex number.</summary>
     /// <param name="z">A BigComplex value.</param>
     /// <returns>The square of the BigComplex value.</returns>
-    public static BigComplex Sqr(BigComplex z)
-    {
-        return z * z;
-    }
+    public static BigComplex Sqr(BigComplex z) => z * z;
 
     /// <summary>Calculate the cube of a BigComplex number.</summary>
     /// <param name="z">A BigComplex value.</param>
     /// <returns>The cube of the BigComplex value.</returns>
-    public static BigComplex Cube(BigComplex z)
-    {
-        return z * z * z;
-    }
+    public static BigComplex Cube(BigComplex z) => z * z * z;
 
     #endregion Power functions
 
     #region Root functions
 
     /// <inheritdoc/>
-    public static BigComplex Hypot(BigComplex x, BigComplex y)
-    {
-        return Sqrt(Sqr(x) + Sqr(y));
-    }
+    public static BigComplex Hypot(BigComplex x, BigComplex y) => Sqrt(Sqr(x) + Sqr(y));
 
     /// <inheritdoc/>
     public static BigComplex RootN(BigComplex z, int n)
@@ -189,10 +180,7 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex Cbrt(BigComplex z)
-    {
-        return RootN(z, 3);
-    }
+    public static BigComplex Cbrt(BigComplex z) => RootN(z, 3);
 
     #endregion Root functions
 
@@ -222,16 +210,10 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex Exp2(BigComplex z)
-    {
-        return 2 ^ z;
-    }
+    public static BigComplex Exp2(BigComplex z) => 2 ^ z;
 
     /// <inheritdoc/>
-    public static BigComplex Exp10(BigComplex z)
-    {
-        return 10 ^ z;
-    }
+    public static BigComplex Exp10(BigComplex z) => 10 ^ z;
 
     #endregion Exponential functions
 
@@ -254,10 +236,8 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex Log(BigComplex x, BigComplex newBase)
-    {
+    public static BigComplex Log(BigComplex x, BigComplex newBase) =>
         throw new NotImplementedException();
-    }
 
     /// <summary>
     /// Logarithm of a complex number in a specified base.
@@ -288,10 +268,7 @@ public partial struct BigComplex
     /// </summary>
     /// <param name="z">The complex arg.</param>
     /// <returns>The logarithm of z in base 2.</returns>
-    public static BigComplex Log2(BigComplex z)
-    {
-        return Log(z, 2);
-    }
+    public static BigComplex Log2(BigComplex z) => Log(z, 2);
 
     /// <summary>
     /// Logarithm of a complex number in base 10.
@@ -301,10 +278,7 @@ public partial struct BigComplex
     /// </summary>
     /// <param name="z">The complex arg.</param>
     /// <returns>The logarithm of z in base 10.</returns>
-    public static BigComplex Log10(BigComplex z)
-    {
-        return Log(z, 10);
-    }
+    public static BigComplex Log10(BigComplex z) => Log(z, 10);
 
     #endregion Logarithmic functions
 }
