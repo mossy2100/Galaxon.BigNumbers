@@ -721,7 +721,13 @@
         <member name="M:Galaxon.BigNumbers.BigComplex.TryFormat(System.Span{System.Char},System.Int32@,System.ReadOnlySpan{System.Char},System.IFormatProvider)">
             <inheritdoc/>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Sin(Galaxon.BigNumbers.BigComplex)">
+            <inheritdoc/>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.SinPi(Galaxon.BigNumbers.BigComplex)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Cos(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.CosPi(Galaxon.BigNumbers.BigComplex)">
@@ -733,37 +739,40 @@
         <member name="M:Galaxon.BigNumbers.BigComplex.SinCosPi(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Tan(Galaxon.BigNumbers.BigComplex)">
+            <inheritdoc/>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.TanPi(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Asin(Galaxon.BigNumbers.BigComplex)">
-            <summary>
-                <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
-            </summary>
-            <param name="z"></param>
-            <returns></returns>
+            <inheritdoc/>
+            <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.AsinPi(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Acos(Galaxon.BigNumbers.BigComplex)">
-            <summary>
-                <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
-            </summary>
-            <param name="z"></param>
-            <returns></returns>
+            <inheritdoc/>
+            <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.AcosPi(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Atan(Galaxon.BigNumbers.BigComplex)">
-            <summary>
-                <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
-            </summary>
-            <param name="z"></param>
-            <returns></returns>
+            <inheritdoc/>
+            <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.AtanPi(Galaxon.BigNumbers.BigComplex)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Sinh(Galaxon.BigNumbers.BigComplex)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Cosh(Galaxon.BigNumbers.BigComplex)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Tanh(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Acosh(Galaxon.BigNumbers.BigComplex)">
@@ -871,18 +880,21 @@
             <summary>Precision supported by the decimal type.</summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.#ctor(System.Numerics.BigInteger,System.Int32,System.Boolean)">
-            <summary>
-            Main constructor.
-            </summary>
+            <summary>Main constructor.</summary>
             <param name="significand">The significand or mantissa.</param>
             <param name="exponent">The exponent.</param>
             <param name="roundSigFigs">
             If the value should be rounded off to the current value of MaxSigFigs.
             </param>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.#ctor(System.Numerics.BigInteger)">
+            <summary>
+            Constructor for integers. Sets default value of exponent to 0.
+            </summary>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.#ctor">
             <summary>
-            Default constructor.
+            Zero constructor.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.GetSignificandByteCount">

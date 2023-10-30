@@ -4,6 +4,7 @@ public partial struct BigComplex
 {
     #region Trigonometric methods
 
+    /// <inheritdoc/>
     public static BigComplex Sin(BigComplex z)
     {
         var x = z.Real;
@@ -19,6 +20,7 @@ public partial struct BigComplex
         return Sin(z * Pi);
     }
 
+    /// <inheritdoc/>
     public static BigComplex Cos(BigComplex z)
     {
         var x = z.Real;
@@ -46,6 +48,7 @@ public partial struct BigComplex
         return (SinPi(z), CosPi(z));
     }
 
+    /// <inheritdoc/>
     public static BigComplex Tan(BigComplex z)
     {
         var x = z.Real;
@@ -65,11 +68,8 @@ public partial struct BigComplex
 
     #region Inverse trigonometric methods
 
-    /// <summary>
-    ///     <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
-    /// </summary>
-    /// <param name="z"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
+    /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
     public static BigComplex Asin(BigComplex z)
     {
         return I * Log(Sqrt(1 - z * z) - I * z);
@@ -81,11 +81,8 @@ public partial struct BigComplex
         return Asin(z) / Pi;
     }
 
-    /// <summary>
-    ///     <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
-    /// </summary>
-    /// <param name="z"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
+    /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
     public static BigComplex Acos(BigComplex z)
     {
         return -I * Log(z + I * Sqrt(1 - z * z));
@@ -97,11 +94,8 @@ public partial struct BigComplex
         return Acos(z) / Pi;
     }
 
-    /// <summary>
-    ///     <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
-    /// </summary>
-    /// <param name="z"></param>
-    /// <returns></returns>
+    /// <inheritdoc/>
+    /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
     public static BigComplex Atan(BigComplex z)
     {
         return -I / 2 * Log((I - z) / (I + z));
@@ -117,6 +111,7 @@ public partial struct BigComplex
 
     #region Hyperbolic methods
 
+    /// <inheritdoc/>
     public static BigComplex Sinh(BigComplex z)
     {
         var x = z.Real;
@@ -126,6 +121,7 @@ public partial struct BigComplex
         return new BigComplex(a, b);
     }
 
+    /// <inheritdoc/>
     public static BigComplex Cosh(BigComplex z)
     {
         var x = z.Real;
@@ -135,6 +131,7 @@ public partial struct BigComplex
         return new BigComplex(a, b);
     }
 
+    /// <inheritdoc/>
     public static BigComplex Tanh(BigComplex z)
     {
         var x = z.Real;
