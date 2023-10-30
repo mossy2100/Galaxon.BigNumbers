@@ -15,14 +15,20 @@ public partial struct BigDecimal :
     #region Instance fields and properties
 
     /// <summary>
-    /// The part of a number in scientific notation or in floating-point representation, consisting
-    /// of its significant digits.
+    /// The part of a number in scientific notation or in floating-point representation consisting
+    /// of its significant digits. Also known as the mantissa.
     /// </summary>
-    /// <see href="https://en.wikipedia.org/wiki/Significand">Wikipedia: Significand</see>
+    /// <remarks>
+    /// In BigDecimal values, no trailing zeros are retained in the significand; rather, the
+    /// exponent is adjusted instead. This minimised the size of the BigInteger being used to store
+    /// the value. This varies from the scientific meaning of significant digits, which can include
+    /// significant trailing zeros, but it seems like the right design choice here.
+    /// </remarks>
+    /// <see href="https://en.wikipedia.org/wiki/Significand"/>
     public BigInteger Significand { get; set; }
 
     /// <summary>The power of 10.</summary>
-    public int Exponent { get; set; }
+    public BigInteger Exponent { get; set; }
 
     /// <summary>The sign of the value.</summary>
     /// <remarks>
@@ -117,7 +123,7 @@ public partial struct BigDecimal :
     /// <param name="roundSigFigs">
     /// If the value should be rounded off to the current value of MaxSigFigs.
     /// </param>
-    public BigDecimal(BigInteger significand, int exponent, bool roundSigFigs = false)
+    public BigDecimal(BigInteger significand, BigInteger exponent, bool roundSigFigs = false)
     {
         // If the significant is 0, make sure the exponent is also 0.
         if (significand == 0)
@@ -141,14 +147,10 @@ public partial struct BigDecimal :
         Exponent = exponent;
     }
 
-    /// <summary>
-    /// Constructor for integers. Sets default value of exponent to 0.
-    /// </summary>
+    /// <summary>Constructor for integers. Sets default value of exponent to 0.</summary>
     public BigDecimal(BigInteger significand) : this(significand, 0) { }
 
-    /// <summary>
-    /// Zero constructor.
-    /// </summary>
+    /// <summary>Construct a zero BigDecimal.</summary>
     public BigDecimal() : this(0, 0) { }
 
     #endregion Constructors

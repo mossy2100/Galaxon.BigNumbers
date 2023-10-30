@@ -299,17 +299,41 @@ public partial struct BigComplex
 
     #endregion Casting from BigComplex
 
-    #region Convert to object
-
-    /// <summary>Convert BigComplex to array.</summary>
-    /// <returns>The equivalent array.</returns>
-    public readonly BigDecimal[] ToArray() => new[] { Real, Imaginary };
+    #region Convert to and from objects
 
     /// <summary>Convert BigComplex to tuple.</summary>
     /// <returns>The equivalent tuple.</returns>
     public readonly (BigDecimal, BigDecimal) ToTuple() => (Real, Imaginary);
 
-    #endregion Convert to object
+    /// <summary>Construct BigComplex from tuple of 2 BigDecimal values.</summary>
+    /// <param name="complex">The tuple.</param>
+    /// <returns>The equivalent BigComplex value.</returns>
+    public static BigComplex FromTuple((BigDecimal, BigDecimal) complex) =>
+        new (complex.Item1, complex.Item2);
+
+    /// <summary>Convert BigComplex to array.</summary>
+    /// <returns>The equivalent array.</returns>
+    public readonly BigDecimal[] ToArray() => new[] { Real, Imaginary };
+
+    /// <summary>Construct BigComplex from an array of 2 BigDecimal values.</summary>
+    /// <param name="complex">The array.</param>
+    /// <returns>The equivalent BigComplex value.</returns>
+    /// <exception cref="ArgumentException">
+    /// If the array does not contain exactly 2 values.
+    /// </exception>
+    public BigComplex FromArray(BigDecimal[] complex)
+    {
+        // Guard.
+        if (complex.Length != 2)
+        {
+            throw new ArgumentException("The array must contain exactly two elements.");
+        }
+
+        // Construct the new BigComplex.
+        return new BigComplex(complex[0], complex[1]);
+    }
+
+    #endregion Convert to and from objects
 
     #region TryConvert methods
 

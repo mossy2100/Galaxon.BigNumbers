@@ -78,44 +78,12 @@ public partial struct BigRational :
         Denominator = den;
     }
 
-    /// <summary>
-    /// Construct a BigRational from a single integer, taken to be the numerator.
-    /// </summary>
+    /// <summary>Construct a BigRational from a single integer, taken to be the numerator.</summary>
     /// <param name="num">The numerator.</param>
     public BigRational(BigInteger num) : this(num, 1) { }
 
-    /// <summary>
-    /// Construct a zero BigRational.
-    /// </summary>
+    /// <summary>Construct a zero BigRational.</summary>
     public BigRational() : this(0, 1) { }
-
-    /// <summary>
-    /// Construct a BigRational from a tuple of 2 BigInteger values.
-    /// </summary>
-    /// <param name="rational">The tuple.</param>
-    public BigRational((BigInteger, BigInteger) rational) : this(rational.Item1, rational.Item2) { }
-
-    /// <summary>
-    /// Construct a BigRational from an array of 2 BigInteger values.
-    /// </summary>
-    /// <param name="rational">The array.</param>
-    /// <exception cref="ArgumentException">If the array does not contain exactly 2
-    /// values.</exception>
-    public BigRational(BigInteger[] rational)
-    {
-        // Guard.
-        if (rational.Length != 2)
-        {
-            throw new ArgumentException("The array must contain exactly two elements.");
-        }
-
-        // Reduce.
-        var (num, den) = Reduce(rational[0], rational[1]);
-
-        // Assign parts.
-        Numerator = num;
-        Denominator = den;
-    }
 
     #endregion Constructors
 }

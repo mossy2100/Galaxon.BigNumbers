@@ -26,7 +26,7 @@ public partial struct BigComplex
     /// <returns>The new BigComplex number.</returns>
     /// <see cref="Complex.FromPolarCoordinates"/>
     public static BigComplex FromPolarCoordinates(BigDecimal magnitude, BigDecimal phase) =>
-        new (BigDecimal.PolarToCartesian(magnitude, phase));
+        FromTuple(BigDecimal.PolarToCartesian(magnitude, phase));
 
     #endregion Methods related to magnitude and phase
 

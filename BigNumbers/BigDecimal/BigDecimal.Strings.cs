@@ -244,27 +244,43 @@ public partial struct BigDecimal
     {
         var strAbsSig = BigInteger.Abs(Significand).ToString();
 
+        // Integer.
         if (Exponent == 0)
         {
             return (strAbsSig, "");
         }
 
-        if (Exponent > 0)
-        {
-            return (strAbsSig.PadRight(strAbsSig.Length + Exponent, '0'), "");
-        }
-
+        // Fraction between 0.1 and 1.
         if (-Exponent == strAbsSig.Length)
         {
             return ("0", strAbsSig);
         }
 
-        if (-Exponent > strAbsSig.Length)
+        try
         {
-            return ("0", strAbsSig.PadLeft(-Exponent, '0'));
-        }
+            // If Exponent is outside the valid range for int, this will throw an OverflowException.
+            // TODO Test this assumption.
+            var exp = (int)Exponent;
 
-        return (strAbsSig[..^-Exponent], strAbsSig[^-Exponent..]);
+            // Integer multiple of 10.
+            if (Exponent > 0)
+            {
+                return (strAbsSig.PadRight(strAbsSig.Length + exp, '0'), "");
+            }
+
+            // Fraction less than 0.1.
+            if (-Exponent > strAbsSig.Length)
+            {
+                return ("0", strAbsSig.PadLeft(-exp, '0'));
+            }
+
+            // Fraction with non-zeros on both sides of the decimal point.
+            return (strAbsSig[..^-exp], strAbsSig[^-exp..]);
+        }
+        catch (OverflowException)
+        {
+            throw new OverflowException("The exponent is too large to format the value.");
+        }
     }
 
     private string FormatFixed(string format, int? precision, IFormatProvider? provider = null)
@@ -360,7 +376,7 @@ public partial struct BigDecimal
     /// </param>
     /// <param name="provider">The format provider.</param>
     /// <returns>The formatted exponent.</returns>
-    private static string FormatExponent(string format, int exp, bool unicode, int expWidth,
+    private static string FormatExponent(string format, BigInteger exp, bool unicode, int expWidth,
         IFormatProvider? provider = null)
     {
         // Get a NumberFormatInfo we can use for special characters.
@@ -376,71 +392,10 @@ public partial struct BigDecimal
         // Standard format.
         return (char.IsLower(format[0]) ? 'e' : 'E')
             + (exp < 0 ? nfi.NegativeSign : nfi.PositiveSign)
-            + int.Abs(exp).ToString("D", provider).ZeroPad(expWidth);
+            + BigInteger.Abs(exp).ToString("D", provider).PadLeft(expWidth, '0');
     }
 
     [GeneratedRegex("^(?<format>[DEFGNPR])(?<precision>\\d*)(?<unicode>U?)$",
         RegexOptions.IgnoreCase, "en-AU")]
     private static partial Regex FormatRegex();
-
-    #region Helper methods
-
-    /// <summary>
-    /// Generate a string of '0' characters using doubling.
-    /// </summary>
-    /// <remarks>
-    /// Rather than using a simple loop, the methods saves time by using doubling.
-    /// Thus, a string of ~1000 characters requires fewer than 10 iterations instead of ~1000.
-    /// </remarks>
-    /// <param name="n">The number of '0' characters in the string.</param>
-    /// <returns>The string of '0' characters.</returns>
-    private static string StringOfZeros(BigInteger n)
-    {
-        // Terminating conditions and quick answers.
-        // This will handle most (if not all) practical uses of the method.
-        if (n == 0) return "";
-        if (n == 1) return "0";
-        if (n == 2) return "00";
-        if (n == 3) return "000";
-        if (n == 4) return "0000";
-        if (n == 5) return "00000";
-        if (n == 6) return "000000";
-        if (n == 7) return "0000000";
-        if (n == 8) return "00000000";
-        if (n == 9) return "000000000";
-
-        // See if n is even.
-        string str2;
-        if (BigInteger.IsEvenInteger(n))
-        {
-            str2 = StringOfZeros(n / 2);
-            return str2 + str2;
-        }
-
-        // n is odd.
-        str2 = StringOfZeros((n - 1) / 2);
-        return '0' + str2 + str2;
-    }
-
-    /// <summary>
-    /// Pad a string on the left with '0' characters up to a minimum width.
-    /// </summary>
-    /// <remarks>
-    /// I created this method rather than using String.PadRight() because of the need to support
-    /// BigInteger string widths, which comes from exponents being BigIntegers. I realise it's
-    /// ridiculous to imagine a string of more than int.MaxValue zeros, but it seemed like a better
-    /// solution to implement this method than throw an exception if the string width is too big.
-    /// </remarks>
-    /// <param name="str">The string.</param>
-    /// <param name="width">The minimum number of characters in the the result.</param>
-    /// <returns>The zero-padded string.</returns>
-    public static string ZeroPadLeft(string str, BigInteger width)
-    {
-        var nZerosNeeded = width - str.Length;
-        if (nZerosNeeded <= 0) return str;
-
-        return StringOfZeros(nZerosNeeded) + str;
-    }
-
-    #endregion Helper methods
 }

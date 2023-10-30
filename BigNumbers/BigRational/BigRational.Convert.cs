@@ -75,10 +75,10 @@ public partial struct BigRational
         if (x.Exponent == 0) return new BigRational(x.Significand);
 
         // Negative exponent.
-        if (x.Exponent < 0) return new BigRational(x.Significand, BigInteger.Pow(10, -x.Exponent));
+        if (x.Exponent < 0) return new BigRational(x.Significand, XBigInteger.Exp10(-x.Exponent));
 
         // Positive exponent.
-        return new BigRational(x.Significand * BigInteger.Pow(10, x.Exponent));
+        return new BigRational(x.Significand * XBigInteger.Exp10(x.Exponent));
     }
 
     #endregion Casting to BigRational
@@ -156,17 +156,19 @@ public partial struct BigRational
 
     #endregion Casting from BigRational
 
-    #region Convert to object
-
-    /// <summary>Convert BigRational to array.</summary>
-    /// <returns>An array of 2 BigIntegers, equal to the numerator and denominator.</returns>
-    public readonly BigInteger[] ToArray() => new[] { Numerator, Denominator };
+    #region Convert to and from tuple
 
     /// <summary>Convert BigRational to tuple.</summary>
     /// <returns>A tuple with 2 BigIntegers, equal to the numerator and denominator.</returns>
     public readonly (BigInteger, BigInteger) ToTuple() => (Numerator, Denominator);
 
-    #endregion Convert to object
+    /// <summary>Construct a BigRational from a tuple of 2 BigInteger values.</summary>
+    /// <param name="rational">The tuple.</param>
+    /// <returns>The equivalent BigRational value.</returns>
+    public static BigRational FromTuple((BigInteger, BigInteger) rational) =>
+        new (rational.Item1, rational.Item2);
+
+    #endregion Convert to and from tuple
 
     #region TryConvert methods
 

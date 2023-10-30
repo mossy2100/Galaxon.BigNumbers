@@ -28,12 +28,12 @@ public partial struct BigDecimal
 
     /// <inheritdoc/>
     public readonly bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten) =>
-        TryWriteInt(Exponent, destination, out bytesWritten, true);
+        TryWriteBigInteger(Exponent, destination, out bytesWritten, true);
 
     /// <inheritdoc/>
     public readonly bool
         TryWriteExponentLittleEndian(Span<byte> destination, out int bytesWritten) =>
-        TryWriteInt(Exponent, destination, out bytesWritten, false);
+        TryWriteBigInteger(Exponent, destination, out bytesWritten, false);
 
     /// <summary>
     /// Shared logic for:
@@ -68,24 +68,24 @@ public partial struct BigDecimal
         return TryWrite(bytes, destination, out bytesWritten);
     }
 
-    /// <summary>
-    /// Shared logic for:
-    /// <see cref="TryWriteExponentBigEndian"/>
-    /// <see cref="TryWriteExponentLittleEndian"/>
-    /// </summary>
-    private static bool TryWriteInt(int i, Span<byte> destination, out int bytesWritten,
-        bool isBigEndian)
-    {
-        // Get the bytes.
-        var bytes = BitConverter.GetBytes(i);
-
-        // Check if the requested endianness matches the architecture. If not, reverse the array.
-        if ((BitConverter.IsLittleEndian && isBigEndian)
-            || (!BitConverter.IsLittleEndian && !isBigEndian))
-        {
-            bytes = bytes.Reverse().ToArray();
-        }
-
-        return TryWrite(bytes, destination, out bytesWritten);
-    }
+    // /// <summary>
+    // /// Shared logic for:
+    // /// <see cref="TryWriteExponentBigEndian"/>
+    // /// <see cref="TryWriteExponentLittleEndian"/>
+    // /// </summary>
+    // private static bool TryWriteInt(int i, Span<byte> destination, out int bytesWritten,
+    //     bool isBigEndian)
+    // {
+    //     // Get the bytes.
+    //     var bytes = BitConverter.GetBytes(i);
+    //
+    //     // Check if the requested endianness matches the architecture. If not, reverse the array.
+    //     if ((BitConverter.IsLittleEndian && isBigEndian)
+    //         || (!BitConverter.IsLittleEndian && !isBigEndian))
+    //     {
+    //         bytes = bytes.Reverse().ToArray();
+    //     }
+    //
+    //     return TryWrite(bytes, destination, out bytesWritten);
+    // }
 }

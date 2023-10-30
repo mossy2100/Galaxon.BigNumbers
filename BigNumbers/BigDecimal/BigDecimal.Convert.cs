@@ -289,13 +289,19 @@ public partial struct BigDecimal
 
     #endregion Casting from BigDecimal
 
-    #region Convert to object
+    #region Convert to and from tuple
 
     /// <summary>Convert BigDecimal to tuple.</summary>
     /// <returns>A tuple containing the significand and exponent.</returns>
-    public readonly (BigInteger, int) ToTuple() => (Significand, Exponent);
+    public readonly (BigInteger, BigInteger) ToTuple() => (Significand, Exponent);
 
-    #endregion Convert to object
+    /// <summary>Construct BigDecimal from tuple of 2 BigInteger values.</summary>
+    /// <param name="values">The tuple.</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
+    public static BigDecimal FromTuple((BigInteger, BigInteger) values) =>
+        new (values.Item1, values.Item2);
+
+    #endregion Convert to and from tuple
 
     #region TryConvert methods
 

@@ -31,7 +31,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>Round off a value to a certain number of significant figures.</summary>
-    public static BigDecimal RoundSigFigs(BigDecimal x, int? maxSigFigs = null,
+    public static BigDecimal RoundSigFigs(BigDecimal x, BigInteger? maxSigFigs = null,
         MidpointRounding mode = MidpointRounding.ToEven)
     {
         maxSigFigs ??= MaxSigFigs;
@@ -81,10 +81,10 @@ public partial struct BigDecimal
     public static BigDecimal Ceiling(BigDecimal x) =>
         Round(x, 0, MidpointRounding.ToPositiveInfinity);
 
-    private static BigInteger RoundSignificand(BigInteger sig, int nDigitsToCut,
+    private static BigInteger RoundSignificand(BigInteger sig, BigInteger nDigitsToCut,
         MidpointRounding mode = MidpointRounding.ToEven)
     {
-        var pow = BigInteger.Pow(10, nDigitsToCut);
+        var pow = XBigInteger.Pow(10, nDigitsToCut);
         var absSig = BigInteger.Abs(sig);
         var sign = sig.Sign;
         var q = absSig / pow;
@@ -111,8 +111,8 @@ public partial struct BigDecimal
     /// Given a significand and exponent, and a maximum number of significant figures, determine
     /// the new significand and exponent.
     /// </summary>
-    private static (BigInteger newSig, int newExp) RoundSigFigs(BigInteger sig,
-        int exp, int maxSigFigs, MidpointRounding mode = MidpointRounding.ToEven)
+    private static (BigInteger newSig, BigInteger newExp) RoundSigFigs(BigInteger sig,
+        BigInteger exp, BigInteger maxSigFigs, MidpointRounding mode = MidpointRounding.ToEven)
     {
         // Guard.
         if (maxSigFigs <= 0)
@@ -145,7 +145,7 @@ public partial struct BigDecimal
     /// NB: The value will probably not be canonical after calling this method, so it should only
     /// be used on temporary variables.
     /// </summary>
-    private void ShiftBy(int nPlaces)
+    private void ShiftBy(BigInteger nPlaces)
     {
         // Guard.
         if (nPlaces < 0)
@@ -157,7 +157,7 @@ public partial struct BigDecimal
         if (nPlaces == 0) return;
 
         // Shift.
-        Significand *= BigInteger.Pow(10, nPlaces);
+        Significand *= XBigInteger.Pow(10, nPlaces);
         Exponent -= nPlaces;
     }
 
@@ -203,7 +203,8 @@ public partial struct BigDecimal
     /// Static form of the method, for use in the constructor.
     /// </summary>
     /// <returns>The two updated BigIntegers.</returns>
-    private static (BigInteger, int) MakeCanonical(BigInteger significand, int exponent)
+    private static (BigInteger, BigInteger) MakeCanonical(BigInteger significand,
+        BigInteger exponent)
     {
         // Canonical form of zero.
         if (significand == 0)
