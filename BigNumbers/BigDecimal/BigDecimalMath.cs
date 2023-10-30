@@ -18,19 +18,13 @@ public partial struct BigDecimal
         MidpointRounding mode = MidpointRounding.ToEven)
     {
         // If it's an integer, no rounding required.
-        if (x.Exponent >= 0)
-        {
-            return x;
-        }
+        if (x.Exponent >= 0) return x;
 
         // Find out how many digits to discard.
         var nDigitsToCut = -digits - x.Exponent;
 
         // Anything to do?
-        if (nDigitsToCut <= 0)
-        {
-            return x;
-        }
+        if (nDigitsToCut <= 0) return x;
 
         // Round off the significand.
         var newSig = RoundSignificand(x.Significand, nDigitsToCut, mode);

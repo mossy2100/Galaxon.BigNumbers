@@ -5,103 +5,93 @@ namespace Galaxon.BigNumbers;
 
 public partial struct BigRational
 {
-    #region Operators for casting from other number types to BigRational
+    #region Casting to BigRational
 
-    /// <summary>Cast from sbyte to BigRational.</summary>
+    /// <summary>Cast sbyte to BigRational.</summary>
     public static implicit operator BigRational(sbyte num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>Cast from byte to BigRational.</summary>
+    /// <summary>Cast byte to BigRational.</summary>
     public static implicit operator BigRational(byte num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>Cast from short to BigRational.</summary>
+    /// <summary>Cast short to BigRational.</summary>
     public static implicit operator BigRational(short num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>Cast from ushort to BigRational.</summary>
+    /// <summary>Cast ushort to BigRational.</summary>
     public static implicit operator BigRational(ushort num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>Cast from int to BigRational.</summary>
+    /// <summary>Cast int to BigRational.</summary>
     public static implicit operator BigRational(int num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>Cast from uint to BigRational.</summary>
+    /// <summary>Cast uint to BigRational.</summary>
     public static implicit operator BigRational(uint num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>Cast from long to BigRational.</summary>
+    /// <summary>Cast long to BigRational.</summary>
     public static implicit operator BigRational(long num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>Cast from ulong to BigRational.</summary>
+    /// <summary>Cast ulong to BigRational.</summary>
     public static implicit operator BigRational(ulong num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>
-    /// Implicitly cast an Int128 to a BigRational.
-    /// </summary>
+    /// <summary>Cast Int128 to BigRational.</summary>
     public static implicit operator BigRational(Int128 num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>
-    /// Implicitly cast a UInt128 to a BigRational.
-    /// </summary>
+    /// <summary>Cast UInt128 to BigRational.</summary>
     public static implicit operator BigRational(UInt128 num)
     {
         return new BigRational(num);
     }
 
-    /// <summary>
-    /// Cast from Half to BigRational.
-    /// This can be done exactly.
-    /// </summary>
+    /// <summary>Cast BigInteger to BigRational.</summary>
+    public static implicit operator BigRational(BigInteger num)
+    {
+        return new BigRational(num);
+    }
+
+    /// <summary>Cast Half to BigRational.</summary>
     public static implicit operator BigRational(Half x)
     {
-        return ConvertFromFloatingPoint(x);
+        return ConvertFromFloatingPoint<Half>(x);
     }
 
-    /// <summary>
-    /// Cast from float to BigRational.
-    /// This can be done exactly.
-    /// </summary>
+    /// <summary>Cast float to BigRational.</summary>
     public static implicit operator BigRational(float x)
     {
-        return ConvertFromFloatingPoint(x);
+        return ConvertFromFloatingPoint<float>(x);
     }
 
-    /// <summary>
-    /// Cast from double to BigRational.
-    /// This can be done exactly.
-    /// </summary>
+    /// <summary>Cast double to BigRational.</summary>
     public static implicit operator BigRational(double x)
     {
-        return ConvertFromFloatingPoint(x);
+        return ConvertFromFloatingPoint<double>(x);
     }
 
-    /// <summary>
-    /// Cast from decimal to BigRational.
-    /// This can be done exactly.
-    /// </summary>
+    /// <summary>Cast decimal to BigRational.</summary>
     public static implicit operator BigRational(decimal x)
     {
         // Handle zero.
@@ -120,13 +110,7 @@ public partial struct BigRational
         return new BigRational(num, den);
     }
 
-    /// <summary>Cast from BigInteger to BigRational.</summary>
-    public static implicit operator BigRational(BigInteger num)
-    {
-        return new BigRational(num);
-    }
-
-    /// <summary>Cast from BigDecimal to BigRational.</summary>
+    /// <summary>Cast BigDecimal to BigRational.</summary>
     public static implicit operator BigRational(BigDecimal n)
     {
         return n.Exponent switch
@@ -142,128 +126,129 @@ public partial struct BigRational
         };
     }
 
-    #endregion Operators for casting from other number types to BigRational
+    #endregion Casting to BigRational
 
-    #region Operators for casting from BigRational to other number types
+    #region Casting from BigRational
 
-    /// <summary>Cast from BigRational to sbyte.</summary>
+    /// <summary>Cast BigRational to sbyte.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of sbyte.</exception>
     public static explicit operator sbyte(BigRational br)
     {
         return (sbyte)(BigDecimal)br;
     }
 
-    /// <summary>Cast from BigRational to byte.</summary>
+    /// <summary>Cast BigRational to byte.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of byte.</exception>
     public static explicit operator byte(BigRational br)
     {
         return (byte)(BigDecimal)br;
     }
 
-    /// <summary>Cast from BigRational to short.</summary>
+    /// <summary>Cast BigRational to short.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of short.</exception>
     public static explicit operator short(BigRational br)
     {
         return (short)(BigDecimal)br;
     }
 
-    /// <summary>Cast from BigRational to ushort.</summary>
-    /// <exception cref="OverflowException">If the result is outside the range of
-    /// ushort.</exception>
+    /// <summary>Cast BigRational to ushort.</summary>
+    /// <exception cref="OverflowException">
+    /// If the result is outside the range of ushort.
+    /// </exception>
     public static explicit operator ushort(BigRational br)
     {
         return (ushort)(BigDecimal)br;
     }
 
-    /// <summary>Explicitly cast a BigRational to an int.</summary>
+    /// <summary>Cast BigRational to an int.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of int.</exception>
     public static explicit operator int(BigRational br)
     {
         return (int)(BigDecimal)br;
     }
 
-    /// <summary>Cast from BigRational to uint.</summary>
+    /// <summary>Cast BigRational to uint.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of uint.</exception>
     public static explicit operator uint(BigRational br)
     {
         return (uint)(BigDecimal)br;
     }
 
-    /// <summary>Cast from BigRational to long.</summary>
+    /// <summary>Cast BigRational to long.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of long.</exception>
     public static explicit operator long(BigRational br)
     {
         return (long)(BigDecimal)br;
     }
 
-    /// <summary>Cast from BigRational to ulong.</summary>
+    /// <summary>Cast BigRational to ulong.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of ulong.</exception>
     public static explicit operator ulong(BigRational br)
     {
         return (ulong)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Explicitly cast a BigRational to an Int128.
-    /// </summary>
+    /// <summary>Cast BigRational to an Int128.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of Int128.</exception>
     public static explicit operator Int128(BigRational br)
     {
         return (Int128)(BigDecimal)br;
     }
 
-    /// <summary>
-    /// Cast from BigRational to UInt.28.
-    /// </summary>
+    /// <summary>Cast BigRational to UInt128.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of UInt128.</exception>
     public static explicit operator UInt128(BigRational br)
     {
         return (UInt128)(BigDecimal)br;
     }
 
-    /// <summary>Cast from BigRational to Half.</summary>
+    /// <summary>Cast BigRational to BigInteger.</summary>
+    public static explicit operator BigInteger(BigRational br)
+    {
+        return (BigInteger)(BigDecimal)br;
+    }
+
+    /// <summary>Cast BigRational to Half.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of Half.</exception>
     public static explicit operator Half(BigRational br)
     {
         return (Half)(BigDecimal)br;
     }
 
-    /// <summary>Cast from BigRational to float.</summary>
+    /// <summary>Cast BigRational to float.</summary>
     /// <exception cref="OverflowException">If the result is outside the range of float.</exception>
     public static explicit operator float(BigRational br)
     {
         return (float)(BigDecimal)br;
     }
 
-    /// <summary>Cast from BigRational to double.</summary>
-    /// <exception cref="OverflowException">If the result is outside the range of double.</exception>
+    /// <summary>Cast BigRational to double.</summary>
+    /// <exception cref="OverflowException">
+    /// If the result is outside the range of double.
+    /// </exception>
     public static explicit operator double(BigRational br)
     {
         return (double)(BigDecimal)br;
     }
 
-    /// <summary>Cast from BigRational to decimal.</summary>
-    /// <exception cref="OverflowException">If the result is outside the range of decimal.</exception>
+    /// <summary>Cast BigRational to decimal.</summary>
+    /// <exception cref="OverflowException">
+    /// If the result is outside the range of decimal.
+    /// </exception>
     public static explicit operator decimal(BigRational br)
     {
         return (decimal)(BigDecimal)br;
     }
 
-    /// <summary>Cast from BigRational to BigInteger.</summary>
-    public static explicit operator BigInteger(BigRational br)
-    {
-        return (BigInteger)(BigDecimal)br;
-    }
-
-    /// <summary>Cast from BigRational to BigDecimal.</summary>
+    /// <summary>Cast BigRational to BigDecimal.</summary>
     public static explicit operator BigDecimal(BigRational n)
     {
-        return n.Numerator / (BigDecimal)n.Denominator;
+        return (BigDecimal)n.Numerator / (BigDecimal)n.Denominator;
     }
 
-    #endregion Operators for casting from BigRational to other number types
+    #endregion Casting from BigRational
 
-    #region Methods that convert to an object
+    #region Convert to object
 
     /// <summary>Convert BigRational to array.</summary>
     /// <returns>The equivalent array.</returns>
@@ -279,12 +264,302 @@ public partial struct BigRational
         return (Numerator, Denominator);
     }
 
-    #endregion Methods that convert to an object
+    #endregion Convert to object
+
+    #region TryConvert methods
+
+    /// <inheritdoc/>
+    public static bool TryConvertFromChecked<TOther>(TOther value, out BigRational result)
+        where TOther : INumberBase<TOther>
+    {
+        switch (value)
+        {
+            case sbyte:
+                result = (sbyte)(object)value;
+                return true;
+
+            case byte:
+                result = (byte)(object)value;
+                return true;
+
+            case short:
+                result = (short)(object)value;
+                return true;
+
+            case ushort:
+                result = (ushort)(object)value;
+                return true;
+
+            case int:
+                result = (int)(object)value;
+                return true;
+
+            case uint:
+                result = (uint)(object)value;
+                return true;
+
+            case long:
+                result = (long)(object)value;
+                return true;
+
+            case ulong:
+                result = (ulong)(object)value;
+                return true;
+
+            case Int128:
+                result = (Int128)(object)value;
+                return true;
+
+            case UInt128:
+                result = (UInt128)(object)value;
+                return true;
+
+            case BigInteger:
+                result = (BigInteger)(object)value;
+                return true;
+
+            case Half:
+                result = (Half)(object)value;
+                return true;
+
+            case float:
+                result = (float)(object)value;
+                return true;
+
+            case double:
+                result = (double)(object)value;
+                return true;
+
+            case decimal:
+                result = (decimal)(object)value;
+                return true;
+
+            case BigDecimal:
+                result = (BigDecimal)(object)value;
+                return true;
+
+            default:
+                // Unsupported type.
+                result = 0;
+                return false;
+        }
+    }
+
+    /// <inheritdoc/>
+    public static bool TryConvertFromSaturating<TOther>(TOther value, out BigRational result)
+        where TOther : INumberBase<TOther>
+    {
+        // No saturation needed, as BigRational does not specify a min or max value.
+        return TryConvertFromChecked(value, out result);
+    }
+
+    /// <inheritdoc/>
+    public static bool TryConvertFromTruncating<TOther>(TOther value, out BigRational result)
+        where TOther : INumberBase<TOther>
+    {
+        // No truncation needed, as BigRational isn't an integer type.
+        return TryConvertFromChecked(value, out result);
+    }
+
+    /// <inheritdoc/>
+    public static bool TryConvertToChecked<TOther>(BigRational value, out TOther result)
+        where TOther : INumberBase<TOther>
+    {
+        // Initialize result to silence the compiler warning.
+        result = TOther.Zero;
+
+        switch (result)
+        {
+            case sbyte:
+                result = (TOther)(object)(sbyte)value;
+                return true;
+
+            case byte:
+                result = (TOther)(object)(byte)value;
+                return true;
+
+            case short:
+                result = (TOther)(object)(short)value;
+                return true;
+
+            case ushort:
+                result = (TOther)(object)(ushort)value;
+                return true;
+
+            case int:
+                result = (TOther)(object)(int)value;
+                return true;
+
+            case uint:
+                result = (TOther)(object)(uint)value;
+                return true;
+
+            case long:
+                result = (TOther)(object)(long)value;
+                return true;
+
+            case ulong:
+                result = (TOther)(object)(ulong)value;
+                return true;
+
+            case Int128:
+                result = (TOther)(object)(Int128)value;
+                return true;
+
+            case UInt128:
+                result = (TOther)(object)(UInt128)value;
+                return true;
+
+            case BigInteger:
+                result = (TOther)(object)(BigInteger)value;
+                return true;
+
+            case Half:
+                result = (TOther)(object)(Half)value;
+                return true;
+
+            case float:
+                result = (TOther)(object)(float)value;
+                return true;
+
+            case double:
+                result = (TOther)(object)(double)value;
+                return true;
+
+            case decimal:
+                result = (TOther)(object)(decimal)value;
+                return true;
+
+            case BigDecimal:
+                result = (TOther)(object)(BigDecimal)value;
+                return true;
+
+            default:
+                // Unsupported type.
+                return false;
+        }
+    }
+
+    /// <inheritdoc/>
+    public static bool TryConvertToSaturating<TOther>(BigRational value, out TOther result)
+        where TOther : INumberBase<TOther>
+    {
+        // Initialize result to silence the compiler warning.
+        result = TOther.Zero;
+
+        switch (result)
+        {
+            case sbyte:
+                var sbResult = value >= sbyte.MaxValue ? sbyte.MaxValue :
+                    value <= sbyte.MinValue ? sbyte.MinValue : (sbyte)value;
+                result = (TOther)(object)sbResult;
+                return true;
+
+            case byte:
+                var bResult = value >= byte.MaxValue ? byte.MaxValue :
+                    value <= byte.MinValue ? byte.MinValue : (byte)value;
+                result = (TOther)(object)bResult;
+                return true;
+
+            case short:
+                var sResult = value >= short.MaxValue ? short.MaxValue :
+                    value <= short.MinValue ? short.MinValue : (short)value;
+                result = (TOther)(object)sResult;
+                return true;
+
+            case ushort:
+                var usResult = value >= ushort.MaxValue ? ushort.MaxValue :
+                    value <= ushort.MinValue ? ushort.MinValue : (ushort)value;
+                result = (TOther)(object)usResult;
+                return true;
+
+            case int:
+                var iResult = value >= int.MaxValue ? int.MaxValue :
+                    value <= int.MinValue ? int.MinValue : (int)value;
+                result = (TOther)(object)iResult;
+                return true;
+
+            case uint:
+                var uiResult = value >= uint.MaxValue ? uint.MaxValue :
+                    value <= uint.MinValue ? uint.MinValue : (uint)value;
+                result = (TOther)(object)uiResult;
+                return true;
+
+            case long:
+                var lResult = value >= long.MaxValue ? long.MaxValue :
+                    value <= long.MinValue ? long.MinValue : (long)value;
+                result = (TOther)(object)lResult;
+                return true;
+
+            case ulong:
+                var ulResult = value >= ulong.MaxValue ? ulong.MaxValue :
+                    value <= ulong.MinValue ? ulong.MinValue : (ulong)value;
+                result = (TOther)(object)ulResult;
+                return true;
+
+            case Int128:
+                var i128Result = value >= Int128.MaxValue ? Int128.MaxValue :
+                    value <= Int128.MinValue ? Int128.MinValue : (Int128)value;
+                result = (TOther)(object)i128Result;
+                return true;
+
+            case UInt128:
+                var ui128Result = value >= UInt128.MaxValue ? UInt128.MaxValue :
+                    value <= UInt128.MinValue ? UInt128.MinValue : (UInt128)value;
+                result = (TOther)(object)ui128Result;
+                return true;
+
+            case BigInteger:
+                result = (TOther)(object)(BigInteger)value;
+                return true;
+
+            case Half:
+                var hResult = value >= Half.MaxValue ? Half.MaxValue :
+                    value <= Half.MinValue ? Half.MinValue : (Half)value;
+                result = (TOther)(object)hResult;
+                return true;
+
+            case float:
+                var fResult = value >= float.MaxValue ? float.MaxValue :
+                    value <= float.MinValue ? float.MinValue : (float)value;
+                result = (TOther)(object)fResult;
+                return true;
+
+            case double:
+                var dResult = value >= double.MaxValue ? double.MaxValue :
+                    value <= double.MinValue ? double.MinValue : (double)value;
+                result = (TOther)(object)dResult;
+                return true;
+
+            case decimal:
+                var mResult = value >= decimal.MaxValue ? decimal.MaxValue :
+                    value <= decimal.MinValue ? decimal.MinValue : (decimal)value;
+                result = (TOther)(object)mResult;
+                return true;
+
+            case BigDecimal:
+                result = (TOther)(object)(BigDecimal)value;
+                return true;
+
+            default:
+                // Unsupported type.
+                return false;
+        }
+    }
+
+    /// <inheritdoc/>
+    public static bool TryConvertToTruncating<TOther>(BigRational value, out TOther result)
+        where TOther : INumberBase<TOther>
+    {
+        return TryConvertToChecked(value, out result);
+    }
+
+    #endregion TryConvert methods
 
     #region Helper methods
 
     /// <summary>
-    /// Implicitly cast a standard binary floating point value to a BigRational.
+    /// Cast standard binary floating point value to BigRational.
     /// This can be done exactly.
     /// </summary>
     public static BigRational ConvertFromFloatingPoint<T>(T x) where T : IFloatingPointIeee754<T>
@@ -292,7 +567,7 @@ public partial struct BigRational
         // Check the value can be converted.
         if (!T.IsFinite(x))
         {
-            throw new InvalidCastException("Cannot cast NaN or ±∞ to a BigRational.");
+            throw new InvalidCastException("Cannot cast NaN or ±∞ to BigRational.");
         }
 
         // Handle zero.
@@ -306,7 +581,7 @@ public partial struct BigRational
         if (T.IsNormal(x))
         {
             // Set the top bit.
-            fracBits |= 1uL << nFracBits;
+            fracBits |= 1ul << nFracBits;
         }
         BigInteger num = fracBits;
 
@@ -335,46 +610,4 @@ public partial struct BigRational
     }
 
     #endregion Helper methods
-
-    /// <inheritdoc/>
-    public static bool TryConvertFromChecked<TOther>(TOther value, out BigRational result)
-        where TOther : INumberBase<TOther>
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryConvertFromSaturating<TOther>(TOther value, out BigRational result)
-        where TOther : INumberBase<TOther>
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryConvertFromTruncating<TOther>(TOther value, out BigRational result)
-        where TOther : INumberBase<TOther>
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryConvertToChecked<TOther>(BigRational value, out TOther result)
-        where TOther : INumberBase<TOther>
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryConvertToSaturating<TOther>(BigRational value, out TOther result)
-        where TOther : INumberBase<TOther>
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <inheritdoc/>
-    public static bool TryConvertToTruncating<TOther>(BigRational value, out TOther result)
-        where TOther : INumberBase<TOther>
-    {
-        throw new NotImplementedException();
-    }
 }
