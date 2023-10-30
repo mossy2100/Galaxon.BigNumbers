@@ -6,16 +6,19 @@ public partial struct BigRational
 {
     #region Equality methods
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is BigRational br && Equals(br);
     }
 
+    /// <inheritdoc/>
     public bool Equals(BigRational br)
     {
         return Numerator == br.Numerator && Denominator == br.Denominator;
     }
 
+    /// <inheritdoc/>
     public readonly override int GetHashCode()
     {
         return HashCode.Combine(Numerator, Denominator);
@@ -91,49 +94,37 @@ public partial struct BigRational
 
     #region Comparison operators
 
-    /// <summary>
-    /// Equality operator.
-    /// </summary>
+    /// <inheritdoc/>
     public static bool operator ==(BigRational br, BigRational br2)
     {
         return br.CompareTo(br2) == 0;
     }
 
-    /// <summary>
-    /// Inequality operator.
-    /// </summary>
+    /// <inheritdoc/>
     public static bool operator !=(BigRational br, BigRational br2)
     {
         return br.CompareTo(br2) != 0;
     }
 
-    /// <summary>
-    /// Less than operator.
-    /// </summary>
+    /// <inheritdoc/>
     public static bool operator <(BigRational br, BigRational br2)
     {
         return br.CompareTo(br2) < 0;
     }
 
-    /// <summary>
-    /// Less than or equal to operator.
-    /// </summary>
+    /// <inheritdoc/>
     public static bool operator <=(BigRational br, BigRational br2)
     {
         return br.CompareTo(br2) <= 0;
     }
 
-    /// <summary>
-    /// Greater than operator.
-    /// </summary>
+    /// <inheritdoc/>
     public static bool operator >(BigRational br, BigRational br2)
     {
         return br.CompareTo(br2) > 0;
     }
 
-    /// <summary>
-    /// Greater than or equal to operator.
-    /// </summary>
+    /// <inheritdoc/>
     public static bool operator >=(BigRational br, BigRational br2)
     {
         return br.CompareTo(br2) >= 0;
