@@ -689,14 +689,14 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.String,System.Globalization.NumberStyles,System.IFormatProvider)">
             <inheritdoc/>
+            <remarks>Ignoring style parameter for now.</remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.String,System.IFormatProvider)">
             <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.String)">
-            <summary>Simple version of Parse().</summary>
-            <param name="s"></param>
-            <param name="provider"></param>
+            <summary>Simplest version of Parse().</summary>
+            <param name="s">The string to parse.</param>
             <returns>The BigComplex value represented by the string.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.ReadOnlySpan{System.Char},System.IFormatProvider)">
@@ -705,13 +705,19 @@
         <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider)">
             <inheritdoc/>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigComplex@)">
+            <inheritdoc/>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.TryParse(System.String,System.IFormatProvider,Galaxon.BigNumbers.BigComplex@)">
             <inheritdoc/>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigComplex.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,Galaxon.BigNumbers.BigComplex@)">
-            <inheritdoc/>
+        <member name="M:Galaxon.BigNumbers.BigComplex.TryParse(System.String,Galaxon.BigNumbers.BigComplex@)">
+            <summary>Simplest version of TryParse().</summary>
+            <param name="s">The string to parse.</param>
+            <param name="result">The BigComplex value represented by the string.</param>
+            <returns>If the attempt to parse the value succeeded.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigComplex.TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigComplex@)">
+        <member name="M:Galaxon.BigNumbers.BigComplex.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,Galaxon.BigNumbers.BigComplex@)">
             <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.TryParse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigComplex@)">
@@ -1681,7 +1687,9 @@
             <remarks>Ignoring style parameter for now.</remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.String)">
-            <summary>Simple version of Parse().</summary>
+            <summary>Simplest version of Parse().</summary>
+            <param name="s">The string to parse.</param>
+            <returns>The BigDecimal value represented by the string.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider)">
             <inheritdoc/>
@@ -1699,6 +1707,9 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryParse(System.String,Galaxon.BigNumbers.BigDecimal@)">
             <summary>Simplest version of TryParse().</summary>
+            <param name="s">The string to parse.</param>
+            <param name="result">The BigDecimal value represented by the string.</param>
+            <returns>If the attempt to parse the value succeeded.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryParse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigDecimal@)">
             <inheritdoc/>
@@ -1711,7 +1722,8 @@
             <summary>
             Format the BigDecimal as a string.
             Supported formats are the usual: D, E, F, G, N, P, and R.
-            <see href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings"/>
+            <see
+                href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings"/>
             Although "D" is normally only used by integral types, in this case both the significand and
             exponent will be formatted as integers.
             An secondary code "U" is provided, which follows the precision (if given).
@@ -2337,6 +2349,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.Parse(System.String,System.Globalization.NumberStyles,System.IFormatProvider)">
             <inheritdoc/>
+            <remarks>Ignoring style parameter for now.</remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.Parse(System.String,System.IFormatProvider)">
             <summary>
@@ -2347,47 +2360,43 @@
             <exception cref="T:System.ArgumentNullException"></exception>
             <exception cref="T:Galaxon.Core.Exceptions.ArgumentFormatException"></exception>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigRational.Parse(System.String)">
+            <summary>Simplest version of Parse().</summary>
+            <param name="s">The string to parse.</param>
+            <returns>The BigRational value represented by the string.</returns>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigRational.Parse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider)">
             <inheritdoc/>
+            <remarks>Ignoring style parameter for now.</remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.Parse(System.ReadOnlySpan{System.Char},System.IFormatProvider)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigRational.TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigRational@)">
+            <inheritdoc/>
+            <remarks>Ignoring style parameter for now.</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigRational.TryParse(System.String,System.IFormatProvider,Galaxon.BigNumbers.BigRational@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigRational.TryParse(System.String,Galaxon.BigNumbers.BigRational@)">
+            <summary>Simplest version of TryParse().</summary>
+            <param name="s">The string to parse.</param>
+            <param name="result">The BigRational value represented by the string.</param>
+            <returns>If the attempt to parse the value succeeded.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigRational.TryParse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigRational@)">
             <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,Galaxon.BigNumbers.BigRational@)">
             <inheritdoc/>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigRational.TryParse(System.String,System.IFormatProvider,Galaxon.BigNumbers.BigRational@)">
-            <summary>
-            Try to parse a string into a rational.
-            This version of the method is required to implement IParsable[BigRational], but it's more
-            likely people will call the version that doesn't have the provider parameter.
-            </summary>
-            <exception cref="T:System.ArgumentNullException"></exception>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigRational.TryParse(System.String,Galaxon.BigNumbers.BigRational@)">
-            <summary>
-            Try to parse a string into a rational.
-            </summary>
-            <exception cref="T:System.ArgumentNullException"></exception>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigRational.TryParse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigRational@)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigRational.TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigRational@)">
-            <inheritdoc/>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigRational.ToString(System.String,System.IFormatProvider)">
-            <summary>
-            Format the rational as a string.
-            </summary>
+            <inheritdoc/>
             <todo>
             Update to support standard format strings for integers, namely D, N, R, with the optional U
             code, same as for BigDecimal. Remove "A", keep "M" for mixed.
             </todo>
-            <param name="format"></param>
-            <param name="formatProvider"></param>
-            <returns></returns>
-            <exception cref="T:Galaxon.Core.Exceptions.ArgumentFormatException"></exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.ToString(System.String)">
             <summary>
