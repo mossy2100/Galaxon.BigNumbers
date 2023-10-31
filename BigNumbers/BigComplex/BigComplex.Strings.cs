@@ -41,11 +41,8 @@ public partial struct BigComplex
         // Get a NumberFormatInfo object so we know what decimal point character to accept.
         var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
 
-        // Remove whitespace from the string.
-        s = Regex.Replace(s, @"\s", "");
-
-        // Remove digit grouping characters from the string.
-        s = Regex.Replace(s, BigDecimal.GetDigitGroupingCharacterSet(nfi), "");
+        // Remove ignored characters from the string.
+        s = BigDecimal.RemoveIgnoredCharacters(s, nfi);
 
         // Regular expression for a number.
         var rxUnsignedReal = $@"\d+({nfi.NumberDecimalSeparator}\d+)?(e[+\-]?\d+)?";

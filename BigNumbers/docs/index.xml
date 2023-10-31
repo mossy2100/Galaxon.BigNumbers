@@ -1852,16 +1852,15 @@
             </code>
             </remarks>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.GetDigitGroupingCharacterSet(System.Globalization.NumberFormatInfo)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.RemoveIgnoredCharacters(System.String,System.Globalization.NumberFormatInfo)">
             <summary>
-            Get a regular expression character set containing the thousands separators.
-            This includes:
-            - the usual comma or period (depending on the culture specified by the NumberFormatInfo)
-            - underscores
-            - thin spaces
+            Removed ignored characters from a string we want to parse, i.e. whitespace and digit
+            grouping characters, which includes the usual comma or period (depending on the culture
+            specified by the NumberFormatInfo parameter), as well as underscores and thin spaces.
             </summary>
+            <param name="s">The string.</param>
             <param name="nfi">The NumberFormatInfo.</param>
-            <returns>The regular expression string.</returns>
+            <returns>The string with the ignored characters removed.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Sin(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
@@ -2402,13 +2401,16 @@
             <remarks>Ignoring style parameter for now.</remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.Parse(System.String,System.IFormatProvider)">
-            <summary>
-            Parse a string into a rational.
-            This version of the method is required to implement IParsable[BigRational], but it's more
-            likely people will call the version that doesn't have the provider parameter.
-            </summary>
-            <exception cref="T:System.ArgumentNullException"></exception>
-            <exception cref="T:Galaxon.Core.Exceptions.ArgumentFormatException"></exception>
+             <summary>
+             Parse a string into a rational.
+             This version of the method is required to implement IParsable[BigRational], but it's more
+             likely people will call the version that doesn't have the provider parameter.
+            
+             Notes:
+             - The numerator can have a sign (+ or -) but not the denominator.
+             - The divide sign and denominator can either both be present or both be omitted.
+             </summary>
+             <exception cref="T:Galaxon.Core.Exceptions.ArgumentFormatException"></exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.Parse(System.String)">
             <summary>Simplest version of Parse().</summary>

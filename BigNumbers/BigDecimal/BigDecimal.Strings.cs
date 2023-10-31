@@ -22,14 +22,8 @@ public partial struct BigDecimal
         // Get a NumberFormatInfo object so we know what characters to look for.
         var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
 
-        // Remove whitespace from the string.
-        s = Regex.Replace(s, @"\s", "");
-
-        // Remove digit grouping characters from the string. This includes:
-        //   - commas or periods (culture-specific)
-        //   - underscores
-        //   - thin spaces
-        s = Regex.Replace(s, GetDigitGroupingCharacterSet(nfi), "");
+        // Remove ignored characters from the string.
+        s = RemoveIgnoredCharacters(s, nfi);
 
         // Check the string format and extract salient info.
         var strRxSign = $"[{nfi.NegativeSign}{nfi.PositiveSign}]?";
@@ -426,16 +420,15 @@ public partial struct BigDecimal
     private static partial Regex FormatRegex();
 
     /// <summary>
-    /// Get a regular expression character set containing the thousands separators.
-    /// This includes:
-    /// - the usual comma or period (depending on the culture specified by the NumberFormatInfo)
-    /// - underscores
-    /// - thin spaces
+    /// Removed ignored characters from a string we want to parse, i.e. whitespace and digit
+    /// grouping characters, which includes the usual comma or period (depending on the culture
+    /// specified by the NumberFormatInfo parameter), as well as underscores and thin spaces.
     /// </summary>
+    /// <param name="s">The string.</param>
     /// <param name="nfi">The NumberFormatInfo.</param>
-    /// <returns>The regular expression string.</returns>
-    internal static string GetDigitGroupingCharacterSet(NumberFormatInfo nfi) =>
-        $@"[{nfi.NumberGroupSeparator}_\u2009]";
+    /// <returns>The string with the ignored characters removed.</returns>
+    internal static string RemoveIgnoredCharacters(string s, NumberFormatInfo nfi) =>
+        Regex.Replace(s, $@"[\s{nfi.NumberGroupSeparator}_\u2009]", "");
 
     #endregion Helper methods
 }
