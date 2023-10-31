@@ -16,7 +16,6 @@ public partial struct BigDecimal
         Parse(s, provider);
 
     /// <inheritdoc/>
-    /// <remarks>Ignoring style parameter for now.</remarks>
     public static BigDecimal Parse(string s, IFormatProvider? provider)
     {
         // Get a NumberFormatInfo object so we know what characters to look for.
@@ -24,6 +23,9 @@ public partial struct BigDecimal
 
         // Remove ignored characters from the string.
         s = RemoveIgnoredCharacters(s, nfi);
+
+        // Optimization.
+        if (s == "") return 0;
 
         // Check the string format and extract salient info.
         var strRxSign = $"[{nfi.NegativeSign}{nfi.PositiveSign}]?";

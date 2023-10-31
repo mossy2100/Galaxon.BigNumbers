@@ -35,31 +35,29 @@ public partial struct BigComplex
     /// </remarks>
     public static BigComplex Parse(string s, IFormatProvider? provider)
     {
-        // Optimization.
-        if (string.IsNullOrWhiteSpace(s)) return 0;
-
         // Get a NumberFormatInfo object so we know what decimal point character to accept.
         var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
 
         // Remove ignored characters from the string.
         s = BigDecimal.RemoveIgnoredCharacters(s, nfi);
 
-        // Regular expression for a number.
+        // Optimization.
+        if (s == "") return 0;
+
+        // Different components of the patterns.
         var rxUnsignedReal = $@"\d+({nfi.NumberDecimalSeparator}\d+)?(e[+\-]?\d+)?";
         var rxSignedReal = $@"[+\-]?{rxUnsignedReal}";
         var rxUnsignedImag = $@"({rxUnsignedReal}[ij]|[ij]{rxUnsignedReal})";
         var rxSignedImag = $@"[+\-]?{rxUnsignedImag}";
-
-        // Regular expressions for different kinds of brackets.
-        var rxLeft = @"[<\(\[{]";
-        var rxRight = @"[>\)\]}]";
+        var rxLeftBracket = @"[<\(\[{]";
+        var rxRightBracket = @"[>\)\]}]";
 
         // Supported patterns.
         var patterns = new[]
         {
             // Brackets and semicolon style, e.g. <x;y>, (x;y), etc.
-            $@"(?<left>{rxLeft})?(?<real>{rxSignedReal});(?<imag>{rxSignedImag})(?<right>{rxRight})?",
-            // Plain real value, e.g. 123.45, -6, 7.8e9, etc.
+            $@"(?<left>{rxLeftBracket})?(?<real>{rxSignedReal});(?<imag>{rxSignedImag})(?<right>{rxRightBracket})?",
+            // Real part only, e.g. 123.45, -6, 7.8e9, etc.
             $@"(?<real>{rxSignedReal})",
             // Imaginary part only, e.g. 12i, -j34, etc.
             $@"(?<imag>{rxSignedImag})",
