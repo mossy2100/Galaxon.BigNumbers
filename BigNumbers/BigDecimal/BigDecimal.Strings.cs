@@ -18,14 +18,14 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Parse(string s, IFormatProvider? provider)
     {
+        // Optimization.
+        if (string.IsNullOrWhiteSpace(s)) return 0;
+
         // Get a NumberFormatInfo object so we know what characters to look for.
         var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
 
         // Remove ignored characters from the string.
         s = RemoveIgnoredCharacters(s, nfi);
-
-        // Optimization.
-        if (s == "") return 0;
 
         // Check the string format and extract salient info.
         var strRxSign = $"[{nfi.NegativeSign}{nfi.PositiveSign}]?";

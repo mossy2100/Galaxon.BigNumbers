@@ -35,14 +35,14 @@ public partial struct BigComplex
     /// </remarks>
     public static BigComplex Parse(string s, IFormatProvider? provider)
     {
+        // Optimization.
+        if (string.IsNullOrWhiteSpace(s)) return 0;
+
         // Get a NumberFormatInfo object so we know what decimal point character to accept.
         var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
 
         // Remove ignored characters from the string.
         s = BigDecimal.RemoveIgnoredCharacters(s, nfi);
-
-        // Optimization.
-        if (s == "") return 0;
 
         // Different components of the patterns.
         var rxUnsignedReal = $@"\d+({nfi.NumberDecimalSeparator}\d+)?(e[+\-]?\d+)?";
