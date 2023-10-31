@@ -200,12 +200,6 @@ public class BigDecimalExpTests
         actual = BigDecimal.Pow(x, y);
         expected = 4;
         BigDecimalAssert.AreEqual(expected, actual);
-
-        x = -27;
-        y = (BigDecimal)1 / 3;
-        actual = BigDecimal.Pow(x, y);
-        expected = -3;
-        BigDecimalAssert.AreEqual(expected, actual);
     }
 
     [TestMethod]

@@ -687,13 +687,19 @@
             If the base is 0 and the exponent is negative or imaginary.
             </exception>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.String,System.Globalization.NumberStyles,System.IFormatProvider)">
+            <inheritdoc/>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.String,System.IFormatProvider)">
             <inheritdoc/>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.ReadOnlySpan{System.Char},System.IFormatProvider)">
-            <inheritdoc/>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.String)">
+            <summary>Simple version of Parse().</summary>
+            <param name="s"></param>
+            <param name="provider"></param>
+            <returns>The BigComplex value represented by the string.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.String,System.Globalization.NumberStyles,System.IFormatProvider)">
+        <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.ReadOnlySpan{System.Char},System.IFormatProvider)">
             <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider)">
@@ -711,15 +717,20 @@
         <member name="M:Galaxon.BigNumbers.BigComplex.TryParse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigComplex@)">
             <inheritdoc/>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.ToString(System.String,System.IFormatProvider)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.ToString(System.String)">
+            <summary>
+            Format the BigComplex as a string.
+            </summary>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.ToString">
             <summary>
             Express the complex number as a string in the usual algebraic format.
             This differs from Complex.ToString(), which outputs strings like (x, y).
             </summary>
             <returns>The complex number as a string.</returns>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigComplex.ToString(System.String,System.IFormatProvider)">
-            <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.TryFormat(System.Span{System.Char},System.Int32@,System.ReadOnlySpan{System.Char},System.IFormatProvider)">
             <inheritdoc/>
@@ -831,7 +842,6 @@
             <summary>
             Shared logic for:
             <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteBigInteger(System.Numerics.BigInteger,System.Span{System.Byte},System.Int32@,System.Boolean)"/>
-            <see cref="!:TryWriteInt"/>
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteBigInteger(System.Numerics.BigInteger,System.Span{System.Byte},System.Int32@,System.Boolean)">
@@ -1436,6 +1446,11 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Round(Galaxon.BigNumbers.BigDecimal,System.Int32,System.MidpointRounding)">
             <inheritdoc/>
+            <remarks>
+            The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
+            in .NET Core.
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+            </remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSigFigs(Galaxon.BigNumbers.BigDecimal,System.Nullable{System.Numerics.BigInteger},System.MidpointRounding)">
             <summary>Round off a value to a certain number of significant figures.</summary>
@@ -1479,11 +1494,28 @@
             supported by Rider so we need this here for now.
             </remarks>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSignificand(System.Numerics.BigInteger,System.Numerics.BigInteger,System.MidpointRounding)">
+            <summary>Divide by a power of 10 and round off to the nearest integer.</summary>
+            <remarks>
+            The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
+            in .NET Core.
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+            </remarks>
+            <param name="sig">The BigInteger value to round off.</param>
+            <param name="nDigitsToCut">The power of 10 (number of digits to cut).</param>
+            <param name="mode">The rounding mode.</param>
+            <returns>The rounded off result of the division.</returns>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSigFigs(System.Numerics.BigInteger,System.Numerics.BigInteger,System.Numerics.BigInteger,System.MidpointRounding)">
             <summary>
             Given a significand and exponent, and a maximum number of significant figures, determine
             the new significand and exponent.
             </summary>
+            <remarks>
+            The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
+            in .NET Core.
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+            </remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.ShiftBy(System.Numerics.BigInteger)">
             <summary>
@@ -1520,16 +1552,6 @@
             Static form of the method, for use in the constructor.
             </summary>
             <returns>The two updated BigIntegers.</returns>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.MakeCanonical">
-            <summary>
-            Make the value into its canonical form.
-            Any trailing 0s on the significand are removed, and this information is transferred to the
-            exponent.
-            This method mutates the object; it doesn't return a new object like most of the other
-            methods, because no information is lost.
-            </summary>
-            <returns>The instance, which is useful for method chaining.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Clone(Galaxon.BigNumbers.BigDecimal)">
             <summary>Clone method.</summary>
@@ -1650,12 +1672,46 @@
             If the base is 0 and the exponent is negative or imaginary.
             </exception>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.String,System.Globalization.NumberStyles,System.IFormatProvider)">
+            <inheritdoc/>
+            <remarks>Ignoring style parameter for now.</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.String,System.IFormatProvider)">
+            <inheritdoc/>
+            <remarks>Ignoring style parameter for now.</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.String)">
+            <summary>Simple version of Parse().</summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider)">
+            <inheritdoc/>
+            <remarks>Ignoring style parameter for now.</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.ReadOnlySpan{System.Char},System.IFormatProvider)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigDecimal@)">
+            <inheritdoc/>
+            <remarks>Ignoring style parameter for now.</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.TryParse(System.String,System.IFormatProvider,Galaxon.BigNumbers.BigDecimal@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.TryParse(System.String,Galaxon.BigNumbers.BigDecimal@)">
+            <summary>Simplest version of TryParse().</summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.TryParse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigDecimal@)">
+            <inheritdoc/>
+            <remarks>Ignoring style parameter for now.</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,Galaxon.BigNumbers.BigDecimal@)">
+            <inheritdoc/>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.ToString(System.String,System.IFormatProvider)">
             <summary>
             Format the BigDecimal as a string.
             Supported formats are the usual: D, E, F, G, N, P, and R.
-            <see
-                href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings"/>
+            <see href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings"/>
             Although "D" is normally only used by integral types, in this case both the significand and
             exponent will be formatted as integers.
             An secondary code "U" is provided, which follows the precision (if given).
@@ -1673,53 +1729,16 @@
             <returns>The formatted string.</returns>
             <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException">If the format specifier is invalid.</exception>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.ToString(System.String)">
+            <summary>
+            Format the BigDecimal as a string.
+            </summary>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.ToString">
             <inheritdoc/>
-            <remarks>
-            Override of ValueType.ToString(). Needed for debugging and string interpolation.
-            </remarks>
-            <see cref="M:System.ValueType.ToString"/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryFormat(System.Span{System.Char},System.Int32@,System.ReadOnlySpan{System.Char},System.IFormatProvider)">
             <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.String,System.IFormatProvider)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.String)">
-            <summary>
-            More convenient version of Parse().
-            </summary>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.String,System.Globalization.NumberStyles,System.IFormatProvider)">
-            <inheritdoc/>
-            <remarks>Ignoring style parameter for now.</remarks>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.ReadOnlySpan{System.Char},System.IFormatProvider)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider)">
-            <inheritdoc/>
-            <remarks>Ignoring style parameter for now.</remarks>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.TryParse(System.String,System.IFormatProvider,Galaxon.BigNumbers.BigDecimal@)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.TryParse(System.String,Galaxon.BigNumbers.BigDecimal@)">
-            <summary>
-            More convenient version of TryParse().
-            </summary>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigDecimal@)">
-            <inheritdoc/>
-            <remarks>Ignoring style parameter for now.</remarks>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,Galaxon.BigNumbers.BigDecimal@)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.TryParse(System.ReadOnlySpan{System.Char},System.Globalization.NumberStyles,System.IFormatProvider,Galaxon.BigNumbers.BigDecimal@)">
-            <inheritdoc/>
-            <remarks>Ignoring style parameter for now.</remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.PreformatFixed">
             <summary>
@@ -1727,6 +1746,15 @@
             in fixed-point format (i.e. without an exponent).
             Sign is ignored.
             </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.FormatFixed(System.String,System.Nullable{System.Int32},System.IFormatProvider)">
+            <summary>
+            Format the BigDecimal as a fixed-point number with a given precision.
+            </summary>
+            <param name="format">The format to use.</param>
+            <param name="precision">The number of decimal places.</param>
+            <param name="provider">The format provider.</param>
+            <returns></returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.FormatFixedSigFigs(System.Nullable{System.Int32},System.IFormatProvider)">
             <summary>

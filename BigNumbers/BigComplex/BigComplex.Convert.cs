@@ -353,7 +353,7 @@ public partial struct BigComplex
 
         // Unsupported type. Should never happen.
         // It means a cast from a standard number type to BigComplex is missing.
-        throw new NotImplementedException(
+        throw new InvalidCastException(
             $"The cast operation from {typeof(TOther).Name} to BigComplex has not been implemented.");
     }
 

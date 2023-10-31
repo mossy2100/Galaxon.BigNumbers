@@ -16,7 +16,7 @@ public partial struct BigDecimal
     public bool Equals(BigDecimal bd) => CompareTo(bd) == 0;
 
     /// <inheritdoc/>
-    public override int GetHashCode() => HashCode.Combine(Significand, Exponent);
+    public readonly override int GetHashCode() => HashCode.Combine(Significand, Exponent);
 
     #endregion Equality methods
 

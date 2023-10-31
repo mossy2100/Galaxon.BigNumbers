@@ -291,10 +291,7 @@ public partial struct BigDecimal
         }
 
         result = Atan(y / x);
-        if (x > 0) return result;
-
-        // x < 0
-        return result + (y < 0 ? -Pi : Pi);
+        return x > 0 ? result : result + (y < 0 ? -Pi : Pi);
     }
 
     /// <summary>

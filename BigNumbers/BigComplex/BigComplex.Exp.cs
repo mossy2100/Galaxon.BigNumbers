@@ -224,20 +224,30 @@ public partial struct BigComplex
     /// <exception cref="ArgumentOutOfRangeException">If z is 0.</exception>
     public static BigComplex Log(BigComplex z)
     {
-        if (z.Real >= 0 && z.Imaginary == 0)
-        {
-            // For non-negative real values, use the real version of the method.
-            // This will throw an exception if real == 0.
-            return BigDecimal.Log(z.Real);
-        }
+        // Optimization.
+        // For non-negative real values, use the real version of the method, avoiding the calculation of magnitude and phase.
+        // This will throw an exception if real == 0.
+        if (z.Real >= 0 && z.Imaginary == 0) return BigDecimal.Log(z.Real);
 
         // Calculate the complex logarithm.
         return new BigComplex(BigDecimal.Log(z.Magnitude), z.Phase);
     }
 
     /// <inheritdoc/>
-    public static BigComplex Log(BigComplex x, BigComplex newBase) =>
-        throw new NotImplementedException();
+    public static BigComplex Log(BigComplex x, BigComplex b)
+    {
+        // Guard.
+        if (b == 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(b),
+                "Logarithms are undefined for a base of 1.");
+        }
+
+        // 0^0 == 1. Mimics Math.Log().
+        if (x == 1 && b == 0) return 0;
+
+        return Log(x) / Log(b);
+    }
 
     /// <summary>
     /// Logarithm of a complex number in a specified base.

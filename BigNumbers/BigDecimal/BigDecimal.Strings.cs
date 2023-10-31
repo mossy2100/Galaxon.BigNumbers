@@ -8,6 +8,120 @@ namespace Galaxon.BigNumbers;
 
 public partial struct BigDecimal
 {
+    #region Parse methods
+
+    /// <inheritdoc/>
+    /// <remarks>Ignoring style parameter for now.</remarks>
+    public static BigDecimal Parse(string s, NumberStyles style, IFormatProvider? provider) =>
+        Parse(s, provider);
+
+    /// <inheritdoc/>
+    /// <remarks>Ignoring style parameter for now.</remarks>
+    public static BigDecimal Parse(string s, IFormatProvider? provider)
+    {
+        // Get a NumberFormatInfo object so we know what characters to look for.
+        var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
+
+        // Remove leading and trailing whitespace.
+        s = s.Trim();
+
+        // Remove group separator characters from the string. This includes:
+        //   - commas or periods (depending on locale)
+        //   - underscores
+        //   - ordinary and thin spaces
+        s = Regex.Replace(s, $@"[{nfi.NumberGroupSeparator}_\ \u2009]", "");
+
+        // Check the string format and extract salient info.
+        var strRxSign = $"[{nfi.NegativeSign}{nfi.PositiveSign}]?";
+        var strRxInt = $@"(?<int>{strRxSign}\d+)";
+        var strRxFrac = $@"(\{nfi.NumberDecimalSeparator}(?<frac>\d+))?";
+        var strRxExp = $@"(e(?<exp>{strRxSign}\d+))?";
+        var strRx = $"^{strRxInt}{strRxFrac}{strRxExp}$";
+        var match = Regex.Match(s, strRx, RegexOptions.IgnoreCase);
+
+        if (!match.Success)
+        {
+            throw new ArgumentFormatException(nameof(s), "Invalid BigDecimal format.");
+        }
+
+        // Get the digits.
+        var strInt = match.Groups["int"].Value;
+        var strFrac = match.Groups["frac"].Value;
+        var strExp = match.Groups["exp"].Value;
+
+        // Construct the result.
+        var sig = BigInteger.Parse(strInt + strFrac, provider);
+        var exp = strExp == "" ? 0 : int.Parse(strExp, provider);
+        exp -= strFrac.Length;
+        return new BigDecimal(sig, exp);
+    }
+
+    /// <summary>Simplest version of Parse().</summary>
+    /// <param name="s">The string to parse.</param>
+    /// <returns>The BigDecimal value represented by the string.</returns>
+    public static BigDecimal Parse(string s) => Parse(s, NumberFormatInfo.InvariantInfo);
+
+    /// <inheritdoc/>
+    /// <remarks>Ignoring style parameter for now.</remarks>
+    public static BigDecimal Parse(ReadOnlySpan<char> s, NumberStyles style,
+        IFormatProvider? provider) =>
+        Parse(new string(s), provider);
+
+    /// <inheritdoc/>
+    public static BigDecimal Parse(ReadOnlySpan<char> s, IFormatProvider? provider) =>
+        Parse(new string(s), provider);
+
+    /// <inheritdoc/>
+    /// <remarks>Ignoring style parameter for now.</remarks>
+    public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider,
+        out BigDecimal result) =>
+        TryParse(s, provider, out result);
+
+    /// <inheritdoc/>
+    public static bool TryParse(string? s, IFormatProvider? provider, out BigDecimal result)
+    {
+        // Check a value was provided.
+        if (string.IsNullOrWhiteSpace(s))
+        {
+            result = 0;
+            return false;
+        }
+
+        // Try to parse the provided string.
+        try
+        {
+            result = Parse(s, provider);
+            return true;
+        }
+        catch (Exception)
+        {
+            result = 0;
+            return false;
+        }
+    }
+
+    /// <summary>Simplest version of TryParse().</summary>
+    /// <param name="s">The string to parse.</param>
+    /// <param name="result">The BigDecimal value represented by the string.</param>
+    /// <returns>If the attempt to parse the value succeeded.</returns>
+    public static bool TryParse(string? s, out BigDecimal result) =>
+        TryParse(s, NumberFormatInfo.InvariantInfo, out result);
+
+    /// <inheritdoc/>
+    /// <remarks>Ignoring style parameter for now.</remarks>
+    public static bool TryParse(ReadOnlySpan<char> span, NumberStyles style,
+        IFormatProvider? provider, out BigDecimal result) =>
+        TryParse(new string(span), provider, out result);
+
+    /// <inheritdoc/>
+    public static bool TryParse(ReadOnlySpan<char> span, IFormatProvider? provider,
+        out BigDecimal result) =>
+        TryParse(new string(span), provider, out result);
+
+    #endregion Parse methods
+
+    #region Format methods
+
     /// <summary>
     /// Format the BigDecimal as a string.
     /// Supported formats are the usual: D, E, F, G, N, P, and R.
@@ -29,7 +143,7 @@ public partial struct BigDecimal
     /// <param name="provider">The format provider (default null).</param>
     /// <returns>The formatted string.</returns>
     /// <exception cref="ArgumentInvalidException">If the format specifier is invalid.</exception>
-    public string ToString(string? specifier, IFormatProvider? provider = null)
+    public readonly string ToString(string? specifier, IFormatProvider? provider)
     {
         // Set defaults.
         var format = "G";
@@ -108,16 +222,18 @@ public partial struct BigDecimal
         }
     }
 
-    /// <inheritdoc/>
-    /// <remarks>
-    /// Override of ValueType.ToString(). Needed for debugging and string interpolation.
-    /// </remarks>
-    /// <see cref="ValueType.ToString"/>
-    public override string ToString() => ToString("G");
+    /// <summary>
+    /// Format the BigDecimal as a string.
+    /// </summary>
+    public readonly string ToString(string format) =>
+        ToString(format, CultureInfo.InvariantCulture);
 
     /// <inheritdoc/>
-    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
-        IFormatProvider? provider)
+    public readonly override string ToString() => ToString("G");
+
+    /// <inheritdoc/>
+    public readonly bool TryFormat(Span<char> destination, out int charsWritten,
+        ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         var formattedValue = ToString(new string(format), provider);
         try
@@ -133,114 +249,12 @@ public partial struct BigDecimal
         }
     }
 
-    /// <inheritdoc/>
-    public static BigDecimal Parse(string strBigDecimal, IFormatProvider? provider)
-    {
-        // Get a NumberFormatInfo object so we know what characters to look for.
-        var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
-
-        // Remove whitespace and group separator characters from the string. This includes:
-        //   - commas or periods (depending on locale)
-        //   - underscores
-        //   - thin spaces
-        strBigDecimal = Regex.Replace(strBigDecimal, $@"[\s{nfi.NumberGroupSeparator}_\u2009]", "");
-
-        // Check the string format and extract salient info.
-        var strRxSign = $"[{nfi.NegativeSign}{nfi.PositiveSign}]?";
-        var strRxInt = $@"(?<int>{strRxSign}\d+)";
-        var strRxFrac = $@"(\{nfi.NumberDecimalSeparator}(?<frac>\d+))?";
-        var strRxExp = $@"(e(?<exp>{strRxSign}\d+))?";
-        var strRx = $"^{strRxInt}{strRxFrac}{strRxExp}$";
-        var match = Regex.Match(strBigDecimal, strRx, RegexOptions.IgnoreCase);
-
-        if (!match.Success)
-        {
-            throw new ArgumentFormatException(nameof(strBigDecimal), "Invalid BigDecimal format.");
-        }
-
-        // Get the digits.
-        var strInt = match.Groups["int"].Value;
-        var strFrac = match.Groups["frac"].Value;
-        var strExp = match.Groups["exp"].Value;
-
-        // Construct the result.
-        var sig = BigInteger.Parse(strInt + strFrac, provider);
-        var exp = strExp == "" ? 0 : int.Parse(strExp, provider);
-        exp -= strFrac.Length;
-        return new BigDecimal(sig, exp);
-    }
-
-    /// <summary>
-    /// More convenient version of Parse().
-    /// </summary>
-    public static BigDecimal Parse(string str) => Parse(str, NumberFormatInfo.InvariantInfo);
-
-    /// <inheritdoc/>
-    /// <remarks>Ignoring style parameter for now.</remarks>
-    public static BigDecimal Parse(string str, NumberStyles style, IFormatProvider? provider) =>
-        Parse(str, provider);
-
-    /// <inheritdoc/>
-    public static BigDecimal Parse(ReadOnlySpan<char> span, IFormatProvider? provider) =>
-        Parse(new string(span), provider);
-
-    /// <inheritdoc/>
-    /// <remarks>Ignoring style parameter for now.</remarks>
-    public static BigDecimal Parse(ReadOnlySpan<char> span, NumberStyles style,
-        IFormatProvider? provider) =>
-        Parse(new string(span), provider);
-
-    /// <inheritdoc/>
-    public static bool TryParse(string? str, IFormatProvider? provider, out BigDecimal result)
-    {
-        if (str == null)
-        {
-            result = 0;
-            return false;
-        }
-
-        try
-        {
-            result = Parse(str, provider);
-            return true;
-        }
-        catch (Exception)
-        {
-            result = 0;
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// More convenient version of TryParse().
-    /// </summary>
-    public static bool TryParse(string? str, out BigDecimal result) =>
-        TryParse(str, NumberFormatInfo.InvariantInfo, out result);
-
-    /// <inheritdoc/>
-    /// <remarks>Ignoring style parameter for now.</remarks>
-    public static bool TryParse(string? str, NumberStyles style, IFormatProvider? provider,
-        out BigDecimal result) =>
-        TryParse(str, provider, out result);
-
-    /// <inheritdoc/>
-    public static bool TryParse(ReadOnlySpan<char> span, IFormatProvider? provider,
-        out BigDecimal result) =>
-        TryParse(new string(span), provider, out result);
-
-    /// <inheritdoc/>
-    /// <remarks>Ignoring style parameter for now.</remarks>
-    public static bool TryParse(ReadOnlySpan<char> span, NumberStyles style,
-        IFormatProvider? provider,
-        out BigDecimal result) =>
-        TryParse(new string(span), provider, out result);
-
     /// <summary>
     /// From a BigDecimal, extract two strings of digits that would appear if the number was written
     /// in fixed-point format (i.e. without an exponent).
     /// Sign is ignored.
     /// </summary>
-    private (string strInt, string strFrac) PreformatFixed()
+    private readonly (string strInt, string strFrac) PreformatFixed()
     {
         var strAbsSig = BigInteger.Abs(Significand).ToString();
 
@@ -283,7 +297,14 @@ public partial struct BigDecimal
         }
     }
 
-    private string FormatFixed(string format, int? precision, IFormatProvider? provider = null)
+    /// <summary>
+    /// Format the BigDecimal as a fixed-point number with a given precision.
+    /// </summary>
+    /// <param name="format">The format to use.</param>
+    /// <param name="precision">The number of decimal places.</param>
+    /// <param name="provider">The format provider.</param>
+    /// <returns></returns>
+    private readonly string FormatFixed(string format, int? precision, IFormatProvider? provider)
     {
         // Get a NumberFormatInfo we can use for special characters.
         var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
@@ -326,7 +347,7 @@ public partial struct BigDecimal
     /// Note, this is not technically formatting as significant figures, since trailing 0s following
     /// the decimal point are not retained, as per the usual format for "G".
     /// </summary>
-    private string FormatFixedSigFigs(int? nSigFigs, IFormatProvider? provider = null)
+    private readonly string FormatFixedSigFigs(int? nSigFigs, IFormatProvider? provider)
     {
         // If we don't have to remove any digits, use default fixed-point format.
         var nDigitsToCut = nSigFigs is null or 0 ? 0 : NumSigFigs - nSigFigs.Value;
@@ -346,8 +367,9 @@ public partial struct BigDecimal
     /// <summary>
     /// Format the value using scientific notation.
     /// </summary>
-    private string FormatScientific(string format, int? precision, bool unicode, int expWidth,
-        IFormatProvider? provider = null)
+    private readonly string FormatScientific(string format, int? precision, bool unicode,
+        int expWidth,
+        IFormatProvider? provider)
     {
         // Format the significand.
         var nDecimalPlacesToShift = NumSigFigs - 1;
@@ -377,7 +399,7 @@ public partial struct BigDecimal
     /// <param name="provider">The format provider.</param>
     /// <returns>The formatted exponent.</returns>
     private static string FormatExponent(string format, BigInteger exp, bool unicode, int expWidth,
-        IFormatProvider? provider = null)
+        IFormatProvider? provider)
     {
         // Get a NumberFormatInfo we can use for special characters.
         var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
@@ -398,4 +420,6 @@ public partial struct BigDecimal
     [GeneratedRegex("^(?<format>[DEFGNPR])(?<precision>\\d*)(?<unicode>U?)$",
         RegexOptions.IgnoreCase, "en-AU")]
     private static partial Regex FormatRegex();
+
+    #endregion Format methods
 }

@@ -8,9 +8,12 @@ namespace Galaxon.BigNumbers;
 
 public partial struct BigRational
 {
+    #region Parse methods
+
     /// <inheritdoc/>
+    /// <remarks>Ignoring style parameter for now.</remarks>
     public static BigRational Parse(string s, NumberStyles style, IFormatProvider? provider) =>
-        throw new NotImplementedException();
+        Parse(s, provider);
 
     /// <summary>
     /// Parse a string into a rational.
@@ -19,7 +22,7 @@ public partial struct BigRational
     /// </summary>
     /// <exception cref="ArgumentNullException"></exception>
     /// <exception cref="ArgumentFormatException"></exception>
-    public static BigRational Parse(string s, IFormatProvider? provider = null)
+    public static BigRational Parse(string s, IFormatProvider? provider)
     {
         // Check a value was provided.
         if (string.IsNullOrWhiteSpace(s))
@@ -42,77 +45,77 @@ public partial struct BigRational
         return new BigRational(num, den);
     }
 
+    /// <summary>Simplest version of Parse().</summary>
+    /// <param name="s">The string to parse.</param>
+    /// <returns>The BigRational value represented by the string.</returns>
+    public static BigRational Parse(string s) => Parse(s, CultureInfo.InvariantCulture);
+
     /// <inheritdoc/>
+    /// <remarks>Ignoring style parameter for now.</remarks>
     public static BigRational Parse(ReadOnlySpan<char> s, NumberStyles style,
         IFormatProvider? provider) =>
-        throw new NotImplementedException();
+        Parse(new string(s), provider);
 
     /// <inheritdoc/>
     public static BigRational Parse(ReadOnlySpan<char> s, IFormatProvider? provider) =>
-        throw new NotImplementedException();
+        Parse(new string(s), provider);
 
     /// <inheritdoc/>
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider,
+    /// <remarks>Ignoring style parameter for now.</remarks>
+    public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider,
         out BigRational result) =>
-        throw new NotImplementedException();
+        TryParse(s, provider, out result);
 
-    /// <summary>
-    /// Try to parse a string into a rational.
-    /// This version of the method is required to implement IParsable[BigRational], but it's more
-    /// likely people will call the version that doesn't have the provider parameter.
-    /// </summary>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <inheritdoc/>
     public static bool TryParse(string? s, IFormatProvider? provider, out BigRational result)
     {
         // Check a value was provided.
         if (string.IsNullOrWhiteSpace(s))
         {
-            throw new ArgumentNullException(nameof(s), "Cannot parse a null or empty string.");
+            result = 0;
+            return false;
         }
 
         // Try to parse the provided string.
         try
         {
             result = Parse(s, provider);
+            return true;
         }
         catch (Exception)
         {
-            result = default(BigRational);
+            result = 0;
             return false;
         }
-
-        // All good.
-        return true;
     }
 
-    /// <summary>
-    /// Try to parse a string into a rational.
-    /// </summary>
-    /// <exception cref="ArgumentNullException"></exception>
-    public static bool TryParse(string? s, out BigRational result) => TryParse(s, null, out result);
+    /// <summary>Simplest version of TryParse().</summary>
+    /// <param name="s">The string to parse.</param>
+    /// <param name="result">The BigRational value represented by the string.</param>
+    /// <returns>If the attempt to parse the value succeeded.</returns>
+    public static bool TryParse(string? s, out BigRational result) =>
+        TryParse(s, CultureInfo.InvariantCulture, out result);
 
     /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider,
         out BigRational result) =>
-        throw new NotImplementedException();
+        TryParse(new string(s), provider, out result);
 
     /// <inheritdoc/>
-    public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider,
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider,
         out BigRational result) =>
-        throw new NotImplementedException();
+        TryParse(new string(s), provider, out result);
 
-    /// <summary>
-    /// Format the rational as a string.
-    /// </summary>
+    #endregion Parse methods
+
+    #region Format methods
+
+    /// <inheritdoc/>
     /// <todo>
     /// Update to support standard format strings for integers, namely D, N, R, with the optional U
     /// code, same as for BigDecimal. Remove "A", keep "M" for mixed.
     /// </todo>
-    /// <param name="format"></param>
-    /// <param name="formatProvider"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentFormatException"></exception>
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    public readonly string ToString(string? format, IFormatProvider? formatProvider)
     {
         // Default to the Unicode version.
         if (string.IsNullOrEmpty(format))
@@ -162,16 +165,31 @@ public partial struct BigRational
     /// <summary>
     /// Format the rational as a string.
     /// </summary>
-    public string ToString(string format) => ToString(format, CultureInfo.CurrentCulture);
+    public readonly string ToString(string format) => ToString(format, CultureInfo.CurrentCulture);
 
     /// <summary>
     /// Format the rational as a string.
     /// The is the default override version, which uses Unicode characters for a nicer format.
     /// </summary>
-    public override string ToString() => ToString("U", CultureInfo.CurrentCulture);
+    public readonly override string ToString() => ToString("U");
 
     /// <inheritdoc/>
-    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format,
-        IFormatProvider? provider) =>
-        throw new NotImplementedException();
+    public readonly bool TryFormat(Span<char> destination, out int charsWritten,
+        ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        var formattedValue = ToString(new string(format), provider);
+        try
+        {
+            formattedValue.CopyTo(destination);
+            charsWritten = formattedValue.Length;
+            return true;
+        }
+        catch
+        {
+            charsWritten = 0;
+            return false;
+        }
+    }
+
+    #endregion Format methods
 }

@@ -38,7 +38,6 @@ public partial struct BigDecimal
     /// <summary>
     /// Shared logic for:
     /// <see cref="TryWriteBigInteger"/>
-    /// <see cref="TryWriteInt"/>
     /// </summary>
     private static bool TryWrite(byte[] bytes, Span<byte> destination, out int bytesWritten)
     {
@@ -67,25 +66,4 @@ public partial struct BigDecimal
         var bytes = bi.ToByteArray(false, isBigEndian);
         return TryWrite(bytes, destination, out bytesWritten);
     }
-
-    // /// <summary>
-    // /// Shared logic for:
-    // /// <see cref="TryWriteExponentBigEndian"/>
-    // /// <see cref="TryWriteExponentLittleEndian"/>
-    // /// </summary>
-    // private static bool TryWriteInt(int i, Span<byte> destination, out int bytesWritten,
-    //     bool isBigEndian)
-    // {
-    //     // Get the bytes.
-    //     var bytes = BitConverter.GetBytes(i);
-    //
-    //     // Check if the requested endianness matches the architecture. If not, reverse the array.
-    //     if ((BitConverter.IsLittleEndian && isBigEndian)
-    //         || (!BitConverter.IsLittleEndian && !isBigEndian))
-    //     {
-    //         bytes = bytes.Reverse().ToArray();
-    //     }
-    //
-    //     return TryWrite(bytes, destination, out bytesWritten);
-    // }
 }

@@ -1,5 +1,4 @@
 using System.Numerics;
-using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers;
 
@@ -12,6 +11,11 @@ public partial struct BigDecimal
         new (BigInteger.Abs(bd.Significand), bd.Exponent);
 
     /// <inheritdoc/>
+    /// <remarks>
+    /// The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
+    /// in .NET Core.
+    /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+    /// </remarks>
     public static BigDecimal Round(BigDecimal x, int digits = 0,
         MidpointRounding mode = MidpointRounding.ToEven)
     {
@@ -81,36 +85,53 @@ public partial struct BigDecimal
     public static BigDecimal Ceiling(BigDecimal x) =>
         Round(x, 0, MidpointRounding.ToPositiveInfinity);
 
+    /// <summary>Divide by a power of 10 and round off to the nearest integer.</summary>
+    /// <remarks>
+    /// The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
+    /// in .NET Core.
+    /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+    /// </remarks>
+    /// <param name="sig">The BigInteger value to round off.</param>
+    /// <param name="nDigitsToCut">The power of 10 (number of digits to cut).</param>
+    /// <param name="mode">The rounding mode.</param>
+    /// <returns>The rounded off result of the division.</returns>
     private static BigInteger RoundSignificand(BigInteger sig, BigInteger nDigitsToCut,
         MidpointRounding mode = MidpointRounding.ToEven)
     {
-        var pow = XBigInteger.Exp10(nDigitsToCut);
+        var exp10 = XBigInteger.Exp10(nDigitsToCut);
         var absSig = BigInteger.Abs(sig);
         var sign = sig.Sign;
-        var q = absSig / pow;
-        var twoRem = 2 * (absSig % pow);
+        var quotient = absSig / exp10;
+        var doubleRemainder = 2 * (absSig % exp10);
 
         // Check if rounding is necessary.
         var increment = mode switch
         {
-            MidpointRounding.ToEven =>
-                twoRem > pow || (twoRem == pow && BigInteger.IsOddInteger(q)),
-            MidpointRounding.AwayFromZero => twoRem >= pow,
+            MidpointRounding.ToEven => doubleRemainder > exp10
+                || (doubleRemainder == exp10 && BigInteger.IsOddInteger(quotient)),
+            MidpointRounding.AwayFromZero => doubleRemainder >= exp10,
             MidpointRounding.ToZero => false,
             MidpointRounding.ToNegativeInfinity => sign < 0,
             MidpointRounding.ToPositiveInfinity => sign > 0,
             _ => false
         };
+        if (increment)
+        {
+            quotient++;
+        }
 
-        if (increment) q++;
-
-        return sign * q;
+        return sign * quotient;
     }
 
     /// <summary>
     /// Given a significand and exponent, and a maximum number of significant figures, determine
     /// the new significand and exponent.
     /// </summary>
+    /// <remarks>
+    /// The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
+    /// in .NET Core.
+    /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+    /// </remarks>
     private static (BigInteger newSig, BigInteger newExp) RoundSigFigs(BigInteger sig,
         BigInteger exp, BigInteger maxSigFigs, MidpointRounding mode = MidpointRounding.ToEven)
     {
@@ -222,20 +243,6 @@ public partial struct BigDecimal
             }
         }
         return (significand, exponent);
-    }
-
-    /// <summary>
-    /// Make the value into its canonical form.
-    /// Any trailing 0s on the significand are removed, and this information is transferred to the
-    /// exponent.
-    /// This method mutates the object; it doesn't return a new object like most of the other
-    /// methods, because no information is lost.
-    /// </summary>
-    /// <returns>The instance, which is useful for method chaining.</returns>
-    private BigDecimal MakeCanonical()
-    {
-        (Significand, Exponent) = MakeCanonical(Significand, Exponent);
-        return this;
     }
 
     #endregion Adjustment methods

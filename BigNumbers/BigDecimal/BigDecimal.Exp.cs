@@ -1,6 +1,5 @@
 using System.Numerics;
 using Galaxon.Core.Exceptions;
-using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers;
 
@@ -83,8 +82,7 @@ public partial struct BigDecimal
             return RootN(Pow(x, n), (int)d);
         }
 
-        throw new ArithmeticException(
-            "Cannot compute a real result. Try BigComplex.Pow() if you want to find complex results.");
+        throw new ArithmeticException("Cannot compute a real result. Try BigComplex.Pow().");
     }
 
     /// <summary>
@@ -230,7 +228,8 @@ public partial struct BigDecimal
     /// <param name="x">The length of one of the short sides of the triangle.</param>
     /// <param name="y">The length of the other short side of the triangle.</param>
     /// <returns>The length of the hypotenuse.</returns>
-    public static BigDecimal Hypot(BigDecimal x, BigDecimal y) => Sqrt(Sqr(x) + Sqr(y));
+    public static BigDecimal Hypot(BigDecimal x, BigDecimal y) =>
+        x == 0 ? y : y == 0 ? x : Sqrt(Sqr(x) + Sqr(y));
 
     #endregion Root functions
 
