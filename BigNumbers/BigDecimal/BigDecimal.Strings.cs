@@ -22,14 +22,14 @@ public partial struct BigDecimal
         // Get a NumberFormatInfo object so we know what characters to look for.
         var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
 
-        // Remove leading and trailing whitespace.
-        s = s.Trim();
+        // Remove whitespace from the string.
+        s = Regex.Replace(s, @"\s", "");
 
-        // Remove group separator characters from the string. This includes:
-        //   - commas or periods (depending on locale)
+        // Remove digit grouping characters from the string. This includes:
+        //   - commas or periods (culture-specific)
         //   - underscores
-        //   - ordinary and thin spaces
-        s = Regex.Replace(s, $@"[{nfi.NumberGroupSeparator}_\ \u2009]", "");
+        //   - thin spaces
+        s = Regex.Replace(s, GetDigitGroupingCharacterSet(nfi), "");
 
         // Check the string format and extract salient info.
         var strRxSign = $"[{nfi.NegativeSign}{nfi.PositiveSign}]?";
@@ -249,6 +249,10 @@ public partial struct BigDecimal
         }
     }
 
+    #endregion Format methods
+
+    #region Helper methods
+
     /// <summary>
     /// From a BigDecimal, extract two strings of digits that would appear if the number was written
     /// in fixed-point format (i.e. without an exponent).
@@ -421,5 +425,17 @@ public partial struct BigDecimal
         RegexOptions.IgnoreCase, "en-AU")]
     private static partial Regex FormatRegex();
 
-    #endregion Format methods
+    /// <summary>
+    /// Get a regular expression character set containing the thousands separators.
+    /// This includes:
+    /// - the usual comma or period (depending on the culture specified by the NumberFormatInfo)
+    /// - underscores
+    /// - thin spaces
+    /// </summary>
+    /// <param name="nfi">The NumberFormatInfo.</param>
+    /// <returns>The regular expression string.</returns>
+    internal static string GetDigitGroupingCharacterSet(NumberFormatInfo nfi) =>
+        $@"[{nfi.NumberGroupSeparator}_\u2009]";
+
+    #endregion Helper methods
 }

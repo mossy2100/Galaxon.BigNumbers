@@ -9,6 +9,18 @@
             Test the Equals() method and the equality and inequality operators.
             </summary>
         </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigComplexStringsTests.TestComplexToString">
+            <summary>
+            This is not actually a test method. I want to see how Complex numbers are formatted by .NET,
+            so I can do the same thing with BigComplex.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigComplexStringsTests.TestComplexToString2">
+            <summary>
+            This uses the example from the documentation.
+            </summary>
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.complex.tostring?view=net-7.0#system-numerics-complex-tostring"/>
+        </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConstantsTests.TestComputePi10000">
             <remarks>
             This takes a few minutes (about 7 on my computer at the time of typing), so sit back, relax,

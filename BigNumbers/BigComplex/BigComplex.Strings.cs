@@ -1,4 +1,6 @@
 using System.Globalization;
+using System.Text.RegularExpressions;
+using Galaxon.Core.Exceptions;
 
 namespace Galaxon.BigNumbers;
 
@@ -12,13 +14,93 @@ public partial struct BigComplex
         Parse(s, provider);
 
     /// <inheritdoc/>
-    public static BigComplex Parse(string s, IFormatProvider? provider) =>
-        throw new NotImplementedException();
-        // TODO:
-        // Check how it's formatted:
-        // 1. With the format used by System.Complex.ToString(), with angle brackets and semicolon, e.g. <x; y>
-        // 2. Using the standard notation used in maths, e.g. a + bi, a + ib, etc.
-        // 3. As an ordinary integer, decimal, or floating point real number, e.g. 12345 or 123.45 or 123.45e67 etc.
+    /// <remarks>
+    /// Supported formats:
+    /// 1. Ordinary real number (integer or floating point), e.g. 12345, 123.45, 123.45e67 etc. The
+    ///    'e' for exponent can be lower or upper-case, as with normal floating point syntax.
+    /// 2. Format used by System.Complex.ToString(), with angle brackets and a semicolon. Square
+    ///    brackets, curly braces, parentheses, or no brackets at all are also supported.
+    /// 3. Standard notation used in maths is supported (e.g. a + bi), with either i or j. The i or
+    ///    j can come before or after the imaginary number, and it can be lower or upper-case.
+    ///
+    /// Also note:
+    /// - Leading, trailing, or any other whitespace is ignored.
+    /// - Digit grouping characters (e.g. thousands separators) are allowed, including commas or
+    ///   periods (culture-specific), underscores, and thin spaces.
+    /// - The real part must come before the imaginary part. In the math notation, either the real
+    ///   or imaginary part can be omitted.
+    /// - The format (x, y) is NOT supported, because we need to allow the commas as a decimal
+    ///   points (and they could also appear as digit grouping characters).
+    /// - A null or empty string is taken to be 0.
+    /// </remarks>
+    public static BigComplex Parse(string s, IFormatProvider? provider)
+    {
+        // Optimization.
+        if (string.IsNullOrWhiteSpace(s)) return 0;
+
+        // Get a NumberFormatInfo object so we know what decimal point character to accept.
+        var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
+
+        // Remove whitespace from the string.
+        s = Regex.Replace(s, @"\s", "");
+
+        // Remove digit grouping characters from the string.
+        s = Regex.Replace(s, BigDecimal.GetDigitGroupingCharacterSet(nfi), "");
+
+        // Regular expression for a number.
+        var rxUnsignedReal = $@"\d+({nfi.NumberDecimalSeparator}\d+)?(e[+\-]?\d+)?";
+        var rxSignedReal = $@"[+\-]?{rxUnsignedReal}";
+        var rxUnsignedImag = $@"({rxUnsignedReal}[ij]|[ij]{rxUnsignedReal})";
+        var rxSignedImag = $@"[+\-]?{rxUnsignedImag}";
+
+        // Regular expressions for different kinds of brackets.
+        var rxLeft = @"[<\(\[{]";
+        var rxRight = @"[>\)\]}]";
+
+        // Supported patterns.
+        var patterns = new[]
+        {
+            // Brackets and semicolon style, e.g. <x;y>, (x;y), etc.
+            $@"(?<left>{rxLeft})?(?<real>{rxSignedReal});(?<imag>{rxSignedImag})(?<right>{rxRight})?",
+            // Plain real value, e.g. 123.45, -6, 7.8e9, etc.
+            $@"(?<real>{rxSignedReal})",
+            // Imaginary part only, e.g. 12i, -j34, etc.
+            $@"(?<imag>{rxSignedImag})",
+            // Both real and imaginary part, e.g. 12+34i, 5.6-j7.8, etc.
+            $@"(?<real>{rxSignedReal})[+\-](?<imag>{rxUnsignedImag})",
+        };
+
+        // Test each pattern.
+        foreach (var pattern in patterns)
+        {
+            // Test the pattern.
+            var match = Regex.Match(s, pattern, RegexOptions.IgnoreCase);
+            if (!match.Success) continue;
+
+            // Extract the components.
+            var sReal = match.Groups["real"].Value;
+            var sImag = match.Groups["imag"].Value;
+            var sLeft = match.Groups["left"].Value;
+            var sRight = match.Groups["right"].Value;
+
+            // Check the brackets match.
+            if ((sLeft == "" && sRight != "") || (sLeft == "<" && sRight != ">")
+                || (sLeft == "(" && sRight != ")") || (sLeft == "[" && sRight != "]")
+                || (sLeft == "{" && sRight != "}"))
+            {
+                throw new ArgumentFormatException(nameof(s),
+                    "Invalid format for complex number (non-matching brackets).");
+            }
+
+            // Construct the BigComplex.
+            var real = sReal == "" ? 0 : BigDecimal.Parse(sReal);
+            var imag = sImag == "" ? 0 : BigDecimal.Parse(sImag);
+            return new BigComplex(real, imag);
+        }
+
+        // The provided string does not match any supported pattern.
+        throw new ArgumentFormatException(nameof(s), "Invalid format for complex number.");
+    }
 
     /// <summary>Simplest version of Parse().</summary>
     /// <param name="s">The string to parse.</param>
@@ -84,46 +166,70 @@ public partial struct BigComplex
     #region Format methods
 
     /// <inheritdoc/>
+    /// <remarks>
+    /// I've added support for an alternate format to the one used by Complex.ToString(), namely the
+    /// conventional "a + bi" notation (and it's variations).
+    /// Both 'i' and 'j' are supported for the imaginary unit, hopefully to keep both mathematicians
+    /// and engineers happy.
+    /// Upper-case 'I' means the 'i' is placed after the imaginary part, e.g. 12 + 34i
+    /// Lower-case 'i' means the 'i' is placed before the imaginary part, e.g. 12 + i34
+    /// Upper-case 'J' means the 'j' is placed after the imaginary part, e.g. 12 + 34j
+    /// Lower-case 'j' means the 'j' is placed before the imaginary part, e.g. 12 + j34
+    /// If there's no imaginary part, the real part will be formatted like a normal real value.
+    /// If there's no real part, the imaginary part will be formatted like a normal real value with
+    /// the i or j placed as a prefix or suffix according to the format specifier.
+    /// If the value is negative, the sign will come before the number with i or j.
+    /// e.g. -1.23i, -i1.23, -1.23j, -j1.23
+    ///
+    /// As for the default format mimicking the format used by Complex.ToString(), I have seen this
+    /// as (x, y) as well as &lt;x; y&gt; (i.e. angle brackets and semicolon instead of parentheses
+    /// and comma). I've used the latter option here, which matches the source code.
+    /// <see href="https://github.com/dotnet/runtime/blob/main/src/libraries/System.Runtime.Numerics/src/System/Numerics/Complex.cs#L403"/>
+    /// </remarks>
     public readonly string ToString(string? format, IFormatProvider? formatProvider)
     {
-        var realPart = Real == 0 && Imaginary != 0 ? "" : $"{Real}";
-
-        var sign = "";
-        if (Real == 0)
+        // Default format.
+        if (string.IsNullOrWhiteSpace(format))
         {
-            if (Imaginary < 0)
-            {
-                sign = "-";
-            }
-        }
-        else
-        {
-            if (Imaginary < 0)
-            {
-                sign = " - ";
-            }
-            else if (Imaginary > 0)
-            {
-                sign = " + ";
-            }
+            format = "G";
         }
 
-        string imagPart;
-        var absImag = BigDecimal.Abs(Imaginary);
-        if (absImag == 0)
+        // Check if math format is specified.
+        if (format[0] == 'I' || format[0] == 'i' || format[0] == 'J' || format[0] == 'j')
         {
-            imagPart = "";
-        }
-        else if (absImag == 1)
-        {
-            imagPart = "i";
-        }
-        else
-        {
-            imagPart = $"{absImag}i";
+            // Strip the leading character from the format to get a standard one.
+            format = format.Length == 1 ? "G" : format[1..];
+
+            // Handle real numbers.
+            if (Imaginary == 0) return Real.ToString(format);
+
+            // Construct the "a + bi" string.
+            var sReal = Real == 0 ? "" : Real.ToString(format);
+            var sSign = Real == 0 ? (Imaginary < 0 ? "-" : "") : (Imaginary < 0 ? " - " : " + ");
+            var sImaginary = BigDecimal.Abs(Imaginary).ToString(format);
+            switch (format[0])
+            {
+                case 'I':
+                    sImaginary = sImaginary + 'i';
+                    break;
+
+                case 'i':
+                    sImaginary = 'i' + sImaginary;
+                    break;
+
+                case 'J':
+                    sImaginary = sImaginary + 'j';
+                    break;
+
+                case 'j':
+                    sImaginary = 'j' + sImaginary;
+                    break;
+            }
+            return $"{sReal}{sSign}{sImaginary}";
         }
 
-        return $"{realPart}{sign}{imagPart}";
+        // Use the same format as Complex, e.g. <1.23; 4.56>
+        return $"<{Real.ToString(format)}; {Imaginary.ToString(format)}>";
     }
 
     /// <summary>

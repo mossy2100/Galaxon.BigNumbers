@@ -692,7 +692,26 @@
             <remarks>Ignoring style parameter for now.</remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.String,System.IFormatProvider)">
-            <inheritdoc/>
+             <inheritdoc/>
+             <remarks>
+             Supported formats:
+             1. Ordinary real number (integer or floating point), e.g. 12345, 123.45, 123.45e67 etc. The
+                'e' for exponent can be lower or upper-case, as with normal floating point syntax.
+             2. Format used by System.Complex.ToString(), with angle brackets and a semicolon. Square
+                brackets, curly braces, parentheses, or no brackets at all are also supported.
+             3. Standard notation used in maths is supported (e.g. a + bi), with either i or j. The i or
+                j can come before or after the imaginary number, and it can be lower or upper-case.
+            
+             Also note:
+             - Leading, trailing, or any other whitespace is ignored.
+             - Digit grouping characters (e.g. thousands separators) are allowed, including commas or
+               periods (culture-specific), underscores, and thin spaces.
+             - The real part must come before the imaginary part. In the math notation, either the real
+               or imaginary part can be omitted.
+             - The format (x, y) is NOT supported, because we need to allow the commas as a decimal
+               points (and they could also appear as digit grouping characters).
+             - A null or empty string is taken to be 0.
+             </remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Parse(System.String)">
             <summary>Simplest version of Parse().</summary>
@@ -724,7 +743,27 @@
             <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.ToString(System.String,System.IFormatProvider)">
-            <inheritdoc/>
+             <inheritdoc/>
+             <remarks>
+             I've added support for an alternate format to the one used by Complex.ToString(), namely the
+             conventional "a + bi" notation (and it's variations).
+             Both 'i' and 'j' are supported for the imaginary unit, hopefully to keep both mathematicians
+             and engineers happy.
+             Upper-case 'I' means the 'i' is placed after the imaginary part, e.g. 12 + 34i
+             Lower-case 'i' means the 'i' is placed before the imaginary part, e.g. 12 + i34
+             Upper-case 'J' means the 'j' is placed after the imaginary part, e.g. 12 + 34j
+             Lower-case 'j' means the 'j' is placed before the imaginary part, e.g. 12 + j34
+             If there's no imaginary part, the real part will be formatted like a normal real value.
+             If there's no real part, the imaginary part will be formatted like a normal real value with
+             the i or j placed as a prefix or suffix according to the format specifier.
+             If the value is negative, the sign will come before the number with i or j.
+             e.g. -1.23i, -i1.23, -1.23j, -j1.23
+            
+             As for the default format mimicking the format used by Complex.ToString(), I have seen this
+             as (x, y) as well as &lt;x; y&gt; (i.e. angle brackets and semicolon instead of parentheses
+             and comma). I've used the latter option here, which matches the source code.
+             <see href="https://github.com/dotnet/runtime/blob/main/src/libraries/System.Runtime.Numerics/src/System/Numerics/Complex.cs#L403"/>
+             </remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.ToString(System.String)">
             <summary>
@@ -1812,6 +1851,17 @@
             ○ Match if at the end of the string or if before an ending newline.<br/>
             </code>
             </remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.GetDigitGroupingCharacterSet(System.Globalization.NumberFormatInfo)">
+            <summary>
+            Get a regular expression character set containing the thousands separators.
+            This includes:
+            - the usual comma or period (depending on the culture specified by the NumberFormatInfo)
+            - underscores
+            - thin spaces
+            </summary>
+            <param name="nfi">The NumberFormatInfo.</param>
+            <returns>The regular expression string.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Sin(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
