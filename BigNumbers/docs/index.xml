@@ -1723,7 +1723,6 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.String,System.IFormatProvider)">
             <inheritdoc/>
-            <remarks>Ignoring style parameter for now.</remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.String)">
             <summary>Simplest version of Parse().</summary>
@@ -2407,7 +2406,7 @@
              likely people will call the version that doesn't have the provider parameter.
             
              Notes:
-             - The numerator can have a sign (+ or -) but not the denominator.
+             - The numerator can have an optional sign (+ or -), but not the denominator.
              - The divide sign and denominator can either both be present or both be omitted.
              </summary>
              <exception cref="T:Galaxon.Core.Exceptions.ArgumentFormatException"></exception>
