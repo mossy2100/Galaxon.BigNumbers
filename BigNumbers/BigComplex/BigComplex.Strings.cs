@@ -55,7 +55,7 @@ public partial struct BigComplex
         // Supported patterns.
         var patterns = new[]
         {
-            // Brackets and semicolon style, e.g. <x;y>, (x;y), etc.
+            // Brackets and semicolon style, e.g. x;y, <x;y>, (x;y), [x;y], or {x;y}.
             $@"(?<left>{rxLeftBracket})?(?<real>{rxSignedReal});(?<imag>{rxSignedImag})(?<right>{rxRightBracket})?",
             // Real part only, e.g. 123.45, -6, 7.8e9, etc.
             $@"(?<real>{rxSignedReal})",
