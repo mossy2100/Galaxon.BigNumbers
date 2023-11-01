@@ -170,7 +170,8 @@ public partial struct BigRational
         return b;
     }
 
-    /// <summary>Public memoized version of the Bernoulli method.</summary>
+    /// <summary>Calculate a Bernoulli number.</summary>
+    /// <returns>The memoized version of the method.</returns>
     public static readonly Func<int, BigRational> Bernoulli =
         Memoization.Memoize<int, BigRational>(_Bernoulli);
 

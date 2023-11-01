@@ -243,7 +243,8 @@ public partial struct BigComplex
     /// <summary>
     /// Format the BigComplex as a string.
     /// </summary>
-    public readonly string ToString(string format) => ToString(format, CultureInfo.CurrentCulture);
+    public readonly string ToString(string format) =>
+        ToString(format, CultureInfo.InvariantCulture);
 
     /// <summary>
     /// Express the complex number as a string in the usual algebraic format.

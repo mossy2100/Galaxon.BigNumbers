@@ -497,7 +497,7 @@ public partial struct BigDecimal
 
     #endregion Inverse hyperbolic methods
 
-    #region Methods for converting coordinates
+    #region Helper methods
 
     /// <summary>
     /// Convert cartesian coordinates to polar coordinates.
@@ -516,10 +516,6 @@ public partial struct BigDecimal
     /// <returns>A tuple containing the x and y coordinates.</returns>
     public static (BigDecimal x, BigDecimal y) PolarToCartesian(BigDecimal r, BigDecimal theta) =>
         r == 0 ? (0, 0) : (r * Cos(theta), r * Sin(theta));
-
-    #endregion Methods for converting coordinates
-
-    #region Helper methods
 
     /// <summary>
     /// Shift given angle to the equivalent angle in the interval [-π, π).

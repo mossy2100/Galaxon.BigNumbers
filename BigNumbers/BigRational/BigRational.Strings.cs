@@ -134,10 +134,7 @@ public partial struct BigRational
         }
 
         // If the denominator is 1 then just return the numerator as a string.
-        if (Denominator == 1)
-        {
-            return Numerator.ToString();
-        }
+        if (Denominator == 1) return Numerator.ToString();
 
         // Get the parts we need.
         var sign = this < 0 ? "-" : "";
@@ -148,7 +145,7 @@ public partial struct BigRational
         {
             // ASCII.
             case "A":
-                return $"{sign}{num}/{den}";
+                return $"{sign}{num} / {den}";
 
             // Unicode.
             case "U":
@@ -175,7 +172,8 @@ public partial struct BigRational
     /// <summary>
     /// Format the rational as a string.
     /// </summary>
-    public readonly string ToString(string format) => ToString(format, CultureInfo.CurrentCulture);
+    public readonly string ToString(string format) =>
+        ToString(format, CultureInfo.InvariantCulture);
 
     /// <summary>
     /// Format the rational as a string.
