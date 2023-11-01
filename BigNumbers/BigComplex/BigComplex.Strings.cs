@@ -62,7 +62,7 @@ public partial struct BigComplex
             // Imaginary part only, e.g. 12i, -j34, etc.
             $@"(?<imag>{rxSignedImag})",
             // Both real and imaginary part, e.g. 12+34i, 5.6-j7.8, etc.
-            $@"(?<real>{rxSignedReal})[+\-](?<imag>{rxUnsignedImag})",
+            $@"(?<real>{rxSignedReal})[+\-](?<imag>{rxUnsignedImag})"
         };
 
         // Test each pattern.
@@ -166,20 +166,33 @@ public partial struct BigComplex
     /// conventional "a + bi" notation (and it's variations).
     /// Both 'i' and 'j' are supported for the imaginary unit, hopefully to keep both mathematicians
     /// and engineers happy.
+    ///
     /// Upper-case 'I' means the 'i' is placed after the imaginary part, e.g. 12 + 34i
     /// Lower-case 'i' means the 'i' is placed before the imaginary part, e.g. 12 + i34
     /// Upper-case 'J' means the 'j' is placed after the imaginary part, e.g. 12 + 34j
     /// Lower-case 'j' means the 'j' is placed before the imaginary part, e.g. 12 + j34
+    ///
     /// If there's no imaginary part, the real part will be formatted like a normal real value.
     /// If there's no real part, the imaginary part will be formatted like a normal real value with
     /// the i or j placed as a prefix or suffix according to the format specifier.
     /// If the value is negative, the sign will come before the number with i or j.
     /// e.g. -1.23i, -i1.23, -1.23j, -j1.23
     ///
-    /// As for the default format mimicking the format used by Complex.ToString(), I have seen this
-    /// as (x, y) as well as &lt;x; y&gt; (i.e. angle brackets and semicolon instead of parentheses
-    /// and comma). I've used the latter option here, which matches the source code.
-    /// <see href="https://github.com/dotnet/runtime/blob/main/src/libraries/System.Runtime.Numerics/src/System/Numerics/Complex.cs#L403"/>
+    /// If you want to use this format, the code ('I', 'i', 'J', or 'j') comes *before* the normal
+    /// format code, or it can be by itself. So, these would all be valid:
+    /// - I
+    /// - j
+    /// - IG
+    /// - IF0
+    /// - iE3
+    /// - jN
+    /// etc.
+    ///
+    /// If you don't include this prefix, then the same format used by Complex will be used, with
+    /// angle brackets, and a semicolon separating the real and imaginary parts. Each part will be
+    /// formatted according to the format string (e.g. G, F2, E3, etc.).
+    ///
+    /// The default format code is "G".
     /// </remarks>
     public readonly string ToString(string? format, IFormatProvider? formatProvider)
     {

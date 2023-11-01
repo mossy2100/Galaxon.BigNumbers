@@ -33,8 +33,4 @@
         <PackageReference Include="MSTest.TestFramework" Version="3.1.1"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <None Include="BigDecimal\BigDecimalOld.cs"/>
-    </ItemGroup>
-
 </Project>

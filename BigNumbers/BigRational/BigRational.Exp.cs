@@ -17,9 +17,9 @@ public partial struct BigRational
     public static BigRational Pow(BigRational x, BigInteger y)
     {
         // Optimizations.
-        if (y == -1) return Reciprocal(x);
         if (y == 0) return 1;
         if (y == 1) return x;
+        if (y == -1) return Reciprocal(x);
 
         // Handle negative exponent.
         if (y < 0)

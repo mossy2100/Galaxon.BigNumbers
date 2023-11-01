@@ -58,21 +58,68 @@ public class BigDecimalTrigTests
     [DynamicData(nameof(Numerators))]
     public void TestTan(int i)
     {
+        var t1 = DateTime.Now;
         var d = i * double.Tau / Denominator;
         try
         {
             var tanD = double.Tan(d);
-
             var bd = i * BigDecimal.Tau / Denominator;
             var tanBd = BigDecimal.Tan(bd);
-
             BigDecimalAssert.AreEqual(tanD, tanBd);
         }
         catch (Exception)
         {
             var deg = (int)(d * 180 / double.Pi);
-            Trace.WriteLine($"tan({deg}°) is undefined.");
+            Console.WriteLine($"tan({deg}°) is undefined.");
         }
+        var t2 = DateTime.Now;
+        Console.WriteLine($"Time elapsed: {t2 - t1} ticks.");
+    }
+
+    [TestMethod]
+    public void TestTanRandom()
+    {
+        int i;
+        DateTime t1, t2;
+
+        // Step 1. Get a set of random numbers and calculate tan(x).
+        var n = 10;
+        var rnd = new Random();
+        var inputs = new double[10];
+        var results = new double[10];
+        for (i = 0; i < n; i++)
+        {
+            inputs[i] = rnd.NextDouble();
+            results[i] = double.Tan(inputs[i]);
+            Trace.WriteLine($"double.Tan({inputs[i]}) = {results[i]}");
+        }
+
+        // Step 2. Test performance of BigDecimal.Tan().
+        t1 = DateTime.Now;
+        for (i = 0; i < n; i++)
+        {
+            var bd = (BigDecimal)inputs[i];
+            var tanBd = BigDecimal.Tan(bd);
+            Trace.WriteLine($"BigDecimal.Tan({bd}) = {tanBd}");
+            BigDecimalAssert.AreEqual(results[i], tanBd);
+        }
+        t2 = DateTime.Now;
+        var dt = t2 - t1;
+        Trace.WriteLine($"Tan(x) total time elapsed: {dt.TotalSeconds} ticks.");
+        var avg = dt.TotalSeconds / n;
+        Trace.WriteLine($"Average is {avg} seconds per call.");
+
+        // Step 3. Test performance of BigDecimal.Tan2().
+        // t1 = DateTime.Now;
+        // for (i = 0; i < n; i++)
+        // {
+        //     var bd = (BigDecimal)inputs[i];
+        //     var tanBd = BigDecimal.Tan2(bd);
+        //     Trace.WriteLine($"BigDecimal.Tan({bd}) = {tanBd}");
+        //     // BigDecimalAssert.AreEqual(results[i], tanBd);
+        // }
+        // t2 = DateTime.Now;
+        // Console.WriteLine($"Tan2(x) total time elapsed: {(t2 - t1).Ticks} ticks.");
     }
 
     [TestMethod]

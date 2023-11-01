@@ -19,7 +19,8 @@
             <summary>
             This uses the example from the documentation.
             </summary>
-            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.complex.tostring?view=net-7.0#system-numerics-complex-tostring"/>
+            <see
+                href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.complex.tostring?view=net-7.0#system-numerics-complex-tostring"/>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConstantsTests.TestComputePi10000">
             <remarks>
@@ -749,6 +750,16 @@
             This example shows how a double converts exactly to a BigRational, but also how the double
             only stores an approximation of the original decimal fraction.
             </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigRationalMathTests.TestBernoulli1">
+            <summary>
+            This method just spits out the first 21 Bernoulli numbers, which can be compared with the
+            Wikipedia page for correctness.
+            </summary>
+            <see href="https://en.wikipedia.org/wiki/Bernoulli_number"/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigRationalMathTests.TestBernoulli2">
+            <summary>Check the first few Bernoulli numbers.</summary>
         </member>
     </members>
 </doc>

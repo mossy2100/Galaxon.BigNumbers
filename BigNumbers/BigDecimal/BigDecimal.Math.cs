@@ -1,4 +1,5 @@
 using System.Numerics;
+using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers;
 
@@ -447,6 +448,12 @@ public partial struct BigDecimal
 
         return result;
     }
+
+    /// <summary>Calculate a Bernoulli number.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Bernoulli_number"/>
+    /// <param name="n">The index of the Bernoulli number to calculate.</param>
+    /// <returns>The Bernoulli number as a BigDecimal.</returns>
+    public static BigDecimal Bernoulli(int n) => (BigDecimal)BigRational.Bernoulli(n);
 
     #endregion Arithmetic methods
 

@@ -749,20 +749,33 @@
              conventional "a + bi" notation (and it's variations).
              Both 'i' and 'j' are supported for the imaginary unit, hopefully to keep both mathematicians
              and engineers happy.
+            
              Upper-case 'I' means the 'i' is placed after the imaginary part, e.g. 12 + 34i
              Lower-case 'i' means the 'i' is placed before the imaginary part, e.g. 12 + i34
              Upper-case 'J' means the 'j' is placed after the imaginary part, e.g. 12 + 34j
              Lower-case 'j' means the 'j' is placed before the imaginary part, e.g. 12 + j34
+            
              If there's no imaginary part, the real part will be formatted like a normal real value.
              If there's no real part, the imaginary part will be formatted like a normal real value with
              the i or j placed as a prefix or suffix according to the format specifier.
              If the value is negative, the sign will come before the number with i or j.
              e.g. -1.23i, -i1.23, -1.23j, -j1.23
             
-             As for the default format mimicking the format used by Complex.ToString(), I have seen this
-             as (x, y) as well as &lt;x; y&gt; (i.e. angle brackets and semicolon instead of parentheses
-             and comma). I've used the latter option here, which matches the source code.
-             <see href="https://github.com/dotnet/runtime/blob/main/src/libraries/System.Runtime.Numerics/src/System/Numerics/Complex.cs#L403"/>
+             If you want to use this format, the code ('I', 'i', 'J', or 'j') comes *before* the normal
+             format code, or it can be by itself. So, these would all be valid:
+             - I
+             - j
+             - IG
+             - IF0
+             - iE3
+             - jN
+             etc.
+            
+             If you don't include this prefix, then the same format used by Complex will be used, with
+             angle brackets, and a semicolon separating the real and imaginary parts. Each part will be
+             formatted according to the format string (e.g. G, F2, E3, etc.).
+            
+             The default format code is "G".
              </remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.ToString(System.String)">
@@ -800,9 +813,32 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Tan(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
+            <remarks>
+            I'm using Formulation 4 from this page:
+            <see href="https://proofwiki.org/wiki/Tangent_of_Complex_Number"/>
+            I *assume* this is the fastest, as it "only" requires 4 power series calculations, but I
+            haven't compared all the methods to verify as yet.
+            There is probably a single power series that converges on the correct result, but I haven't
+            found it as yet.
+            </remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.TanPi(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Sec(Galaxon.BigNumbers.BigComplex)">
+            <summary>Calculate the secant of the BigComplex value.</summary>
+            <param name="bc">A BigComplex value.</param>
+            <returns>The secant of the value.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Csc(Galaxon.BigNumbers.BigComplex)">
+            <summary>Calculate the cosecant of the BigComplex value.</summary>
+            <param name="bc">A BigComplex value.</param>
+            <returns>The cosecant of the value.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Cot(Galaxon.BigNumbers.BigComplex)">
+            <summary>Calculate the cotangent of the BigComplex value.</summary>
+            <param name="bc">A BigComplex value.</param>
+            <returns>The cotangent of the value.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Asin(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
@@ -834,14 +870,20 @@
         <member name="M:Galaxon.BigNumbers.BigComplex.Tanh(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigComplex.Acosh(Galaxon.BigNumbers.BigComplex)">
-            <inheritdoc/>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Asinh(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
+            <see
+                href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions#Principal_value_of_the_inverse_hyperbolic_sine"/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.Acosh(Galaxon.BigNumbers.BigComplex)">
+            <inheritdoc/>
+            <see
+                href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions#Principal_value_of_the_inverse_hyperbolic_cosine"/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Atanh(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
+            <see
+                href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions#Principal_values_of_the_inverse_hyperbolic_tangent_and_cotangent"/>
         </member>
         <member name="T:Galaxon.BigNumbers.BigDecimal">
             <summary>
@@ -1494,7 +1536,8 @@
             <remarks>
             The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
             in .NET Core.
-            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+            <see
+                href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
             </remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSigFigs(Galaxon.BigNumbers.BigDecimal,System.Nullable{System.Numerics.BigInteger},System.MidpointRounding)">
@@ -1544,7 +1587,8 @@
             <remarks>
             The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
             in .NET Core.
-            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+            <see
+                href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
             </remarks>
             <param name="sig">The BigInteger value to round off.</param>
             <param name="nDigitsToCut">The power of 10 (number of digits to cut).</param>
@@ -1559,7 +1603,8 @@
             <remarks>
             The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
             in .NET Core.
-            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+            <see
+                href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
             </remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.ShiftBy(System.Numerics.BigInteger)">
@@ -1678,6 +1723,12 @@
             Compute the arithmetic-geometric mean of two values.
             </summary>
             <see href="https://en.wikipedia.org/wiki/Arithmetic%E2%80%93geometric_mean"/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Bernoulli(System.Int32)">
+            <summary>Calculate a Bernoulli number.</summary>
+            <see href="https://en.wikipedia.org/wiki/Bernoulli_number"/>
+            <param name="n">The index of the Bernoulli number to calculate.</param>
+            <returns>The Bernoulli number as a BigDecimal.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_UnaryPlus(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
@@ -1887,6 +1938,24 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.TanPi(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Cot(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the cotangent of x BigDecimal value.</summary>
+            <param name="x">The BigDecimal value.</param>
+            <returns>The cotangent.</returns>
+            <exception cref="T:System.DivideByZeroException">If the sine of the angle is 0.</exception>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Sec(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the secant of x BigDecimal value.</summary>
+            <param name="x">The BigDecimal value.</param>
+            <returns>The secant.</returns>
+            <exception cref="T:System.DivideByZeroException">If the cosine of the angle is 0.</exception>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Csc(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the cosecant of x BigDecimal value.</summary>
+            <param name="x">The BigDecimal value.</param>
+            <returns>The cosecant.</returns>
+            <exception cref="T:System.DivideByZeroException">If the sine of the angle is 0.</exception>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Asin(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
         </member>
@@ -1910,7 +1979,7 @@
             This two-argument variation of the Atan() method comes originally from FORTRAN.
             If x is non-negative, it will find the same result as Atan(y / x).
             If x is negative, the result will be offset by π.
-            The purpose of the method is to produce a correct value for the polar angle when converting
+            The purpose of the method is to produce x correct value for the polar angle when converting
             from cartesian coordinates to polar coordinates.
             It also avoids division by 0 exceptions.
             </summary>
@@ -1931,6 +2000,23 @@
             <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException">If x and y both equal 0.</exception>
             <see cref="M:System.Double.Atan2Pi(System.Double,System.Double)"/>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Acot(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the inverse cotangent of x BigDecimal value.</summary>
+            <param name="x">The BigDecimal value.</param>
+            <returns>The inverse cotangent.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Asec(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the inverse secant of x BigDecimal value.</summary>
+            <param name="x">The BigDecimal value.</param>
+            <returns>The inverse secant.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Acsc(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the inverse cosecant of x BigDecimal value.</summary>
+            <param name="x">The BigDecimal value.</param>
+            <returns>The inverse cosecant.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Sinh(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
         </member>
@@ -1940,6 +2026,21 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.Tanh(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Coth(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the hyperbolic cotangent of x BigDecimal value.</summary>
+            <param name="x">The BigDecimal value.</param>
+            <returns>The hyperbolic cotangent.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Sech(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the hyperbolic secant of x BigDecimal value.</summary>
+            <param name="x">The BigDecimal value.</param>
+            <returns>The hyperbolic secant.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Csch(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the hyperbolic cosecant of x BigDecimal value.</summary>
+            <param name="x">The BigDecimal value.</param>
+            <returns>The hyperbolic cosecant.</returns>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Asinh(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
         </member>
@@ -1948,6 +2049,21 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Atanh(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Acoth(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the inverse hyperbolic cotangent of x BigDecimal value.</summary>
+            <param name="x">The BigDecimal value.</param>
+            <returns>The inverse hyperbolic cotangent.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Asech(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the inverse hyperbolic secant of x BigDecimal value.</summary>
+            <param name="x">The BigDecimal value.</param>
+            <returns>The inverse hyperbolic secant.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Acsch(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the inverse hyperbolic cosecant of x BigDecimal value.</summary>
+            <param name="x">The BigDecimal value.</param>
+            <returns>The inverse hyperbolic cosecant.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.CartesianToPolar(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>
@@ -2394,6 +2510,15 @@
             <summary>
             Exponentiation operator.
             </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigRational._Bernoulli(System.Int32)">
+            <summary>Calculate a Bernoulli number.</summary>
+            <see href="https://en.wikipedia.org/wiki/Bernoulli_number"/>
+            <param name="n">The index of the Bernoulli number to calculate.</param>
+            <returns>The Bernoulli number as a BigRational.</returns>
+        </member>
+        <member name="F:Galaxon.BigNumbers.BigRational.Bernoulli">
+            <summary>Public memoized version of the Bernoulli method.</summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.Parse(System.String,System.Globalization.NumberStyles,System.IFormatProvider)">
             <inheritdoc/>

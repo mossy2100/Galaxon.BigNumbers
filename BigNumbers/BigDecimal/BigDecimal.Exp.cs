@@ -1,5 +1,6 @@
 using System.Numerics;
 using Galaxon.Core.Exceptions;
+using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers;
 

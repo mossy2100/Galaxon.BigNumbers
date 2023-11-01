@@ -13,27 +13,27 @@ public partial struct BigDecimal
     #region Trigonometric methods
 
     /// <inheritdoc/>
-    public static BigDecimal Sin(BigDecimal a)
+    public static BigDecimal Sin(BigDecimal x)
     {
         // Find the equivalent angle in the interval [-π, π).
-        a = NormalizeAngle(in a);
+        x = NormalizeAngle(in x);
 
         // Optimizations.
-        if (a == 0 || a == Pi) return 0;
+        if (x == 0 || x == Pi) return 0;
 
         var halfPi = Pi / 2;
-        if (a == halfPi) return 1;
-        if (a == -halfPi) return NegativeOne;
+        if (x == halfPi) return 1;
+        if (x == -halfPi) return NegativeOne;
 
         // Taylor series.
         var sign = 1;
         BigInteger m = 1; // m = 2n + 1
-        var aToM = a;
-        var aSqr = a * a;
+        var xm = x;
+        var x2 = x * x;
         BigInteger mFact = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure x correct result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -42,7 +42,7 @@ public partial struct BigDecimal
         while (true)
         {
             // Add the next term in the series.
-            var newSum = sum + sign * aToM / mFact;
+            var newSum = sum + sign * xm / mFact;
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum) break;
@@ -51,7 +51,7 @@ public partial struct BigDecimal
             sum = newSum;
             sign = -sign;
             m += 2;
-            aToM *= aSqr;
+            xm *= x2;
             mFact *= m * (m - 1);
         }
 
@@ -62,31 +62,31 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc/>
-    public static BigDecimal SinPi(BigDecimal a) => Sin(a * Pi);
+    public static BigDecimal SinPi(BigDecimal x) => Sin(x * Pi);
 
     /// <inheritdoc/>
     /// <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions"/>
     /// <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions"/>
-    public static BigDecimal Cos(BigDecimal a)
+    public static BigDecimal Cos(BigDecimal x)
     {
         // Find the equivalent angle in the interval [-π, π).
-        a = NormalizeAngle(in a);
+        x = NormalizeAngle(in x);
 
         // Optimizations.
-        if (a == 0) return 1;
-        if (a == Pi) return NegativeOne;
-        if (Abs(a) == Pi / 2) return 0;
+        if (x == 0) return 1;
+        if (x == Pi) return NegativeOne;
+        if (Abs(x) == Pi / 2) return 0;
 
         // Taylor series.
         // https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
         var sign = 1;
         BigInteger m = 0; // m = 2n
-        BigDecimal aToM = 1;
-        var aSqr = a * a;
+        BigDecimal xm = 1;
+        var x2 = x * x;
         BigInteger mFact = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure x correct result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -95,7 +95,7 @@ public partial struct BigDecimal
         while (true)
         {
             // Add the next term in the series.
-            var newSum = sum + sign * aToM / mFact;
+            var newSum = sum + sign * xm / mFact;
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum) break;
@@ -104,7 +104,7 @@ public partial struct BigDecimal
             sum = newSum;
             sign = -sign;
             m += 2;
-            aToM *= aSqr;
+            xm *= x2;
             mFact *= m * (m - 1);
         }
 
@@ -115,34 +115,58 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc/>
-    public static BigDecimal CosPi(BigDecimal a) => Cos(a * Pi);
+    public static BigDecimal CosPi(BigDecimal x) => Cos(x * Pi);
 
     /// <inheritdoc/>
-    public static (BigDecimal Sin, BigDecimal Cos) SinCos(BigDecimal a) => (Sin(a), Cos(a));
+    public static (BigDecimal Sin, BigDecimal Cos) SinCos(BigDecimal x) => (Sin(x), Cos(x));
 
     /// <inheritdoc/>
-    public static (BigDecimal SinPi, BigDecimal CosPi) SinCosPi(BigDecimal a) =>
-        (SinPi(a), CosPi(a));
+    public static (BigDecimal SinPi, BigDecimal CosPi) SinCosPi(BigDecimal x) =>
+        (SinPi(x), CosPi(x));
 
     /// <inheritdoc/>
-    public static BigDecimal Tan(BigDecimal a)
+    public static BigDecimal Tan(BigDecimal x)
     {
         // Find the equivalent angle in the interval [-π, π).
-        a = NormalizeAngle(in a);
+        x = NormalizeAngle(in x);
 
         // Test for divide by zero.
-        try
-        {
-            return Sin(a) / Cos(a);
-        }
-        catch (DivideByZeroException)
-        {
-            throw new ArithmeticException($"tan({a}) is undefined.");
-        }
+        var c = Cos(x);
+        if (c == 0) throw new ArithmeticException($"tan({x}) is undefined.");
+
+        return Sin(x) / c;
     }
 
     /// <inheritdoc/>
-    public static BigDecimal TanPi(BigDecimal a) => Tan(a * Pi);
+    public static BigDecimal TanPi(BigDecimal x) => Tan(x * Pi);
+
+    /// <summary>Calculate the cotangent of x BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The cotangent.</returns>
+    /// <exception cref="DivideByZeroException">If the sine of the angle is 0.</exception>
+    public static BigDecimal Cot(BigDecimal x)
+    {
+        // Find the equivalent angle in the interval [-π, π).
+        x = NormalizeAngle(in x);
+
+        // Test for divide by zero.
+        var s = Sin(x);
+        if (s == 0) throw new ArithmeticException($"cot({x}) is undefined.");
+
+        return Cos(x) / s;
+    }
+
+    /// <summary>Calculate the secant of x BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The secant.</returns>
+    /// <exception cref="DivideByZeroException">If the cosine of the angle is 0.</exception>
+    public static BigDecimal Sec(BigDecimal x) => 1 / Cos(x);
+
+    /// <summary>Calculate the cosecant of x BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The cosecant.</returns>
+    /// <exception cref="DivideByZeroException">If the sine of the angle is 0.</exception>
+    public static BigDecimal Csc(BigDecimal x) => 1 / Sin(x);
 
     #endregion Trigonometric methods
 
@@ -165,7 +189,7 @@ public partial struct BigDecimal
         if (x == 1) return halfPi;
 
         // The Taylor series is slow to converge near x = ±1, but we can the following identity
-        // relationship and calculate Asin() accurately and quickly for a smaller value:
+        // relationship and calculate Asin() accurately and quickly for x smaller value:
         // Asin(θ) = π/2 - Asin(√(1-θ²))
         var xSqr = Sqr(x);
         if (x > 0.75m) return halfPi - Asin(Sqrt(1 - xSqr));
@@ -178,7 +202,7 @@ public partial struct BigDecimal
         var xToM = Cube(x);
         var sum = x;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure x correct result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -234,7 +258,7 @@ public partial struct BigDecimal
         var sign = small ? 1 : -1;
         var sum = small ? 0 : Pi / 2;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure x correct result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -268,7 +292,7 @@ public partial struct BigDecimal
     /// This two-argument variation of the Atan() method comes originally from FORTRAN.
     /// If x is non-negative, it will find the same result as Atan(y / x).
     /// If x is negative, the result will be offset by π.
-    /// The purpose of the method is to produce a correct value for the polar angle when converting
+    /// The purpose of the method is to produce x correct value for the polar angle when converting
     /// from cartesian coordinates to polar coordinates.
     /// It also avoids division by 0 exceptions.
     /// </summary>
@@ -304,23 +328,60 @@ public partial struct BigDecimal
     /// <see cref="double.Atan2Pi"/>
     public static BigDecimal Atan2Pi(BigDecimal y, BigDecimal x) => Atan2(y, x) / Pi;
 
+    /// <summary>Calculate the inverse cotangent of x BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The inverse cotangent.</returns>
+    public static BigDecimal Acot(BigDecimal x) => Atan2(1, x);
+
+    /// <summary>Calculate the inverse secant of x BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The inverse secant.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public static BigDecimal Asec(BigDecimal x)
+    {
+        // Guard.
+        if (Abs(x) < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(x),
+                "Must have an absolute value of at least 1.");
+        }
+
+        return Acos(1 / x);
+    }
+
+    /// <summary>Calculate the inverse cosecant of x BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The inverse cosecant.</returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public static BigDecimal Acsc(BigDecimal x)
+    {
+        // Guard.
+        if (Abs(x) < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(x),
+                "Must have an absolute value of at least 1.");
+        }
+
+        return Asin(1 / x);
+    }
+
     #endregion Inverse trigonometric methods
 
     #region Hyperbolic methods
 
     /// <inheritdoc/>
-    public static BigDecimal Sinh(BigDecimal a)
+    public static BigDecimal Sinh(BigDecimal x)
     {
         // Optimization.
-        if (a == 0) return 0;
+        if (x == 0) return 0;
 
         // Taylor series.
         var m = 1;
-        var aToM = a;
+        var xm = x;
         BigInteger mFact = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure x correct result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -329,14 +390,14 @@ public partial struct BigDecimal
         while (true)
         {
             // Add the next term in the series.
-            var newSum = sum + aToM / mFact;
+            var newSum = sum + xm / mFact;
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum) break;
 
             // Prepare for next iteration.
             m += 2;
-            aToM *= a * a;
+            xm *= x * x;
             mFact *= m * (m - 1);
             sum = newSum;
         }
@@ -348,19 +409,19 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc/>
-    public static BigDecimal Cosh(BigDecimal a)
+    public static BigDecimal Cosh(BigDecimal x)
     {
         // Optimization.
-        if (a == 0) return 1;
+        if (x == 0) return 1;
 
         // Taylor series.
         var m = 0;
-        BigDecimal aToM = 1;
-        var aSqr = a * a;
+        BigDecimal xm = 1;
+        var x2 = x * x;
         BigInteger mFact = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure x correct result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -369,14 +430,14 @@ public partial struct BigDecimal
         while (true)
         {
             // Add the next term in the series.
-            var newSum = sum + aToM / mFact;
+            var newSum = sum + xm / mFact;
 
             // If adding the new term hasn't affected the result, we're done.
             if (sum == newSum) break;
 
             // Prepare for next iteration.
             m += 2;
-            aToM *= aSqr;
+            xm *= x2;
             mFact *= m * (m - 1);
             sum = newSum;
         }
@@ -388,7 +449,26 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc/>
-    public static BigDecimal Tanh(BigDecimal a) => Sinh(a) / Cosh(a);
+    public static BigDecimal Tanh(BigDecimal x) => Sinh(x) / Cosh(x);
+
+    /// <summary>Calculate the hyperbolic cotangent of x BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The hyperbolic cotangent.</returns>
+    public static BigDecimal Coth(BigDecimal x)
+    {
+        var e = Exp(2 * x);
+        return (e + 1) / (e - 1);
+    }
+
+    /// <summary>Calculate the hyperbolic secant of x BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The hyperbolic secant.</returns>
+    public static BigDecimal Sech(BigDecimal x) => 2 / (Exp(x) + Exp(-x));
+
+    /// <summary>Calculate the hyperbolic cosecant of x BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The hyperbolic cosecant.</returns>
+    public static BigDecimal Csch(BigDecimal x) => 2 / (Exp(x) - Exp(-x));
 
     #endregion Hyperbolic methods
 
@@ -402,6 +482,21 @@ public partial struct BigDecimal
 
     /// <inheritdoc/>
     public static BigDecimal Atanh(BigDecimal x) => Log((1 + x) / (1 - x)) / 2;
+
+    /// <summary>Calculate the inverse hyperbolic cotangent of x BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The inverse hyperbolic cotangent.</returns>
+    public static BigDecimal Acoth(BigDecimal x) => Log((x + 1) / (x - 1)) / 2;
+
+    /// <summary>Calculate the inverse hyperbolic secant of x BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The inverse hyperbolic secant.</returns>
+    public static BigDecimal Asech(BigDecimal x) => Log(1 / x + Sqrt(1 / Sqr(x) - 1));
+
+    /// <summary>Calculate the inverse hyperbolic cosecant of x BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value.</param>
+    /// <returns>The inverse hyperbolic cosecant.</returns>
+    public static BigDecimal Acsch(BigDecimal x) => Log(1 / x + Sqrt(1 / Sqr(x) + 1));
 
     #endregion Inverse hyperbolic methods
 
@@ -434,16 +529,16 @@ public partial struct BigDecimal
     /// </summary>
     public static BigDecimal NormalizeAngle(in BigDecimal radians)
     {
-        var a = radians % Tau;
+        var x = radians % Tau;
 
         // The result of the modulo operator can be anywhere in the interval (-τ, τ) because
         // the default behaviour of modulo is to assign the sign of the dividend (the left-hand
         // operand) to the result. So if radians is negative, the result will be, too.
         // Therefore, we may need to shift the value once more to place it in the desired range.
-        if (a < -Pi) return a + Tau;
-        if (a >= Pi) return a - Tau;
+        if (x < -Pi) return x + Tau;
+        if (x >= Pi) return x - Tau;
 
-        return a;
+        return x;
     }
 
     #endregion Helper methods

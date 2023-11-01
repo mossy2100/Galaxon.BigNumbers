@@ -151,4 +151,57 @@ public partial struct BigDecimal
 
         return RoundSigFigs(result);
     }
+    
+    /// <summary>
+    /// Possibly faster method of calculating tan, using a Taylor series.
+    /// TODO Debug. Still isn't working properly. I may just cut it.
+    /// </summary>
+    /// <param name="x">The value to calculate tan(x) for.</param>
+    /// <returns>The tangent of the value x.</returns>
+    public static BigDecimal Tan2(BigDecimal x)
+    {
+        // Find the equivalent angle in the interval [-π, π).
+        x = NormalizeAngle(in x);
+
+        // Initialize sum.
+        BigDecimal sum = 0;
+
+        // Initially, k = 1, but since we don't use k directly, we don't need to create a variable.
+
+        // Sign starts positive, alternating for each term.
+        var sign = 1;
+
+        // p = 4^k
+        var p = 4;
+
+        // k2 = 2 * k
+        var k2 = 2;
+
+        // f = (2k)! = Factorial(2 * k)
+        var f = 2;
+
+        // xx = x^(2k - 1)
+        var xx = x;
+
+        while (true)
+        {
+            // Calculate the new term.
+            var term = sign * p * (p - 1) * Bernoulli(k2) * xx / f;
+
+            // Add it to the sum and see if it made any difference.
+            var newSum = sum + term;
+            if (sum == newSum) break;
+
+            // Prepare for next loop iteration.
+            sum = newSum;
+            sign = -sign;
+            p *= 4;
+            xx *= Sqr(x);
+            k2 += 2;
+            f *= k2 * (k2 - 1);
+        }
+
+        return RoundSigFigs(sum);
+    }
+
 }
