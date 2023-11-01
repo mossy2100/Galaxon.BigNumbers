@@ -6,760 +6,749 @@
     <members>
         <member name="M:Galaxon.BigNumbers.Tests.BigComplexCoreTests.EqualsTest">
             <summary>
-                Test the Equals() method and the equality and inequality operators.
+            Test the Equals() method and the equality and inequality operators.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigComplexStringsTests.TestComplexToString">
             <summary>
-                This is not actually a test method. I want to see how Complex numbers are formatted
-                by .NET, so I can do the same thing with BigComplex.
+            This is not actually a test method. I want to see how Complex numbers are formatted by .NET,
+            so I can do the same thing with BigComplex.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigComplexStringsTests.TestComplexToString2">
             <summary>
-                This uses the example from the documentation.
+            This uses the example from the documentation.
             </summary>
             <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.complex.tostring?view=net-7.0#system-numerics-complex-tostring"/>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConstantsTests.TestComputePi10000">
             <remarks>
-                This takes a few minutes (about 7 on my computer at the time of typing), so sit
-                back, relax, sip your coffee, and enjoy the relentless march of time.
+            This takes a few minutes (about 7 on my computer at the time of typing), so sit back, relax,
+            sip your coffee, and enjoy the relentless march of time.
             </remarks>
             <see href="http://newton.ex.ac.uk/research/qsystems/collabs/pi/pi5.txt"/>
         </member>
         <member name="T:Galaxon.BigNumbers.Tests.BigDecimalConvertTests">
             <summary>
-                Test conversions between BigDecimal and the standard number types.
+            Test conversions between BigDecimal and the standard number types.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._sbyteTestValues">
             <summary>
-                A few test values for sbyte.
+            A few test values for sbyte.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToSbyte">
             <summary>
-                Test casting from BigDecimal to sbyte and back.
+            Test casting from BigDecimal to sbyte and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ThrowsExceptionWhenCastingToSbyteOutsideOfValidRange">
             <summary>
-                Test casting from BigDecimal to sbyte, outside the valid range for that type.
+            Test casting from BigDecimal to sbyte, outside the valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedSbyteInRangeTest">
             <summary>
-                Test converting from sbyte to BigDecimal with overflow check, within the valid range
-                for that type.
+            Test converting from sbyte to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedSbyteInRangeTest">
             <summary>
-                Test converting from BigDecimal to sbyte with overflow check, within the valid range
-                for that type.
+            Test converting from BigDecimal to sbyte with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedSbyteOverflowTest">
             <summary>
-                Test converting from a BigDecimal to sbyte with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to sbyte with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingSbyteInRangeTest">
             <summary>
-                Test converting from a BigDecimal to sbyte, with saturation, within the valid range
-                for that type.
+            Test converting from a BigDecimal to sbyte, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingSbyteOverflowTest">
             <summary>
-                Test converting from a BigDecimal to sbyte, with saturation, outside the valid range
-                for that type.
+            Test converting from a BigDecimal to sbyte, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._byteTestValues">
             <summary>
-                A few test values for byte.
+            A few test values for byte.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToByte">
             <summary>
-                Test casting from BigDecimal to byte and back.
+            Test casting from BigDecimal to byte and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ThrowsExceptionWhenCastingToByteOutsideOfValidRange">
             <summary>
-                Test casting from BigDecimal to byte, outside the valid range for that type.
+            Test casting from BigDecimal to byte, outside the valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedByteInRangeTest">
             <summary>
-                Test converting from byte to BigDecimal with overflow check, within the valid range
-                for that type.
+            Test converting from byte to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedByteInRangeTest">
             <summary>
-                Test converting from BigDecimal to byte with overflow check, within the valid range
-                for that type.
+            Test converting from BigDecimal to byte with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedByteOverflowTest">
             <summary>
-                Test converting from a BigDecimal to byte with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to byte with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingByteInRangeTest">
             <summary>
-                Test converting from a BigDecimal to byte, with saturation, within the valid range
-                for that type.
+            Test converting from a BigDecimal to byte, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingByteOverflowTest">
             <summary>
-                Test converting from a BigDecimal to byte, with saturation, outside the valid range
-                for that type.
+            Test converting from a BigDecimal to byte, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._shortTestValues">
             <summary>
-                A few test values for short.
+            A few test values for short.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToShort">
             <summary>
-                Test casting from BigDecimal to short and back.
+            Test casting from BigDecimal to short and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ThrowsExceptionWhenCastingToShortOutsideOfValidRange">
             <summary>
-                Test casting from BigDecimal to short, outside the valid range for that type.
+            Test casting from BigDecimal to short, outside the valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedShortInRangeTest">
             <summary>
-                Test converting from short to BigDecimal with overflow check, within the valid range
-                for that type.
+            Test converting from short to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedShortInRangeTest">
             <summary>
-                Test converting from BigDecimal to short with overflow check, within the valid range
-                for that type.
+            Test converting from BigDecimal to short with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedShortOverflowTest">
             <summary>
-                Test converting from a BigDecimal to short with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to short with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingShortInRangeTest">
             <summary>
-                Test converting from a BigDecimal to short, with saturation, within the valid range
-                for that type.
+            Test converting from a BigDecimal to short, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingShortOverflowTest">
             <summary>
-                Test converting from a BigDecimal to short, with saturation, outside the valid range
-                for that type.
+            Test converting from a BigDecimal to short, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._ushortTestValues">
             <summary>
-                A few test values for ushort.
+            A few test values for ushort.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToUshort">
             <summary>
-                Test casting from BigDecimal to ushort and back.
+            Test casting from BigDecimal to ushort and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ThrowsExceptionWhenCastingToUshortOutsideOfValidRange">
             <summary>
-                Test casting from BigDecimal to ushort, outside the valid range for that type.
+            Test casting from BigDecimal to ushort, outside the valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedUshortInRangeTest">
             <summary>
-                Test converting from ushort to BigDecimal with overflow check, within the valid
-                range for that type.
+            Test converting from ushort to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedUshortInRangeTest">
             <summary>
-                Test converting from BigDecimal to ushort with overflow check, within the valid
-                range for that type.
+            Test converting from BigDecimal to ushort with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedUshortOverflowTest">
             <summary>
-                Test converting from a BigDecimal to ushort with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to ushort with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingUshortInRangeTest">
             <summary>
-                Test converting from a BigDecimal to ushort, with saturation, within the valid range
-                for that type.
+            Test converting from a BigDecimal to ushort, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingUshortOverflowTest">
             <summary>
-                Test converting from a BigDecimal to ushort, with saturation, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to ushort, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._intTestValues">
             <summary>
-                A few test values for int.
+            A few test values for int.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToInt">
             <summary>
-                Test casting from BigDecimal to int and back.
+            Test casting from BigDecimal to int and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ThrowsExceptionWhenCastingToIntOutsideOfValidRange">
             <summary>
-                Test casting from BigDecimal to int, outside the valid range for that type.
+            Test casting from BigDecimal to int, outside the valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedIntInRangeTest">
             <summary>
-                Test converting from int to BigDecimal with overflow check, within the valid range
-                for that type.
+            Test converting from int to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedIntInRangeTest">
             <summary>
-                Test converting from BigDecimal to int with overflow check, within the valid range
-                for that type.
+            Test converting from BigDecimal to int with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedIntOverflowTest">
             <summary>
-                Test converting from a BigDecimal to int with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to int with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingIntInRangeTest">
             <summary>
-                Test converting from a BigDecimal to int, with saturation, within the valid range
-                for that type.
+            Test converting from a BigDecimal to int, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingIntOverflowTest">
             <summary>
-                Test converting from a BigDecimal to int, with saturation, outside the valid range
-                for that type.
+            Test converting from a BigDecimal to int, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._uintTestValues">
             <summary>
-                A few test values for uint.
+            A few test values for uint.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToUint">
             <summary>
-                Test casting from BigDecimal to uint and back.
+            Test casting from BigDecimal to uint and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ThrowsExceptionWhenCastingToUintOutsideOfValidRange">
             <summary>
-                Test casting from BigDecimal to long, outside the valid range for that type.
+            Test casting from BigDecimal to long, outside the valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedUintInRangeTest">
             <summary>
-                Test converting from uint to BigDecimal with overflow check, within the valid range
-                for that type.
+            Test converting from uint to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedUintInRangeTest">
             <summary>
-                Test converting from BigDecimal to uint with overflow check, within the valid range
-                for that type.
+            Test converting from BigDecimal to uint with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedUintOverflowTest">
             <summary>
-                Test converting from a BigDecimal to uint with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to uint with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingUintInRangeTest">
             <summary>
-                Test converting from a BigDecimal to uint, with saturation, within the valid range
-                for that type.
+            Test converting from a BigDecimal to uint, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingUintOverflowTest">
             <summary>
-                Test converting from a BigDecimal to uint, with saturation, outside the valid range
-                for that type.
+            Test converting from a BigDecimal to uint, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._longTestValues">
             <summary>
-                A few test values for long.
+            A few test values for long.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToLong">
             <summary>
-                Test casting from BigDecimal to long and back.
+            Test casting from BigDecimal to long and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ThrowsExceptionWhenCastingToLongOutsideOfValidRange">
             <summary>
-                Test an OverflowException is thrown when casting from BigDecimal to long, outside
-                the valid range for that type.
+            Test an OverflowException is thrown when casting from BigDecimal to long, outside the
+            valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedLongInRangeTest">
             <summary>
-                Test converting from long to BigDecimal with overflow check, within the valid range
-                for that type.
+            Test converting from long to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedLongInRangeTest">
             <summary>
-                Test converting from BigDecimal to long with overflow check, within the valid range
-                for that type.
+            Test converting from BigDecimal to long with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedLongOverflowTest">
             <summary>
-                Test converting from a BigDecimal to long with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to long with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingLongInRangeTest">
             <summary>
-                Test converting from a BigDecimal to long, with saturation, within the valid range
-                for that type.
+            Test converting from a BigDecimal to long, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingLongOverflowTest">
             <summary>
-                Test converting from a BigDecimal to long, with saturation, outside the valid range
-                for that type.
+            Test converting from a BigDecimal to long, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._ulongTestValues">
             <summary>
-                A few test values for ulong.
+            A few test values for ulong.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToUlong">
             <summary>
-                Test casting from BigDecimal to ulong and back.
+            Test casting from BigDecimal to ulong and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ThrowsExceptionWhenCastingToUlongOutsideOfValidRange">
             <summary>
-                Test casting from BigDecimal to ulong, outside the valid range for that type.
+            Test casting from BigDecimal to ulong, outside the valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedUlongInRangeTest">
             <summary>
-                Test converting from ulong to BigDecimal with overflow check, within the valid range
-                for that type.
+            Test converting from ulong to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedUlongInRangeTest">
             <summary>
-                Test converting from BigDecimal to ulong with overflow check, within the valid range
-                for that type.
+            Test converting from BigDecimal to ulong with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedUlongOverflowTest">
             <summary>
-                Test converting from a BigDecimal to ulong with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to ulong with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingUlongInRangeTest">
             <summary>
-                Test converting from a BigDecimal to ulong, with saturation, within the valid range
-                for that type.
+            Test converting from a BigDecimal to ulong, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingUlongOverflowTest">
             <summary>
-                Test converting from a BigDecimal to ulong, with saturation, outside the valid range
-                for that type.
+            Test converting from a BigDecimal to ulong, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._int128TestValues">
             <summary>
-                A few test values for Int128.
+            A few test values for Int128.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToInt128">
             <summary>
-                Test casting from BigDecimal to Int128 and back.
+            Test casting from BigDecimal to Int128 and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ThrowsExceptionWhenCastingToInt128OutsideOfValidRange">
             <summary>
-                Test casting from BigDecimal to Int128, outside the valid range for that type.
+            Test casting from BigDecimal to Int128, outside the valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedInt128InRangeTest">
             <summary>
-                Test converting from Int128 to BigDecimal with overflow check, within the valid
-                range for that type.
+            Test converting from Int128 to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedInt128InRangeTest">
             <summary>
-                Test converting from BigDecimal to Int128 with overflow check, within the valid
-                range for that type.
+            Test converting from BigDecimal to Int128 with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedInt128OverflowTest">
             <summary>
-                Test converting from a BigDecimal to Int128 with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to Int128 with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingInt128InRangeTest">
             <summary>
-                Test converting from a BigDecimal to Int128, with saturation, within the valid range
-                for that type.
+            Test converting from a BigDecimal to Int128, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingInt128OverflowTest">
             <summary>
-                Test converting from a BigDecimal to Int128, with saturation, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to Int128, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._uint128TestValues">
             <summary>
-                A few test values for UInt128.
+            A few test values for UInt128.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToUInt128">
             <summary>
-                Test casting from BigDecimal to UInt128 and back.
+            Test casting from BigDecimal to UInt128 and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ThrowsExceptionWhenCastingToUInt128OutsideOfValidRange">
             <summary>
-                Test casting from BigDecimal to UInt128, outside the valid range for that type.
+            Test casting from BigDecimal to UInt128, outside the valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedUInt128InRangeTest">
             <summary>
-                Test converting from UInt128 to BigDecimal with overflow check, within the valid
-                range for that type.
+            Test converting from UInt128 to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedUInt128InRangeTest">
             <summary>
-                Test converting from BigDecimal to UInt128 with overflow check, within the valid
-                range for that type.
+            Test converting from BigDecimal to UInt128 with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedUInt128OverflowTest">
             <summary>
-                Test converting from a BigDecimal to UInt128 with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to UInt128 with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingUInt128InRangeTest">
             <summary>
-                Test converting from a BigDecimal to UInt128, with saturation, within the valid
-                range for that type.
+            Test converting from a BigDecimal to UInt128, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingUInt128OverflowTest">
             <summary>
-                Test converting from a BigDecimal to UInt128, with saturation, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to UInt128, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.GetHalfTestValues">
             <summary>
-                A few test values for Half.
+            A few test values for Half.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._halfNegInf">
             <summary>
-                Test value for negative overflow for Half.
+            Test value for negative overflow for Half.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._halfPosInf">
             <summary>
-                Test value for positive overflow for Half.
+            Test value for positive overflow for Half.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToHalf">
             <summary>
-                Test casting from BigDecimal to Half and back.
+            Test casting from BigDecimal to Half and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedHalfInRangeTest">
             <summary>
-                Test converting from Half to BigDecimal with overflow check, within the valid range
-                for that type.
+            Test converting from Half to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedHalfInRangeTest">
             <summary>
-                Test converting from BigDecimal to Half with overflow check, within the valid range
-                for that type.
+            Test converting from BigDecimal to Half with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedHalfOverflowTest">
             <summary>
-                Test converting from a BigDecimal to Half with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to Half with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingHalfInRangeTest">
             <summary>
-                Test converting from a BigDecimal to Half, with saturation, within the valid range
-                for that type.
+            Test converting from a BigDecimal to Half, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingHalfOverflowTest">
             <summary>
-                Test converting from a BigDecimal to Half, with saturation, outside the valid range
-                for that type.
+            Test converting from a BigDecimal to Half, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.GetFloatTestValues">
             <summary>
-                A few test values for float.
+            A few test values for float.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._floatNegInf">
             <summary>
-                Test value for negative overflow for float.
+            Test value for negative overflow for float.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._floatPosInf">
             <summary>
-                Test value for positive overflow for float.
+            Test value for positive overflow for float.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToFloat">
             <summary>
-                Test casting from BigDecimal to float and back.
+            Test casting from BigDecimal to float and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ReturnsInfinityWhenCastingToFloatOutsideOfValidRange">
             <summary>
-                Test casting from BigDecimal to float, outside the valid range for that type.
+            Test casting from BigDecimal to float, outside the valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedFloatInRangeTest">
             <summary>
-                Test converting from float to BigDecimal with overflow check, within the valid range
-                for that type.
+            Test converting from float to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedFloatInRangeTest">
             <summary>
-                Test converting from BigDecimal to float with overflow check, within the valid range
-                for that type.
+            Test converting from BigDecimal to float with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedFloatOverflowTest">
             <summary>
-                Test converting from a BigDecimal to float with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to float with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingFloatInRangeTest">
             <summary>
-                Test converting from a BigDecimal to float, with saturation, within the valid range
-                for that type.
+            Test converting from a BigDecimal to float, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingFloatOverflowTest">
             <summary>
-                Test converting from a BigDecimal to float, with saturation, outside the valid range
-                for that type.
+            Test converting from a BigDecimal to float, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.GetDoubleTestValues">
             <summary>
-                A few test values for double.
+            A few test values for double.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._doubleNegInf">
             <summary>
-                Test value for negative overflow for double.
+            Test value for negative overflow for double.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._doublePosInf">
             <summary>
-                Test value for positive overflow for double.
+            Test value for positive overflow for double.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToDouble">
             <summary>
-                Test casting from BigDecimal to double and back.
+            Test casting from BigDecimal to double and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ReturnsInfinityWhenCastingToDoubleOutsideOfValidRange">
             <summary>
-                Test casting from BigDecimal to double, outside the valid range for that type.
+            Test casting from BigDecimal to double, outside the valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedDoubleInRangeTest">
             <summary>
-                Test converting from double to BigDecimal with overflow check, within the valid
-                range for that type.
+            Test converting from double to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedDoubleInRangeTest">
             <summary>
-                Test converting from BigDecimal to double with overflow check, within the valid
-                range for that type.
+            Test converting from BigDecimal to double with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedDoubleOverflowTest">
             <summary>
-                Test converting from a BigDecimal to double with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to double with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingDoubleInRangeTest">
             <summary>
-                Test converting from a BigDecimal to double, with saturation, within the valid range
-                for that type.
+            Test converting from a BigDecimal to double, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingDoubleOverflowTest">
             <summary>
-                Test converting from a BigDecimal to double, with saturation, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to double, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.GetDecimalTestValues">
             <summary>
-                A few test values for decimal.
+            A few test values for decimal.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._decimalNegInf">
             <summary>
-                Test value for negative overflow for decimal.
+            Test value for negative overflow for decimal.
             </summary>
         </member>
         <member name="F:Galaxon.BigNumbers.Tests.BigDecimalConvertTests._decimalPosInf">
             <summary>
-                Test value for positive overflow for decimal.
+            Test value for positive overflow for decimal.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ValidCastsToDecimal">
             <summary>
-                Test casting from BigDecimal to decimal and back.
+            Test casting from BigDecimal to decimal and back.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.ThrowsExceptionWhenCastingToDecimalOutsideOfValidRange">
             <summary>
-                Test casting from BigDecimal to decimal, outside the valid range for that type.
+            Test casting from BigDecimal to decimal, outside the valid range for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertFromCheckedDecimalInRangeTest">
             <summary>
-                Test converting from decimal to BigDecimal with overflow check, within the valid
-                range for that type.
+            Test converting from decimal to BigDecimal with overflow check, within the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedDecimalInRangeTest">
             <summary>
-                Test converting from BigDecimal to decimal with overflow check, within the valid
-                range for that type.
+            Test converting from BigDecimal to decimal with overflow check, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToCheckedDecimalOverflowTest">
             <summary>
-                Test converting from a BigDecimal to decimal with overflow check, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to decimal with overflow check, outside the valid range
+            for that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingDecimalInRangeTest">
             <summary>
-                Test converting from a BigDecimal to decimal, with saturation, within the valid
-                range for that type.
+            Test converting from a BigDecimal to decimal, with saturation, within the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConvertTests.TryConvertToSaturatingDecimalOverflowTest">
             <summary>
-                Test converting from a BigDecimal to decimal, with saturation, outside the valid
-                range for that type.
+            Test converting from a BigDecimal to decimal, with saturation, outside the valid range for
+            that type.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestSqrtBig">
             <summary>
-                Used https://keisan.casio.com/calculator to get expected result.
+            Used https://keisan.casio.com/calculator to get expected result.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestSqrtSmall">
             <summary>
-                Used https://keisan.casio.com/calculator to get expected result.
+            Used https://keisan.casio.com/calculator to get expected result.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestSqrtBiggerThanBiggestDouble">
             <summary>
-                In this test, both the initial argument and the square root are larger than the
-                largest possible double value. Used https://keisan.casio.com/calculator to get
-                expected result.
+            In this test, both the initial argument and the square root are larger than the largest
+            possible double value.
+            Used https://keisan.casio.com/calculator to get expected result.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestSqrtSmallerThanSmallestDouble">
             <summary>
-                In this test, both the initial argument and the square root are smaller than the
-                largest possible double value. Used https://keisan.casio.com/calculator to get
-                expected result.
+            In this test, both the initial argument and the square root are smaller than the largest
+            possible double value.
+            Used https://keisan.casio.com/calculator to get expected result.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestCubeRootOfNegativeValueUsingPow">
             <summary>
-                This shows how the cube root of a negative value cannot be achieved using Pow(),
-                because a BigDecimal cannot represent 1/3 exactly. You have to use Cbrt() or
-                RootN().
+            This shows how the cube root of a negative value cannot be achieved using Pow(), because a
+            BigDecimal cannot represent 1/3 exactly. You have to use Cbrt() or RootN().
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestOddRootOfNegative">
             <summary>
-                Test odd roots of some negative values.
+            Test odd roots of some negative values.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestEvenRootOfNegativeThrowsException">
             <summary>
-                Test even roots of negative values throw exceptions.
+            Test even roots of negative values throw exceptions.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRoundTests.TestRoundingMethods">
             <summary>
-                Check BigDecimal.Round() matches decimal.Round() for all rounding methods.
+            Check BigDecimal.Round() matches decimal.Round() for all rounding methods.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigRationalConvertTests.TestCastFromDoubleFuzzy">
             <summary>
-                This example shows how a double converts exactly to a BigRational, but also how the
-                double only stores an approximation of the original decimal fraction.
+            This example shows how a double converts exactly to a BigRational, but also how the double
+            only stores an approximation of the original decimal fraction.
             </summary>
-        </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigRationalMathTests.TestBernoulli1">
-            <summary>
-                This method just spits out the first 21 Bernoulli numbers, which can be compared
-                with the Wikipedia page for correctness.
-            </summary>
-            <see href="https://en.wikipedia.org/wiki/Bernoulli_number"/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigRationalMathTests.TestBernoulli2">
-            <summary>Check the first few Bernoulli numbers.</summary>
         </member>
     </members>
 </doc>
