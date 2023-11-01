@@ -5,7 +5,10 @@ namespace Galaxon.BigNumbers.TestTools;
 
 public class BigDecimalAssert
 {
-    /// <summary>Compare two BigDecimal values for equality.</summary>
+    /// <summary>
+    /// See if an actual BigDecimal value is equal with an expected value (any number type).
+    /// The tolerance (delta) is based off the type of the expected value.
+    /// </summary>
     /// <param name="expected">The expected value.</param>
     /// <param name="actual">The actual value.</param>
     /// <param name="delta">The maximum acceptable difference.</param>
@@ -59,13 +62,4 @@ public class BigDecimalAssert
             Assert.Fail($"Values are unequal. Expected {expected}, got {actual}.");
         }
     }
-
-    // /// <summary>Compare a BigDecimal value with an expected double value.</summary>
-    // /// <param name="expected">The expected value.</param>
-    // /// <param name="actual">The actual value.</param>
-    // /// <exception cref="AssertFailedException"></exception>
-    // public static void EqualsDouble(double expected, BigDecimal actual)
-    // {
-    //     AreEqual(expected, actual, 1e-15);
-    // }
 }
