@@ -7,7 +7,7 @@ namespace Galaxon.BigNumbers;
 /// </summary>
 public partial struct BigDecimal
 {
-    // ---------------------------------------------------------------------------------------------
+    #region E
 
     /// <summary>Cached value for e.</summary>
     private static BigDecimal _e;
@@ -26,7 +26,9 @@ public partial struct BigDecimal
         }
     }
 
-    // ---------------------------------------------------------------------------------------------
+    #endregion E
+
+    #region Pi
 
     /// <summary>Cached value for π.</summary>
     private static BigDecimal _pi;
@@ -93,7 +95,9 @@ public partial struct BigDecimal
         return RoundSigFigs(pi);
     }
 
-    // ---------------------------------------------------------------------------------------------
+    #endregion Pi
+
+    #region Tau
 
     /// <summary>Cached value for τ.</summary>
     private static BigDecimal _tau;
@@ -128,14 +132,55 @@ public partial struct BigDecimal
         return RoundSigFigs(tau);
     }
 
-    // ---------------------------------------------------------------------------------------------
+    #endregion Tau
+
+    #region HalfPi
+
+    /// <summary>Cached value for π/2.</summary>
+    private static BigDecimal _halfPi;
+
+    /// <summary>Half pi (π/2).</summary>
+    /// <remarks>
+    /// This value is used in a number of calculations, so it felt warranted to cache it.
+    /// </remarks>
+    public static BigDecimal HalfPi
+    {
+        get
+        {
+            if (_halfPi.NumSigFigs == MaxSigFigs) return _halfPi;
+            if (_halfPi.NumSigFigs > MaxSigFigs) return RoundSigFigs(_halfPi);
+
+            _halfPi = ComputeHalfPi();
+            return _halfPi;
+        }
+    }
+
+    /// <summary>Compute the value of π/2.</summary>
+    /// <returns>The value of π/2 to the current number of significant figures.</returns>
+    public static BigDecimal ComputeHalfPi()
+    {
+        // Temporarily increase the maximum number of significant figures to ensure a correct
+        // result.
+        var prevMaxSigFigs = MaxSigFigs;
+        MaxSigFigs += 2;
+
+        // Compute the value.
+        var halfPi = Pi / 2;
+
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
+
+        return RoundSigFigs(halfPi);
+    }
+
+    #endregion HalfPi
+
+    #region Phi
 
     /// <summary>Cached value for φ, the golden ratio.</summary>
     private static BigDecimal _phi;
 
-    /// <summary>
-    /// The golden ratio (φ).
-    /// </summary>
+    /// <summary>The golden ratio (φ).</summary>
     public static BigDecimal Phi
     {
         get
@@ -165,11 +210,13 @@ public partial struct BigDecimal
         return RoundSigFigs(phi);
     }
 
-    // ---------------------------------------------------------------------------------------------
+    #endregion Phi
+
+    #region Ln10
 
     /// <summary>Cached value for Log(10), the natural logarithm of 10.</summary>
     /// <remarks>
-    /// This value is cached because of it's use in the Log() method. We don't want to have to
+    /// This value is cached because of its use in the Log() method. We don't want to have to
     /// recompute Log(10) every time we call Log().
     /// </remarks>
     private static BigDecimal _ln10;
@@ -186,4 +233,6 @@ public partial struct BigDecimal
             return _ln10;
         }
     }
+
+    #endregion Ln10
 }

@@ -20,10 +20,8 @@ public partial struct BigDecimal
 
         // Optimizations.
         if (x == 0 || x == Pi) return 0;
-
-        var halfPi = Pi / 2;
-        if (x == halfPi) return 1;
-        if (x == -halfPi) return NegativeOne;
+        if (x == HalfPi) return 1;
+        if (x == -HalfPi) return NegativeOne;
 
         // Taylor series.
         var sign = 1;
@@ -75,7 +73,7 @@ public partial struct BigDecimal
         // Optimizations.
         if (x == 0) return 1;
         if (x == Pi) return NegativeOne;
-        if (Abs(x) == Pi / 2) return 0;
+        if (Abs(x) == HalfPi) return 0;
 
         // Taylor series.
         // https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
@@ -185,14 +183,13 @@ public partial struct BigDecimal
         if (x > 1) throw new ArgumentOutOfRangeException(nameof(x), "Must be in the range -1..1.");
 
         // Optimization.
-        var halfPi = Pi / 2;
-        if (x == 1) return halfPi;
+        if (x == 1) return HalfPi;
 
         // The Taylor series is slow to converge near x = ±1, but we can the following identity
         // relationship and calculate Asin() accurately and quickly for x smaller value:
         // Asin(θ) = π/2 - Asin(√(1-θ²))
         var xSqr = Sqr(x);
-        if (x > 0.75m) return halfPi - Asin(Sqrt(1 - xSqr));
+        if (x > 0.75m) return HalfPi - Asin(Sqrt(1 - xSqr));
 
         // Taylor series.
         BigInteger n = 1;
@@ -235,7 +232,7 @@ public partial struct BigDecimal
     public static BigDecimal AsinPi(BigDecimal x) => Asin(x) / Pi;
 
     /// <inheritdoc/>
-    public static BigDecimal Acos(BigDecimal x) => Pi / 2 - Asin(x);
+    public static BigDecimal Acos(BigDecimal x) => HalfPi - Asin(x);
 
     /// <inheritdoc/>
     public static BigDecimal AcosPi(BigDecimal x) => Acos(x) / Pi;
@@ -256,7 +253,7 @@ public partial struct BigDecimal
         var xSqr = Sqr(x);
         var small = x < 1;
         var sign = small ? 1 : -1;
-        var sum = small ? 0 : Pi / 2;
+        var sum = small ? 0 : HalfPi;
 
         // Temporarily increase the maximum number of significant figures to ensure x correct result.
         var prevMaxSigFigs = MaxSigFigs;
@@ -310,7 +307,7 @@ public partial struct BigDecimal
         {
             if (y == 0) return 0;
 
-            result = Pi / 2;
+            result = HalfPi;
             return y > 0 ? result : -result;
         }
 

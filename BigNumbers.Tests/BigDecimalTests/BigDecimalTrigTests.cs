@@ -128,7 +128,7 @@ public class BigDecimalTrigTests
         for (var x = -3; x <= 3; x += 2)
         {
             Assert.ThrowsException<ArithmeticException>(() =>
-                BigDecimal.Tan(x * BigDecimal.Pi / 2));
+                BigDecimal.Tan(x * BigDecimal.HalfPi));
         }
     }
 
@@ -253,7 +253,7 @@ public class BigDecimalTrigTests
         BigDecimalAssert.AreEqual(oneOnSqrt2, y);
 
         r = 1;
-        a = BigDecimal.Pi / 2;
+        a = BigDecimal.HalfPi;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
         BigDecimalAssert.AreEqual(0, x);
         BigDecimalAssert.AreEqual(1, y);
@@ -265,7 +265,7 @@ public class BigDecimalTrigTests
         BigDecimalAssert.AreEqual(0, y);
 
         r = 1;
-        a = 3 * BigDecimal.Pi / 2;
+        a = 3 * BigDecimal.HalfPi;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
         BigDecimalAssert.AreEqual(0, x);
         BigDecimalAssert.AreEqual(-1, y);

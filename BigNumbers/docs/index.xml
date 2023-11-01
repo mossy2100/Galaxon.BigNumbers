@@ -872,18 +872,15 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Asinh(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
-            <see
-                href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions#Principal_value_of_the_inverse_hyperbolic_sine"/>
+            <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions#Principal_value_of_the_inverse_hyperbolic_sine"/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Acosh(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
-            <see
-                href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions#Principal_value_of_the_inverse_hyperbolic_cosine"/>
+            <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions#Principal_value_of_the_inverse_hyperbolic_cosine"/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.Atanh(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
-            <see
-                href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions#Principal_values_of_the_inverse_hyperbolic_tangent_and_cotangent"/>
+            <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions#Principal_values_of_the_inverse_hyperbolic_tangent_and_cotangent"/>
         </member>
         <member name="T:Galaxon.BigNumbers.BigDecimal">
             <summary>
@@ -1021,13 +1018,24 @@
             <summary>Compute the value of tau (τ), equal to 2 * pi (2π).</summary>
             <returns>The value of τ to the current number of significant figures.</returns>
         </member>
+        <member name="F:Galaxon.BigNumbers.BigDecimal._halfPi">
+            <summary>Cached value for π/2.</summary>
+        </member>
+        <member name="P:Galaxon.BigNumbers.BigDecimal.HalfPi">
+            <summary>Half pi (π/2).</summary>
+            <remarks>
+            This value is used in a number of calculations, so it felt warranted to cache it.
+            </remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.ComputeHalfPi">
+            <summary>Compute the value of π/2.</summary>
+            <returns>The value of π/2 to the current number of significant figures.</returns>
+        </member>
         <member name="F:Galaxon.BigNumbers.BigDecimal._phi">
             <summary>Cached value for φ, the golden ratio.</summary>
         </member>
         <member name="P:Galaxon.BigNumbers.BigDecimal.Phi">
-            <summary>
-            The golden ratio (φ).
-            </summary>
+            <summary>The golden ratio (φ).</summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.ComputePhi">
             <summary>Compute the value of phi (φ), the golden ratio.</summary>
@@ -1036,7 +1044,7 @@
         <member name="F:Galaxon.BigNumbers.BigDecimal._ln10">
             <summary>Cached value for Log(10), the natural logarithm of 10.</summary>
             <remarks>
-            This value is cached because of it's use in the Log() method. We don't want to have to
+            This value is cached because of its use in the Log() method. We don't want to have to
             recompute Log(10) every time we call Log().
             </remarks>
         </member>
@@ -1536,8 +1544,7 @@
             <remarks>
             The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
             in .NET Core.
-            <see
-                href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
             </remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSigFigs(Galaxon.BigNumbers.BigDecimal,System.Nullable{System.Numerics.BigInteger},System.MidpointRounding)">
@@ -1587,8 +1594,7 @@
             <remarks>
             The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
             in .NET Core.
-            <see
-                href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
             </remarks>
             <param name="sig">The BigInteger value to round off.</param>
             <param name="nDigitsToCut">The power of 10 (number of digits to cut).</param>
@@ -1603,8 +1609,7 @@
             <remarks>
             The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
             in .NET Core.
-            <see
-                href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
             </remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.ShiftBy(System.Numerics.BigInteger)">

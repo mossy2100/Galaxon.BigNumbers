@@ -19,8 +19,7 @@
             <summary>
             This uses the example from the documentation.
             </summary>
-            <see
-                href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.complex.tostring?view=net-7.0#system-numerics-complex-tostring"/>
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.complex.tostring?view=net-7.0#system-numerics-complex-tostring"/>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalConstantsTests.TestComputePi10000">
             <remarks>

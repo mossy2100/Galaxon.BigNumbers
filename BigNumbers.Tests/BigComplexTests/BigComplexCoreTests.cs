@@ -186,11 +186,11 @@ public class BigComplexCoreTests
         z2 = Complex.FromPolarCoordinates(1, 0);
         BigComplexAssert.AreEqual(z2, z1);
 
-        z1 = BigComplex.FromPolarCoordinates(1, BigDecimal.Pi / 2);
+        z1 = BigComplex.FromPolarCoordinates(1, BigDecimal.HalfPi);
         z2 = Complex.FromPolarCoordinates(1, PI / 2);
         BigComplexAssert.AreEqual(z2, z1);
 
-        z1 = BigComplex.FromPolarCoordinates(1, -BigDecimal.Pi / 2);
+        z1 = BigComplex.FromPolarCoordinates(1, -BigDecimal.HalfPi);
         z2 = Complex.FromPolarCoordinates(1, -PI / 2);
         BigComplexAssert.AreEqual(z2, z1);
 
