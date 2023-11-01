@@ -45,12 +45,6 @@
         <member name="P:Galaxon.BigNumbers.BigComplex.Tau">
             <inheritdoc/>
         </member>
-        <member name="P:Galaxon.BigNumbers.BigComplex.Phi">
-            <summary>The golden ratio (φ).</summary>
-        </member>
-        <member name="P:Galaxon.BigNumbers.BigComplex.Ln10">
-            <summary>The natural logarithm of 10.</summary>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.op_Implicit(System.SByte)~Galaxon.BigNumbers.BigComplex">
             <summary>Cast sbyte to BigComplex.</summary>
             <param name="x">The sbyte value.</param>
