@@ -31,7 +31,8 @@ public partial struct BigDecimal
         BigInteger mFact = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure x correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct
+        // result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -84,7 +85,7 @@ public partial struct BigDecimal
         BigInteger mFact = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure x correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -138,7 +139,7 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal TanPi(BigDecimal x) => Tan(x * Pi);
 
-    /// <summary>Calculate the cotangent of x BigDecimal value.</summary>
+    /// <summary>Calculate the cotangent of a BigDecimal value.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The cotangent.</returns>
     /// <exception cref="DivideByZeroException">If the sine of the angle is 0.</exception>
@@ -154,13 +155,13 @@ public partial struct BigDecimal
         return Cos(x) / s;
     }
 
-    /// <summary>Calculate the secant of x BigDecimal value.</summary>
+    /// <summary>Calculate the secant of a BigDecimal value.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The secant.</returns>
     /// <exception cref="DivideByZeroException">If the cosine of the angle is 0.</exception>
     public static BigDecimal Sec(BigDecimal x) => 1 / Cos(x);
 
-    /// <summary>Calculate the cosecant of x BigDecimal value.</summary>
+    /// <summary>Calculate the cosecant of a BigDecimal value.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The cosecant.</returns>
     /// <exception cref="DivideByZeroException">If the sine of the angle is 0.</exception>
@@ -186,7 +187,7 @@ public partial struct BigDecimal
         if (x == 1) return HalfPi;
 
         // The Taylor series is slow to converge near x = ±1, but we can the following identity
-        // relationship and calculate Asin() accurately and quickly for x smaller value:
+        // relationship and calculate Asin() accurately and quickly for a smaller value:
         // Asin(θ) = π/2 - Asin(√(1-θ²))
         var xSqr = Sqr(x);
         if (x > 0.75m) return HalfPi - Asin(Sqrt(1 - xSqr));
@@ -199,7 +200,7 @@ public partial struct BigDecimal
         var xToM = Cube(x);
         var sum = x;
 
-        // Temporarily increase the maximum number of significant figures to ensure x correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -255,7 +256,7 @@ public partial struct BigDecimal
         var sign = small ? 1 : -1;
         var sum = small ? 0 : HalfPi;
 
-        // Temporarily increase the maximum number of significant figures to ensure x correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -289,7 +290,7 @@ public partial struct BigDecimal
     /// This two-argument variation of the Atan() method comes originally from FORTRAN.
     /// If x is non-negative, it will find the same result as Atan(y / x).
     /// If x is negative, the result will be offset by π.
-    /// The purpose of the method is to produce x correct value for the polar angle when converting
+    /// The purpose of the method is to produce a correct value for the polar angle when converting
     /// from cartesian coordinates to polar coordinates.
     /// It also avoids division by 0 exceptions.
     /// </summary>
@@ -325,12 +326,12 @@ public partial struct BigDecimal
     /// <see cref="double.Atan2Pi"/>
     public static BigDecimal Atan2Pi(BigDecimal y, BigDecimal x) => Atan2(y, x) / Pi;
 
-    /// <summary>Calculate the inverse cotangent of x BigDecimal value.</summary>
+    /// <summary>Calculate the inverse cotangent of a BigDecimal value.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The inverse cotangent.</returns>
     public static BigDecimal Acot(BigDecimal x) => Atan2(1, x);
 
-    /// <summary>Calculate the inverse secant of x BigDecimal value.</summary>
+    /// <summary>Calculate the inverse secant of a BigDecimal value.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The inverse secant.</returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
@@ -346,7 +347,7 @@ public partial struct BigDecimal
         return Acos(1 / x);
     }
 
-    /// <summary>Calculate the inverse cosecant of x BigDecimal value.</summary>
+    /// <summary>Calculate the inverse cosecant of a BigDecimal value.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The inverse cosecant.</returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
@@ -378,7 +379,7 @@ public partial struct BigDecimal
         BigInteger mFact = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure x correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -418,7 +419,7 @@ public partial struct BigDecimal
         BigInteger mFact = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure x correct result.
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -448,7 +449,7 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Tanh(BigDecimal x) => Sinh(x) / Cosh(x);
 
-    /// <summary>Calculate the hyperbolic cotangent of x BigDecimal value.</summary>
+    /// <summary>Calculate the hyperbolic cotangent of a BigDecimal value.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The hyperbolic cotangent.</returns>
     public static BigDecimal Coth(BigDecimal x)
@@ -457,12 +458,12 @@ public partial struct BigDecimal
         return (e + 1) / (e - 1);
     }
 
-    /// <summary>Calculate the hyperbolic secant of x BigDecimal value.</summary>
+    /// <summary>Calculate the hyperbolic secant of a BigDecimal value.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The hyperbolic secant.</returns>
     public static BigDecimal Sech(BigDecimal x) => 2 / (Exp(x) + Exp(-x));
 
-    /// <summary>Calculate the hyperbolic cosecant of x BigDecimal value.</summary>
+    /// <summary>Calculate the hyperbolic cosecant of a BigDecimal value.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The hyperbolic cosecant.</returns>
     public static BigDecimal Csch(BigDecimal x) => 2 / (Exp(x) - Exp(-x));
@@ -480,17 +481,17 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Atanh(BigDecimal x) => Log((1 + x) / (1 - x)) / 2;
 
-    /// <summary>Calculate the inverse hyperbolic cotangent of x BigDecimal value.</summary>
+    /// <summary>Calculate the inverse hyperbolic cotangent of a BigDecimal value.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The inverse hyperbolic cotangent.</returns>
     public static BigDecimal Acoth(BigDecimal x) => Log((x + 1) / (x - 1)) / 2;
 
-    /// <summary>Calculate the inverse hyperbolic secant of x BigDecimal value.</summary>
+    /// <summary>Calculate the inverse hyperbolic secant of a BigDecimal value.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The inverse hyperbolic secant.</returns>
     public static BigDecimal Asech(BigDecimal x) => Log(1 / x + Sqrt(1 / Sqr(x) - 1));
 
-    /// <summary>Calculate the inverse hyperbolic cosecant of x BigDecimal value.</summary>
+    /// <summary>Calculate the inverse hyperbolic cosecant of a BigDecimal value.</summary>
     /// <param name="x">The BigDecimal value.</param>
     /// <returns>The inverse hyperbolic cosecant.</returns>
     public static BigDecimal Acsch(BigDecimal x) => Log(1 / x + Sqrt(1 / Sqr(x) + 1));

@@ -1,3 +1,7 @@
+Complete Sec, Csc, and Cot methods for BigComplex.
+
+Testing, testing, testing.
+
 Test and debug all conversion methods.
 Add conversion methods and tests for casting and converting between BigRational and the standard numeric types.
 Add conversion methods and tests for casting and converting between the Big types.
