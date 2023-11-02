@@ -1,4 +1,7 @@
+using System.Numerics;
 using Galaxon.Core.Exceptions;
+using Galaxon.Core.Numbers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Galaxon.BigNumbers;
 
@@ -14,6 +17,53 @@ public partial struct BigDecimal
 
     /// <inheritdoc/>
     public bool Equals(BigDecimal bd) => CompareTo(bd) == 0;
+
+    /// <summary>
+    /// See if the BigDecimal value is *effectively* equal to another value of (any number type).
+    /// If unspecified, the maximum difference (delta) will be determined by the type of the other
+    /// value.
+    /// </summary>
+    /// <param name="other">The value to compare with.</param>
+    /// <param name="delta">The maximum acceptable difference.</param>
+    /// <exception cref="AssertFailedException"></exception>
+    public readonly bool FuzzyEquals<T>(T other, BigDecimal? delta = null) where T : INumberBase<T>
+    {
+        // Get the expected value as a BigDecimal.
+        if (other is not BigDecimal bd) TryConvertFromChecked(other, out bd);
+
+        if (delta == null)
+        {
+            if (XNumber.IsIntegerType(typeof(T)))
+            {
+                // Just round it off and compare for equality.
+                return Round(this) == bd;
+            }
+
+            // For floating point types we can't trust all the significant digits that will be
+            // produced by the cast to BigDecimal, so round off and just keep the ones we can trust.
+            switch (other)
+            {
+                case Half:
+                    bd = RoundSigFigs(bd, 3);
+                    break;
+
+                case float:
+                    bd = RoundSigFigs(bd, 6);
+                    break;
+
+                case double:
+                    bd = RoundSigFigs(bd, 15);
+                    break;
+            }
+
+            // Default delta is the maximum value of the least significant digits in the 2 values.
+            var maxExp = MaxMagnitude(Exponent, bd.Exponent);
+            delta = Exp10(maxExp);
+        }
+
+        // Compare values.
+        return Abs(this - bd) <= delta;
+    }
 
     /// <inheritdoc/>
     public readonly override int GetHashCode() => HashCode.Combine(Significand, Exponent);
@@ -32,21 +82,22 @@ public partial struct BigDecimal
 
     /// <inheritdoc/>
     /// <remarks>
-    /// Although the specification says any negative value indicates the "this" operand comes before
-    /// the "other" operand (similar for positive values), in this method the result is constrained
-    /// to only 3 possible values:
-    /// -1 means "this" comes before (and is less than) "other"
-    /// 0 means they are equal
-    /// 1 means "this" comes after (and is greater than) "other"
+    /// The specification says any negative result indicates the "this" operand comes before (is
+    /// less than) the "other" operand, and any positive result indicates the "this" operand comes
+    /// after (is greater then) the "other" operand.
+    /// However, in this method the result is constrained to only 3 possible values:
+    ///    -1 means "this" comes before (is less than) "other"
+    ///     0 means they are equal
+    ///     1 means "this" comes after (is greater than) "other"
     /// </remarks>
-    public int CompareTo(BigDecimal bd)
+    public int CompareTo(BigDecimal other)
     {
         // Compare signs.
-        if (Sign < bd.Sign) return -1;
-        if (Sign > bd.Sign) return 1;
+        if (Sign < other.Sign) return -1;
+        if (Sign > other.Sign) return 1;
 
         // Signs are the same, so compare magnitude.
-        var (bd1, bd2) = Align(this, bd);
+        var (bd1, bd2) = Align(this, other);
         return bd1.Significand.CompareTo(bd2.Significand);
     }
 

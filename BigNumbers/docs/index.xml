@@ -15,6 +15,15 @@
         <member name="M:Galaxon.BigNumbers.BigComplex.Equals(Galaxon.BigNumbers.BigComplex)">
             <inheritdoc/>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigComplex.FuzzyEquals(Galaxon.BigNumbers.BigComplex,System.Nullable{Galaxon.BigNumbers.BigDecimal})">
+            <summary>See if a BigComplex is effectively equal to a Complex value.</summary>
+            <param name="bc">The Complex value.</param>
+            <param name="delta">
+            The maximum allowable difference between the real and imaginary parts.
+            This will default to a sane value if unspecified.
+            </param>
+            <returns>If they are equal (within a given tolerance).</returns>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigComplex.GetHashCode">
             <inheritdoc/>
         </member>
@@ -939,6 +948,9 @@
             <see href="https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions"/>
             <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions"/>
         </member>
+        <member name="F:Galaxon.BigNumbers.BigDecimal._BITS_PER_BYTE">
+            <summary>Number of bits per byte.</summary>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.GetSignificandByteCount">
             <inheritdoc/>
         </member>
@@ -963,12 +975,6 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteExponentLittleEndian(System.Span{System.Byte},System.Int32@)">
             <inheritdoc/>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.TryWrite(System.Byte[],System.Span{System.Byte},System.Int32@)">
-            <summary>
-            Shared logic for:
-            <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteBigInteger(System.Numerics.BigInteger,System.Span{System.Byte},System.Int32@,System.Boolean)"/>
-            </summary>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteBigInteger(System.Numerics.BigInteger,System.Span{System.Byte},System.Int32@,System.Boolean)">
             <summary>
             Shared logic for:
@@ -982,6 +988,16 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.Equals(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.FuzzyEquals``1(``0,System.Nullable{Galaxon.BigNumbers.BigDecimal})">
+            <summary>
+            See if the BigDecimal value is *effectively* equal to another value of (any number type).
+            If unspecified, the maximum difference (delta) will be determined by the type of the other
+            value.
+            </summary>
+            <param name="other">The value to compare with.</param>
+            <param name="delta">The maximum acceptable difference.</param>
+            <exception cref="T:Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException"></exception>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.GetHashCode">
             <inheritdoc/>
         </member>
@@ -991,12 +1007,13 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.CompareTo(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
             <remarks>
-            Although the specification says any negative value indicates the "this" operand comes before
-            the "other" operand (similar for positive values), in this method the result is constrained
-            to only 3 possible values:
-            -1 means "this" comes before (and is less than) "other"
-            0 means they are equal
-            1 means "this" comes after (and is greater than) "other"
+            The specification says any negative result indicates the "this" operand comes before (is
+            less than) the "other" operand, and any positive result indicates the "this" operand comes
+            after (is greater then) the "other" operand.
+            However, in this method the result is constrained to only 3 possible values:
+               -1 means "this" comes before (is less than) "other"
+                0 means they are equal
+                1 means "this" comes after (is greater than) "other"
             </remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.MaxMagnitude(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
@@ -1436,9 +1453,6 @@
             <summary>Main constructor.</summary>
             <param name="significand">The significand or mantissa.</param>
             <param name="exponent">The exponent.</param>
-            <param name="roundSigFigs">
-            If the value should be rounded off to the current value of MaxSigFigs.
-            </param>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.#ctor(System.Numerics.BigInteger)">
             <summary>Constructor for integers. Sets default value of exponent to 0.</summary>

@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace Galaxon.BigNumbers;
 
 public partial struct BigComplex
@@ -9,6 +11,32 @@ public partial struct BigComplex
 
     /// <inheritdoc/>
     public bool Equals(BigComplex bc) => Real == bc.Real && Imaginary == bc.Imaginary;
+
+    /// <summary>
+    /// See if a BigComplex is effectively equal to a real or complex number.
+    /// </summary>
+    /// <param name="n">The number.</param>
+    /// <param name="delta">
+    /// The maximum allowable difference between the real and imaginary parts.
+    /// Defaults to a sane value if unspecified.
+    /// </param>
+    /// <returns>If the values are equal (within a given tolerance).</returns>
+    public readonly bool FuzzyEquals<T>(T n, BigDecimal? delta = null) where T : INumberBase<T>
+    {
+        switch (n)
+        {
+            case Complex c:
+                return Real.FuzzyEquals(c.Real, delta) && Imaginary.FuzzyEquals(c.Imaginary, delta);
+
+            case BigComplex bc:
+                return Real.FuzzyEquals(bc.Real, delta)
+                    && Imaginary.FuzzyEquals(bc.Imaginary, delta);
+
+            default:
+                // Compare as real values.
+                return Imaginary == 0 && Real.FuzzyEquals(n, delta);
+        }
+    }
 
     /// <inheritdoc/>
     public readonly override int GetHashCode() => HashCode.Combine(Real, Imaginary);
