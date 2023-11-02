@@ -35,7 +35,43 @@ public partial struct BigDecimal
         return new BigDecimal(newSig, -digits);
     }
 
-    /// <summary>Round off a value to a certain number of significant figures.</summary>
+    /// <summary>
+    /// Given a significand and exponent, and a maximum number of significant figures, determine
+    /// the new significand and exponent.
+    /// </summary>
+    /// <remarks>
+    /// The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
+    /// in .NET Core.
+    /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+    /// </remarks>
+    private static (BigInteger newSig, BigInteger newExp) RoundSigFigs(BigInteger sig,
+        BigInteger exp, BigInteger maxSigFigs, MidpointRounding mode = MidpointRounding.ToEven)
+    {
+        // Guard.
+        if (maxSigFigs <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxSigFigs), "Must be at least 1.");
+        }
+
+        // Get current num sig figs.
+        var nSigFigs = sig.NumDigits();
+
+        // Find out how many digits to discard.
+        var nDigitsToCut = nSigFigs - maxSigFigs;
+
+        // Anything to do?
+        if (nDigitsToCut <= 0)
+        {
+            return (sig, exp);
+        }
+
+        // Round off the significand.
+        var newSig = RoundSignificand(sig, nDigitsToCut, mode);
+
+        return (newSig, exp + nDigitsToCut);
+    }
+
+    /// <summary>Round off a BigDecimal value to a certain number of significant figures.</summary>
     public static BigDecimal RoundSigFigs(BigDecimal x, BigInteger? maxSigFigs = null,
         MidpointRounding mode = MidpointRounding.ToEven)
     {
@@ -122,42 +158,6 @@ public partial struct BigDecimal
         }
 
         return sign * quotient;
-    }
-
-    /// <summary>
-    /// Given a significand and exponent, and a maximum number of significant figures, determine
-    /// the new significand and exponent.
-    /// </summary>
-    /// <remarks>
-    /// The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
-    /// in .NET Core.
-    /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
-    /// </remarks>
-    private static (BigInteger newSig, BigInteger newExp) RoundSigFigs(BigInteger sig,
-        BigInteger exp, BigInteger maxSigFigs, MidpointRounding mode = MidpointRounding.ToEven)
-    {
-        // Guard.
-        if (maxSigFigs <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(maxSigFigs), "Must be at least 1.");
-        }
-
-        // Get current num sig figs.
-        var nSigFigs = sig.NumDigits();
-
-        // Find out how many digits to discard.
-        var nDigitsToCut = nSigFigs - maxSigFigs;
-
-        // Anything to do?
-        if (nDigitsToCut <= 0)
-        {
-            return (sig, exp);
-        }
-
-        // Round off the significand.
-        var newSig = RoundSignificand(sig, nDigitsToCut, mode);
-
-        return (newSig, exp + nDigitsToCut);
     }
 
     /// <summary>
@@ -258,7 +258,7 @@ public partial struct BigDecimal
     /// <summary>Negate method.</summary>
     /// <param name="bd">The BigDecimal value to negate.</param>
     /// <returns>The negation of the parameter.</returns>
-    public static BigDecimal Negate(BigDecimal bd) => new (-bd.Significand, bd.Exponent, true);
+    public static BigDecimal Negate(BigDecimal bd) => new (-bd.Significand, bd.Exponent);
 
     /// <summary>
     /// Addition method.
@@ -269,7 +269,7 @@ public partial struct BigDecimal
     public static BigDecimal Add(BigDecimal a, BigDecimal b)
     {
         var (x, y) = Align(a, b);
-        return new BigDecimal(x.Significand + y.Significand, x.Exponent, true);
+        return RoundSigFigs(new BigDecimal(x.Significand + y.Significand, x.Exponent));
     }
 
     /// <summary>
@@ -281,7 +281,7 @@ public partial struct BigDecimal
     public static BigDecimal Subtract(BigDecimal a, BigDecimal b)
     {
         var (x, y) = Align(a, b);
-        return new BigDecimal(x.Significand - y.Significand, x.Exponent, true);
+        return RoundSigFigs(new BigDecimal(x.Significand - y.Significand, x.Exponent));
     }
 
     /// <summary>
@@ -305,7 +305,7 @@ public partial struct BigDecimal
     /// <param name="b">The right-hand BigDecimal number.</param>
     /// <returns>The multiplication of the arguments.</returns>
     public static BigDecimal Multiply(BigDecimal a, BigDecimal b) =>
-        new (a.Significand * b.Significand, a.Exponent + b.Exponent, true);
+        RoundSigFigs(new BigDecimal(a.Significand * b.Significand, a.Exponent + b.Exponent));
 
     /// <summary>
     /// Divide a BigDecimal by a BigDecimal.
@@ -327,14 +327,8 @@ public partial struct BigDecimal
         }
 
         // Optimizations.
-        if (b == 1)
-        {
-            return a;
-        }
-        if (a == b)
-        {
-            return 1;
-        }
+        if (b == 1) return a;
+        if (a == b) return 1;
 
         // Find f ~= 1/b as an initial estimate of the multiplication factor.
 
@@ -359,19 +353,13 @@ public partial struct BigDecimal
             b *= f;
 
             // If y is 1, then n is the result.
-            if (b == 1)
-            {
-                break;
-            }
+            if (b == 1) break;
 
             f = 2 - b;
 
             // If y is not 1, but is close to 1, then f can be 1 due to rounding after the
             // subtraction. If it is, there's no point continuing.
-            if (f == 1)
-            {
-                break;
-            }
+            if (f == 1) break;
         }
 
         // Restore the maximum number of significant figures.

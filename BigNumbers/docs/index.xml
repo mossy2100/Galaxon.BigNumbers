@@ -1432,7 +1432,7 @@
         <member name="F:Galaxon.BigNumbers.BigDecimal.DecimalPrecision">
             <summary>Precision supported by the decimal type.</summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.#ctor(System.Numerics.BigInteger,System.Numerics.BigInteger,System.Boolean)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.#ctor(System.Numerics.BigInteger,System.Numerics.BigInteger)">
             <summary>Main constructor.</summary>
             <param name="significand">The significand or mantissa.</param>
             <param name="exponent">The exponent.</param>
@@ -1588,8 +1588,19 @@
             <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
             </remarks>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSigFigs(System.Numerics.BigInteger,System.Numerics.BigInteger,System.Numerics.BigInteger,System.MidpointRounding)">
+            <summary>
+            Given a significand and exponent, and a maximum number of significant figures, determine
+            the new significand and exponent.
+            </summary>
+            <remarks>
+            The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
+            in .NET Core.
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
+            </remarks>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSigFigs(Galaxon.BigNumbers.BigDecimal,System.Nullable{System.Numerics.BigInteger},System.MidpointRounding)">
-            <summary>Round off a value to a certain number of significant figures.</summary>
+            <summary>Round off a BigDecimal value to a certain number of significant figures.</summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Truncate(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
@@ -1641,17 +1652,6 @@
             <param name="nDigitsToCut">The power of 10 (number of digits to cut).</param>
             <param name="mode">The rounding mode.</param>
             <returns>The rounded off result of the division.</returns>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSigFigs(System.Numerics.BigInteger,System.Numerics.BigInteger,System.Numerics.BigInteger,System.MidpointRounding)">
-            <summary>
-            Given a significand and exponent, and a maximum number of significant figures, determine
-            the new significand and exponent.
-            </summary>
-            <remarks>
-            The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
-            in .NET Core.
-            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
-            </remarks>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.ShiftBy(System.Numerics.BigInteger)">
             <summary>

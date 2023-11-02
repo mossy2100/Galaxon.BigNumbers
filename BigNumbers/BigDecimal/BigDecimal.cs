@@ -120,10 +120,7 @@ public partial struct BigDecimal :
     /// <summary>Main constructor.</summary>
     /// <param name="significand">The significand or mantissa.</param>
     /// <param name="exponent">The exponent.</param>
-    /// <param name="roundSigFigs">
-    /// If the value should be rounded off to the current value of MaxSigFigs.
-    /// </param>
-    public BigDecimal(BigInteger significand, BigInteger exponent, bool roundSigFigs = false)
+    public BigDecimal(BigInteger significand, BigInteger exponent)
     {
         // If the significant is 0, make sure the exponent is also 0.
         if (significand == 0)
@@ -131,12 +128,6 @@ public partial struct BigDecimal :
             Significand = 0;
             Exponent = 0;
             return;
-        }
-
-        // Round off to the maximum number of significant figures if requested.
-        if (roundSigFigs)
-        {
-            (significand, exponent) = RoundSigFigs(significand, exponent, MaxSigFigs);
         }
 
         // Trim trailing 0s on the significand.

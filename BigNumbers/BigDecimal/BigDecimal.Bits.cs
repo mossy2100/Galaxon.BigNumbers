@@ -4,21 +4,24 @@ namespace Galaxon.BigNumbers;
 
 public partial struct BigDecimal
 {
+    /// <summary>Number of bits per byte.</summary>
+    private const byte _BITS_PER_BYTE = 8;
+
     /// <inheritdoc/>
     public int GetSignificandByteCount() => Significand.GetByteCount();
 
     /// <inheritdoc/>
-    public int GetSignificandBitLength() => GetSignificandByteCount() * 8;
+    public int GetSignificandBitLength() => GetSignificandByteCount() * _BITS_PER_BYTE;
 
     /// <inheritdoc/>
-    public int GetExponentByteCount() => 4;
+    public int GetExponentByteCount() => Exponent.GetByteCount();
 
     /// <inheritdoc/>
-    public int GetExponentShortestBitLength() => 32;
+    public int GetExponentShortestBitLength() => GetExponentByteCount() * _BITS_PER_BYTE;
 
     /// <inheritdoc/>
-    public readonly bool
-        TryWriteSignificandBigEndian(Span<byte> destination, out int bytesWritten) =>
+    public readonly bool TryWriteSignificandBigEndian(Span<byte> destination,
+        out int bytesWritten) =>
         TryWriteBigInteger(Significand, destination, out bytesWritten, true);
 
     /// <inheritdoc/>
@@ -31,16 +34,19 @@ public partial struct BigDecimal
         TryWriteBigInteger(Exponent, destination, out bytesWritten, true);
 
     /// <inheritdoc/>
-    public readonly bool
-        TryWriteExponentLittleEndian(Span<byte> destination, out int bytesWritten) =>
+    public readonly bool TryWriteExponentLittleEndian(Span<byte> destination,
+        out int bytesWritten) =>
         TryWriteBigInteger(Exponent, destination, out bytesWritten, false);
 
     /// <summary>
     /// Shared logic for:
-    /// <see cref="TryWriteBigInteger"/>
+    /// <see cref="TryWriteSignificandBigEndian"/>
+    /// <see cref="TryWriteSignificandLittleEndian"/>
     /// </summary>
-    private static bool TryWrite(byte[] bytes, Span<byte> destination, out int bytesWritten)
+    private static bool TryWriteBigInteger(BigInteger bi, Span<byte> destination,
+        out int bytesWritten, bool isBigEndian)
     {
+        var bytes = bi.ToByteArray(false, isBigEndian);
         try
         {
             bytes.CopyTo(destination);
@@ -52,18 +58,5 @@ public partial struct BigDecimal
             bytesWritten = 0;
             return false;
         }
-    }
-
-    /// <summary>
-    /// Shared logic for:
-    /// <see cref="TryWriteSignificandBigEndian"/>
-    /// <see cref="TryWriteSignificandLittleEndian"/>
-    /// </summary>
-    private static bool TryWriteBigInteger(BigInteger bi, Span<byte> destination,
-        out int bytesWritten,
-        bool isBigEndian)
-    {
-        var bytes = bi.ToByteArray(false, isBigEndian);
-        return TryWrite(bytes, destination, out bytesWritten);
     }
 }
