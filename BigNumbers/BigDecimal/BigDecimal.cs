@@ -3,6 +3,20 @@ using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers;
 
+/// <summary>
+/// Core partial struct for the BigDecimal type.
+/// Contains the core fields and properties, and the constructors.
+/// The other partials contain members grouped by purpose.
+///
+/// A BigDecimal is represented internally by two BigInteger values, representing the significant
+/// and the exponent. The value of a BigDecimal can thus easily be calculated from:
+///     value = Significand * 10^Exponent
+///
+/// No trailing zeros are retained in the significand; rather, the exponent is adjusted instead.
+/// This minimised the size of the BigInteger being used to store the value. This varies from the
+/// scientific meaning of significant digits, which can include significant trailing zeros, but it
+/// seems like the right design choice here.
+/// </summary>
 public partial struct BigDecimal :
     IFloatingPoint<BigDecimal>,
     IPowerFunctions<BigDecimal>,
@@ -18,12 +32,6 @@ public partial struct BigDecimal :
     /// The part of a number in scientific notation or in floating-point representation consisting
     /// of its significant digits. Also known as the mantissa.
     /// </summary>
-    /// <remarks>
-    /// In BigDecimal values, no trailing zeros are retained in the significand; rather, the
-    /// exponent is adjusted instead. This minimised the size of the BigInteger being used to store
-    /// the value. This varies from the scientific meaning of significant digits, which can include
-    /// significant trailing zeros, but it seems like the right design choice here.
-    /// </remarks>
     /// <see href="https://en.wikipedia.org/wiki/Significand"/>
     public BigInteger Significand { get; set; }
 

@@ -842,34 +842,50 @@ public class BigDecimalStringsTests
     }
 
     [TestMethod]
-    public void TestParseInvalidFormat1() =>
+    public void TestParseInvalidFormat1()
+    {
         Assert.ThrowsException<ArgumentFormatException>(() => BigDecimal.Parse(""));
+    }
 
     [TestMethod]
-    public void TestParseInvalidFormat2() =>
+    public void TestParseInvalidFormat2()
+    {
         Assert.ThrowsException<ArgumentFormatException>(() => BigDecimal.Parse("e15"));
+    }
 
     [TestMethod]
-    public void TestParseInvalidFormat3() =>
+    public void TestParseInvalidFormat3()
+    {
         Assert.ThrowsException<ArgumentFormatException>(() => BigDecimal.Parse("1.445345.8"));
+    }
 
     [TestMethod]
-    public void TestParseMissingIntegerDigits() =>
+    public void TestParseMissingIntegerDigits()
+    {
         Assert.ThrowsException<ArgumentFormatException>(() => BigDecimal.Parse(".1414"));
+    }
 
     [TestMethod]
-    public void TestParseMissingFractionDigits() =>
+    public void TestParseMissingFractionDigits()
+    {
         Assert.ThrowsException<ArgumentFormatException>(() => BigDecimal.Parse("612."));
+    }
 
     [TestMethod]
-    public void TestParseMissingExponentDigits() =>
+    public void TestParseMissingExponentDigits()
+    {
         Assert.ThrowsException<ArgumentFormatException>(() => BigDecimal.Parse("6.02e"));
+    }
 
     [TestMethod]
-    public void TestParseWord() =>
+    public void TestParseWord()
+    {
         Assert.ThrowsException<ArgumentFormatException>(() => BigDecimal.Parse("cat"));
+    }
 
     [TestMethod]
-    public void TestParseQuantity() =>
+    public void TestParseQuantity()
+    {
         Assert.ThrowsException<ArgumentFormatException>(() => BigDecimal.Parse("3891.6 km"));
+    }
 }

@@ -61,33 +61,45 @@ public class BigDecimalCompareTests
 
     [TestMethod]
     [DynamicData(nameof(LessThanInts))]
-    public void TestCompareToLessThanWithInts(int x, int y) =>
+    public void TestCompareToLessThanWithInts(int x, int y)
+    {
         Assert.AreEqual(-1, ((BigDecimal)x).CompareTo(y));
+    }
 
     [TestMethod]
     [DynamicData(nameof(GreaterThanInts))]
-    public void TestCompareToGreaterThanWithInts(int x, int y) =>
+    public void TestCompareToGreaterThanWithInts(int x, int y)
+    {
         Assert.AreEqual(1, ((BigDecimal)x).CompareTo(y));
+    }
 
     [TestMethod]
     [DynamicData(nameof(EqualInts))]
-    public void TestCompareToEqualWithInts(int x, int y) =>
+    public void TestCompareToEqualWithInts(int x, int y)
+    {
         Assert.AreEqual(0, ((BigDecimal)x).CompareTo(y));
+    }
 
     [TestMethod]
     [DynamicData(nameof(LessThanDoubles))]
-    public void TestCompareToLessThanWithDoubles(double x, double y) =>
+    public void TestCompareToLessThanWithDoubles(double x, double y)
+    {
         Assert.AreEqual(-1, ((BigDecimal)x).CompareTo(y));
+    }
 
     [TestMethod]
     [DynamicData(nameof(GreaterThanDoubles))]
-    public void TestCompareToGreaterThanWithDoubles(double x, double y) =>
+    public void TestCompareToGreaterThanWithDoubles(double x, double y)
+    {
         Assert.AreEqual(1, ((BigDecimal)x).CompareTo(y));
+    }
 
     [TestMethod]
     [DynamicData(nameof(EqualDoubles))]
-    public void TestCompareToEqualWithDoubles(double x, double y) =>
+    public void TestCompareToEqualWithDoubles(double x, double y)
+    {
         Assert.AreEqual(0, ((BigDecimal)x).CompareTo(y));
+    }
 
     [TestMethod]
     [DynamicData(nameof(LessThanInts))]
@@ -202,4 +214,39 @@ public class BigDecimalCompareTests
         BigDecimal z = y;
         Assert.IsTrue(w != z);
     }
+
+    #region Equals
+
+    [TestMethod]
+    public void Equals_EqualValues_ReturnsTrue()
+    {
+        BigDecimal x = 123;
+        BigDecimal y = 123;
+        Assert.IsTrue(x.Equals(y));
+    }
+
+    [TestMethod]
+    public void Equals_InequalValues_ReturnsTrue()
+    {
+        BigDecimal x = 123;
+        BigDecimal y = -456;
+        Assert.IsFalse(x.Equals(y));
+    }
+
+    [TestMethod]
+    public void Equals_Null_ReturnsFalse()
+    {
+        BigDecimal x = 123;
+        Assert.IsFalse(x.Equals(null));
+    }
+
+    [TestMethod]
+    public void Equals_NotBigDecimal_ReturnsFalse()
+    {
+        BigDecimal x = 123;
+        var f = 456.78f;
+        Assert.IsFalse(x.Equals(f));
+    }
+
+    #endregion Equals
 }

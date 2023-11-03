@@ -10,8 +10,10 @@ public partial struct BigComplex
 
     /// <inheritdoc/>
     /// <remarks>Ignoring style parameter for now.</remarks>
-    public static BigComplex Parse(string s, NumberStyles style, IFormatProvider? provider) =>
-        Parse(s, provider);
+    public static BigComplex Parse(string s, NumberStyles style, IFormatProvider? provider)
+    {
+        return Parse(s, provider);
+    }
 
     /// <inheritdoc/>
     /// <remarks>
@@ -100,21 +102,30 @@ public partial struct BigComplex
     /// <summary>Simplest version of Parse().</summary>
     /// <param name="s">The string to parse.</param>
     /// <returns>The BigComplex value represented by the string.</returns>
-    public static BigComplex Parse(string s) => Parse(s, CultureInfo.InvariantCulture);
+    public static BigComplex Parse(string s)
+    {
+        return Parse(s, CultureInfo.InvariantCulture);
+    }
 
     /// <inheritdoc/>
-    public static BigComplex Parse(ReadOnlySpan<char> s, IFormatProvider? provider) =>
-        Parse(new string(s), provider);
+    public static BigComplex Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        return Parse(new string(s), provider);
+    }
 
     /// <inheritdoc/>
     public static BigComplex Parse(ReadOnlySpan<char> s, NumberStyles style,
-        IFormatProvider? provider) =>
-        Parse(new string(s), provider);
+        IFormatProvider? provider)
+    {
+        return Parse(new string(s), provider);
+    }
 
     /// <inheritdoc/>
     public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider,
-        out BigComplex result) =>
-        TryParse(s, provider, out result);
+        out BigComplex result)
+    {
+        return TryParse(s, provider, out result);
+    }
 
     /// <inheritdoc/>
     public static bool TryParse(string? s, IFormatProvider? provider, out BigComplex result)
@@ -143,18 +154,24 @@ public partial struct BigComplex
     /// <param name="s">The string to parse.</param>
     /// <param name="result">The BigComplex value represented by the string.</param>
     /// <returns>If the attempt to parse the value succeeded.</returns>
-    public static bool TryParse(string? s, out BigComplex result) =>
-        TryParse(s, NumberFormatInfo.InvariantInfo, out result);
+    public static bool TryParse(string? s, out BigComplex result)
+    {
+        return TryParse(s, NumberFormatInfo.InvariantInfo, out result);
+    }
 
     /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider,
-        out BigComplex result) =>
-        TryParse(new string(s), provider, out result);
+        out BigComplex result)
+    {
+        return TryParse(new string(s), provider, out result);
+    }
 
     /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider,
-        out BigComplex result) =>
-        TryParse(new string(s), provider, out result);
+        out BigComplex result)
+    {
+        return TryParse(new string(s), provider, out result);
+    }
 
     #endregion Parse methods
 
@@ -213,7 +230,7 @@ public partial struct BigComplex
 
             // Construct the "a + bi" string.
             var sReal = Real == 0 ? "" : Real.ToString(format);
-            var sSign = Real == 0 ? (Imaginary < 0 ? "-" : "") : (Imaginary < 0 ? " - " : " + ");
+            var sSign = Real == 0 ? Imaginary < 0 ? "-" : "" : Imaginary < 0 ? " - " : " + ";
             var sImaginary = BigDecimal.Abs(Imaginary).ToString(format);
             switch (format[0])
             {
@@ -243,15 +260,20 @@ public partial struct BigComplex
     /// <summary>
     /// Format the BigComplex as a string.
     /// </summary>
-    public readonly string ToString(string format) =>
-        ToString(format, CultureInfo.InvariantCulture);
+    public readonly string ToString(string format)
+    {
+        return ToString(format, CultureInfo.InvariantCulture);
+    }
 
     /// <summary>
     /// Express the complex number as a string in the usual algebraic format.
     /// This differs from Complex.ToString(), which outputs strings like (x, y).
     /// </summary>
     /// <returns>The complex number as a string.</returns>
-    public readonly override string ToString() => ToString("G");
+    public readonly override string ToString()
+    {
+        return ToString("G");
+    }
 
     /// <inheritdoc/>
     public readonly bool TryFormat(Span<char> destination, out int charsWritten,

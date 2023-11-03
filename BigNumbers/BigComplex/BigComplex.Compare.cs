@@ -7,39 +7,44 @@ public partial struct BigComplex
     #region Equality methods
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj) => obj is BigComplex bc && Equals(bc);
+    public override bool Equals(object? obj)
+    {
+        return obj is BigComplex bc && Equals(bc);
+    }
 
     /// <inheritdoc/>
-    public bool Equals(BigComplex bc) => Real == bc.Real && Imaginary == bc.Imaginary;
+    public bool Equals(BigComplex bc)
+    {
+        return Real == bc.Real && Imaginary == bc.Imaginary;
+    }
 
     /// <summary>
     /// See if a BigComplex is effectively equal to a real or complex number.
     /// </summary>
     /// <param name="n">The number.</param>
-    /// <param name="delta">
-    /// The maximum allowable difference between the real and imaginary parts.
-    /// Defaults to a sane value if unspecified.
-    /// </param>
     /// <returns>If the values are equal (within a given tolerance).</returns>
-    public readonly bool FuzzyEquals<T>(T n, BigDecimal? delta = null) where T : INumberBase<T>
+    public readonly bool FuzzyEquals<T>(T n) where T : INumberBase<T>
     {
         switch (n)
         {
             case Complex c:
-                return Real.FuzzyEquals(c.Real, delta) && Imaginary.FuzzyEquals(c.Imaginary, delta);
+                return Real.FuzzyEquals(c.Real) && Imaginary.FuzzyEquals(c.Imaginary);
 
             case BigComplex bc:
-                return Real.FuzzyEquals(bc.Real, delta)
-                    && Imaginary.FuzzyEquals(bc.Imaginary, delta);
+                return Real.FuzzyEquals(bc.Real)
+                    && Imaginary.FuzzyEquals(bc.Imaginary);
 
             default:
                 // Compare as real values.
-                return Imaginary == 0 && Real.FuzzyEquals(n, delta);
+                return Imaginary == 0 && Real.FuzzyEquals(n);
         }
     }
 
     /// <inheritdoc/>
-    public readonly override int GetHashCode() => HashCode.Combine(Real, Imaginary);
+    public readonly override int GetHashCode()
+    {
+        return HashCode.Combine(Real, Imaginary);
+    }
 
     #endregion Equality methods
 
@@ -54,8 +59,10 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex MaxMagnitudeNumber(BigComplex bc, BigComplex bc2) =>
-        MaxMagnitude(bc, bc2);
+    public static BigComplex MaxMagnitudeNumber(BigComplex bc, BigComplex bc2)
+    {
+        return MaxMagnitude(bc, bc2);
+    }
 
     /// <inheritdoc/>
     public static BigComplex MinMagnitude(BigComplex bc, BigComplex bc2)
@@ -66,18 +73,26 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex MinMagnitudeNumber(BigComplex bc, BigComplex bc2) =>
-        MinMagnitude(bc, bc2);
+    public static BigComplex MinMagnitudeNumber(BigComplex bc, BigComplex bc2)
+    {
+        return MinMagnitude(bc, bc2);
+    }
 
     #endregion Comparison methods
 
     #region Comparison operators
 
     /// <inheritdoc/>
-    public static bool operator ==(BigComplex bc, BigComplex bc2) => bc.Equals(bc2);
+    public static bool operator ==(BigComplex bc, BigComplex bc2)
+    {
+        return bc.Equals(bc2);
+    }
 
     /// <inheritdoc/>
-    public static bool operator !=(BigComplex bc, BigComplex bc2) => !bc.Equals(bc2);
+    public static bool operator !=(BigComplex bc, BigComplex bc2)
+    {
+        return !bc.Equals(bc2);
+    }
 
     #endregion Comparison operators
 }

@@ -1798,8 +1798,9 @@ public class BigDecimalConvertTests
     /// <summary>
     /// A few test values for decimal.
     /// </summary>
-    private static decimal[] GetDecimalTestValues() =>
-        new[]
+    private static decimal[] GetDecimalTestValues()
+    {
+        return new[]
         {
             decimal.MinValue,
             -1,
@@ -1807,6 +1808,7 @@ public class BigDecimalConvertTests
             1,
             decimal.MaxValue
         };
+    }
 
     /// <summary>
     /// Test value for negative overflow for decimal.

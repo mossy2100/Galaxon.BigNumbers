@@ -14,7 +14,10 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex SinPi(BigComplex z) => Sin(z * Pi);
+    public static BigComplex SinPi(BigComplex z)
+    {
+        return Sin(z * Pi);
+    }
 
     /// <inheritdoc/>
     public static BigComplex Cos(BigComplex z)
@@ -26,14 +29,22 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex CosPi(BigComplex z) => Cos(z * Pi);
+    public static BigComplex CosPi(BigComplex z)
+    {
+        return Cos(z * Pi);
+    }
 
     /// <inheritdoc/>
-    public static (BigComplex Sin, BigComplex Cos) SinCos(BigComplex z) => (Sin(z), Cos(z));
+    public static (BigComplex Sin, BigComplex Cos) SinCos(BigComplex z)
+    {
+        return (Sin(z), Cos(z));
+    }
 
     /// <inheritdoc/>
-    public static (BigComplex SinPi, BigComplex CosPi) SinCosPi(BigComplex z) =>
-        (SinPi(z), CosPi(z));
+    public static (BigComplex SinPi, BigComplex CosPi) SinCosPi(BigComplex z)
+    {
+        return (SinPi(z), CosPi(z));
+    }
 
     /// <inheritdoc/>
     /// <remarks>
@@ -54,22 +65,34 @@ public partial struct BigComplex
     }
 
     /// <inheritdoc/>
-    public static BigComplex TanPi(BigComplex z) => Tan(z * Pi);
+    public static BigComplex TanPi(BigComplex z)
+    {
+        return Tan(z * Pi);
+    }
 
     /// <summary>Calculate the secant of the BigComplex value.</summary>
     /// <param name="z">A BigComplex value.</param>
     /// <returns>The secant of the value.</returns>
-    public static BigComplex Sec(BigComplex z) => 1 / Cos(z);
+    public static BigComplex Sec(BigComplex z)
+    {
+        return 1 / Cos(z);
+    }
 
     /// <summary>Calculate the cosecant of the BigComplex value.</summary>
     /// <param name="z">A BigComplex value.</param>
     /// <returns>The cosecant of the value.</returns>
-    public static BigComplex Csc(BigComplex z) => 1 / Sin(z);
+    public static BigComplex Csc(BigComplex z)
+    {
+        return 1 / Sin(z);
+    }
 
     /// <summary>Calculate the cotangent of the BigComplex value.</summary>
     /// <param name="z">A BigComplex value.</param>
     /// <returns>The cotangent of the value.</returns>
-    public static BigComplex Cot(BigComplex z) => 1 / Tan(z);
+    public static BigComplex Cot(BigComplex z)
+    {
+        return 1 / Tan(z);
+    }
 
     #endregion Trigonometric methods
 
@@ -77,29 +100,50 @@ public partial struct BigComplex
 
     /// <inheritdoc/>
     /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
-    public static BigComplex Asin(BigComplex z) => I * Log(Sqrt(1 - z * z) - I * z);
+    public static BigComplex Asin(BigComplex z)
+    {
+        return I * Log(Sqrt(1 - z * z) - I * z);
+    }
 
     /// <inheritdoc/>
-    public static BigComplex AsinPi(BigComplex z) => Asin(z) / Pi;
+    public static BigComplex AsinPi(BigComplex z)
+    {
+        return Asin(z) / Pi;
+    }
 
     /// <inheritdoc/>
     /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
-    public static BigComplex Acos(BigComplex z) => -I * Log(z + I * Sqrt(1 - z * z));
+    public static BigComplex Acos(BigComplex z)
+    {
+        return -I * Log(z + I * Sqrt(1 - z * z));
+    }
 
     /// <inheritdoc/>
-    public static BigComplex AcosPi(BigComplex z) => Acos(z) / Pi;
+    public static BigComplex AcosPi(BigComplex z)
+    {
+        return Acos(z) / Pi;
+    }
 
     /// <inheritdoc/>
     /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Logarithmic_forms"/>
-    public static BigComplex Atan(BigComplex z) => -I / 2 * Log((I - z) / (I + z));
+    public static BigComplex Atan(BigComplex z)
+    {
+        return -I / 2 * Log((I - z) / (I + z));
+    }
 
     /// <inheritdoc/>
-    public static BigComplex AtanPi(BigComplex z) => Atan(z) / Pi;
+    public static BigComplex AtanPi(BigComplex z)
+    {
+        return Atan(z) / Pi;
+    }
 
     /// <summary>Calculate the inverse cotangent of a BigComplex value.</summary>
     /// <param name="z">The BigComplex value.</param>
     /// <returns>The inverse cotangent.</returns>
-    public static BigComplex Acot(BigComplex z) => Atan(1 / z);
+    public static BigComplex Acot(BigComplex z)
+    {
+        return Atan(1 / z);
+    }
 
     /// <summary>Calculate the inverse secant of a BigComplex value.</summary>
     /// <param name="z">The BigComplex value.</param>
@@ -176,12 +220,18 @@ public partial struct BigComplex
     /// <summary>Calculate the hyperbolic secant of a BigComplex value.</summary>
     /// <param name="z">The BigComplex value.</param>
     /// <returns>The hyperbolic secant.</returns>
-    public static BigComplex Sech(BigComplex z) => 2 / (Exp(z) + Exp(-z));
+    public static BigComplex Sech(BigComplex z)
+    {
+        return 2 / (Exp(z) + Exp(-z));
+    }
 
     /// <summary>Calculate the hyperbolic cosecant of a BigComplex value.</summary>
     /// <param name="z">The BigComplex value.</param>
     /// <returns>The hyperbolic cosecant.</returns>
-    public static BigComplex Csch(BigComplex z) => 2 / (Exp(z) - Exp(-z));
+    public static BigComplex Csch(BigComplex z)
+    {
+        return 2 / (Exp(z) - Exp(-z));
+    }
 
     #endregion Hyperbolic methods
 
@@ -189,30 +239,48 @@ public partial struct BigComplex
 
     /// <inheritdoc/>
     /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions#Principal_value_of_the_inverse_hyperbolic_sine"/>
-    public static BigComplex Asinh(BigComplex z) => Log(z + Sqrt(Sqr(z) + 1));
+    public static BigComplex Asinh(BigComplex z)
+    {
+        return Log(z + Sqrt(Sqr(z) + 1));
+    }
 
     /// <inheritdoc/>
     /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions#Principal_value_of_the_inverse_hyperbolic_cosine"/>
-    public static BigComplex Acosh(BigComplex z) => Log(z + Sqrt(z + 1) * Sqrt(z - 1));
+    public static BigComplex Acosh(BigComplex z)
+    {
+        return Log(z + Sqrt(z + 1) * Sqrt(z - 1));
+    }
 
     /// <inheritdoc/>
     /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions#Principal_values_of_the_inverse_hyperbolic_tangent_and_cotangent"/>
-    public static BigComplex Atanh(BigComplex z) => Log((1 + z) / (1 - z)) / 2;
+    public static BigComplex Atanh(BigComplex z)
+    {
+        return Log((1 + z) / (1 - z)) / 2;
+    }
 
     /// <summary>Calculate the inverse hyperbolic cotangent of a BigComplex value.</summary>
     /// <param name="z">The BigComplex value.</param>
     /// <returns>The inverse hyperbolic cotangent.</returns>
-    public static BigComplex Acoth(BigComplex z) => Log((z + 1) / (z - 1)) / 2;
+    public static BigComplex Acoth(BigComplex z)
+    {
+        return Log((z + 1) / (z - 1)) / 2;
+    }
 
     /// <summary>Calculate the inverse hyperbolic secant of a BigComplex value.</summary>
     /// <param name="z">The BigComplex value.</param>
     /// <returns>The inverse hyperbolic secant.</returns>
-    public static BigComplex Asech(BigComplex z) => Log(1 / z + Sqrt(1 / Sqr(z) - 1));
+    public static BigComplex Asech(BigComplex z)
+    {
+        return Log(1 / z + Sqrt(1 / Sqr(z) - 1));
+    }
 
     /// <summary>Calculate the inverse hyperbolic cosecant of a BigComplex value.</summary>
     /// <param name="z">The BigComplex value.</param>
     /// <returns>The inverse hyperbolic cosecant.</returns>
-    public static BigComplex Acsch(BigComplex z) => Log(1 / z + Sqrt(1 / Sqr(z) + 1));
+    public static BigComplex Acsch(BigComplex z)
+    {
+        return Log(1 / z + Sqrt(1 / Sqr(z) + 1));
+    }
 
     #endregion Inverse hyperbolic methods
 }

@@ -12,8 +12,10 @@ public partial struct BigRational
 
     /// <inheritdoc/>
     /// <remarks>Ignoring style parameter for now.</remarks>
-    public static BigRational Parse(string s, NumberStyles style, IFormatProvider? provider) =>
-        Parse(s, provider);
+    public static BigRational Parse(string s, NumberStyles style, IFormatProvider? provider)
+    {
+        return Parse(s, provider);
+    }
 
     /// <summary>
     /// Parse a string into a rational.
@@ -58,23 +60,32 @@ public partial struct BigRational
     /// <summary>Simplest version of Parse().</summary>
     /// <param name="s">The string to parse.</param>
     /// <returns>The BigRational value represented by the string.</returns>
-    public static BigRational Parse(string s) => Parse(s, CultureInfo.InvariantCulture);
+    public static BigRational Parse(string s)
+    {
+        return Parse(s, CultureInfo.InvariantCulture);
+    }
 
     /// <inheritdoc/>
     /// <remarks>Ignoring style parameter for now.</remarks>
     public static BigRational Parse(ReadOnlySpan<char> s, NumberStyles style,
-        IFormatProvider? provider) =>
-        Parse(new string(s), provider);
+        IFormatProvider? provider)
+    {
+        return Parse(new string(s), provider);
+    }
 
     /// <inheritdoc/>
-    public static BigRational Parse(ReadOnlySpan<char> s, IFormatProvider? provider) =>
-        Parse(new string(s), provider);
+    public static BigRational Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        return Parse(new string(s), provider);
+    }
 
     /// <inheritdoc/>
     /// <remarks>Ignoring style parameter for now.</remarks>
     public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider,
-        out BigRational result) =>
-        TryParse(s, provider, out result);
+        out BigRational result)
+    {
+        return TryParse(s, provider, out result);
+    }
 
     /// <inheritdoc/>
     public static bool TryParse(string? s, IFormatProvider? provider, out BigRational result)
@@ -103,18 +114,24 @@ public partial struct BigRational
     /// <param name="s">The string to parse.</param>
     /// <param name="result">The BigRational value represented by the string.</param>
     /// <returns>If the attempt to parse the value succeeded.</returns>
-    public static bool TryParse(string? s, out BigRational result) =>
-        TryParse(s, CultureInfo.InvariantCulture, out result);
+    public static bool TryParse(string? s, out BigRational result)
+    {
+        return TryParse(s, CultureInfo.InvariantCulture, out result);
+    }
 
     /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider,
-        out BigRational result) =>
-        TryParse(new string(s), provider, out result);
+        out BigRational result)
+    {
+        return TryParse(new string(s), provider, out result);
+    }
 
     /// <inheritdoc/>
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider,
-        out BigRational result) =>
-        TryParse(new string(s), provider, out result);
+        out BigRational result)
+    {
+        return TryParse(new string(s), provider, out result);
+    }
 
     #endregion Parse methods
 
@@ -172,14 +189,19 @@ public partial struct BigRational
     /// <summary>
     /// Format the rational as a string.
     /// </summary>
-    public readonly string ToString(string format) =>
-        ToString(format, CultureInfo.InvariantCulture);
+    public readonly string ToString(string format)
+    {
+        return ToString(format, CultureInfo.InvariantCulture);
+    }
 
     /// <summary>
     /// Format the rational as a string.
     /// The is the default override version, which uses Unicode characters for a nicer format.
     /// </summary>
-    public readonly override string ToString() => ToString("U");
+    public readonly override string ToString()
+    {
+        return ToString("U");
+    }
 
     /// <inheritdoc/>
     public readonly bool TryFormat(Span<char> destination, out int charsWritten,

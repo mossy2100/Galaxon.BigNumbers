@@ -23,10 +23,15 @@ public class BigDecimalTrigTests
     }
 
     [ClassInitialize]
-    public static void Initialize(TestContext context) => BigDecimal.MaxSigFigs = 30;
+    public static void Initialize(TestContext context)
+    {
+        BigDecimal.MaxSigFigs = 30;
+    }
 
-    private static bool DoubleEqualsBigDecimal(double d, BigDecimal bd) =>
-        d.FuzzyEquals((double)bd);
+    private static bool DoubleEqualsBigDecimal(double d, BigDecimal bd)
+    {
+        return d.FuzzyEquals((double)bd);
+    }
 
     [TestMethod]
     [DynamicData(nameof(Numerators))]
@@ -172,7 +177,10 @@ public class BigDecimalTrigTests
     }
 
     [TestMethod]
-    public void TestAtan2Returns0WhenBothParams0() => Assert.AreEqual(0, BigDecimal.Atan2(0, 0));
+    public void TestAtan2Returns0WhenBothParams0()
+    {
+        Assert.AreEqual(0, BigDecimal.Atan2(0, 0));
+    }
 
     [TestMethod]
     public void TestAtan2()

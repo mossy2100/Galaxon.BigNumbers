@@ -8,35 +8,55 @@ public partial struct BigDecimal
     private const byte _BITS_PER_BYTE = 8;
 
     /// <inheritdoc/>
-    public int GetSignificandByteCount() => Significand.GetByteCount();
+    public int GetSignificandByteCount()
+    {
+        return Significand.GetByteCount();
+    }
 
     /// <inheritdoc/>
-    public int GetSignificandBitLength() => GetSignificandByteCount() * _BITS_PER_BYTE;
+    public int GetSignificandBitLength()
+    {
+        return GetSignificandByteCount() * _BITS_PER_BYTE;
+    }
 
     /// <inheritdoc/>
-    public int GetExponentByteCount() => Exponent.GetByteCount();
+    public int GetExponentByteCount()
+    {
+        return Exponent.GetByteCount();
+    }
 
     /// <inheritdoc/>
-    public int GetExponentShortestBitLength() => GetExponentByteCount() * _BITS_PER_BYTE;
+    public int GetExponentShortestBitLength()
+    {
+        return GetExponentByteCount() * _BITS_PER_BYTE;
+    }
 
     /// <inheritdoc/>
     public readonly bool TryWriteSignificandBigEndian(Span<byte> destination,
-        out int bytesWritten) =>
-        TryWriteBigInteger(Significand, destination, out bytesWritten, true);
+        out int bytesWritten)
+    {
+        return TryWriteBigInteger(Significand, destination, out bytesWritten, true);
+    }
 
     /// <inheritdoc/>
     public readonly bool TryWriteSignificandLittleEndian(Span<byte> destination,
-        out int bytesWritten) =>
-        TryWriteBigInteger(Significand, destination, out bytesWritten, false);
+        out int bytesWritten)
+    {
+        return TryWriteBigInteger(Significand, destination, out bytesWritten, false);
+    }
 
     /// <inheritdoc/>
-    public readonly bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten) =>
-        TryWriteBigInteger(Exponent, destination, out bytesWritten, true);
+    public readonly bool TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten)
+    {
+        return TryWriteBigInteger(Exponent, destination, out bytesWritten, true);
+    }
 
     /// <inheritdoc/>
     public readonly bool TryWriteExponentLittleEndian(Span<byte> destination,
-        out int bytesWritten) =>
-        TryWriteBigInteger(Exponent, destination, out bytesWritten, false);
+        out int bytesWritten)
+    {
+        return TryWriteBigInteger(Exponent, destination, out bytesWritten, false);
+    }
 
     /// <summary>
     /// Shared logic for:
