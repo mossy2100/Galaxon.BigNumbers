@@ -1000,13 +1000,21 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.Equals(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.LeastSignificantBit``1(``0)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.UnitOfLeastPrecision``1(``0)">
             <summary>
-            Get the value of the least significant bit in the provided floating point number.
+            Get the unit of least precision (ULP) in the provided floating point number.
             </summary>
+            <see href="https://en.wikipedia.org/wiki/Unit_in_the_last_place"/>
             <param name="f">A floating point number.</param>
             <typeparam name="T">A standard floating point type.</typeparam>
-            <returns>The value of the least significant bit</returns>
+            <returns>The value of the unit of least precision.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.UnitOfLeastPrecision(System.Decimal)">
+            <summary>
+            Get the unit of least precision (ULP) in the provided decimal number.
+            </summary>
+            <param name="m">A decimal value.</param>
+            <returns>The value of the unit of least precision.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.FuzzyEquals``1(``0)">
             <summary>
@@ -1339,6 +1347,9 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryConvertFromChecked``1(``0,Galaxon.BigNumbers.BigDecimal@)">
             <inheritdoc/>
+            <exception cref="T:System.InvalidCastException">
+            If no cast operation exists from TOther to BigDecimal.
+            </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryConvertFromSaturating``1(``0,Galaxon.BigNumbers.BigDecimal@)">
             <inheritdoc/>
@@ -1348,6 +1359,12 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryConvertToChecked``1(Galaxon.BigNumbers.BigDecimal,``0@)">
             <inheritdoc/>
+            <exception cref="T:System.InvalidCastException">
+            If no cast operation exists from TOther to BigDecimal.
+            </exception>
+            <exception cref="T:System.OverflowException">
+            If the BigDecimal value is outside the range of TOther.
+            </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryConvertToSaturating``1(Galaxon.BigNumbers.BigDecimal,``0@)">
             <inheritdoc/>

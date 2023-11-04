@@ -107,69 +107,69 @@ public class BigComplexCoreTests
 
         z1 = BigComplex.Zero;
         z2 = Complex.Zero;
-        BigDecimalAssert.AreEqual(Complex.Abs(z2), BigComplex.Abs(z1));
-        BigDecimalAssert.AreEqual(z2.Magnitude, z1.Magnitude);
-        BigDecimalAssert.AreEqual(z2.Phase, z1.Phase);
+        BigDecimalAssert.AreFuzzyEqual(Complex.Abs(z2), BigComplex.Abs(z1));
+        BigDecimalAssert.AreFuzzyEqual(z2.Magnitude, z1.Magnitude);
+        BigDecimalAssert.AreFuzzyEqual(z2.Phase, z1.Phase);
 
         z1 = BigComplex.One;
         z2 = Complex.One;
-        BigDecimalAssert.AreEqual(Complex.Abs(z2), BigComplex.Abs(z1));
-        BigDecimalAssert.AreEqual(z2.Magnitude, z1.Magnitude);
-        BigDecimalAssert.AreEqual(z2.Phase, z1.Phase);
+        BigDecimalAssert.AreFuzzyEqual(Complex.Abs(z2), BigComplex.Abs(z1));
+        BigDecimalAssert.AreFuzzyEqual(z2.Magnitude, z1.Magnitude);
+        BigDecimalAssert.AreFuzzyEqual(z2.Phase, z1.Phase);
 
         z1 = BigComplex.ImaginaryOne;
         z2 = Complex.ImaginaryOne;
-        BigDecimalAssert.AreEqual(Complex.Abs(z2), BigComplex.Abs(z1));
-        BigDecimalAssert.AreEqual(z2.Magnitude, z1.Magnitude);
-        BigDecimalAssert.AreEqual(z2.Phase, z1.Phase);
+        BigDecimalAssert.AreFuzzyEqual(Complex.Abs(z2), BigComplex.Abs(z1));
+        BigDecimalAssert.AreFuzzyEqual(z2.Magnitude, z1.Magnitude);
+        BigDecimalAssert.AreFuzzyEqual(z2.Phase, z1.Phase);
 
         z1 = -BigComplex.One;
         z2 = new Complex(-1, 0);
-        BigDecimalAssert.AreEqual(Complex.Abs(z2), BigComplex.Abs(z1));
-        BigDecimalAssert.AreEqual(z2.Magnitude, z1.Magnitude);
-        BigDecimalAssert.AreEqual(z2.Phase, z1.Phase);
+        BigDecimalAssert.AreFuzzyEqual(Complex.Abs(z2), BigComplex.Abs(z1));
+        BigDecimalAssert.AreFuzzyEqual(z2.Magnitude, z1.Magnitude);
+        BigDecimalAssert.AreFuzzyEqual(z2.Phase, z1.Phase);
 
         z1 = -BigComplex.ImaginaryOne;
         z2 = -Complex.ImaginaryOne;
-        BigDecimalAssert.AreEqual(Complex.Abs(z2), BigComplex.Abs(z1));
-        BigDecimalAssert.AreEqual(z2.Magnitude, z1.Magnitude);
-        BigDecimalAssert.AreEqual(z2.Phase, z1.Phase);
+        BigDecimalAssert.AreFuzzyEqual(Complex.Abs(z2), BigComplex.Abs(z1));
+        BigDecimalAssert.AreFuzzyEqual(z2.Magnitude, z1.Magnitude);
+        BigDecimalAssert.AreFuzzyEqual(z2.Phase, z1.Phase);
 
         z1 = new BigComplex(1, 1);
         z2 = new Complex(1, 1);
-        BigDecimalAssert.AreEqual(Complex.Abs(z2), BigComplex.Abs(z1));
-        BigDecimalAssert.AreEqual(z2.Magnitude, z1.Magnitude);
-        BigDecimalAssert.AreEqual(z2.Phase, z1.Phase);
+        BigDecimalAssert.AreFuzzyEqual(Complex.Abs(z2), BigComplex.Abs(z1));
+        BigDecimalAssert.AreFuzzyEqual(z2.Magnitude, z1.Magnitude);
+        BigDecimalAssert.AreFuzzyEqual(z2.Phase, z1.Phase);
 
         z1 = new BigComplex(-1, -1);
         z2 = new Complex(-1, -1);
-        BigDecimalAssert.AreEqual(Complex.Abs(z2), BigComplex.Abs(z1));
-        BigDecimalAssert.AreEqual(z2.Magnitude, z1.Magnitude);
-        BigDecimalAssert.AreEqual(z2.Phase, z1.Phase);
+        BigDecimalAssert.AreFuzzyEqual(Complex.Abs(z2), BigComplex.Abs(z1));
+        BigDecimalAssert.AreFuzzyEqual(z2.Magnitude, z1.Magnitude);
+        BigDecimalAssert.AreFuzzyEqual(z2.Phase, z1.Phase);
 
         z1 = new BigComplex(3, 4);
         z2 = new Complex(3, 4);
-        BigDecimalAssert.AreEqual(Complex.Abs(z2), BigComplex.Abs(z1));
-        BigDecimalAssert.AreEqual(z2.Magnitude, z1.Magnitude);
-        BigDecimalAssert.AreEqual(z2.Phase, z1.Phase);
+        BigDecimalAssert.AreFuzzyEqual(Complex.Abs(z2), BigComplex.Abs(z1));
+        BigDecimalAssert.AreFuzzyEqual(z2.Magnitude, z1.Magnitude);
+        BigDecimalAssert.AreFuzzyEqual(z2.Phase, z1.Phase);
 
         z1 = new BigComplex(-5, 6);
         z2 = new Complex(-5, 6);
-        BigDecimalAssert.AreEqual(Complex.Abs(z2), BigComplex.Abs(z1));
-        BigDecimalAssert.AreEqual(z2.Magnitude, z1.Magnitude);
-        BigDecimalAssert.AreEqual(z2.Phase, z1.Phase);
+        BigDecimalAssert.AreFuzzyEqual(Complex.Abs(z2), BigComplex.Abs(z1));
+        BigDecimalAssert.AreFuzzyEqual(z2.Magnitude, z1.Magnitude);
+        BigDecimalAssert.AreFuzzyEqual(z2.Phase, z1.Phase);
 
         z1 = new BigComplex(3.14m, 2.81m);
         z2 = new Complex(3.14, 2.81);
-        BigDecimalAssert.AreEqual(Complex.Abs(z2), BigComplex.Abs(z1));
-        BigDecimalAssert.AreEqual(z2.Magnitude, z1.Magnitude);
-        BigDecimalAssert.AreEqual(z2.Phase, z1.Phase);
+        BigDecimalAssert.AreFuzzyEqual(Complex.Abs(z2), BigComplex.Abs(z1));
+        BigDecimalAssert.AreFuzzyEqual(z2.Magnitude, z1.Magnitude);
+        BigDecimalAssert.AreFuzzyEqual(z2.Phase, z1.Phase);
 
         z1 = new BigComplex(-3.14m, -2.81m);
         z2 = new Complex(-3.14, -2.81);
-        BigDecimalAssert.AreEqual(Complex.Abs(z2), BigComplex.Abs(z1));
-        BigDecimalAssert.AreEqual(z2.Magnitude, z1.Magnitude);
-        BigDecimalAssert.AreEqual(z2.Phase, z1.Phase);
+        BigDecimalAssert.AreFuzzyEqual(Complex.Abs(z2), BigComplex.Abs(z1));
+        BigDecimalAssert.AreFuzzyEqual(z2.Magnitude, z1.Magnitude);
+        BigDecimalAssert.AreFuzzyEqual(z2.Phase, z1.Phase);
     }
 
     [TestMethod]
@@ -180,26 +180,26 @@ public class BigComplexCoreTests
 
         z1 = BigComplex.FromPolarCoordinates(0, 0);
         z2 = Complex.FromPolarCoordinates(0, 0);
-        BigComplexAssert.AreEqual(z2, z1);
+        BigComplexAssert.AreFuzzyEqual(z2, z1);
 
         z1 = BigComplex.FromPolarCoordinates(1, 0);
         z2 = Complex.FromPolarCoordinates(1, 0);
-        BigComplexAssert.AreEqual(z2, z1);
+        BigComplexAssert.AreFuzzyEqual(z2, z1);
 
         z1 = BigComplex.FromPolarCoordinates(1, BigDecimal.HalfPi);
         z2 = Complex.FromPolarCoordinates(1, PI / 2);
-        BigComplexAssert.AreEqual(z2, z1);
+        BigComplexAssert.AreFuzzyEqual(z2, z1);
 
         z1 = BigComplex.FromPolarCoordinates(1, -BigDecimal.HalfPi);
         z2 = Complex.FromPolarCoordinates(1, -PI / 2);
-        BigComplexAssert.AreEqual(z2, z1);
+        BigComplexAssert.AreFuzzyEqual(z2, z1);
 
         z1 = BigComplex.FromPolarCoordinates(1.23456789m, 1.23456789m);
         z2 = Complex.FromPolarCoordinates(1.23456789, 1.23456789);
-        BigComplexAssert.AreEqual(z2, z1);
+        BigComplexAssert.AreFuzzyEqual(z2, z1);
 
         z1 = BigComplex.FromPolarCoordinates(1.23456789m, -1.23456789m);
         z2 = Complex.FromPolarCoordinates(1.23456789, -1.23456789);
-        BigComplexAssert.AreEqual(z2, z1);
+        BigComplexAssert.AreFuzzyEqual(z2, z1);
     }
 }

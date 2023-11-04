@@ -392,6 +392,9 @@ public partial struct BigDecimal
     #region TryConvert methods
 
     /// <inheritdoc/>
+    /// <exception cref="InvalidCastException">
+    /// If no cast operation exists from TOther to BigDecimal.
+    /// </exception>
     public static bool TryConvertFromChecked<TOther>(TOther value, out BigDecimal result)
         where TOther : INumberBase<TOther>
     {
@@ -481,6 +484,12 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc/>
+    /// <exception cref="InvalidCastException">
+    /// If no cast operation exists from TOther to BigDecimal.
+    /// </exception>
+    /// <exception cref="OverflowException">
+    /// If the BigDecimal value is outside the range of TOther.
+    /// </exception>
     public static bool TryConvertToChecked<TOther>(BigDecimal value, out TOther result)
         where TOther : INumberBase<TOther>
     {

@@ -1,6 +1,7 @@
 using System.Numerics;
 using Galaxon.Core.Exceptions;
 using Galaxon.Core.Numbers;
+using Galaxon.Core.Types;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Galaxon.BigNumbers;
@@ -25,21 +26,33 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Get the value of the least significant bit in the provided floating point number.
+    /// Get the unit of least precision (ULP) in the provided floating point number.
     /// </summary>
+    /// <see href="https://en.wikipedia.org/wiki/Unit_in_the_last_place"/>
     /// <param name="f">A floating point number.</param>
     /// <typeparam name="T">A standard floating point type.</typeparam>
-    /// <returns>The value of the least significant bit</returns>
-    private static BigDecimal LeastSignificantBit<T>(T f) where T : IFloatingPointIeee754<T>
+    /// <returns>The value of the unit of least precision.</returns>
+    public static BigDecimal UnitOfLeastPrecision<T>(T f) where T : IFloatingPointIeee754<T>
     {
         // Subnormal value.
-        if (T.IsSubnormal(f)) return (BigDecimal)(object)T.Epsilon;
+        if (T.IsSubnormal(f)) return XReflection.Cast<T, BigDecimal>(T.Epsilon);
 
         // Normal value.
         var (signBit, expBits, fracBits) = f.Disassemble();
         var expBias = XFloatingPoint.GetExpBias<T>();
         var nFracBits = XFloatingPoint.GetNumFracBits<T>();
         return Exp2(expBits - expBias - nFracBits);
+    }
+
+    /// <summary>
+    /// Get the unit of least precision (ULP) in the provided decimal number.
+    /// </summary>
+    /// <param name="m">A decimal value.</param>
+    /// <returns>The value of the unit of least precision.</returns>
+    public static BigDecimal UnitOfLeastPrecision(decimal m)
+    {
+        var (signBit, scaleBits, fracBits) = m.Disassemble();
+        return new decimal(1, 0, 0, false, scaleBits);
     }
 
     /// <summary>
@@ -72,18 +85,19 @@ public partial struct BigDecimal
             return Round(this).Equals(bdOther);
         }
 
-        // For floating point types, find out the value of the least significant bit, which will
-        // depend on the type and the exponent.
-        if (XNumber.IsFloatingPointType(type))
+        // For floating point  types, find the ULP (unit of least precision), which will depend on
+        // the type and the exponent.
+        if (XNumber.IsFloatingPointType(type) || other is decimal)
         {
             var lsb = other switch
             {
-                Half h => LeastSignificantBit(h),
-                float f => LeastSignificantBit(f),
-                double d => LeastSignificantBit(d)
+                Half h => UnitOfLeastPrecision(h),
+                float f => UnitOfLeastPrecision(f),
+                double d => UnitOfLeastPrecision(d),
+                decimal m => UnitOfLeastPrecision(m),
             };
 
-            // The maximum difference is half the value of the least significant bit.
+            // The maximum difference is half the ULP.
             return Abs(this - bdOther) <= lsb / 2;
         }
 

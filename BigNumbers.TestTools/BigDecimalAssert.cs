@@ -15,7 +15,7 @@ public class BigDecimalAssert
     /// <param name="expected">The expected value.</param>
     /// <param name="actual">The actual value.</param>
     /// <exception cref="AssertFailedException"></exception>
-    public static void AreEqual<T>(T expected, BigDecimal actual) where T : INumberBase<T>
+    public static void AreFuzzyEqual<T>(T expected, BigDecimal actual) where T : INumberBase<T>
     {
         if (!actual.FuzzyEquals(expected))
         {

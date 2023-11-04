@@ -1,5 +1,6 @@
 namespace Galaxon.BigNumbers.Tests;
 
+/// <summary>Test generation of constants.</summary>
 [TestClass]
 public class BigDecimalConstantsTests
 {

@@ -11,23 +11,27 @@ public class BigDecimalConvertTests
 {
     #region Conversion to and from sbyte
 
-    /// <summary>
-    /// A few test values for sbyte.
-    /// </summary>
-    private readonly sbyte[] _sbyteTestValues = { sbyte.MinValue, -1, 0, 1, sbyte.MaxValue };
+    /// <summary>A few test values for sbyte.</summary>
+    private static object[][] _SbyteTestValues { get; } =
+        new[]
+        {
+            new object[] { sbyte.MinValue },
+            new object[] { (sbyte)(-1) },
+            new object[] { (sbyte)0 },
+            new object[] { (sbyte)1 },
+            new object[] { sbyte.MaxValue }
+        };
 
     /// <summary>
     /// Test casting from BigDecimal to sbyte and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToSbyte()
+    [DynamicData(nameof(_SbyteTestValues))]
+    public void ValidCastsToSbyte(sbyte i)
     {
-        foreach (var i in _sbyteTestValues)
-        {
-            BigDecimal bd = i;
-            var j = (sbyte)bd;
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var j = (sbyte)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -54,15 +58,13 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedSbyteInRangeTest()
+    [DynamicData(nameof(_SbyteTestValues))]
+    public void TryConvertFromCheckedSbyteInRangeTest(sbyte i)
     {
-        foreach (var i in _sbyteTestValues)
-        {
-            var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
-            Assert.IsTrue(ok);
-            var j = (sbyte)bd;
-            Assert.AreEqual(i, j);
-        }
+        var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
+        Assert.IsTrue(ok);
+        var j = (sbyte)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -70,15 +72,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedSbyteInRangeTest()
+    [DynamicData(nameof(_SbyteTestValues))]
+    public void TryConvertToCheckedSbyteInRangeTest(sbyte i)
     {
-        foreach (var i in _sbyteTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToChecked(bd, out sbyte j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToChecked(bd, out sbyte j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -100,15 +100,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingSbyteInRangeTest()
+    [DynamicData(nameof(_SbyteTestValues))]
+    public void TryConvertToSaturatingSbyteInRangeTest(sbyte i)
     {
-        foreach (var i in _sbyteTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToSaturating(bd, out sbyte j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToSaturating(bd, out sbyte j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -134,23 +132,25 @@ public class BigDecimalConvertTests
 
     #region Conversion to and from byte
 
-    /// <summary>
-    /// A few test values for byte.
-    /// </summary>
-    private readonly byte[] _byteTestValues = { 0, 1, byte.MaxValue };
+    /// <summary>A few test values for byte.</summary>
+    private static object[][] _ByteTestValues { get; } =
+        new[]
+        {
+            new object[] { (byte)0 },
+            new object[] { (byte)1 },
+            new object[] { byte.MaxValue }
+        };
 
     /// <summary>
     /// Test casting from BigDecimal to byte and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToByte()
+    [DynamicData(nameof(_ByteTestValues))]
+    public void ValidCastsToByte(byte i)
     {
-        foreach (var i in _byteTestValues)
-        {
-            BigDecimal bd = i;
-            var j = (byte)bd;
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var j = (byte)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -177,15 +177,13 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedByteInRangeTest()
+    [DynamicData(nameof(_ByteTestValues))]
+    public void TryConvertFromCheckedByteInRangeTest(byte i)
     {
-        foreach (var i in _byteTestValues)
-        {
-            var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
-            Assert.IsTrue(ok);
-            var j = (byte)bd;
-            Assert.AreEqual(i, j);
-        }
+        var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
+        Assert.IsTrue(ok);
+        var j = (byte)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -193,15 +191,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedByteInRangeTest()
+    [DynamicData(nameof(_ByteTestValues))]
+    public void TryConvertToCheckedByteInRangeTest(byte i)
     {
-        foreach (var i in _byteTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToChecked(bd, out byte j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToChecked(bd, out byte j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -223,15 +219,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingByteInRangeTest()
+    [DynamicData(nameof(_ByteTestValues))]
+    public void TryConvertToSaturatingByteInRangeTest(byte i)
     {
-        foreach (var i in _byteTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToSaturating(bd, out byte j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToSaturating(bd, out byte j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -257,23 +251,27 @@ public class BigDecimalConvertTests
 
     #region Conversion to and from short
 
-    /// <summary>
-    /// A few test values for short.
-    /// </summary>
-    private readonly short[] _shortTestValues = { short.MinValue, -1, 0, 1, short.MaxValue };
+    /// <summary>A few test values for short.</summary>
+    private static object[][] _ShortTestValues { get; } =
+        new[]
+        {
+            new object[] { short.MinValue },
+            new object[] { (short)(-1) },
+            new object[] { (short)0 },
+            new object[] { (short)1 },
+            new object[] { short.MaxValue }
+        };
 
     /// <summary>
     /// Test casting from BigDecimal to short and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToShort()
+    [DynamicData(nameof(_ShortTestValues))]
+    public void ValidCastsToShort(short i)
     {
-        foreach (var i in _shortTestValues)
-        {
-            BigDecimal bd = i;
-            var j = (short)bd;
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var j = (short)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -300,15 +298,13 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedShortInRangeTest()
+    [DynamicData(nameof(_ShortTestValues))]
+    public void TryConvertFromCheckedShortInRangeTest(short i)
     {
-        foreach (var i in _shortTestValues)
-        {
-            var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
-            Assert.IsTrue(ok);
-            var j = (short)bd;
-            Assert.AreEqual(i, j);
-        }
+        var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
+        Assert.IsTrue(ok);
+        var j = (short)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -316,15 +312,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedShortInRangeTest()
+    [DynamicData(nameof(_ShortTestValues))]
+    public void TryConvertToCheckedShortInRangeTest(short i)
     {
-        foreach (var i in _shortTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToChecked(bd, out short j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToChecked(bd, out short j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -346,15 +340,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingShortInRangeTest()
+    [DynamicData(nameof(_ShortTestValues))]
+    public void TryConvertToSaturatingShortInRangeTest(short i)
     {
-        foreach (var i in _shortTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToSaturating(bd, out short j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToSaturating(bd, out short j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -380,23 +372,25 @@ public class BigDecimalConvertTests
 
     #region Conversion to and from ushort
 
-    /// <summary>
-    /// A few test values for ushort.
-    /// </summary>
-    private readonly ushort[] _ushortTestValues = { 0, 1, ushort.MaxValue };
+    /// <summary>A few test values for ushort.</summary>
+    private static object[][] _UshortTestValues { get; } =
+        new[]
+        {
+            new object[] { (ushort)0 },
+            new object[] { (ushort)1 },
+            new object[] { ushort.MaxValue }
+        };
 
     /// <summary>
     /// Test casting from BigDecimal to ushort and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToUshort()
+    [DynamicData(nameof(_UshortTestValues))]
+    public void ValidCastsToUshort(ushort i)
     {
-        foreach (var i in _ushortTestValues)
-        {
-            BigDecimal bd = i;
-            var j = (ushort)bd;
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var j = (ushort)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -423,15 +417,13 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedUshortInRangeTest()
+    [DynamicData(nameof(_UshortTestValues))]
+    public void TryConvertFromCheckedUshortInRangeTest(ushort i)
     {
-        foreach (var i in _ushortTestValues)
-        {
-            var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
-            Assert.IsTrue(ok);
-            var j = (ushort)bd;
-            Assert.AreEqual(i, j);
-        }
+        var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
+        Assert.IsTrue(ok);
+        var j = (ushort)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -439,15 +431,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedUshortInRangeTest()
+    [DynamicData(nameof(_UshortTestValues))]
+    public void TryConvertToCheckedUshortInRangeTest(ushort i)
     {
-        foreach (var i in _ushortTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToChecked(bd, out ushort j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToChecked(bd, out ushort j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -469,15 +459,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingUshortInRangeTest()
+    [DynamicData(nameof(_UshortTestValues))]
+    public void TryConvertToSaturatingUshortInRangeTest(ushort i)
     {
-        foreach (var i in _ushortTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToSaturating(bd, out ushort j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToSaturating(bd, out ushort j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -503,23 +491,27 @@ public class BigDecimalConvertTests
 
     #region Conversion to and from int
 
-    /// <summary>
-    /// A few test values for int.
-    /// </summary>
-    private readonly int[] _intTestValues = { int.MinValue, -1, 0, 1, int.MaxValue };
+    /// <summary>A few test values for int.</summary>
+    private static object[][] _IntTestValues { get; } =
+        new[]
+        {
+            new object[] { int.MinValue },
+            new object[] { (int)(-1) },
+            new object[] { (int)0 },
+            new object[] { (int)1 },
+            new object[] { int.MaxValue }
+        };
 
     /// <summary>
     /// Test casting from BigDecimal to int and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToInt()
+    [DynamicData(nameof(_IntTestValues))]
+    public void ValidCastsToInt(int i)
     {
-        foreach (var i in _intTestValues)
-        {
-            BigDecimal bd = i;
-            var j = (int)bd;
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var j = (int)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -546,15 +538,13 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedIntInRangeTest()
+    [DynamicData(nameof(_IntTestValues))]
+    public void TryConvertFromCheckedIntInRangeTest(int i)
     {
-        foreach (var i in _intTestValues)
-        {
-            var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
-            Assert.IsTrue(ok);
-            var j = (int)bd;
-            Assert.AreEqual(i, j);
-        }
+        var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
+        Assert.IsTrue(ok);
+        var j = (int)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -562,15 +552,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedIntInRangeTest()
+    [DynamicData(nameof(_IntTestValues))]
+    public void TryConvertToCheckedIntInRangeTest(int i)
     {
-        foreach (var i in _intTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToChecked(bd, out int j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToChecked(bd, out int j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -592,15 +580,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingIntInRangeTest()
+    [DynamicData(nameof(_IntTestValues))]
+    public void TryConvertToSaturatingIntInRangeTest(int i)
     {
-        foreach (var i in _intTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToSaturating(bd, out int j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToSaturating(bd, out int j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -626,23 +612,25 @@ public class BigDecimalConvertTests
 
     #region Conversion to and from uint
 
-    /// <summary>
-    /// A few test values for uint.
-    /// </summary>
-    private readonly uint[] _uintTestValues = { 0, 1, uint.MaxValue };
+    /// <summary>A few test values for uint.</summary>
+    private static object[][] _UintTestValues { get; } =
+        new[]
+        {
+            new object[] { (uint)0 },
+            new object[] { (uint)1 },
+            new object[] { uint.MaxValue }
+        };
 
     /// <summary>
     /// Test casting from BigDecimal to uint and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToUint()
+    [DynamicData(nameof(_UintTestValues))]
+    public void ValidCastsToUint(uint i)
     {
-        foreach (var i in _uintTestValues)
-        {
-            BigDecimal bd = i;
-            var j = (uint)bd;
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var j = (uint)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -669,15 +657,13 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedUintInRangeTest()
+    [DynamicData(nameof(_UintTestValues))]
+    public void TryConvertFromCheckedUintInRangeTest(uint i)
     {
-        foreach (var i in _uintTestValues)
-        {
-            var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
-            Assert.IsTrue(ok);
-            var j = (uint)bd;
-            Assert.AreEqual(i, j);
-        }
+        var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
+        Assert.IsTrue(ok);
+        var j = (uint)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -685,15 +671,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedUintInRangeTest()
+    [DynamicData(nameof(_UintTestValues))]
+    public void TryConvertToCheckedUintInRangeTest(uint i)
     {
-        foreach (var i in _uintTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToChecked(bd, out uint j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToChecked(bd, out uint j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -715,15 +699,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingUintInRangeTest()
+    [DynamicData(nameof(_UintTestValues))]
+    public void TryConvertToSaturatingUintInRangeTest(uint i)
     {
-        foreach (var i in _uintTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToSaturating(bd, out uint j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToSaturating(bd, out uint j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -749,23 +731,27 @@ public class BigDecimalConvertTests
 
     #region Conversion to and from long
 
-    /// <summary>
-    /// A few test values for long.
-    /// </summary>
-    private readonly long[] _longTestValues = { long.MinValue, -1, 0, 1, long.MaxValue };
+    /// <summary>A few test values for long.</summary>
+    private static object[][] _LongTestValues { get; } =
+        new[]
+        {
+            new object[] { long.MinValue },
+            new object[] { (long)(-1) },
+            new object[] { (long)0 },
+            new object[] { (long)1 },
+            new object[] { long.MaxValue }
+        };
 
     /// <summary>
     /// Test casting from BigDecimal to long and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToLong()
+    [DynamicData(nameof(_LongTestValues))]
+    public void ValidCastsToLong(long i)
     {
-        foreach (var i in _longTestValues)
-        {
-            BigDecimal bd = i;
-            var j = (long)bd;
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var j = (long)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -793,15 +779,13 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedLongInRangeTest()
+    [DynamicData(nameof(_LongTestValues))]
+    public void TryConvertFromCheckedLongInRangeTest(long i)
     {
-        foreach (var i in _longTestValues)
-        {
-            var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
-            Assert.IsTrue(ok);
-            var j = (long)bd;
-            Assert.AreEqual(i, j);
-        }
+        var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
+        Assert.IsTrue(ok);
+        var j = (long)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -809,15 +793,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedLongInRangeTest()
+    [DynamicData(nameof(_LongTestValues))]
+    public void TryConvertToCheckedLongInRangeTest(long i)
     {
-        foreach (var i in _longTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToChecked(bd, out long j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToChecked(bd, out long j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -839,15 +821,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingLongInRangeTest()
+    [DynamicData(nameof(_LongTestValues))]
+    public void TryConvertToSaturatingLongInRangeTest(long i)
     {
-        foreach (var i in _longTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToSaturating(bd, out long j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToSaturating(bd, out long j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -873,23 +853,25 @@ public class BigDecimalConvertTests
 
     #region Conversion to and from ulong
 
-    /// <summary>
-    /// A few test values for ulong.
-    /// </summary>
-    private readonly ulong[] _ulongTestValues = { 0, 1, ulong.MaxValue };
+    /// <summary>A few test values for ulong.</summary>
+    private static object[][] _UlongTestValues { get; } =
+        new[]
+        {
+            new object[] { (ulong)0 },
+            new object[] { (ulong)1 },
+            new object[] { ulong.MaxValue }
+        };
 
     /// <summary>
     /// Test casting from BigDecimal to ulong and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToUlong()
+    [DynamicData(nameof(_UlongTestValues))]
+    public void ValidCastsToUlong(ulong i)
     {
-        foreach (var i in _ulongTestValues)
-        {
-            BigDecimal bd = i;
-            var j = (ulong)bd;
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var j = (ulong)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -916,15 +898,13 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedUlongInRangeTest()
+    [DynamicData(nameof(_UlongTestValues))]
+    public void TryConvertFromCheckedUlongInRangeTest(ulong i)
     {
-        foreach (var i in _ulongTestValues)
-        {
-            var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
-            Assert.IsTrue(ok);
-            var j = (ulong)bd;
-            Assert.AreEqual(i, j);
-        }
+        var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
+        Assert.IsTrue(ok);
+        var j = (ulong)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -932,15 +912,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedUlongInRangeTest()
+    [DynamicData(nameof(_UlongTestValues))]
+    public void TryConvertToCheckedUlongInRangeTest(ulong i)
     {
-        foreach (var i in _ulongTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToChecked(bd, out ulong j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToChecked(bd, out ulong j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -962,15 +940,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingUlongInRangeTest()
+    [DynamicData(nameof(_UlongTestValues))]
+    public void TryConvertToSaturatingUlongInRangeTest(ulong i)
     {
-        foreach (var i in _ulongTestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToSaturating(bd, out ulong j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToSaturating(bd, out ulong j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -996,23 +972,27 @@ public class BigDecimalConvertTests
 
     #region Conversion to and from Int128
 
-    /// <summary>
-    /// A few test values for Int128.
-    /// </summary>
-    private readonly Int128[] _int128TestValues = { Int128.MinValue, -1, 0, 1, Int128.MaxValue };
+    /// <summary>A few test values for Int128.</summary>
+    private static object[][] _Int128TestValues { get; } =
+        new[]
+        {
+            new object[] { Int128.MinValue },
+            new object[] { (Int128)(-1) },
+            new object[] { (Int128)0 },
+            new object[] { (Int128)1 },
+            new object[] { Int128.MaxValue }
+        };
 
     /// <summary>
     /// Test casting from BigDecimal to Int128 and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToInt128()
+    [DynamicData(nameof(_Int128TestValues))]
+    public void ValidCastsToInt128(Int128 i)
     {
-        foreach (var i in _int128TestValues)
-        {
-            BigDecimal bd = i;
-            var j = (Int128)bd;
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var j = (Int128)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -1039,15 +1019,13 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedInt128InRangeTest()
+    [DynamicData(nameof(_Int128TestValues))]
+    public void TryConvertFromCheckedInt128InRangeTest(Int128 i)
     {
-        foreach (var i in _int128TestValues)
-        {
-            var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
-            Assert.IsTrue(ok);
-            var j = (Int128)bd;
-            Assert.AreEqual(i, j);
-        }
+        var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
+        Assert.IsTrue(ok);
+        var j = (Int128)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -1055,15 +1033,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedInt128InRangeTest()
+    [DynamicData(nameof(_Int128TestValues))]
+    public void TryConvertToCheckedInt128InRangeTest(Int128 i)
     {
-        foreach (var i in _int128TestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToChecked(bd, out Int128 j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToChecked(bd, out Int128 j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -1085,15 +1061,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingInt128InRangeTest()
+    [DynamicData(nameof(_Int128TestValues))]
+    public void TryConvertToSaturatingInt128InRangeTest(Int128 i)
     {
-        foreach (var i in _int128TestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToSaturating(bd, out Int128 j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToSaturating(bd, out Int128 j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -1119,23 +1093,25 @@ public class BigDecimalConvertTests
 
     #region Conversion to and from UInt128
 
-    /// <summary>
-    /// A few test values for UInt128.
-    /// </summary>
-    private readonly UInt128[] _uint128TestValues = { 0, 1, UInt128.MaxValue };
+    /// <summary>A few test values for UInt128.</summary>
+    private static object[][] _Uint128TestValues { get; } =
+        new[]
+        {
+            new object[] { (UInt128)0 },
+            new object[] { (UInt128)1 },
+            new object[] { UInt128.MaxValue }
+        };
 
     /// <summary>
     /// Test casting from BigDecimal to UInt128 and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToUInt128()
+    [DynamicData(nameof(_Uint128TestValues))]
+    public void ValidCastsToUInt128(UInt128 i)
     {
-        foreach (var i in _uint128TestValues)
-        {
-            BigDecimal bd = i;
-            var j = (UInt128)bd;
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var j = (UInt128)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -1162,15 +1138,13 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedUInt128InRangeTest()
+    [DynamicData(nameof(_Uint128TestValues))]
+    public void TryConvertFromCheckedUInt128InRangeTest(UInt128 i)
     {
-        foreach (var i in _uint128TestValues)
-        {
-            var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
-            Assert.IsTrue(ok);
-            var j = (UInt128)bd;
-            Assert.AreEqual(i, j);
-        }
+        var ok = BigDecimal.TryConvertFromChecked(i, out var bd);
+        Assert.IsTrue(ok);
+        var j = (UInt128)bd;
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -1178,15 +1152,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedUInt128InRangeTest()
+    [DynamicData(nameof(_Uint128TestValues))]
+    public void TryConvertToCheckedUInt128InRangeTest(UInt128 i)
     {
-        foreach (var i in _uint128TestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToChecked(bd, out UInt128 j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToChecked(bd, out UInt128 j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -1208,15 +1180,13 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingUInt128InRangeTest()
+    [DynamicData(nameof(_Uint128TestValues))]
+    public void TryConvertToSaturatingUInt128InRangeTest(UInt128 i)
     {
-        foreach (var i in _uint128TestValues)
-        {
-            BigDecimal bd = i;
-            var ok = BigDecimal.TryConvertToSaturating(bd, out UInt128 j);
-            Assert.IsTrue(ok);
-            Assert.AreEqual(i, j);
-        }
+        BigDecimal bd = i;
+        var ok = BigDecimal.TryConvertToSaturating(bd, out UInt128 j);
+        Assert.IsTrue(ok);
+        Assert.AreEqual(i, j);
     }
 
     /// <summary>
@@ -1242,55 +1212,54 @@ public class BigDecimalConvertTests
 
     #region Conversion to and from Half
 
-    /// <summary>
-    /// A few test values for Half.
-    /// </summary>
-    private static Half[] GetHalfTestValues()
+    /// <summary>A few test values for Half.</summary>
+    private static object[][] _HalfTestValues
     {
-        var minPosNorm = XFloatingPoint.GetMinPosNormalValue<Half>();
-        var maxPosSub = XFloatingPoint.GetMaxPosSubnormalValue<Half>();
-        return new[]
+        get
         {
-            Half.MinValue,
-            (Half)(-1),
-            -minPosNorm,
-            -maxPosSub,
-            -Half.Epsilon,
-            (Half)0,
-            Half.Epsilon,
-            maxPosSub,
-            minPosNorm,
-            (Half)1,
-            Half.MaxValue
-        };
+            var minPosNorm = XFloatingPoint.GetMinPosNormalValue<Half>();
+            var maxPosSub = XFloatingPoint.GetMaxPosSubnormalValue<Half>();
+            return new[]
+            {
+                new object[] { Half.MinValue },
+                new object[] { (Half)(-1) },
+                new object[] { -minPosNorm },
+                new object[] { -maxPosSub },
+                new object[] { -Half.Epsilon },
+                new object[] { (Half)0 },
+                new object[] { Half.Epsilon },
+                new object[] { maxPosSub },
+                new object[] { minPosNorm },
+                new object[] { (Half)1 },
+                new object[] { Half.MaxValue }
+            };
+        }
     }
 
     /// <summary>
     /// Test value for negative overflow for Half.
     /// </summary>
-    private static readonly BigDecimal _halfNegInf = (BigDecimal)Half.MinValue - 1;
+    private static readonly BigDecimal _HalfNegInf = (BigDecimal)Half.MinValue - 1;
 
     /// <summary>
     /// Test value for positive overflow for Half.
     /// </summary>
-    private static readonly BigDecimal _halfPosInf = (BigDecimal)Half.MaxValue + 1;
+    private static readonly BigDecimal _HalfPosInf = (BigDecimal)Half.MaxValue + 1;
 
     /// <summary>
     /// Test casting from BigDecimal to Half and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToHalf()
+    [DynamicData(nameof(_HalfTestValues))]
+    public void ValidCastsToHalf(Half f)
     {
-        foreach (var f in GetHalfTestValues())
-        {
-            Trace.WriteLine($"f = {f:E5}");
-            BigDecimal bd = f;
-            Trace.WriteLine($"bd = {bd:E5}");
-            var g = (Half)bd;
-            Trace.WriteLine($"g = {g:E5}");
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E5}");
+        BigDecimal bd = f;
+        Trace.WriteLine($"bd = {bd:E5}");
+        var g = (Half)bd;
+        Trace.WriteLine($"g = {g:E5}");
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1298,19 +1267,17 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedHalfInRangeTest()
+    [DynamicData(nameof(_HalfTestValues))]
+    public void TryConvertFromCheckedHalfInRangeTest(Half f)
     {
-        foreach (var f in GetHalfTestValues())
-        {
-            Trace.WriteLine($"f = {f:E5}");
-            var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
-            Trace.WriteLine($"bd = {bd:E5}");
-            Assert.IsTrue(ok);
-            var g = (Half)bd;
-            Trace.WriteLine($"g = {g:E5}");
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E5}");
+        var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
+        Trace.WriteLine($"bd = {bd:E5}");
+        Assert.IsTrue(ok);
+        var g = (Half)bd;
+        Trace.WriteLine($"g = {g:E5}");
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1318,19 +1285,17 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedHalfInRangeTest()
+    [DynamicData(nameof(_HalfTestValues))]
+    public void TryConvertToCheckedHalfInRangeTest(Half f)
     {
-        foreach (var f in GetHalfTestValues())
-        {
-            Trace.WriteLine($"f = {f:E5}");
-            BigDecimal bd = f;
-            Trace.WriteLine($"bd = {bd:E5}");
-            var ok = BigDecimal.TryConvertToChecked(bd, out Half g);
-            Trace.WriteLine($"g = {g:E5}");
-            Assert.IsTrue(ok);
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E5}");
+        BigDecimal bd = f;
+        Trace.WriteLine($"bd = {bd:E5}");
+        var ok = BigDecimal.TryConvertToChecked(bd, out Half g);
+        Trace.WriteLine($"g = {g:E5}");
+        Assert.IsTrue(ok);
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1344,7 +1309,7 @@ public class BigDecimalConvertTests
         Half f;
         bool ok;
 
-        bd = _halfNegInf;
+        bd = _HalfNegInf;
         Trace.WriteLine($"bd = {bd:E5}");
         ok = BigDecimal.TryConvertToChecked(bd, out f);
         Trace.WriteLine($"f = {f:E5}");
@@ -1352,7 +1317,7 @@ public class BigDecimalConvertTests
         Assert.AreEqual(Half.NegativeInfinity, f);
         Trace.WriteLine("");
 
-        bd = _halfPosInf;
+        bd = _HalfPosInf;
         Trace.WriteLine($"bd = {bd:E5}");
         ok = BigDecimal.TryConvertToChecked(bd, out f);
         Trace.WriteLine($"f = {f:E5}");
@@ -1365,19 +1330,17 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingHalfInRangeTest()
+    [DynamicData(nameof(_HalfTestValues))]
+    public void TryConvertToSaturatingHalfInRangeTest(Half f)
     {
-        foreach (var f in GetHalfTestValues())
-        {
-            Trace.WriteLine($"f = {f:E5}");
-            BigDecimal bd = f;
-            Trace.WriteLine($"bd = {bd:E5}");
-            var ok = BigDecimal.TryConvertToSaturating(bd, out Half g);
-            Trace.WriteLine($"g = {g:E5}");
-            Assert.IsTrue(ok);
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E5}");
+        BigDecimal bd = f;
+        Trace.WriteLine($"bd = {bd:E5}");
+        var ok = BigDecimal.TryConvertToSaturating(bd, out Half g);
+        Trace.WriteLine($"g = {g:E5}");
+        Assert.IsTrue(ok);
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1391,7 +1354,7 @@ public class BigDecimalConvertTests
         Half f;
         bool ok;
 
-        bd = _halfNegInf;
+        bd = _HalfNegInf;
         Trace.WriteLine($"bd = {bd:E5}");
         ok = BigDecimal.TryConvertToSaturating(bd, out f);
         Trace.WriteLine($"f = {f:E5}");
@@ -1399,7 +1362,7 @@ public class BigDecimalConvertTests
         Assert.AreEqual(Half.MinValue, f);
         Trace.WriteLine("");
 
-        bd = _halfPosInf;
+        bd = _HalfPosInf;
         Trace.WriteLine($"bd = {bd:E5}");
         ok = BigDecimal.TryConvertToSaturating(bd, out f);
         Trace.WriteLine($"f = {f:E5}");
@@ -1411,55 +1374,54 @@ public class BigDecimalConvertTests
 
     #region Conversion to and from float
 
-    /// <summary>
-    /// A few test values for float.
-    /// </summary>
-    private static float[] GetFloatTestValues()
+    /// <summary>A few test values for float.</summary>
+    private static object[][] _FloatTestValues
     {
-        var minPosNorm = XFloatingPoint.GetMinPosNormalValue<float>();
-        var maxPosSub = XFloatingPoint.GetMaxPosSubnormalValue<float>();
-        return new[]
+        get
         {
-            float.MinValue,
-            -1,
-            -minPosNorm,
-            -maxPosSub,
-            -float.Epsilon,
-            0,
-            float.Epsilon,
-            maxPosSub,
-            minPosNorm,
-            1,
-            float.MaxValue
-        };
+            var minPosNorm = XFloatingPoint.GetMinPosNormalValue<float>();
+            var maxPosSub = XFloatingPoint.GetMaxPosSubnormalValue<float>();
+            return new[]
+            {
+                new object[] { float.MinValue },
+                new object[] { -1f },
+                new object[] { -minPosNorm },
+                new object[] { -maxPosSub },
+                new object[] { -float.Epsilon },
+                new object[] { 0f },
+                new object[] { float.Epsilon },
+                new object[] { maxPosSub },
+                new object[] { minPosNorm },
+                new object[] { 1f },
+                new object[] { float.MaxValue }
+            };
+        }
     }
 
     /// <summary>
     /// Test value for negative overflow for float.
     /// </summary>
-    private static readonly BigDecimal _floatNegInf = (BigDecimal)float.MinValue - 1e29;
+    private static readonly BigDecimal _FloatNegInf = (BigDecimal)float.MinValue - 1e29;
 
     /// <summary>
     /// Test value for positive overflow for float.
     /// </summary>
-    private static readonly BigDecimal _floatPosInf = (BigDecimal)float.MaxValue + 1e29;
+    private static readonly BigDecimal _FloatPosInf = (BigDecimal)float.MaxValue + 1e29;
 
     /// <summary>
     /// Test casting from BigDecimal to float and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToFloat()
+    [DynamicData(nameof(_FloatTestValues))]
+    public void ValidCastsToFloat(float f)
     {
-        foreach (var f in GetFloatTestValues())
-        {
-            Trace.WriteLine($"f = {f:E9}");
-            BigDecimal bd = f;
-            Trace.WriteLine($"bd = {bd:E9}");
-            var g = (float)bd;
-            Trace.WriteLine($"g = {g:E9}");
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E9}");
+        BigDecimal bd = f;
+        Trace.WriteLine($"bd = {bd:E9}");
+        var g = (float)bd;
+        Trace.WriteLine($"g = {g:E9}");
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1471,14 +1433,14 @@ public class BigDecimalConvertTests
         BigDecimal bd;
         float f;
 
-        bd = _floatNegInf;
+        bd = _FloatNegInf;
         Trace.WriteLine($"bd = {bd:E9}");
         f = (float)bd;
         Trace.WriteLine($"f = {f:E9}");
         Assert.AreEqual(float.NegativeInfinity, f);
         Trace.WriteLine("");
 
-        bd = _floatPosInf;
+        bd = _FloatPosInf;
         Trace.WriteLine($"bd = {bd:E9}");
         f = (float)bd;
         Trace.WriteLine($"f = {f:E9}");
@@ -1490,19 +1452,17 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedFloatInRangeTest()
+    [DynamicData(nameof(_FloatTestValues))]
+    public void TryConvertFromCheckedFloatInRangeTest(float f)
     {
-        foreach (var f in GetFloatTestValues())
-        {
-            Trace.WriteLine($"f = {f:E9}");
-            var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
-            Trace.WriteLine($"bd = {bd:E9}");
-            Assert.IsTrue(ok);
-            var g = (float)bd;
-            Trace.WriteLine($"g = {g:E9}");
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E9}");
+        var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
+        Trace.WriteLine($"bd = {bd:E9}");
+        Assert.IsTrue(ok);
+        var g = (float)bd;
+        Trace.WriteLine($"g = {g:E9}");
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1510,19 +1470,17 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedFloatInRangeTest()
+    [DynamicData(nameof(_FloatTestValues))]
+    public void TryConvertToCheckedFloatInRangeTest(float f)
     {
-        foreach (var f in GetFloatTestValues())
-        {
-            Trace.WriteLine($"f = {f:E9}");
-            BigDecimal bd = f;
-            Trace.WriteLine($"bd = {bd:E9}");
-            var ok = BigDecimal.TryConvertToChecked(bd, out float g);
-            Trace.WriteLine($"g = {g:E9}");
-            Assert.IsTrue(ok);
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E9}");
+        BigDecimal bd = f;
+        Trace.WriteLine($"bd = {bd:E9}");
+        var ok = BigDecimal.TryConvertToChecked(bd, out float g);
+        Trace.WriteLine($"g = {g:E9}");
+        Assert.IsTrue(ok);
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1536,7 +1494,7 @@ public class BigDecimalConvertTests
         float f;
         bool ok;
 
-        bd = _floatNegInf;
+        bd = _FloatNegInf;
         Trace.WriteLine($"bd = {bd:E9}");
         ok = BigDecimal.TryConvertToChecked(bd, out f);
         Trace.WriteLine($"f = {f:E9}");
@@ -1544,7 +1502,7 @@ public class BigDecimalConvertTests
         Assert.AreEqual(float.NegativeInfinity, f);
         Trace.WriteLine("");
 
-        bd = _floatPosInf;
+        bd = _FloatPosInf;
         Trace.WriteLine($"bd = {bd:E9}");
         ok = BigDecimal.TryConvertToChecked(bd, out f);
         Trace.WriteLine($"f = {f:E9}");
@@ -1557,19 +1515,17 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingFloatInRangeTest()
+    [DynamicData(nameof(_FloatTestValues))]
+    public void TryConvertToSaturatingFloatInRangeTest(float f)
     {
-        foreach (var f in GetFloatTestValues())
-        {
-            Trace.WriteLine($"f = {f:E9}");
-            BigDecimal bd = f;
-            Trace.WriteLine($"bd = {bd:E9}");
-            var ok = BigDecimal.TryConvertToSaturating(bd, out float g);
-            Trace.WriteLine($"g = {g:E9}");
-            Assert.IsTrue(ok);
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E9}");
+        BigDecimal bd = f;
+        Trace.WriteLine($"bd = {bd:E9}");
+        var ok = BigDecimal.TryConvertToSaturating(bd, out float g);
+        Trace.WriteLine($"g = {g:E9}");
+        Assert.IsTrue(ok);
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1583,7 +1539,7 @@ public class BigDecimalConvertTests
         float f;
         bool ok;
 
-        bd = _floatNegInf;
+        bd = _FloatNegInf;
         Trace.WriteLine($"bd = {bd:E9}");
         ok = BigDecimal.TryConvertToSaturating(bd, out f);
         Trace.WriteLine($"f = {f:E9}");
@@ -1591,7 +1547,7 @@ public class BigDecimalConvertTests
         Assert.AreEqual(float.MinValue, f);
         Trace.WriteLine("");
 
-        bd = _floatPosInf;
+        bd = _FloatPosInf;
         Trace.WriteLine($"bd = {bd:E9}");
         ok = BigDecimal.TryConvertToSaturating(bd, out f);
         Trace.WriteLine($"f = {f:E9}");
@@ -1603,55 +1559,54 @@ public class BigDecimalConvertTests
 
     #region Conversion to and from double
 
-    /// <summary>
-    /// A few test values for double.
-    /// </summary>
-    private static double[] GetDoubleTestValues()
+    /// <summary>A few test values for double.</summary>
+    private static object[][] _DoubleTestValues
     {
-        var minPosNorm = XFloatingPoint.GetMinPosNormalValue<double>();
-        var maxPosSub = XFloatingPoint.GetMaxPosSubnormalValue<double>();
-        return new[]
+        get
         {
-            double.MinValue,
-            -1,
-            -minPosNorm,
-            -maxPosSub,
-            -double.Epsilon,
-            0,
-            double.Epsilon,
-            maxPosSub,
-            minPosNorm,
-            1,
-            double.MaxValue
-        };
+            var minPosNorm = XFloatingPoint.GetMinPosNormalValue<double>();
+            var maxPosSub = XFloatingPoint.GetMaxPosSubnormalValue<double>();
+            return new[]
+            {
+                new object[] { double.MinValue },
+                new object[] { -1d },
+                new object[] { -minPosNorm },
+                new object[] { -maxPosSub },
+                new object[] { -double.Epsilon },
+                new object[] { 0d },
+                new object[] { double.Epsilon },
+                new object[] { maxPosSub },
+                new object[] { minPosNorm },
+                new object[] { 1d },
+                new object[] { double.MaxValue }
+            };
+        }
     }
 
     /// <summary>
     /// Test value for negative overflow for double.
     /// </summary>
-    private static readonly BigDecimal _doubleNegInf = (BigDecimal)double.MinValue - 1e291;
+    private static readonly BigDecimal _DoubleNegInf = (BigDecimal)double.MinValue - 1e291;
 
     /// <summary>
     /// Test value for positive overflow for double.
     /// </summary>
-    private static readonly BigDecimal _doublePosInf = (BigDecimal)double.MaxValue + 1e291;
+    private static readonly BigDecimal _DoublePosInf = (BigDecimal)double.MaxValue + 1e291;
 
     /// <summary>
     /// Test casting from BigDecimal to double and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToDouble()
+    [DynamicData(nameof(_DoubleTestValues))]
+    public void ValidCastsToDouble(double f)
     {
-        foreach (var f in GetDoubleTestValues())
-        {
-            Trace.WriteLine($"f = {f:E17}");
-            BigDecimal bd = f;
-            Trace.WriteLine($"bd = {bd:E17}");
-            var g = (double)bd;
-            Trace.WriteLine($"g = {g:E17}");
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E17}");
+        BigDecimal bd = f;
+        Trace.WriteLine($"bd = {bd:E17}");
+        var g = (double)bd;
+        Trace.WriteLine($"g = {g:E17}");
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1663,14 +1618,14 @@ public class BigDecimalConvertTests
         BigDecimal bd;
         double f;
 
-        bd = _doubleNegInf;
+        bd = _DoubleNegInf;
         Trace.WriteLine($"bd = {bd:E17}");
         f = (double)bd;
         Trace.WriteLine($"f = {f:E17}");
         Assert.AreEqual(double.NegativeInfinity, f);
         Trace.WriteLine("");
 
-        bd = _doublePosInf;
+        bd = _DoublePosInf;
         Trace.WriteLine($"bd = {bd:E17}");
         f = (double)bd;
         Trace.WriteLine($"f = {f:E17}");
@@ -1682,19 +1637,17 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedDoubleInRangeTest()
+    [DynamicData(nameof(_DoubleTestValues))]
+    public void TryConvertFromCheckedDoubleInRangeTest(double f)
     {
-        foreach (var f in GetDoubleTestValues())
-        {
-            Trace.WriteLine($"f = {f:E17}");
-            var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
-            Trace.WriteLine($"bd = {bd:E17}");
-            Assert.IsTrue(ok);
-            var g = (double)bd;
-            Trace.WriteLine($"g = {g:E17}");
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E17}");
+        var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
+        Trace.WriteLine($"bd = {bd:E17}");
+        Assert.IsTrue(ok);
+        var g = (double)bd;
+        Trace.WriteLine($"g = {g:E17}");
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1702,19 +1655,17 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedDoubleInRangeTest()
+    [DynamicData(nameof(_DoubleTestValues))]
+    public void TryConvertToCheckedDoubleInRangeTest(double f)
     {
-        foreach (var f in GetDoubleTestValues())
-        {
-            Trace.WriteLine($"f = {f:E17}");
-            BigDecimal bd = f;
-            Trace.WriteLine($"bd = {bd:E17}");
-            var ok = BigDecimal.TryConvertToChecked(bd, out double g);
-            Trace.WriteLine($"g = {g:E17}");
-            Assert.IsTrue(ok);
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E17}");
+        BigDecimal bd = f;
+        Trace.WriteLine($"bd = {bd:E17}");
+        var ok = BigDecimal.TryConvertToChecked(bd, out double g);
+        Trace.WriteLine($"g = {g:E17}");
+        Assert.IsTrue(ok);
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1728,7 +1679,7 @@ public class BigDecimalConvertTests
         double f;
         bool ok;
 
-        bd = _doubleNegInf;
+        bd = _DoubleNegInf;
         Trace.WriteLine($"bd = {bd:E17}");
         ok = BigDecimal.TryConvertToChecked(bd, out f);
         Trace.WriteLine($"f = {f:E17}");
@@ -1736,7 +1687,7 @@ public class BigDecimalConvertTests
         Assert.AreEqual(double.NegativeInfinity, f);
         Trace.WriteLine("");
 
-        bd = _doublePosInf;
+        bd = _DoublePosInf;
         Trace.WriteLine($"bd = {bd:E17}");
         ok = BigDecimal.TryConvertToChecked(bd, out f);
         Trace.WriteLine($"f = {f:E17}");
@@ -1749,19 +1700,17 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingDoubleInRangeTest()
+    [DynamicData(nameof(_DoubleTestValues))]
+    public void TryConvertToSaturatingDoubleInRangeTest(double f)
     {
-        foreach (var f in GetDoubleTestValues())
-        {
-            Trace.WriteLine($"f = {f:E17}");
-            BigDecimal bd = f;
-            Trace.WriteLine($"bd = {bd:E17}");
-            var ok = BigDecimal.TryConvertToSaturating(bd, out double g);
-            Trace.WriteLine($"g = {g:E17}");
-            Assert.IsTrue(ok);
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E17}");
+        BigDecimal bd = f;
+        Trace.WriteLine($"bd = {bd:E17}");
+        var ok = BigDecimal.TryConvertToSaturating(bd, out double g);
+        Trace.WriteLine($"g = {g:E17}");
+        Assert.IsTrue(ok);
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1775,7 +1724,7 @@ public class BigDecimalConvertTests
         double f;
         bool ok;
 
-        bd = _doubleNegInf;
+        bd = _DoubleNegInf;
         Trace.WriteLine($"bd = {bd:E17}");
         ok = BigDecimal.TryConvertToSaturating(bd, out f);
         Trace.WriteLine($"f = {f:E17}");
@@ -1783,7 +1732,7 @@ public class BigDecimalConvertTests
         Assert.AreEqual(double.MinValue, f);
         Trace.WriteLine("");
 
-        bd = _doublePosInf;
+        bd = _DoublePosInf;
         Trace.WriteLine($"bd = {bd:E17}");
         ok = BigDecimal.TryConvertToSaturating(bd, out f);
         Trace.WriteLine($"f = {f:E17}");
@@ -1798,44 +1747,39 @@ public class BigDecimalConvertTests
     /// <summary>
     /// A few test values for decimal.
     /// </summary>
-    private static decimal[] GetDecimalTestValues()
+    private static object[][] _DecimalTestValues { get; } = new[]
     {
-        return new[]
-        {
-            decimal.MinValue,
-            -1,
-            0,
-            1,
-            decimal.MaxValue
-        };
-    }
+        new object[] { decimal.MinValue },
+        new object[] { -1m },
+        new object[] { 0m },
+        new object[] { 1m },
+        new object[] { decimal.MaxValue }
+    };
 
     /// <summary>
     /// Test value for negative overflow for decimal.
     /// </summary>
-    private static readonly BigDecimal _decimalNegInf = (BigDecimal)decimal.MinValue - 1;
+    private static readonly BigDecimal _DecimalNegInf = (BigDecimal)decimal.MinValue - 1;
 
     /// <summary>
     /// Test value for positive overflow for decimal.
     /// </summary>
-    private static readonly BigDecimal _decimalPosInf = (BigDecimal)decimal.MaxValue + 1;
+    private static readonly BigDecimal _DecimalPosInf = (BigDecimal)decimal.MaxValue + 1;
 
     /// <summary>
     /// Test casting from BigDecimal to decimal and back.
     /// </summary>
     [TestMethod]
-    public void ValidCastsToDecimal()
+    [DynamicData(nameof(_DecimalTestValues))]
+    public void ValidCastsToDecimal(decimal f)
     {
-        foreach (var f in GetDecimalTestValues())
-        {
-            Trace.WriteLine($"f = {f:E17}");
-            BigDecimal bd = f;
-            Trace.WriteLine($"bd = {bd:E17}");
-            var g = (decimal)bd;
-            Trace.WriteLine($"g = {g:E17}");
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E17}");
+        BigDecimal bd = f;
+        Trace.WriteLine($"bd = {bd:E17}");
+        var g = (decimal)bd;
+        Trace.WriteLine($"g = {g:E17}");
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1846,13 +1790,13 @@ public class BigDecimalConvertTests
     {
         Assert.ThrowsException<OverflowException>(() =>
         {
-            var bd = _decimalNegInf;
+            var bd = _DecimalNegInf;
             return (decimal)bd;
         });
 
         Assert.ThrowsException<OverflowException>(() =>
         {
-            var bd = _decimalPosInf;
+            var bd = _DecimalPosInf;
             return (decimal)bd;
         });
     }
@@ -1862,19 +1806,17 @@ public class BigDecimalConvertTests
     /// for that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertFromCheckedDecimalInRangeTest()
+    [DynamicData(nameof(_DecimalTestValues))]
+    public void TryConvertFromCheckedDecimalInRangeTest(decimal f)
     {
-        foreach (var f in GetDecimalTestValues())
-        {
-            Trace.WriteLine($"f = {f:E17}");
-            var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
-            Trace.WriteLine($"bd = {bd:E17}");
-            Assert.IsTrue(ok);
-            var g = (decimal)bd;
-            Trace.WriteLine($"g = {g:E17}");
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E17}");
+        var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
+        Trace.WriteLine($"bd = {bd:E17}");
+        Assert.IsTrue(ok);
+        var g = (decimal)bd;
+        Trace.WriteLine($"g = {g:E17}");
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1882,19 +1824,17 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToCheckedDecimalInRangeTest()
+    [DynamicData(nameof(_DecimalTestValues))]
+    public void TryConvertToCheckedDecimalInRangeTest(decimal f)
     {
-        foreach (var f in GetDecimalTestValues())
-        {
-            Trace.WriteLine($"f = {f:E17}");
-            BigDecimal bd = f;
-            Trace.WriteLine($"bd = {bd:E17}");
-            var ok = BigDecimal.TryConvertToChecked(bd, out decimal g);
-            Trace.WriteLine($"g = {g:E17}");
-            Assert.IsTrue(ok);
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E17}");
+        BigDecimal bd = f;
+        Trace.WriteLine($"bd = {bd:E17}");
+        var ok = BigDecimal.TryConvertToChecked(bd, out decimal g);
+        Trace.WriteLine($"g = {g:E17}");
+        Assert.IsTrue(ok);
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1905,10 +1845,10 @@ public class BigDecimalConvertTests
     public void TryConvertToCheckedDecimalOverflowTest()
     {
         Assert.ThrowsException<OverflowException>(() =>
-            BigDecimal.TryConvertToChecked(_decimalNegInf, out decimal _));
+            BigDecimal.TryConvertToChecked(_DecimalNegInf, out decimal _));
 
         Assert.ThrowsException<OverflowException>(() =>
-            BigDecimal.TryConvertToChecked(_decimalPosInf, out decimal _));
+            BigDecimal.TryConvertToChecked(_DecimalPosInf, out decimal _));
     }
 
     /// <summary>
@@ -1916,19 +1856,17 @@ public class BigDecimalConvertTests
     /// that type.
     /// </summary>
     [TestMethod]
-    public void TryConvertToSaturatingDecimalInRangeTest()
+    [DynamicData(nameof(_DecimalTestValues))]
+    public void TryConvertToSaturatingDecimalInRangeTest(decimal f)
     {
-        foreach (var f in GetDecimalTestValues())
-        {
-            Trace.WriteLine($"f = {f:E17}");
-            BigDecimal bd = f;
-            Trace.WriteLine($"bd = {bd:E17}");
-            var ok = BigDecimal.TryConvertToSaturating(bd, out decimal g);
-            Trace.WriteLine($"g = {g:E17}");
-            Assert.IsTrue(ok);
-            Assert.AreEqual(f, g);
-            Trace.WriteLine("");
-        }
+        Trace.WriteLine($"f = {f:E17}");
+        BigDecimal bd = f;
+        Trace.WriteLine($"bd = {bd:E17}");
+        var ok = BigDecimal.TryConvertToSaturating(bd, out decimal g);
+        Trace.WriteLine($"g = {g:E17}");
+        Assert.IsTrue(ok);
+        Assert.AreEqual(f, g);
+        Trace.WriteLine("");
     }
 
     /// <summary>
@@ -1942,7 +1880,7 @@ public class BigDecimalConvertTests
         decimal f;
         bool ok;
 
-        bd = _decimalNegInf;
+        bd = _DecimalNegInf;
         Trace.WriteLine($"bd = {bd:E17}");
         ok = BigDecimal.TryConvertToSaturating(bd, out f);
         Trace.WriteLine($"f = {f:E17}");
@@ -1950,7 +1888,7 @@ public class BigDecimalConvertTests
         Assert.AreEqual(decimal.MinValue, f);
         Trace.WriteLine("");
 
-        bd = _decimalPosInf;
+        bd = _DecimalPosInf;
         Trace.WriteLine($"bd = {bd:E17}");
         ok = BigDecimal.TryConvertToSaturating(bd, out f);
         Trace.WriteLine($"f = {f:E17}");

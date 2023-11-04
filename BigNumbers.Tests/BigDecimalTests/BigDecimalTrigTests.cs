@@ -43,7 +43,7 @@ public class BigDecimalTrigTests
         var bd = i * BigDecimal.Tau / Denominator;
         var sinBd = BigDecimal.Sin(bd);
 
-        BigDecimalAssert.AreEqual(sinD, sinBd);
+        BigDecimalAssert.AreFuzzyEqual(sinD, sinBd);
     }
 
     [TestMethod]
@@ -56,7 +56,7 @@ public class BigDecimalTrigTests
         var bd = i * BigDecimal.Tau / Denominator;
         var cosBd = BigDecimal.Cos(bd);
 
-        BigDecimalAssert.AreEqual(cosD, cosBd);
+        BigDecimalAssert.AreFuzzyEqual(cosD, cosBd);
     }
 
     [TestMethod]
@@ -70,7 +70,7 @@ public class BigDecimalTrigTests
             var tanD = double.Tan(d);
             var bd = i * BigDecimal.Tau / Denominator;
             var tanBd = BigDecimal.Tan(bd);
-            BigDecimalAssert.AreEqual(tanD, tanBd);
+            BigDecimalAssert.AreFuzzyEqual(tanD, tanBd);
         }
         catch (Exception)
         {
@@ -106,7 +106,7 @@ public class BigDecimalTrigTests
             var bd = (BigDecimal)inputs[i];
             var tanBd = BigDecimal.Tan(bd);
             Trace.WriteLine($"BigDecimal.Tan({bd}) = {tanBd}");
-            BigDecimalAssert.AreEqual(results[i], tanBd);
+            BigDecimalAssert.AreFuzzyEqual(results[i], tanBd);
         }
         t2 = DateTime.Now;
         var dt = t2 - t1;
@@ -147,7 +147,7 @@ public class BigDecimalTrigTests
         var bd = (BigDecimal)i / Denominator;
         var asinBd = BigDecimal.Asin(bd);
 
-        BigDecimalAssert.AreEqual(asinD, asinBd);
+        BigDecimalAssert.AreFuzzyEqual(asinD, asinBd);
     }
 
     [TestMethod]
@@ -160,7 +160,7 @@ public class BigDecimalTrigTests
         var bd = (BigDecimal)i / Denominator;
         var acosBd = BigDecimal.Acos(bd);
 
-        BigDecimalAssert.AreEqual(acosD, acosBd);
+        BigDecimalAssert.AreFuzzyEqual(acosD, acosBd);
     }
 
     [TestMethod]
@@ -173,7 +173,7 @@ public class BigDecimalTrigTests
         var bd = (BigDecimal)i;
         var atanBd = BigDecimal.Atan(bd);
 
-        BigDecimalAssert.AreEqual(atanD, atanBd);
+        BigDecimalAssert.AreFuzzyEqual(atanD, atanBd);
     }
 
     [TestMethod]
@@ -198,7 +198,7 @@ public class BigDecimalTrigTests
                 var atan2D = double.Atan2(y, x);
                 var atan2Bd = BigDecimal.Atan2(y, x);
 
-                BigDecimalAssert.AreEqual(atan2D, atan2Bd);
+                BigDecimalAssert.AreFuzzyEqual(atan2D, atan2Bd);
             }
         }
     }
@@ -213,7 +213,7 @@ public class BigDecimalTrigTests
         var bd = i * BigDecimal.Tau / Denominator;
         var sinhBd = BigDecimal.Sinh(bd);
 
-        BigDecimalAssert.AreEqual(sinhD, sinhBd);
+        BigDecimalAssert.AreFuzzyEqual(sinhD, sinhBd);
     }
 
     [TestMethod]
@@ -226,7 +226,7 @@ public class BigDecimalTrigTests
         var bd = i * BigDecimal.Tau / Denominator;
         var coshBd = BigDecimal.Cosh(bd);
 
-        BigDecimalAssert.AreEqual(coshD, coshBd);
+        BigDecimalAssert.AreFuzzyEqual(coshD, coshBd);
     }
 
     [TestMethod]
@@ -239,7 +239,7 @@ public class BigDecimalTrigTests
         var bd = i * BigDecimal.Tau / Denominator;
         var tanhBd = BigDecimal.Tanh(bd);
 
-        BigDecimalAssert.AreEqual(tanhD, tanhBd);
+        BigDecimalAssert.AreFuzzyEqual(tanhD, tanhBd);
     }
 
     [TestMethod]
@@ -251,37 +251,37 @@ public class BigDecimalTrigTests
         r = 1;
         a = 0;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
-        BigDecimalAssert.AreEqual(1, x);
-        BigDecimalAssert.AreEqual(0, y);
+        BigDecimalAssert.AreFuzzyEqual(1, x);
+        BigDecimalAssert.AreFuzzyEqual(0, y);
 
         r = 1;
         a = BigDecimal.Pi / 4;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
-        BigDecimalAssert.AreEqual(oneOnSqrt2, x);
-        BigDecimalAssert.AreEqual(oneOnSqrt2, y);
+        BigDecimalAssert.AreFuzzyEqual(oneOnSqrt2, x);
+        BigDecimalAssert.AreFuzzyEqual(oneOnSqrt2, y);
 
         r = 1;
         a = BigDecimal.HalfPi;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
-        BigDecimalAssert.AreEqual(0, x);
-        BigDecimalAssert.AreEqual(1, y);
+        BigDecimalAssert.AreFuzzyEqual(0, x);
+        BigDecimalAssert.AreFuzzyEqual(1, y);
 
         r = 1;
         a = BigDecimal.Pi;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
-        BigDecimalAssert.AreEqual(-1, x);
-        BigDecimalAssert.AreEqual(0, y);
+        BigDecimalAssert.AreFuzzyEqual(-1, x);
+        BigDecimalAssert.AreFuzzyEqual(0, y);
 
         r = 1;
         a = 3 * BigDecimal.HalfPi;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
-        BigDecimalAssert.AreEqual(0, x);
-        BigDecimalAssert.AreEqual(-1, y);
+        BigDecimalAssert.AreFuzzyEqual(0, x);
+        BigDecimalAssert.AreFuzzyEqual(-1, y);
 
         r = 1;
         a = BigDecimal.Tau;
         (x, y) = BigDecimal.PolarToCartesian(r, a);
-        BigDecimalAssert.AreEqual(1, x);
-        BigDecimalAssert.AreEqual(0, y);
+        BigDecimalAssert.AreFuzzyEqual(1, x);
+        BigDecimalAssert.AreFuzzyEqual(0, y);
     }
 }

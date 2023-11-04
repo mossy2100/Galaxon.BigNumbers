@@ -1,9 +1,14 @@
+using Galaxon.Core.Numbers;
+
 namespace Galaxon.BigNumbers.Tests;
 
+/// <summary>Test the methods in BigDecimalCompare.cs.</summary>
 [TestClass]
 public class BigDecimalCompareTests
 {
-    private static IEnumerable<object[]> LessThanInts =>
+    #region Data
+
+    private static IEnumerable<object[]> _LessThanInts =>
         new[]
         {
             new object[] { -456, -123 },
@@ -13,7 +18,7 @@ public class BigDecimalCompareTests
             new object[] { 123, 456 }
         };
 
-    private static IEnumerable<object[]> GreaterThanInts =>
+    private static IEnumerable<object[]> _GreaterThanInts =>
         new[]
         {
             new object[] { -123, -456 },
@@ -23,7 +28,7 @@ public class BigDecimalCompareTests
             new object[] { 456, 123 }
         };
 
-    private static IEnumerable<object[]> EqualInts =>
+    private static IEnumerable<object[]> _EqualInts =>
         new[]
         {
             new object[] { 0, 0 },
@@ -31,7 +36,7 @@ public class BigDecimalCompareTests
             new object[] { 123, 123 }
         };
 
-    private static IEnumerable<object[]> LessThanDoubles =>
+    private static IEnumerable<object[]> _LessThanDoubles =>
         new[]
         {
             new object[] { -456.789, -123.456 },
@@ -41,7 +46,7 @@ public class BigDecimalCompareTests
             new object[] { 123.456, 456.789 }
         };
 
-    private static IEnumerable<object[]> GreaterThanDoubles =>
+    private static IEnumerable<object[]> _GreaterThanDoubles =>
         new[]
         {
             new object[] { -123.456, -456.789 },
@@ -51,7 +56,7 @@ public class BigDecimalCompareTests
             new object[] { 456.789, 123.456 }
         };
 
-    private static IEnumerable<object[]> EqualDoubles =>
+    private static IEnumerable<object[]> _EqualDoubles =>
         new[]
         {
             new object[] { 0.0, 0.0 },
@@ -59,161 +64,7 @@ public class BigDecimalCompareTests
             new object[] { 123.456, 123.456 }
         };
 
-    [TestMethod]
-    [DynamicData(nameof(LessThanInts))]
-    public void TestCompareToLessThanWithInts(int x, int y)
-    {
-        Assert.AreEqual(-1, ((BigDecimal)x).CompareTo(y));
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(GreaterThanInts))]
-    public void TestCompareToGreaterThanWithInts(int x, int y)
-    {
-        Assert.AreEqual(1, ((BigDecimal)x).CompareTo(y));
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(EqualInts))]
-    public void TestCompareToEqualWithInts(int x, int y)
-    {
-        Assert.AreEqual(0, ((BigDecimal)x).CompareTo(y));
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(LessThanDoubles))]
-    public void TestCompareToLessThanWithDoubles(double x, double y)
-    {
-        Assert.AreEqual(-1, ((BigDecimal)x).CompareTo(y));
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(GreaterThanDoubles))]
-    public void TestCompareToGreaterThanWithDoubles(double x, double y)
-    {
-        Assert.AreEqual(1, ((BigDecimal)x).CompareTo(y));
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(EqualDoubles))]
-    public void TestCompareToEqualWithDoubles(double x, double y)
-    {
-        Assert.AreEqual(0, ((BigDecimal)x).CompareTo(y));
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(LessThanInts))]
-    public void TestLessThanWithInts(int x, int y)
-    {
-        BigDecimal w = x;
-        BigDecimal z = y;
-        Assert.IsTrue(w < z);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(GreaterThanInts))]
-    public void TestGreaterThanWithInts(int x, int y)
-    {
-        BigDecimal w = x;
-        BigDecimal z = y;
-        Assert.IsTrue(w > z);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(EqualInts))]
-    public void TestEqualWithInts(int x, int y)
-    {
-        BigDecimal w = x;
-        BigDecimal z = y;
-        Assert.IsTrue(w == z);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(LessThanInts))]
-    [DynamicData(nameof(EqualInts))]
-    public void TestLessThanOrEqualWithInts(int x, int y)
-    {
-        BigDecimal w = x;
-        BigDecimal z = y;
-        Assert.IsTrue(w <= z);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(GreaterThanInts))]
-    [DynamicData(nameof(EqualInts))]
-    public void TestGreaterThanOrEqualWithInts(int x, int y)
-    {
-        BigDecimal w = x;
-        BigDecimal z = y;
-        Assert.IsTrue(w >= z);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(LessThanInts))]
-    [DynamicData(nameof(GreaterThanInts))]
-    public void TestNotEqualWithInts(int x, int y)
-    {
-        BigDecimal w = x;
-        BigDecimal z = y;
-        Assert.IsTrue(w != z);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(LessThanDoubles))]
-    public void TestLessThanWithDoubles(double x, double y)
-    {
-        BigDecimal w = x;
-        BigDecimal z = y;
-        Assert.IsTrue(w < z);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(GreaterThanDoubles))]
-    public void TestGreaterThanWithDoubles(double x, double y)
-    {
-        BigDecimal w = x;
-        BigDecimal z = y;
-        Assert.IsTrue(w > z);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(EqualDoubles))]
-    public void TestEqualWithDoubles(double x, double y)
-    {
-        BigDecimal w = x;
-        BigDecimal z = y;
-        Assert.IsTrue(w == z);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(LessThanDoubles))]
-    [DynamicData(nameof(EqualDoubles))]
-    public void TestLessThanOrEqualWithDoubles(double x, double y)
-    {
-        BigDecimal w = x;
-        BigDecimal z = y;
-        Assert.IsTrue(w <= z);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(GreaterThanDoubles))]
-    [DynamicData(nameof(EqualDoubles))]
-    public void TestGreaterThanOrEqualWithDoubles(double x, double y)
-    {
-        BigDecimal w = x;
-        BigDecimal z = y;
-        Assert.IsTrue(w >= z);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(LessThanDoubles))]
-    [DynamicData(nameof(GreaterThanDoubles))]
-    public void TestNotEqualWithDoubles(double x, double y)
-    {
-        BigDecimal w = x;
-        BigDecimal z = y;
-        Assert.IsTrue(w != z);
-    }
+    #endregion Data
 
     #region Equals
 
@@ -249,4 +100,315 @@ public class BigDecimalCompareTests
     }
 
     #endregion Equals
+
+    #region FuzzyEquals
+
+    [TestMethod]
+    public void FuzzyEquals_HalfValues_ReturnTrue()
+    {
+        var n = 10;
+        var rnd = new Random();
+        for (var i = 0; i < n; i++)
+        {
+            // A divide operation should introduce some diversion in precision.
+            var f1 = rnd.NextHalf();
+            var f2 = rnd.NextHalf();
+            var f3 = f1 / f2;
+            var bd3 = (BigDecimal)f1 / (BigDecimal)f2;
+
+            if (!Half.IsFinite(f3)) continue;
+
+            Console.WriteLine($"      Half value: {f3:E20}");
+            Console.WriteLine($"BigDecimal value: {bd3:E20}");
+            Console.WriteLine();
+            Assert.IsTrue(bd3.FuzzyEquals(f3));
+        }
+    }
+
+    [TestMethod]
+    public void FuzzyEquals_FloatValues_ReturnTrue()
+    {
+        var n = 10;
+        var rnd = new Random();
+        for (var i = 0; i < n; i++)
+        {
+            // A divide operation should introduce some diversion in precision.
+            var f1 = rnd.NextFloat();
+            var f2 = rnd.NextFloat();
+            var f3 = f1 / f2;
+            var bd3 = (BigDecimal)f1 / (BigDecimal)f2;
+
+            if (!float.IsFinite(f3)) continue;
+
+            Console.WriteLine($"     float value: {f3:E20}");
+            Console.WriteLine($"BigDecimal value: {bd3:E20}");
+            Console.WriteLine();
+            Assert.IsTrue(bd3.FuzzyEquals(f3));
+        }
+    }
+
+    [TestMethod]
+    public void FuzzyEquals_DoubleValues_ReturnTrue()
+    {
+        var n = 10;
+        var rnd = new Random();
+        for (var i = 0; i < n; i++)
+        {
+            // A divide operation should introduce some diversion in precision.
+            var f1 = rnd.NextDoubleFullRange();
+            var f2 = rnd.NextDoubleFullRange();
+            var f3 = f1 / f2;
+            var bd3 = (BigDecimal)f1 / (BigDecimal)f2;
+
+            if (!double.IsFinite(f3)) continue;
+
+            Console.WriteLine($"    double value: {f3:E40}");
+            Console.WriteLine($"BigDecimal value: {bd3:E40}");
+            Console.WriteLine();
+            Assert.IsTrue(bd3.FuzzyEquals(f3));
+        }
+    }
+
+    [TestMethod]
+    public void FuzzyEquals_Pi_ReturnTrue()
+    {
+        var bdPi = BigDecimal.Pi;
+        var hPi = Half.Pi;
+        var fPi = float.Pi;
+        var dPi = double.Pi;
+        Assert.IsTrue(bdPi.FuzzyEquals(hPi));
+        Assert.IsTrue(bdPi.FuzzyEquals(fPi));
+        Assert.IsTrue(bdPi.FuzzyEquals(dPi));
+    }
+
+    [TestMethod]
+    public void FuzzyEquals_E_ReturnTrue()
+    {
+        var bdE = BigDecimal.E;
+        var hE = Half.E;
+        var fE = float.E;
+        var dE = double.E;
+        Assert.IsTrue(bdE.FuzzyEquals(hE));
+        Assert.IsTrue(bdE.FuzzyEquals(fE));
+        Assert.IsTrue(bdE.FuzzyEquals(dE));
+    }
+
+    #endregion FuzzyEquals
+
+    #region ULP tests
+
+    [TestMethod]
+    public void ULP_Decimal_Tests()
+    {
+        decimal m;
+        BigDecimal ulp;
+
+        // Integer.
+        m = 123456789;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(1, ulp);
+
+        // Multiple of 10 does not give 10 for the ULP. Proves maximum ULP for decimal is 1.
+        m = 1234567890;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(1, ulp);
+
+        m = 12345678.9m;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(0.1m, ulp);
+
+        m = 123456.789m;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(0.001m, ulp);
+
+        m = 1.23456789e-10m;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(1e-18m, ulp);
+
+        m = -123456789;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(1, ulp);
+
+        m = -12345678.9m;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(0.1m, ulp);
+
+        m = -123456.789m;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(0.001m, ulp);
+
+        m = -1.23456789e-10m;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(1e-18m, ulp);
+
+        m = decimal.MaxValue;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(1, ulp);
+    }
+
+    #endregion ULP tests
+
+    #region CompareTo tests
+
+    [TestMethod]
+    [DynamicData(nameof(_LessThanInts))]
+    public void CompareTo_LessThan_Ints(int x, int y)
+    {
+        Assert.AreEqual(-1, ((BigDecimal)x).CompareTo(y));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_GreaterThanInts))]
+    public void CompareTo_GreaterThan_Ints(int x, int y)
+    {
+        Assert.AreEqual(1, ((BigDecimal)x).CompareTo(y));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_EqualInts))]
+    public void CompareTo_Equal_Ints(int x, int y)
+    {
+        Assert.AreEqual(0, ((BigDecimal)x).CompareTo(y));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_LessThanDoubles))]
+    public void CompareTo_LessThan_Doubles(double x, double y)
+    {
+        Assert.AreEqual(-1, ((BigDecimal)x).CompareTo(y));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_GreaterThanDoubles))]
+    public void CompareTo_GreaterThan_Doubles(double x, double y)
+    {
+        Assert.AreEqual(1, ((BigDecimal)x).CompareTo(y));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_EqualDoubles))]
+    public void CompareTo_Equal_Doubles(double x, double y)
+    {
+        Assert.AreEqual(0, ((BigDecimal)x).CompareTo(y));
+    }
+
+    #endregion CompareTo tests
+
+    #region Comparison operator tests
+
+    [TestMethod]
+    [DynamicData(nameof(_LessThanInts))]
+    public void LessThanOp_Ints(int x, int y)
+    {
+        BigDecimal w = x;
+        BigDecimal z = y;
+        Assert.IsTrue(w < z);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_GreaterThanInts))]
+    public void GreaterThanOp_Ints(int x, int y)
+    {
+        BigDecimal w = x;
+        BigDecimal z = y;
+        Assert.IsTrue(w > z);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_EqualInts))]
+    public void EqualOp_Ints(int x, int y)
+    {
+        BigDecimal w = x;
+        BigDecimal z = y;
+        Assert.IsTrue(w == z);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_LessThanInts))]
+    [DynamicData(nameof(_EqualInts))]
+    public void LessThanOrEqualOp_Ints(int x, int y)
+    {
+        BigDecimal w = x;
+        BigDecimal z = y;
+        Assert.IsTrue(w <= z);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_GreaterThanInts))]
+    [DynamicData(nameof(_EqualInts))]
+    public void GreaterThanOrEqualOp_Ints(int x, int y)
+    {
+        BigDecimal w = x;
+        BigDecimal z = y;
+        Assert.IsTrue(w >= z);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_LessThanInts))]
+    [DynamicData(nameof(_GreaterThanInts))]
+    public void NotEqualOp_Ints(int x, int y)
+    {
+        BigDecimal w = x;
+        BigDecimal z = y;
+        Assert.IsTrue(w != z);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_LessThanDoubles))]
+    public void LessThanOp_Doubles(double x, double y)
+    {
+        BigDecimal w = x;
+        BigDecimal z = y;
+        Assert.IsTrue(w < z);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_GreaterThanDoubles))]
+    public void GreaterThanOp_Doubles(double x, double y)
+    {
+        BigDecimal w = x;
+        BigDecimal z = y;
+        Assert.IsTrue(w > z);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_EqualDoubles))]
+    public void EqualOp_Doubles(double x, double y)
+    {
+        BigDecimal w = x;
+        BigDecimal z = y;
+        Assert.IsTrue(w == z);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_LessThanDoubles))]
+    [DynamicData(nameof(_EqualDoubles))]
+    public void LessThanOrEqualOp_Doubles(double x, double y)
+    {
+        BigDecimal w = x;
+        BigDecimal z = y;
+        Assert.IsTrue(w <= z);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_GreaterThanDoubles))]
+    [DynamicData(nameof(_EqualDoubles))]
+    public void GreaterThanOrEqualOp_Doubles(double x, double y)
+    {
+        BigDecimal w = x;
+        BigDecimal z = y;
+        Assert.IsTrue(w >= z);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(_LessThanDoubles))]
+    [DynamicData(nameof(_GreaterThanDoubles))]
+    public void NotEqualOp_Doubles(double x, double y)
+    {
+        BigDecimal w = x;
+        BigDecimal z = y;
+        Assert.IsTrue(w != z);
+    }
+
+    #endregion Comparison operator tests
 }
