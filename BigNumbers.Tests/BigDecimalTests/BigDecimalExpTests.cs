@@ -11,12 +11,11 @@ namespace Galaxon.BigNumbers.Tests;
 [TestClass]
 public class BigDecimalExpTests
 {
-    #region Test exponentiation methods
+    #region Test Exp()
 
-    // Useful high-precision online calculator for finding what should be the right result.
-    // https://keisan.casio.com/calculator
+    /// <summary>Exp(0) returns 1.</summary>
     [TestMethod]
-    public void TestExp()
+    public void Exp_0_Returns1()
     {
         BigDecimal.MaxSigFigs = 50;
 
@@ -25,15 +24,31 @@ public class BigDecimalExpTests
 
         expected = 1;
         actual = BigDecimal.Exp(0);
-        BigDecimalAssert.AreFuzzyEqual(expected, actual);
+        Assert.AreEqual(expected, actual);
+    }
+
+    /// <summary>Exp(1) returns E.</summary>
+    [TestMethod]
+    public void Exp_1_ReturnsE()
+    {
+        BigDecimal.MaxSigFigs = 50;
+
+        BigDecimal expected;
+        BigDecimal actual;
 
         expected = BigDecimal.E;
         actual = BigDecimal.Exp(1);
-        BigDecimalAssert.AreFuzzyEqual(expected, actual);
+        Assert.AreEqual(expected, actual);
+    }
 
-        expected = BigDecimal.Parse("1.6487212707001281468486507878141635716537761007101");
-        actual = BigDecimal.Exp(0.5);
-        BigDecimalAssert.AreFuzzyEqual(expected, actual);
+    /// <summary>Test Exp() with positive integers.</summary>
+    [TestMethod]
+    public void Exp_PositiveIntegers()
+    {
+        BigDecimal.MaxSigFigs = 50;
+
+        BigDecimal expected;
+        BigDecimal actual;
 
         expected = BigDecimal.Parse("7.3890560989306502272304274605750078131803155705518");
         actual = BigDecimal.Exp(2);
@@ -46,35 +61,384 @@ public class BigDecimalExpTests
         expected = BigDecimal.Parse("22026.465794806716516957900645284244366353512618557");
         actual = BigDecimal.Exp(10);
         BigDecimalAssert.AreFuzzyEqual(expected, actual);
+    }
 
-        expected = BigDecimal.Parse("0.13533528323661269189399949497248440340763154590958");
+    /// <summary>Test Exp() with negative integers.</summary>
+    [TestMethod]
+    public void Exp_NegativeIntegers()
+    {
+        BigDecimal.MaxSigFigs = 50;
+
+        double expected;
+        BigDecimal actual;
+        double delta;
+
+        expected = 0.36787944117144;
+        actual = BigDecimal.Exp(-1);
+        delta = 0.00000000000001;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+
+        expected = 0.13533528323661;
         actual = BigDecimal.Exp(-2);
+        delta = 0.00000000000001;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+
+        expected = 4.5399929762485E-5;
+        actual = BigDecimal.Exp(-10);
+        delta = 0.0000000000001E-5;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+    }
+
+    /// <summary>Test Exp() with positive floating point values.</summary>
+    [TestMethod]
+    public void Exp_PositiveFloats()
+    {
+        BigDecimal.MaxSigFigs = 15;
+
+        double expected;
+        BigDecimal actual;
+        double delta;
+
+        expected = 1.6487212707001;
+        delta = 0.0000000000001;
+        actual = BigDecimal.Exp(0.5);
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+
+        expected = 4.1329443527781E+53;
+        actual = BigDecimal.Exp(123.456);
+        delta = 0.0000000000001E+53;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+
+        expected = 1.000000789;
+        actual = BigDecimal.Exp(0.000000789);
+        delta = 0.000000001;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+    }
+
+    /// <summary>Test Exp() with negative floating point values.</summary>
+    [TestMethod]
+    public void Exp_NegativeFloats()
+    {
+        BigDecimal.MaxSigFigs = 50;
+
+        double expected;
+        BigDecimal actual;
+        double delta;
+
+        expected = 0.60653065971263;
+        delta = 0.00000000000001;
+        actual = BigDecimal.Exp(-0.5);
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+
+        expected = 2.4195825412646E-54;
+        delta = 0.0000000000001E-54;
+        actual = BigDecimal.Exp(-123.456);
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+
+        expected = 0.99999921100031;
+        delta = 0.00000000000001;
+        actual = BigDecimal.Exp(-0.000000789);
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+    }
+
+    #endregion Test Exp()
+
+    #region Test Pow()
+
+    [TestMethod]
+    public void Pow_0Base0Exponent_Returns1()
+    {
+        BigDecimal x = 0;
+        BigDecimal y = 0;
+        BigDecimal actual = BigDecimal.Pow(x, y);
+        BigDecimal expected = 1;
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void Pow_0BasePosExponent_Returns0()
+    {
+        BigDecimal x;
+        BigDecimal y;
+        BigDecimal actual;
+        BigDecimal expected;
+
+        x = 0;
+        y = 2;
+        actual = BigDecimal.Pow(x, y);
+        expected = 0;
         BigDecimalAssert.AreFuzzyEqual(expected, actual);
 
-        expected = BigDecimal.Parse("4.5399929762484851535591515560550610237918088866565E-5");
-        actual = BigDecimal.Exp(-10);
+        x = 0;
+        y = 10;
+        actual = BigDecimal.Pow(x, y);
+        expected = 0;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual);
+
+        x = 0;
+        y = 456;
+        actual = BigDecimal.Pow(x, y);
+        expected = 0;
         BigDecimalAssert.AreFuzzyEqual(expected, actual);
     }
 
     [TestMethod]
-    public void TestPowNegativeBaseFractionalExp()
+    public void Pow_0BaseNegExponent_Throws()
     {
-        BigDecimal x = -32;
-        // Note, we have to use a decimal here, because a double will not exactly represent the
-        // value, and we won't be able to find a real root.
-        BigDecimal y = 0.2m;
-        var actual = BigDecimal.Pow(x, y);
-        var expected = -2;
+        BigDecimal x = 0;
+        BigDecimal y = -2;
+        Assert.ThrowsException<DivideByZeroException>(() => BigDecimal.Pow(x, y));
+    }
+
+    [TestMethod]
+    public void Pow_PosBase0Exponent_Returns1()
+    {
+        BigDecimal x;
+        BigDecimal y = 0;
+        BigDecimal actual;
+        BigDecimal expected;
+
+        x = 1;
+        actual = BigDecimal.Pow(x, y);
+        expected = 1;
+        Assert.AreEqual(expected, actual);
+
+        x = new BigDecimal(1, 1000);
+        actual = BigDecimal.Pow(x, y);
+        expected = 1;
+        Assert.AreEqual(expected, actual);
+
+        x = 123.4567;
+        actual = BigDecimal.Pow(x, y);
+        expected = 1;
+        Assert.AreEqual(expected, actual);
+
+        x = BigDecimal.Pi;
+        actual = BigDecimal.Pow(x, y);
+        expected = 1;
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void Pow_PosBase1Exponent_ReturnsItself()
+    {
+        BigDecimal x;
+        BigDecimal y = 1;
+        BigDecimal actual;
+        BigDecimal expected;
+
+        x = 1;
+        actual = BigDecimal.Pow(x, y);
+        expected = x;
+        Assert.AreEqual(expected, actual);
+
+        x = new BigDecimal(1, 1000);
+        actual = BigDecimal.Pow(x, y);
+        expected = x;
+        Assert.AreEqual(expected, actual);
+
+        x = 123.4567;
+        actual = BigDecimal.Pow(x, y);
+        expected = x;
+        Assert.AreEqual(expected, actual);
+
+        x = BigDecimal.Pi;
+        actual = BigDecimal.Pow(x, y);
+        expected = x;
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void Pow_PosBasePosExponent()
+    {
+        BigDecimal x;
+        BigDecimal y;
+        BigDecimal actual;
+        BigDecimal expected;
+        BigDecimal delta;
+
+        x = 2;
+        y = 5;
+        actual = BigDecimal.Pow(x, y);
+        expected = 32;
+        Assert.AreEqual(expected, actual);
+
+        x = 123;
+        y = 4;
+        actual = BigDecimal.Pow(x, y);
+        expected = 228886641;
         BigDecimalAssert.AreFuzzyEqual(expected, actual);
 
-        x = -32;
-        y = 0.4m;
+        x = BigDecimal.E;
+        y = 123;
         actual = BigDecimal.Pow(x, y);
-        expected = 4;
+        expected = 2.6195173187491E+53;
+        delta = 0.0000000000001E+53;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+
+        x = 1.23;
+        y = 4.56;
+        actual = BigDecimal.Pow(x, y);
+        expected = 2.5702023016193;
+        delta = 0.0000000000001;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+    }
+
+    [TestMethod]
+    public void Pow_PosBaseNegExponent()
+    {
+        BigDecimal x;
+        BigDecimal y;
+        BigDecimal actual;
+        BigDecimal expected;
+        BigDecimal delta;
+
+        x = 2;
+        y = -5;
+        actual = BigDecimal.Pow(x, y);
+        expected = 0.03125;
+        Assert.AreEqual(expected, actual);
+
+        x = 123;
+        y = -4;
+        actual = BigDecimal.Pow(x, y);
+        expected = 4.3689749459865E-9;
+        delta = 0.0000000000001E-9;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+
+        x = BigDecimal.E;
+        y = -123;
+        actual = BigDecimal.Pow(x, y);
+        expected = 3.8174971886712E-54;
+        delta = 0.0000000000001E-54;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+
+        x = 1.23;
+        y = -4.56;
+        actual = BigDecimal.Pow(x, y);
+        expected = 0.38907443175581;
+        delta = 0.00000000000001;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+    }
+
+    [TestMethod]
+    public void Pow_NegBase0Exponent_Returns1()
+    {
+        BigDecimal x;
+        BigDecimal y = 0;
+        BigDecimal actual;
+        BigDecimal expected;
+
+        x = -1;
+        actual = BigDecimal.Pow(x, y);
+        expected = 1;
+        Assert.AreEqual(expected, actual);
+
+        x = new BigDecimal(-1, 1000);
+        actual = BigDecimal.Pow(x, y);
+        expected = 1;
+        Assert.AreEqual(expected, actual);
+
+        x = -123.4567;
+        actual = BigDecimal.Pow(x, y);
+        expected = 1;
+        Assert.AreEqual(expected, actual);
+
+        x = -BigDecimal.Pi;
+        actual = BigDecimal.Pow(x, y);
+        expected = 1;
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void Pow_NegBase1Exponent_ReturnsItself()
+    {
+        BigDecimal x;
+        BigDecimal y = 1;
+        BigDecimal actual;
+        BigDecimal expected;
+
+        x = -1;
+        actual = BigDecimal.Pow(x, y);
+        expected = x;
+        Assert.AreEqual(expected, actual);
+
+        x = new BigDecimal(-1, 1000);
+        actual = BigDecimal.Pow(x, y);
+        expected = x;
+        Assert.AreEqual(expected, actual);
+
+        x = -123.4567;
+        actual = BigDecimal.Pow(x, y);
+        expected = x;
+        Assert.AreEqual(expected, actual);
+
+        x = -BigDecimal.Pi;
+        actual = BigDecimal.Pow(x, y);
+        expected = x;
+        Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void Pow_NegBasePosIntExponent()
+    {
+        BigDecimal x;
+        BigDecimal y;
+        BigDecimal actual;
+        BigDecimal expected;
+        BigDecimal delta;
+
+        x = -2;
+        y = 5;
+        actual = BigDecimal.Pow(x, y);
+        expected = -32;
+        BigDecimalAssert.AreEqual(expected, actual);
+
+        x = -123;
+        y = 4;
+        actual = BigDecimal.Pow(x, y);
+        expected = 228886641;
+        BigDecimalAssert.AreEqual(expected, actual);
+
+        x = -BigDecimal.E;
+        y = 123;
+        actual = BigDecimal.Pow(x, y);
+        expected = -2.619517318749E+53;
+        delta = 0.000000000001E+53;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+    }
+
+    [TestMethod]
+    public void Pow_NegBasePosFloatExponent_SolveableWorks()
+    {
+        BigDecimal x;
+        BigDecimal y;
+        BigDecimal actual;
+        BigDecimal expected;
+        BigDecimal delta;
+
+        x = -32;
+        y = 0.2m;
+        actual = BigDecimal.Pow(x, y);
+        expected = -2;
         BigDecimalAssert.AreFuzzyEqual(expected, actual);
     }
 
-    #endregion Test exponentiation methods
+    [TestMethod]
+    public void Pow_NegBasePosFloatExponent_UnsolveableThrows()
+    {
+        BigDecimal x;
+        BigDecimal y;
+        BigDecimal actual;
+        BigDecimal expected;
+        BigDecimal delta;
+
+        x = -123;
+        y = 0.5;
+        Assert.ThrowsException<ArithmeticException>(() => BigDecimal.Pow(x, y));
+    }
+
+    #endregion Test Pow()
 
     #region Test methods for finding roots
 
@@ -201,10 +565,10 @@ public class BigDecimalExpTests
         for (var i = 1; i <= 1000; i++)
         {
             BigDecimal.MaxSigFigs = 54;
-            Trace.WriteLine($"³√{i} = " + BigDecimal.Cbrt(i));
+            Console.WriteLine($"³√{i} = " + BigDecimal.Cbrt(i));
             BigDecimal.MaxSigFigs = 50;
-            Trace.WriteLine($"³√{i} = " + BigDecimal.Cbrt(i));
-            Trace.WriteLine("");
+            Console.WriteLine($"³√{i} = " + BigDecimal.Cbrt(i));
+            Console.WriteLine("");
         }
     }
 
@@ -257,15 +621,22 @@ public class BigDecimalExpTests
     [TestMethod]
     public void TestCbrtOfNegative()
     {
-        BigDecimal c;
-        c = BigDecimal.Cbrt(-27);
-        BigDecimalAssert.AreFuzzyEqual(-3, c);
+        BigDecimal expected;
+        BigDecimal actual;
+        BigDecimal delta;
 
-        c = BigDecimal.Cbrt(-16);
-        BigDecimalAssert.AreFuzzyEqual(-2.519842099789746, c);
+        actual = BigDecimal.Cbrt(-27);
+        BigDecimalAssert.AreFuzzyEqual(-3, actual);
 
-        c = BigDecimal.Cbrt(-1234.5678);
-        BigDecimalAssert.AreFuzzyEqual(-10.727659535728732, c);
+        actual = BigDecimal.Cbrt(-16);
+        expected = -2.519842099789746;
+        delta = 0.000000000000001;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+
+        actual = BigDecimal.Cbrt(-1234.5678);
+        expected = -10.727659535728732;
+        delta = 0.000000000000001;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
     }
 
     /// <summary>

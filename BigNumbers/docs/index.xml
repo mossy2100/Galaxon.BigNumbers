@@ -1016,13 +1016,24 @@
             <param name="m">A decimal value.</param>
             <returns>The value of the unit of least precision.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.FuzzyEquals``1(``0)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.UnitOfLeastPrecision(Galaxon.BigNumbers.BigDecimal)">
             <summary>
-            See if the BigDecimal value is *effectively* equal to another value of another number, which
-            could be another BigDecimal, or a standard number type.
+            Get the unit of least precision (ULP) in the provided BigDecimal number.
             </summary>
+            <param name="bd">A BigDecimal value.</param>
+            <returns>The value of the unit of least precision.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.FuzzyEquals``1(``0,System.Nullable{Galaxon.BigNumbers.BigDecimal})">
+            <summary>
+            See if the BigDecimal value is *effectively* equal (within a given tolerance) to another
+            numeric value, which could be another BigDecimal, or a standard number type.
+            </summary>
+            <typeparam name="T">The other number's type.</typeparam>
             <param name="other">The value to compare with.</param>
-            <exception cref="T:Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException"></exception>
+            <param name="delta">The maximum acceptable difference.</param>
+            <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException">
+            If the type of the value being compared with the BigDecimal is unsupported.
+            </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.GetHashCode">
             <inheritdoc/>
@@ -1480,35 +1491,96 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.#ctor">
             <summary>Construct a zero BigDecimal.</summary>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Pow(Galaxon.BigNumbers.BigDecimal,System.Numerics.BigInteger)">
+            <summary>
+            Calculate the value of x^y where x is a BigDecimal and y is a BigInteger.
+            Uses exponentiation by squaring for non-trivial parameters.
+            </summary>
+            <see href="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
+            <param name="x">The BigDecimal base.</param>
+            <param name="y">The BigInteger exponent.</param>
+            <returns>
+            The result of the calculation, rounded off to the current value of MaxSigFigs.
+            </returns>
+            <exception cref="T:System.DivideByZeroException">
+            If trying to raise 0 to a negative power.
+            </exception>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Pow(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
+            <inheritdoc/>
             <summary>Calculate the value of x^y where x and y are both BigDecimal values.</summary>
             <param name="x">The base.</param>
             <param name="y">The exponent.</param>
             <returns>
             The result of the calculation, rounded off to the current value of MaxSigFigs.
             </returns>
+            <exception cref="T:System.DivideByZeroException">
+            If trying to raise 0 to a negative power.
+            </exception>
             <exception cref="T:System.ArithmeticException">
-            If there is no real result or a real result cannot otherwise be computed.
+            If no real result can be computed.
+            </exception>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Pow(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigRational)">
+            <summary>
+            Calculate a BigDecimal raised to the power of a BigRational.
+            This is useful when you want to do things like x^(1/3), but wish to avoid the problem of
+            1/3 not being exactly representable by a floating point number type.
+            So instead of:
+            <code>
+            BigDecimal y = BigDecimal.Pow(x, 0.333);
+            </code>
+            you can do:
+            <code>
+            BigDecimal y = BigDecimal.Pow(x, new BigRational(1, 3));
+            </code>
+            </summary>
+            <param name="x">The base.</param>
+            <param name="y">The exponent.</param>
+            <returns>The result of x raised to the power of y.</returns>
+            <exception cref="T:System.DivideByZeroException">
+            If trying to raise 0 to a negative power.
+            </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the base is negative, the numerator of the exponent is odd, and the denominator of the
+            exponent is even. In this case, no real result exists (although a complex result will).
             </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Sqr(Galaxon.BigNumbers.BigDecimal)">
-            <summary>
-            Calculate the square of a number.
-            </summary>
-            <param name="x">A real value.</param>
-            <returns>The square of the argument.</returns>
+            <summary>Calculate the square of a BigDecimal value.</summary>
+            <param name="x">A BigDecimal value.</param>
+            <returns>The square of the BigDecimal.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Cube(Galaxon.BigNumbers.BigDecimal)">
-            <summary>
-            Calculate the cube of a number.
-            </summary>
-            <param name="x">A real value.</param>
-            <returns>The cube of the argument.</returns>
+            <summary>Calculate the cube of a BigDecimal value.</summary>
+            <param name="x">A BigDecimal value.</param>
+            <returns>The cube of the BigDecimal.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.RootN(Galaxon.BigNumbers.BigDecimal,System.Int32)">
             <inheritdoc/>
             <exception cref="T:System.ArithmeticException"></exception>
             <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException"></exception>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.RootN(Galaxon.BigNumbers.BigDecimal,System.Numerics.BigInteger)">
+            <summary>
+            Find the nth root of a BigDecimal value.
+            Unlike the method required by the IRootFunctions interface, this version supports a
+            BigInteger degree.
+            </summary>
+            <param name="x">The radicand. A BigDecimal value to find the nth root of.</param>
+            <param name="n">
+            The degree of root to find (2 for square root, 3 for cube root, etc.).
+            </param>
+            <returns>The nth root of the BigDecimal value.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            If the degree is zero.
+            </exception>
+            <exception cref="T:System.DivideByZeroException">
+            If the radicand is 0 and the degree is negative.
+            </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the radicand is negative and the degree is even.
+            </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Sqrt(Galaxon.BigNumbers.BigDecimal)">
             <summary>
@@ -1779,8 +1851,8 @@
             Computes division using the Goldschmidt algorithm.
             <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division"/>
             </remarks>
-            <param name="a">The left-hand BigDecimal number.</param>
-            <param name="b">The right-hand BigDecimal number.</param>
+            <param name="x">The left-hand BigDecimal number.</param>
+            <param name="y">The right-hand BigDecimal number.</param>
             <returns>The division of the arguments.</returns>
             <exception cref="T:System.DivideByZeroException">If b == 0</exception>
         </member>
@@ -1794,9 +1866,9 @@
             <summary>
             Divides two BigDecimal values together to compute their modulus or remainder.
             </summary>
-            <param name="a">The value which b divides.</param>
-            <param name="b">The value which divides a.</param>
-            <returns>The modulus or remainder of a divided by b.</returns>
+            <param name="x">The value which y divides.</param>
+            <param name="y">The value which divides x.</param>
+            <returns>The modulus or remainder of x divided by y.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.ArithmeticGeometricMean(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>

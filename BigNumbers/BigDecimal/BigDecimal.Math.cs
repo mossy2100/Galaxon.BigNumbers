@@ -345,21 +345,21 @@ public partial struct BigDecimal
     /// Computes division using the Goldschmidt algorithm.
     /// <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division"/>
     /// </remarks>
-    /// <param name="a">The left-hand BigDecimal number.</param>
-    /// <param name="b">The right-hand BigDecimal number.</param>
+    /// <param name="x">The left-hand BigDecimal number.</param>
+    /// <param name="y">The right-hand BigDecimal number.</param>
     /// <returns>The division of the arguments.</returns>
     /// <exception cref="System.DivideByZeroException">If b == 0</exception>
-    public static BigDecimal Divide(BigDecimal a, BigDecimal b)
+    public static BigDecimal Divide(BigDecimal x, BigDecimal y)
     {
         // Guard.
-        if (b == 0)
+        if (y == 0)
         {
             throw new DivideByZeroException("Division by 0 is undefined.");
         }
 
         // Optimizations.
-        if (b == 1) return a;
-        if (a == b) return 1;
+        if (y == 1) return x;
+        if (x == y) return 1;
 
         // Find f ~= 1/b as an initial estimate of the multiplication factor.
 
@@ -370,7 +370,7 @@ public partial struct BigDecimal
         // recursion. Casting from decimal to BigDecimal doesn't require division so it doesn't have
         // that problem.
 
-        var bR = RoundSigFigs(b, DecimalPrecision);
+        var bR = RoundSigFigs(y, DecimalPrecision);
         BigDecimal f = 1 / (decimal)bR.Significand;
         f.Exponent -= bR.Exponent;
 
@@ -380,13 +380,13 @@ public partial struct BigDecimal
 
         while (true)
         {
-            a *= f;
-            b *= f;
+            x *= f;
+            y *= f;
 
             // If y is 1, then n is the result.
-            if (b == 1) break;
+            if (y == 1) break;
 
-            f = 2 - b;
+            f = 2 - y;
 
             // If y is not 1, but is close to 1, then f can be 1 due to rounding after the
             // subtraction. If it is, there's no point continuing.
@@ -396,27 +396,27 @@ public partial struct BigDecimal
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return RoundSigFigs(a);
+        return RoundSigFigs(x);
     }
 
     /// <summary>
     /// Calculate reciprocal.
     /// </summary>
     /// <returns>The reciprocal of the argument.</returns>
-    public static BigDecimal Reciprocal(BigDecimal z)
+    public static BigDecimal Reciprocal(BigDecimal x)
     {
-        return Divide(1, z);
+        return Divide(1, x);
     }
 
     /// <summary>
     /// Divides two BigDecimal values together to compute their modulus or remainder.
     /// </summary>
-    /// <param name="a">The value which b divides.</param>
-    /// <param name="b">The value which divides a.</param>
-    /// <returns>The modulus or remainder of a divided by b.</returns>
-    public static BigDecimal Modulus(BigDecimal a, BigDecimal b)
+    /// <param name="x">The value which y divides.</param>
+    /// <param name="y">The value which divides x.</param>
+    /// <returns>The modulus or remainder of x divided by y.</returns>
+    public static BigDecimal Modulus(BigDecimal x, BigDecimal y)
     {
-        return a - Truncate(a / b) * b;
+        return x - Truncate(x / y) * y;
     }
 
     /// <summary>

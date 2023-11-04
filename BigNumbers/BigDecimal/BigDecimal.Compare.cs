@@ -56,52 +56,74 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// See if the BigDecimal value is *effectively* equal to another value of another number, which
-    /// could be another BigDecimal, or a standard number type.
+    /// Get the unit of least precision (ULP) in the provided BigDecimal number.
     /// </summary>
-    /// <param name="other">The value to compare with.</param>
-    /// <exception cref="AssertFailedException"></exception>
-    public readonly bool FuzzyEquals<T>(T other) where T : INumberBase<T>
+    /// <param name="bd">A BigDecimal value.</param>
+    /// <returns>The value of the unit of least precision.</returns>
+    public static BigDecimal UnitOfLeastPrecision(BigDecimal bd)
     {
-        // See if the other value is a BigDecimal.
-        if (other is BigDecimal bdOther)
-        {
-            // Make sure both are rounded off to the same number of significant figures
-            // (MaxSigFigs), then compare for equality.
-            var bd1 = RoundSigFigs(this);
-            var bd2 = RoundSigFigs(bdOther);
-            return bd1 == bd2;
-        }
+        return new BigDecimal(1, bd.Exponent);
+    }
 
-        // Convert the "other" value to a BigDecimal.
-        TryConvertFromChecked(other, out bdOther);
-
+    /// <summary>
+    /// See if the BigDecimal value is *effectively* equal (within a given tolerance) to another
+    /// numeric value, which could be another BigDecimal, or a standard number type.
+    /// </summary>
+    /// <typeparam name="T">The other number's type.</typeparam>
+    /// <param name="other">The value to compare with.</param>
+    /// <param name="delta">The maximum acceptable difference.</param>
+    /// <exception cref="ArgumentInvalidException">
+    /// If the type of the value being compared with the BigDecimal is unsupported.
+    /// </exception>
+    public readonly bool FuzzyEquals<T>(T other, BigDecimal? delta = null) where T : INumberBase<T>
+    {
+        // Get the type.
         var type = typeof(T);
 
-        // For integers, just round off the BigDecimal to the nearest integer, then compare for
-        // equality.
-        if (XNumber.IsIntegerType(type))
+        // Get the "other" value as a BigDecimal for the purpose of the comparison.
+        if (other is not BigDecimal bd)
         {
-            return Round(this).Equals(bdOther);
-        }
-
-        // For floating point  types, find the ULP (unit of least precision), which will depend on
-        // the type and the exponent.
-        if (XNumber.IsFloatingPointType(type) || other is decimal)
-        {
-            var lsb = other switch
+            var ok = TryConvertFromChecked(other, out bd);
+            if (!ok)
             {
-                Half h => UnitOfLeastPrecision(h),
-                float f => UnitOfLeastPrecision(f),
-                double d => UnitOfLeastPrecision(d),
-                decimal m => UnitOfLeastPrecision(m),
-            };
-
-            // The maximum difference is half the ULP.
-            return Abs(this - bdOther) <= lsb / 2;
+                throw new ArgumentInvalidException(type.Name, "Unsupported type.");
+            }
         }
 
-        throw new ArgumentInvalidException(nameof(other), "Unsupported type.");
+        // If unspecified, calculate a reasonable delta.
+        if (delta == null)
+        {
+            // Determine the ULP (unit of least precision) for the two values.
+            var ulpThis = new BigDecimal(1, Exponent);
+            BigDecimal ulpOther;
+
+            // See if the other value is a BigDecimal.
+            if (XNumber.IsIntegerType(type))
+            {
+                // For integers, the ULP is always 1.
+                ulpOther = 1;
+            }
+            else
+            {
+                // For other types the ULP depends on the type and the exponent.
+                ulpOther = other switch
+                {
+                    Half h => UnitOfLeastPrecision(h),
+                    float f => UnitOfLeastPrecision(f),
+                    double d => UnitOfLeastPrecision(d),
+                    decimal m => UnitOfLeastPrecision(m),
+                    BigDecimal => UnitOfLeastPrecision(bd),
+                    _ => throw new ArgumentInvalidException(type.Name, "Unsupported type.")
+                };
+            }
+
+            // Calculate the delta from half the maximum ULP.
+            delta = MaxMagnitude(ulpThis, ulpOther) / 2;
+        }
+
+        // See if they are close enough.
+        var diff = Abs(this - bd);
+        return diff <= delta;
     }
 
     /// <inheritdoc/>

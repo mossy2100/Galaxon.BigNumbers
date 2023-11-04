@@ -685,6 +685,24 @@
             That means all methods for exponentiation, finding roots, and logarithms.
             </summary>
         </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_0_Returns1">
+            <summary>Exp(0) returns 1.</summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_1_ReturnsE">
+            <summary>Exp(1) returns E.</summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_PositiveIntegers">
+            <summary>Test Exp() with positive integers.</summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_NegativeIntegers">
+            <summary>Test Exp() with negative integers.</summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_PositiveFloats">
+            <summary>Test Exp() with positive floating point values.</summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_NegativeFloats">
+            <summary>Test Exp() with negative floating point values.</summary>
+        </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestSqrtBig">
             <summary>
             Used https://keisan.casio.com/calculator to get expected result.
