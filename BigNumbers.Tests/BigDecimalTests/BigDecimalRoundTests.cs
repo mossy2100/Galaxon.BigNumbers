@@ -4,7 +4,7 @@ namespace Galaxon.BigNumbers.Tests;
 public class BigDecimalRoundTests
 {
     /// <summary>
-    /// Check BigDecimal.Round() matches decimal.Round() for all rounding methods.
+    /// Compare BigDecimal.Round() matches decimal.Round() for all rounding methods.
     /// </summary>
     [TestMethod]
     public void TestRoundingMethods()
@@ -28,8 +28,9 @@ public class BigDecimalRoundTests
     [TestMethod]
     public void TestRoundPi()
     {
-        var pi = BigDecimal.Round(BigDecimal.Pi, 4);
-        Assert.AreEqual(3.1416m, pi);
+        var pi = BigDecimal.Round(BigDecimal.Pi, 10);
+        // Console.WriteLine(pi);
+        Assert.AreEqual(3.1415926536m, pi);
     }
 
     [TestMethod]

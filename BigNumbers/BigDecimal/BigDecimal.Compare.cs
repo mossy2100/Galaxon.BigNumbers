@@ -2,7 +2,6 @@ using System.Numerics;
 using Galaxon.Core.Exceptions;
 using Galaxon.Core.Numbers;
 using Galaxon.Core.Types;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Galaxon.BigNumbers;
 
@@ -16,7 +15,7 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
-        return obj is BigDecimal bd && Equals(bd);
+        return obj is BigDecimal x && Equals(x);
     }
 
     /// <inheritdoc/>
@@ -38,7 +37,7 @@ public partial struct BigDecimal
         if (T.IsSubnormal(f)) return XReflection.Cast<T, BigDecimal>(T.Epsilon);
 
         // Normal value.
-        var (signBit, expBits, fracBits) = f.Disassemble();
+        var expBits = f.GetExpBits();
         var expBias = XFloatingPoint.GetExpBias<T>();
         var nFracBits = XFloatingPoint.GetNumFracBits<T>();
         return Exp2(expBits - expBias - nFracBits);
@@ -51,18 +50,18 @@ public partial struct BigDecimal
     /// <returns>The value of the unit of least precision.</returns>
     public static BigDecimal UnitOfLeastPrecision(decimal m)
     {
-        var (signBit, scaleBits, fracBits) = m.Disassemble();
+        var scaleBits = m.GetScaleBits();
         return new decimal(1, 0, 0, false, scaleBits);
     }
 
     /// <summary>
     /// Get the unit of least precision (ULP) in the provided BigDecimal number.
     /// </summary>
-    /// <param name="bd">A BigDecimal value.</param>
+    /// <param name="x">A BigDecimal value.</param>
     /// <returns>The value of the unit of least precision.</returns>
-    public static BigDecimal UnitOfLeastPrecision(BigDecimal bd)
+    public static BigDecimal UnitOfLeastPrecision(BigDecimal x)
     {
-        return new BigDecimal(1, bd.Exponent);
+        return new BigDecimal(1, x.Exponent);
     }
 
     /// <summary>
@@ -94,7 +93,7 @@ public partial struct BigDecimal
         if (delta == null)
         {
             // Determine the ULP (unit of least precision) for the two values.
-            var ulpThis = new BigDecimal(1, Exponent);
+            var ulpThis = UnitOfLeastPrecision(this);
             BigDecimal ulpOther;
 
             // See if the other value is a BigDecimal.
@@ -117,12 +116,19 @@ public partial struct BigDecimal
                 };
             }
 
+            var max = MaxMagnitude(ulpThis, ulpOther);
+            delta = max / 2;
+
             // Calculate the delta from half the maximum ULP.
-            delta = MaxMagnitude(ulpThis, ulpOther) / 2;
+            Console.WriteLine($"ulpThis = {ulpThis:E10}");
+            Console.WriteLine($"ulpOther = {ulpOther:E10}");
+            Console.WriteLine($"max = {max:E10}");
+            Console.WriteLine($"delta = {delta:E10}");
         }
 
         // See if they are close enough.
         var diff = Abs(this - bd);
+        Console.WriteLine($"diff = {diff:E10}");
         return diff <= delta;
     }
 
@@ -139,7 +145,7 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public int CompareTo(object? obj)
     {
-        if (obj is BigDecimal bd) return CompareTo(bd);
+        if (obj is BigDecimal x) return CompareTo(x);
 
         throw new ArgumentInvalidException(nameof(obj), "Must be a BigDecimal.");
     }
@@ -155,36 +161,36 @@ public partial struct BigDecimal
         if (Sign > other.Sign) return 1;
 
         // Compare values.
-        var (bd1, bd2) = Align(this, other);
-        return bd1.Significand.CompareTo(bd2.Significand);
+        var (x, y) = Align(this, other);
+        return x.Significand.CompareTo(y.Significand);
     }
 
     /// <inheritdoc/>
-    public static BigDecimal MaxMagnitude(BigDecimal bd, BigDecimal bd2)
+    public static BigDecimal MaxMagnitude(BigDecimal x, BigDecimal y)
     {
-        var absX = Abs(bd);
-        var absY = Abs(bd2);
+        var absX = Abs(x);
+        var absY = Abs(y);
         return absX > absY ? absX : absY;
     }
 
     /// <inheritdoc/>
-    public static BigDecimal MaxMagnitudeNumber(BigDecimal bd, BigDecimal bd2)
+    public static BigDecimal MaxMagnitudeNumber(BigDecimal x, BigDecimal y)
     {
-        return MaxMagnitude(bd, bd2);
+        return MaxMagnitude(x, y);
     }
 
     /// <inheritdoc/>
-    public static BigDecimal MinMagnitude(BigDecimal bd, BigDecimal bd2)
+    public static BigDecimal MinMagnitude(BigDecimal x, BigDecimal y)
     {
-        var absX = Abs(bd);
-        var absY = Abs(bd2);
+        var absX = Abs(x);
+        var absY = Abs(y);
         return absX < absY ? absX : absY;
     }
 
     /// <inheritdoc/>
-    public static BigDecimal MinMagnitudeNumber(BigDecimal bd, BigDecimal bd2)
+    public static BigDecimal MinMagnitudeNumber(BigDecimal x, BigDecimal y)
     {
-        return MinMagnitude(bd, bd2);
+        return MinMagnitude(x, y);
     }
 
     #endregion Comparison methods
@@ -192,39 +198,39 @@ public partial struct BigDecimal
     #region Comparison operators
 
     /// <inheritdoc/>
-    public static bool operator ==(BigDecimal bd, BigDecimal bd2)
+    public static bool operator ==(BigDecimal x, BigDecimal y)
     {
-        return bd.Equals(bd2);
+        return x.Equals(y);
     }
 
     /// <inheritdoc/>
-    public static bool operator !=(BigDecimal bd, BigDecimal bd2)
+    public static bool operator !=(BigDecimal x, BigDecimal y)
     {
-        return !bd.Equals(bd2);
+        return !x.Equals(y);
     }
 
     /// <inheritdoc/>
-    public static bool operator <(BigDecimal bd, BigDecimal bd2)
+    public static bool operator <(BigDecimal x, BigDecimal y)
     {
-        return bd.CompareTo(bd2) < 0;
+        return x.CompareTo(y) < 0;
     }
 
     /// <inheritdoc/>
-    public static bool operator <=(BigDecimal bd, BigDecimal bd2)
+    public static bool operator <=(BigDecimal x, BigDecimal y)
     {
-        return bd.CompareTo(bd2) <= 0;
+        return x.CompareTo(y) <= 0;
     }
 
     /// <inheritdoc/>
-    public static bool operator >(BigDecimal bd, BigDecimal bd2)
+    public static bool operator >(BigDecimal x, BigDecimal y)
     {
-        return bd.CompareTo(bd2) > 0;
+        return x.CompareTo(y) > 0;
     }
 
     /// <inheritdoc/>
-    public static bool operator >=(BigDecimal bd, BigDecimal bd2)
+    public static bool operator >=(BigDecimal x, BigDecimal y)
     {
-        return bd.CompareTo(bd2) >= 0;
+        return x.CompareTo(y) >= 0;
     }
 
     #endregion Comparison operators

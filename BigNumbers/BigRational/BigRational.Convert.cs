@@ -104,7 +104,7 @@ public partial struct BigRational
         var num = (signBit == 1 ? -1 : 1) * (BigInteger)intBits;
 
         // Get the denominator.
-        var den = BigInteger.Pow(10, scaleBits);
+        var den = XBigInteger.Exp10(scaleBits);
 
         // Construct and return the new value.
         return new BigRational(num, den);
@@ -113,14 +113,21 @@ public partial struct BigRational
     /// <summary>Cast BigDecimal to BigRational.</summary>
     public static implicit operator BigRational(BigDecimal x)
     {
-        // Zero exponent.
-        if (x.Exponent == 0) return new BigRational(x.Significand);
-
-        // Negative exponent.
-        if (x.Exponent < 0) return new BigRational(x.Significand, XBigInteger.Exp10(-x.Exponent));
-
-        // Positive exponent.
-        return new BigRational(x.Significand * XBigInteger.Exp10(x.Exponent));
+        if (x.Exponent < 0)
+        {
+            // Negative exponent.
+            return new BigRational(x.Significand, XBigInteger.Exp10(-x.Exponent));
+        }
+        else if (x.Exponent == 0)
+        {
+            // Zero exponent.
+            return new BigRational(x.Significand);
+        }
+        else
+        {
+            // Positive exponent.
+            return new BigRational(x.Significand * XBigInteger.Exp10(x.Exponent));
+        }
     }
 
     #endregion Casting to BigRational
@@ -593,7 +600,7 @@ public partial struct BigRational
         BigInteger den = 1;
         var maxExp = XFloatingPoint.GetMaxExp<T>();
         var exp = (short)(expBits - maxExp - nFracBits);
-        var pow = BigInteger.Pow(2, XShort.Abs(exp));
+        var pow = XBigInteger.Exp2(XShort.Abs(exp));
         if (exp < 0)
         {
             den = pow;

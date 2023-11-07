@@ -12,6 +12,22 @@ public partial struct BigDecimal
 {
     #region Power functions
 
+    /// <summary>Calculate the square of a BigDecimal value.</summary>
+    /// <param name="x">A BigDecimal value.</param>
+    /// <returns>The square of the BigDecimal.</returns>
+    public static BigDecimal Sqr(BigDecimal x)
+    {
+        return x * x;
+    }
+
+    /// <summary>Calculate the cube of a BigDecimal value.</summary>
+    /// <param name="x">A BigDecimal value.</param>
+    /// <returns>The cube of the BigDecimal.</returns>
+    public static BigDecimal Cube(BigDecimal x)
+    {
+        return x * x * x;
+    }
+
     /// <summary>
     /// Calculate the value of x^y where x is a BigDecimal and y is a BigInteger.
     /// Uses exponentiation by squaring for non-trivial parameters.
@@ -37,33 +53,50 @@ public partial struct BigDecimal
         }
         else if (y == 0)
         {
-            // If the exponent is 0, the result will be 1.
+            // x^0 == 1
             return 1;
         }
-
-        // Handle easy cases of x.
-        if (x == 0 || x == 1)
+        else if (y == 1)
         {
-            // 0 raised to any positive value is 0 (we know y > 0 at this point).
-            // 1 raised to any value is 1.
+            // x^1 == x
             return x;
-        }
-        else if (x == 10)
-        {
-            // 10 raised to an integer power is easy, given the structure of the BigDecimal type.
-            return new BigDecimal(1, y);
-        }
-
-        // We can compute a result reasonably quickly with exponentiation by squaring (recursion).
-        if (IsEvenInteger(y))
-        {
-            // If y is even: x^y = (x^2)^(y/2)
-            return Pow(Sqr(x), y / 2);
         }
         else
         {
-            // If y is odd: x^y = x * (x^2)^((y-1)/2)
-            return x * Pow(Sqr(x), (y - 1) / 2);
+            // y > 1
+
+            // Handle easy cases of x.
+            if (x == 0 || x == 1)
+            {
+                // 0^y == 0 for all y > 0
+                // 1^y == 1 for all y
+                return x;
+            }
+            else if (x == 10 && y >= int.MinValue && y <= int.MaxValue)
+            {
+                // 10 raised to an integer power is easy, given the structure of the BigDecimal type.
+                return new BigDecimal(1, (int)y);
+            }
+
+            // Exponentiation by squaring.
+            if (y == 2)
+            {
+                return Sqr(x);
+            }
+            else if (y == 3)
+            {
+                return Cube(x);
+            }
+            else if (IsEvenInteger(y))
+            {
+                // y is even: x^y = (x^2)^(y/2)
+                return Pow(Sqr(x), y / 2);
+            }
+            else
+            {
+                // y is odd: x^y = x * (x^2)^((y-1)/2)
+                return x * Pow(Sqr(x), (y - 1) / 2);
+            }
         }
     }
 
@@ -140,22 +173,6 @@ public partial struct BigDecimal
         return RootN(Pow(x, y.Numerator), y.Denominator);
     }
 
-    /// <summary>Calculate the square of a BigDecimal value.</summary>
-    /// <param name="x">A BigDecimal value.</param>
-    /// <returns>The square of the BigDecimal.</returns>
-    public static BigDecimal Sqr(BigDecimal x)
-    {
-        return x * x;
-    }
-
-    /// <summary>Calculate the cube of a BigDecimal value.</summary>
-    /// <param name="x">A BigDecimal value.</param>
-    /// <returns>The cube of the BigDecimal.</returns>
-    public static BigDecimal Cube(BigDecimal x)
-    {
-        return x * x * x;
-    }
-
     #endregion Power functions
 
     #region Root functions
@@ -228,7 +245,6 @@ public partial struct BigDecimal
         }
 
         // At this point we know x > 0 and n > 1.
-
         // Use Newton's method to find the root.
 
         // Temporarily increase the maximum number of significant figures to ensure a correct
@@ -236,77 +252,81 @@ public partial struct BigDecimal
         var origMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
-        // Start with an initial estimate.
-        // We know the result will be somewhere between 0 and x.
-        // Newton's method converges quickly so it should be ok to just pick a value somewhere in
-        // that range and run the algorithm.
-        // In the absence of a better idea, let's set the initial estimate to half the radicand.
-        // y1 and y2 represent successive iterations of the method, with y1 starting off as our
-        // initial estimate, and y2 becoming the final result.
-        // y0 is used to remember the previous value of y1, for bounce detection.
-        // BigDecimal y0 = 0;
-        BigDecimal y1 = x / 2;
-        // Console.WriteLine(y1);
-        BigDecimal y2;
-
-        // d1 and d2 serve as a way of keeping track of how good our result is.
-        // It's necessary to increase the number of significant figures temporarily when calculating
-        // d1 and d2 to get a clear indication of which result is better; otherwise, if y1 and y2
-        // are adjacent, d1 and d2 will be equal, so we can't tell which is actually closer to the
-        // right answer.
-        MaxSigFigs = origMaxSigFigs + 4;
-        BigDecimal d1 = Abs(x - Pow(y1, n));
-        MaxSigFigs = origMaxSigFigs + 2;
-        BigDecimal d2;
+        // Set the initial estimate to x.
+        BigDecimal yk = x;
+        // Next term, y(k+1)
+        BigDecimal ykp1;
+        // Keep up to 2 previous terms, for bounce detection.
+        // Previous term, y(k-1)
+        BigDecimal ykm1 = 0;
+        // Term before the previous term, y(k-2)
+        BigDecimal ykm2 = 0;
 
         // Precalculate some values.
         var m = (n - 1) / (BigDecimal)n;
         var p = x / n;
 
-        // var count = 0;
+        // DEBUG
+        var count = 0;
 
         // Newton's method.
         while (true)
         {
-            // Compute the next value of y.
-            y2 = m * y1 + p / Pow(y1, n - 1);
+            // Compute the value of ykp1 and add it to the list.
+            ykp1 = m * yk + p / Pow(yk, n - 1);
 
             // If the new term is the same, we're done.
-            if (y2 == y1) break;
+            if (ykp1 == yk) break;
 
-            // Calculate how close the new term is.
-            MaxSigFigs = origMaxSigFigs + 4;
-            d2 = Abs(x - Pow(y2, n));
-            MaxSigFigs = origMaxSigFigs + 2;
-            if (d2 >= d1)
-            {
-                // The new term is worse or no better than the previous one. This would not
-                // happen if we had infinite precision, but we don't.
-                // Due to rounding errors, when we are very close to the end of the process, the
-                // loop can cycle between 2-3 adjacent solutions.
-                // This check detects when we find a new term that's actually slightly worse (or no
-                // better) than the previous one, in which case we can return the previous one.
-                y2 = y1;
-                break;
-            }
-
-            // count++;
-            // if (count > 1000)
+            // // Detect repeated value. This can occur due to rounding.
+            // if (ykp1 == ykm1)
             // {
-            //     // return y2;
-            //     throw new TimeoutException($"Too many iterations. x={x}, n={n}");
+            //     // Figure out which value is best.
+            //     BigDecimal d0 = Abs(Pow(yk, n) - x);
+            //     BigDecimal d1 = Abs(Pow(ykp1, n) - x);
+            //     if (d0 < d1)
+            //     {
+            //         ykp1 = yk;
+            //     }
+            //     break;
+            // }
+            //
+            // // Detect repeated value. This can occur due to rounding.
+            // if (ykp1 == ykm2)
+            // {
+            //     // Figure out value one is best.
+            //     BigDecimal d0 = Abs(Pow(ykm1, n) - x);
+            //     BigDecimal d1 = Abs(Pow(yk, n) - x);
+            //     BigDecimal d2 = Abs(Pow(ykp1, n) - x);
+            //     if (d0 <= d1 && d0 <= d2)
+            //     {
+            //         ykp1 = ykm1;
+            //     }
+            //     else if (d1 <= d0 && d1 <= d2)
+            //     {
+            //         ykp1 = yk;
+            //     }
+            //     break;
             // }
 
-            // Prepare for the next iteration.
-            // y0 = y1;
-            y1 = y2;
-            // Console.WriteLine(y1);
-            d1 = d2;
+            // DEBUG
+            Console.WriteLine($"{ykp1:E50}");
+            count++;
+            if (count > 100)
+            {
+                // return y2;
+                throw new TimeoutException($"Too many iterations. x={x}, n={n}");
+            }
+
+            // Next iteration.
+            ykm2 = ykm1;
+            ykm1 = yk;
+            yk = ykp1;
         }
 
         // Restore the maximum number of significant figures, and round off.
         MaxSigFigs = origMaxSigFigs;
-        return RoundSigFigs(y2);
+        return RoundSigFigs(ykp1);
     }
 
     /// <summary>
@@ -437,7 +457,7 @@ public partial struct BigDecimal
 
         // Scale the value to the range (0..1) so the Taylor series converges quickly and to avoid
         // overflow.
-        var nDigits = x.Significand.NumDigits();
+        var nDigits = x.NumSigFigs;
         var scale = nDigits + x.Exponent;
         var y = x;
         y.Exponent = -nDigits;

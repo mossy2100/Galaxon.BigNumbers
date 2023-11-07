@@ -14,6 +14,7 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc/>
+    /// <summary>Round off a value to a certain number of decimal places.</summary>
     /// <remarks>
     /// The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
     /// in .NET Core.
@@ -22,65 +23,94 @@ public partial struct BigDecimal
     public static BigDecimal Round(BigDecimal x, int digits = 0,
         MidpointRounding mode = MidpointRounding.ToEven)
     {
-        // If it's an integer, no rounding required.
+        // If it's an integer, no rounding is required (regardless of the value of digits).
         if (x.Exponent >= 0) return x;
 
-        // Find out how many digits to discard.
-        var nDigitsToCut = -digits - x.Exponent;
+        // Guard.
+        if (digits < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(digits), "Must not be negative.");
+        }
 
-        // Anything to do?
-        if (nDigitsToCut <= 0) return x;
+        // Find the number of digits we want in the final answer.
+        var maxSigFigs = x.NumSigFigs + x.Exponent + digits;
 
-        // Round off the significand.
-        var newSig = RoundSignificand(x.Significand, nDigitsToCut, mode);
-
-        return new BigDecimal(newSig, -digits);
+        return RoundSigFigs(x, maxSigFigs, mode);
     }
 
-    /// <summary>
-    /// Given a significand and exponent, and a maximum number of significant figures, determine
-    /// the new significand and exponent.
-    /// </summary>
-    /// <remarks>
-    /// The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
-    /// in .NET Core.
-    /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
-    /// </remarks>
-    private static (BigInteger newSig, BigInteger newExp) RoundSigFigs(BigInteger sig,
-        BigInteger exp, BigInteger maxSigFigs, MidpointRounding mode = MidpointRounding.ToEven)
+    /// <summary>Round off a BigDecimal value to a certain number of significant figures.</summary>
+    public static BigDecimal RoundSigFigs(BigDecimal x, int? maxSigFigs = null,
+        MidpointRounding mode = MidpointRounding.ToEven)
     {
         // Guard.
-        if (maxSigFigs <= 0)
+        if (maxSigFigs is < 1)
         {
             throw new ArgumentOutOfRangeException(nameof(maxSigFigs), "Must be at least 1.");
         }
 
-        // Get current num sig figs.
-        var nSigFigs = sig.NumDigits();
+        // Set the default number of significant figures.
+        maxSigFigs ??= MaxSigFigs;
+
+        // Get current num of significant figures.
+        var nSigFigs = x.NumSigFigs;
 
         // Find out how many digits to discard.
-        var nDigitsToCut = nSigFigs - maxSigFigs;
+        var nDigitsToCut = nSigFigs - maxSigFigs.Value;
 
         // Anything to do?
-        if (nDigitsToCut <= 0)
+        if (nDigitsToCut <= 0) return Clone(x);
+
+        // Get the sign.
+        var sign = x.Sign;
+
+        // Truncate the significand.
+        var digits = x.DigitsString;
+        var newSigDigits = digits[..maxSigFigs.Value];
+        var newSig = BigInteger.Parse(newSigDigits);
+
+        // Determine from the rounding method if we should increment the new significand.
+        bool increment = false;
+        switch (mode)
         {
-            return (sig, exp);
+            case MidpointRounding.AwayFromZero:
+            {
+                // See if the first decimal place is 5 or higher.
+                var firstDecimal = BigInteger.Parse(digits[maxSigFigs.Value].ToString());
+                increment = firstDecimal >= 5;
+                break;
+            }
+
+            case MidpointRounding.ToEven:
+            {
+                // If the decimal fraction is > 0.5, round up.
+                // If the decimal fraction is < 0.5, don't round up.
+                // If it's exactly 0.5, round up if the new significand is odd.
+                var firstDecimal = BigInteger.Parse(digits[maxSigFigs.Value].ToString());
+                increment = firstDecimal > 5 || (firstDecimal == 5 && (nSigFigs - maxSigFigs > 1
+                    || (nSigFigs - maxSigFigs == 1 && BigInteger.IsOddInteger(newSig))));
+                break;
+            }
+
+            case MidpointRounding.ToPositiveInfinity:
+                increment = sign > 0;
+                break;
+
+            case MidpointRounding.ToNegativeInfinity:
+                increment = sign < 0;
+                break;
+
+            case MidpointRounding.ToZero:
+                // Do nothing.
+                break;
         }
 
-        // Round off the significand.
-        var newSig = RoundSignificand(sig, nDigitsToCut, mode);
+        // Do the increment if necessary.
+        if (increment)
+        {
+            newSig++;
+        }
 
-        return (newSig, exp + nDigitsToCut);
-    }
-
-    /// <summary>Round off a BigDecimal value to a certain number of significant figures.</summary>
-    public static BigDecimal RoundSigFigs(BigDecimal x, BigInteger? maxSigFigs = null,
-        MidpointRounding mode = MidpointRounding.ToEven)
-    {
-        maxSigFigs ??= MaxSigFigs;
-        var (newSig, newExp) = RoundSigFigs(x.Significand, x.Exponent, maxSigFigs.Value,
-            mode);
-        return new BigDecimal(newSig, newExp);
+        return new BigDecimal(sign * newSig, x.Exponent + nDigitsToCut);
     }
 
     /// <inheritdoc/>
@@ -144,7 +174,7 @@ public partial struct BigDecimal
     /// <param name="nDigitsToCut">The power of 10 (number of digits to cut).</param>
     /// <param name="mode">The rounding mode.</param>
     /// <returns>The rounded off result of the division.</returns>
-    private static BigInteger RoundSignificand(BigInteger sig, BigInteger nDigitsToCut,
+    private static BigInteger RoundSignificand(BigInteger sig, int nDigitsToCut,
         MidpointRounding mode = MidpointRounding.ToEven)
     {
         var exp10 = XBigInteger.Exp10(nDigitsToCut);
@@ -179,7 +209,7 @@ public partial struct BigDecimal
     /// NB: The value will probably not be canonical after calling this method, so it should only
     /// be used on temporary variables.
     /// </summary>
-    private void ShiftBy(BigInteger nPlaces)
+    private void Shift(int nPlaces)
     {
         // Guard.
         if (nPlaces < 0)
@@ -195,25 +225,25 @@ public partial struct BigDecimal
         Exponent -= nPlaces;
     }
 
-    /// <summary>
-    /// Shift such that the significand has a certain number of significant digits.
-    /// NB: The value will probably not be canonical after calling this method, so it should only
-    /// be used on temporary variables.
-    /// </summary>
-    private void ShiftToSigFigs(int? nSigFigs = null)
-    {
-        ShiftBy((nSigFigs ?? MaxSigFigs) - Significand.NumDigits());
-    }
+    // /// <summary>
+    // /// Shift such that the significand has a certain number of significant digits.
+    // /// NB: The value will probably not be canonical after calling this method, so it should only
+    // /// be used on temporary variables.
+    // /// </summary>
+    // private void ShiftToSigFigs(int? nSigFigs = null)
+    // {
+    //     ShiftBy((nSigFigs ?? MaxSigFigs) - Significand.NumDigits());
+    // }
 
-    /// <summary>
-    /// Shift such that the exponent has a certain value.
-    /// NB: The value will probably not be canonical after calling this method, so it should only
-    /// be used on temporary variables.
-    /// </summary>
-    private void ShiftToExp(int exp)
-    {
-        ShiftBy(Exponent - exp);
-    }
+    // /// <summary>
+    // /// Shift such that the exponent has a certain value.
+    // /// NB: The value will probably not be canonical after calling this method, so it should only
+    // /// be used on temporary variables.
+    // /// </summary>
+    // private void ShiftToExp(int exp)
+    // {
+    //     ShiftBy(Exponent - exp);
+    // }
 
     /// <summary>
     /// Adjust the parts of one of the values so both have the same exponent.
@@ -227,11 +257,11 @@ public partial struct BigDecimal
         // Shift the value with the larger exponent so both have the same exponents.
         if (y.Exponent > x.Exponent)
         {
-            y.ShiftBy(y.Exponent - x.Exponent);
+            y.Shift(y.Exponent - x.Exponent);
         }
         else
         {
-            x.ShiftBy(x.Exponent - y.Exponent);
+            x.Shift(x.Exponent - y.Exponent);
         }
 
         return (x, y);
@@ -242,8 +272,7 @@ public partial struct BigDecimal
     /// Static form of the method, for use in the constructor.
     /// </summary>
     /// <returns>The two updated BigIntegers.</returns>
-    private static (BigInteger, BigInteger) MakeCanonical(BigInteger significand,
-        BigInteger exponent)
+    private static (BigInteger, int) MakeCanonical(BigInteger significand, int exponent)
     {
         // Canonical form of zero.
         if (significand == 0)
@@ -252,7 +281,6 @@ public partial struct BigDecimal
         }
         else
         {
-            // Canonical form of other values.
             // Remove any trailing 0s from the significand while incrementing the exponent.
             while (significand % 10 == 0)
             {
@@ -283,28 +311,39 @@ public partial struct BigDecimal
         return new BigDecimal(-bd.Significand, bd.Exponent);
     }
 
-    /// <summary>
-    /// Addition method.
-    /// </summary>
+    /// <summary>Add 2 BigDecimals.</summary>
     /// <param name="a">The left-hand BigDecimal number.</param>
     /// <param name="b">The right-hand BigDecimal number.</param>
     /// <returns>The addition of the arguments.</returns>
     public static BigDecimal Add(BigDecimal a, BigDecimal b)
     {
+        // If the orders of magnitude of the two values are too different, adding them will have no
+        // effect. We want to detect this situation to save time, and avoid the call to Align(),
+        // which can cause overflow if the difference in exponents is very large.
+        var expDiff = a.Exponent - b.Exponent;
+        if (expDiff > MaxSigFigs)
+        {
+            return a;
+        }
+        else if (-expDiff > MaxSigFigs)
+        {
+            return b;
+        }
+
+        // Make the exponents the same.
         var (x, y) = Align(a, b);
+
+        // Sum the significands and round off.
         return RoundSigFigs(new BigDecimal(x.Significand + y.Significand, x.Exponent));
     }
 
-    /// <summary>
-    /// Subtraction method.
-    /// </summary>
+    /// <summary>Subtract one BigDecimal from another.</summary>
     /// <param name="a">The left-hand BigDecimal number.</param>
     /// <param name="b">The right-hand BigDecimal number.</param>
-    /// <returns>The subtraction of the arguments.</returns>
+    /// <returns>The result of the subtraction.</returns>
     public static BigDecimal Subtract(BigDecimal a, BigDecimal b)
     {
-        var (x, y) = Align(a, b);
-        return RoundSigFigs(new BigDecimal(x.Significand - y.Significand, x.Exponent));
+        return Add(a, -b);
     }
 
     /// <summary>

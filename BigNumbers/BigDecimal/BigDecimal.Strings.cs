@@ -291,31 +291,20 @@ public partial struct BigDecimal
             return ("0", strAbsSig);
         }
 
-        try
+        // Integer multiple of 10.
+        if (Exponent > 0)
         {
-            // If Exponent is outside the valid range for int, this will throw an OverflowException.
-            // TODO Test this assumption.
-            var exp = (int)Exponent;
-
-            // Integer multiple of 10.
-            if (Exponent > 0)
-            {
-                return (strAbsSig.PadRight(strAbsSig.Length + exp, '0'), "");
-            }
-
-            // Fraction less than 0.1.
-            if (-Exponent > strAbsSig.Length)
-            {
-                return ("0", strAbsSig.PadLeft(-exp, '0'));
-            }
-
-            // Fraction with non-zeros on both sides of the decimal point.
-            return (strAbsSig[..^-exp], strAbsSig[^-exp..]);
+            return (strAbsSig.PadRight(strAbsSig.Length + Exponent, '0'), "");
         }
-        catch (OverflowException)
+
+        // Fraction less than 0.1.
+        if (-Exponent > strAbsSig.Length)
         {
-            throw new OverflowException("The exponent is too large to format the value.");
+            return ("0", strAbsSig.PadLeft(-Exponent, '0'));
         }
+
+        // Fraction with non-zeros on both sides of the decimal point.
+        return (strAbsSig[..^-Exponent], strAbsSig[^-Exponent..]);
     }
 
     /// <summary>

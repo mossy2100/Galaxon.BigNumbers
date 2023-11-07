@@ -24,6 +24,11 @@
         <member name="T:Galaxon.BigNumbers.Tests.BigDecimalCompareTests">
             <summary>Test the methods in BigDecimalCompare.cs.</summary>
         </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalCompareTests.Equals_EqualValues_ReturnsTrue">
+             <summary>
+            
+             </summary>
+        </member>
         <member name="T:Galaxon.BigNumbers.Tests.BigDecimalConstantsTests">
             <summary>Test generation of constants.</summary>
         </member>
@@ -680,10 +685,13 @@
             </summary>
         </member>
         <member name="T:Galaxon.BigNumbers.Tests.BigDecimalExpTests">
-            <summary>
-            Test all methods in BigDecimal.Exp.cs.
-            That means all methods for exponentiation, finding roots, and logarithms.
-            </summary>
+             <summary>
+             Test all methods in BigDecimal.Exp.cs.
+             That means all methods for exponentiation, finding roots, and logarithms.
+            
+             For a useful exponent calculator:
+             <see href="https://www.calculator.net/exponent-calculator.html"/>
+             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_0_Returns1">
             <summary>Exp(0) returns 1.</summary>
@@ -702,6 +710,12 @@
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_NegativeFloats">
             <summary>Test Exp() with negative floating point values.</summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Pow_BaseNegExponentRationalEvenDenominator_UnsolvableThrows">
+            <summary>
+            Test that attempting to calculate x^y where x is negative and y is a rational with an even
+            denominator will throw an exception.
+            </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestSqrtBig">
             <summary>
@@ -745,7 +759,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRoundTests.TestRoundingMethods">
             <summary>
-            Check BigDecimal.Round() matches decimal.Round() for all rounding methods.
+            Compare BigDecimal.Round() matches decimal.Round() for all rounding methods.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigRationalConvertTests.TestCastFromDoubleFuzzy">

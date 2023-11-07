@@ -942,8 +942,8 @@
              Contains the core fields and properties, and the constructors.
              The other partials contain members grouped by purpose.
             
-             A BigDecimal is represented internally by two BigInteger values, representing the significant
-             and the exponent. The value of a BigDecimal can thus easily be calculated from:
+             A BigDecimal is represented internally by a BigInteger value representing the significand,
+             and an int representing the exponent. The value of a BigDecimal can easily be calculated from:
                  value = Significand * 10^Exponent
             
              No trailing zeros are retained in the significand; rather, the exponent is adjusted instead.
@@ -975,23 +975,30 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.GetExponentShortestBitLength">
             <inheritdoc/>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteSignificandBigEndian(System.Span{System.Byte},System.Int32@)">
-            <inheritdoc/>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteSignificandLittleEndian(System.Span{System.Byte},System.Int32@)">
             <inheritdoc/>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteExponentBigEndian(System.Span{System.Byte},System.Int32@)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteSignificandBigEndian(System.Span{System.Byte},System.Int32@)">
             <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteExponentLittleEndian(System.Span{System.Byte},System.Int32@)">
             <inheritdoc/>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteExponentBigEndian(System.Span{System.Byte},System.Int32@)">
+            <inheritdoc/>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteBigInteger(System.Numerics.BigInteger,System.Span{System.Byte},System.Int32@,System.Boolean)">
             <summary>
             Shared logic for:
-            <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteSignificandBigEndian(System.Span{System.Byte},System.Int32@)"/>
             <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteSignificandLittleEndian(System.Span{System.Byte},System.Int32@)"/>
+            <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteSignificandBigEndian(System.Span{System.Byte},System.Int32@)"/>
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.TryWriteInt(System.Int32,System.Span{System.Byte},System.Int32@,System.Boolean)">
+            <summary>
+            Shared logic for:
+            <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteExponentLittleEndian(System.Span{System.Byte},System.Int32@)"/>
+            <see cref="M:Galaxon.BigNumbers.BigDecimal.TryWriteExponentBigEndian(System.Span{System.Byte},System.Int32@)"/>
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Equals(System.Object)">
@@ -1020,7 +1027,7 @@
             <summary>
             Get the unit of least precision (ULP) in the provided BigDecimal number.
             </summary>
-            <param name="bd">A BigDecimal value.</param>
+            <param name="x">A BigDecimal value.</param>
             <returns>The value of the unit of least precision.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.FuzzyEquals``1(``0,System.Nullable{Galaxon.BigNumbers.BigDecimal})">
@@ -1351,7 +1358,7 @@
             <summary>Convert BigDecimal to tuple.</summary>
             <returns>A tuple containing the significand and exponent.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.FromTuple(System.ValueTuple{System.Numerics.BigInteger,System.Numerics.BigInteger})">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.FromTuple(System.ValueTuple{System.Numerics.BigInteger,System.Int32})">
             <summary>Construct BigDecimal from tuple of 2 BigInteger values.</summary>
             <param name="values">The tuple.</param>
             <returns>The equivalent BigDecimal value.</returns>
@@ -1424,10 +1431,17 @@
             </remarks>
             <see cref="P:System.Numerics.BigInteger.Sign"/>
         </member>
-        <member name="P:Galaxon.BigNumbers.BigDecimal.NumSigFigs">
+        <member name="F:Galaxon.BigNumbers.BigDecimal._digitString">
+            <summary>Backing field for the DigitsString property.</summary>
+        </member>
+        <member name="P:Galaxon.BigNumbers.BigDecimal.DigitsString">
             <summary>
-            Get the number of significant figures.
+            A string containing the digits of the absolute value of the significand. It will not
+            include a leading minus sign if the significand is negative.
             </summary>
+        </member>
+        <member name="P:Galaxon.BigNumbers.BigDecimal.NumSigFigs">
+            <summary>Get the number of significant figures.</summary>
         </member>
         <member name="F:Galaxon.BigNumbers.BigDecimal._maxSigFigs">
             <summary>
@@ -1480,7 +1494,7 @@
         <member name="F:Galaxon.BigNumbers.BigDecimal.DecimalPrecision">
             <summary>Precision supported by the decimal type.</summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.#ctor(System.Numerics.BigInteger,System.Numerics.BigInteger)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.#ctor(System.Numerics.BigInteger,System.Int32)">
             <summary>Main constructor.</summary>
             <param name="significand">The significand or mantissa.</param>
             <param name="exponent">The exponent.</param>
@@ -1490,6 +1504,16 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.#ctor">
             <summary>Construct a zero BigDecimal.</summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Sqr(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the square of a BigDecimal value.</summary>
+            <param name="x">A BigDecimal value.</param>
+            <returns>The square of the BigDecimal.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Cube(Galaxon.BigNumbers.BigDecimal)">
+            <summary>Calculate the cube of a BigDecimal value.</summary>
+            <param name="x">A BigDecimal value.</param>
+            <returns>The cube of the BigDecimal.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Pow(Galaxon.BigNumbers.BigDecimal,System.Numerics.BigInteger)">
             <summary>
@@ -1545,16 +1569,6 @@
             If the base is negative, the numerator of the exponent is odd, and the denominator of the
             exponent is even. In this case, no real result exists (although a complex result will).
             </exception>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Sqr(Galaxon.BigNumbers.BigDecimal)">
-            <summary>Calculate the square of a BigDecimal value.</summary>
-            <param name="x">A BigDecimal value.</param>
-            <returns>The square of the BigDecimal.</returns>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Cube(Galaxon.BigNumbers.BigDecimal)">
-            <summary>Calculate the cube of a BigDecimal value.</summary>
-            <param name="x">A BigDecimal value.</param>
-            <returns>The cube of the BigDecimal.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.RootN(Galaxon.BigNumbers.BigDecimal,System.Int32)">
             <inheritdoc/>
@@ -1688,24 +1702,14 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Round(Galaxon.BigNumbers.BigDecimal,System.Int32,System.MidpointRounding)">
             <inheritdoc/>
+            <summary>Round off a value to a certain number of decimal places.</summary>
             <remarks>
             The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
             in .NET Core.
             <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
             </remarks>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSigFigs(System.Numerics.BigInteger,System.Numerics.BigInteger,System.Numerics.BigInteger,System.MidpointRounding)">
-            <summary>
-            Given a significand and exponent, and a maximum number of significant figures, determine
-            the new significand and exponent.
-            </summary>
-            <remarks>
-            The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
-            in .NET Core.
-            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
-            </remarks>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSigFigs(Galaxon.BigNumbers.BigDecimal,System.Nullable{System.Numerics.BigInteger},System.MidpointRounding)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSigFigs(Galaxon.BigNumbers.BigDecimal,System.Nullable{System.Int32},System.MidpointRounding)">
             <summary>Round off a BigDecimal value to a certain number of significant figures.</summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Truncate(Galaxon.BigNumbers.BigDecimal)">
@@ -1747,7 +1751,7 @@
             supported by Rider so we need this here for now.
             </remarks>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSignificand(System.Numerics.BigInteger,System.Numerics.BigInteger,System.MidpointRounding)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSignificand(System.Numerics.BigInteger,System.Int32,System.MidpointRounding)">
             <summary>Divide by a power of 10 and round off to the nearest integer.</summary>
             <remarks>
             The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
@@ -1759,25 +1763,11 @@
             <param name="mode">The rounding mode.</param>
             <returns>The rounded off result of the division.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ShiftBy(System.Numerics.BigInteger)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Shift(System.Int32)">
             <summary>
             Move the decimal point to the right by the specified number of places.
             This will effectively multiply the significand by 10 and decrement the exponent to maintain
             the same value, the specified number of times.
-            NB: The value will probably not be canonical after calling this method, so it should only
-            be used on temporary variables.
-            </summary>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ShiftToSigFigs(System.Nullable{System.Int32})">
-            <summary>
-            Shift such that the significand has a certain number of significant digits.
-            NB: The value will probably not be canonical after calling this method, so it should only
-            be used on temporary variables.
-            </summary>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ShiftToExp(System.Int32)">
-            <summary>
-            Shift such that the exponent has a certain value.
             NB: The value will probably not be canonical after calling this method, so it should only
             be used on temporary variables.
             </summary>
@@ -1788,7 +1778,7 @@
             Two new objects will be returned.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.MakeCanonical(System.Numerics.BigInteger,System.Numerics.BigInteger)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.MakeCanonical(System.Numerics.BigInteger,System.Int32)">
             <summary>
             Modify the provided significand and exponent as needed to find the canonical form.
             Static form of the method, for use in the constructor.
@@ -1806,20 +1796,16 @@
             <returns>The negation of the parameter.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Add(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <summary>
-            Addition method.
-            </summary>
+            <summary>Add 2 BigDecimals.</summary>
             <param name="a">The left-hand BigDecimal number.</param>
             <param name="b">The right-hand BigDecimal number.</param>
             <returns>The addition of the arguments.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Subtract(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <summary>
-            Subtraction method.
-            </summary>
+            <summary>Subtract one BigDecimal from another.</summary>
             <param name="a">The left-hand BigDecimal number.</param>
             <param name="b">The right-hand BigDecimal number.</param>
-            <returns>The subtraction of the arguments.</returns>
+            <returns>The result of the subtraction.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Increment(Galaxon.BigNumbers.BigDecimal)">
             <summary>
@@ -2494,14 +2480,15 @@
         <member name="M:Galaxon.BigNumbers.BigRational.#ctor">
             <summary>Construct a zero BigRational.</summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigRational.Pow(Galaxon.BigNumbers.BigRational,System.Numerics.BigInteger)">
+        <member name="M:Galaxon.BigNumbers.BigRational.Pow(Galaxon.BigNumbers.BigRational,System.Int32)">
             <summary>
-            Calculate the value of x^y where x is a BigRational and y is a BigInteger.
+            Calculate the value of x^y where x is a BigRational and y is an int.
             </summary>
             <param name="x">The base (BigRational).</param>
-            <param name="y">The exponent (BigInteger).</param>
+            <param name="y">The exponent (int).</param>
             <returns>The result of the calculation.</returns>
             <see cref="M:System.Numerics.BigInteger.Pow(System.Numerics.BigInteger,System.Int32)"/>
+            <exception cref="T:System.ArgumentOutOfRangeException">If x is 0 and y is negative.</exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.Sqr(Galaxon.BigNumbers.BigRational)">
             <summary>Calculate the square of a BigRational number.</summary>
@@ -2651,7 +2638,7 @@
             Divide a rational by a rational.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigRational.op_ExclusiveOr(Galaxon.BigNumbers.BigRational,System.Numerics.BigInteger)">
+        <member name="M:Galaxon.BigNumbers.BigRational.op_ExclusiveOr(Galaxon.BigNumbers.BigRational,System.Int32)">
             <summary>
             Exponentiation operator.
             </summary>

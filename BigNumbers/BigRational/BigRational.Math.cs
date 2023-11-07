@@ -181,9 +181,9 @@ public partial struct BigRational
     /// <summary>
     /// Exponentiation operator.
     /// </summary>
-    public static BigRational operator ^(BigRational br, BigInteger bi)
+    public static BigRational operator ^(BigRational br, int i)
     {
-        return Pow(br, bi);
+        return Pow(br, i);
     }
 
     #endregion Arithmetic operators

@@ -8,30 +8,37 @@ public partial struct BigRational
     #region Power functions
 
     /// <summary>
-    /// Calculate the value of x^y where x is a BigRational and y is a BigInteger.
+    /// Calculate the value of x^y where x is a BigRational and y is an int.
     /// </summary>
     /// <param name="x">The base (BigRational).</param>
-    /// <param name="y">The exponent (BigInteger).</param>
+    /// <param name="y">The exponent (int).</param>
     /// <returns>The result of the calculation.</returns>
     /// <see cref="BigInteger.Pow"/>
-    public static BigRational Pow(BigRational x, BigInteger y)
+    /// <exception cref="ArgumentOutOfRangeException">If x is 0 and y is negative.</exception>
+    public static BigRational Pow(BigRational x, int y)
     {
-        // Optimizations.
-        if (y == 0) return 1;
-        if (y == 1) return x;
-        if (y == -1) return Reciprocal(x);
-
-        // Handle negative exponent.
         if (y < 0)
         {
-            x = Reciprocal(x);
-            y = -y;
+            // x^(-y) == 1/(x^y)
+            return Reciprocal(Pow(x, -y));
         }
-
-        // Raise both the numerator and denominator to the power of y.
-        var num = XBigInteger.Pow(x.Numerator, y);
-        var den = XBigInteger.Pow(x.Denominator, y);
-        return new BigRational(num, den);
+        else if (y == 0)
+        {
+            // x^0 == 1 for all x
+            return 1;
+        }
+        else if (y == 1)
+        {
+            return x;
+        }
+        else
+        {
+            // y > 1
+            // Raise both the numerator and denominator to the power of y.
+            var num = BigInteger.Pow(x.Numerator, y);
+            var den = BigInteger.Pow(x.Denominator, y);
+            return new BigRational(num, den);
+        }
     }
 
     /// <summary>Calculate the square of a BigRational number.</summary>

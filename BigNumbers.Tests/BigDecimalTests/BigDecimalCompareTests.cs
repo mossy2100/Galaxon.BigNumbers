@@ -1,3 +1,4 @@
+using Galaxon.BigNumbers.TestTools;
 using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers.Tests;
@@ -114,7 +115,7 @@ public class BigDecimalCompareTests
             var f1 = rnd.NextHalf();
             var f2 = rnd.NextHalf();
             var f3 = f1 / f2;
-            var bd3 = (BigDecimal)f1 / (BigDecimal)f2;
+            var bd3 = (BigDecimal)f1 / f2;
 
             if (!Half.IsFinite(f3)) continue;
 
@@ -136,14 +137,14 @@ public class BigDecimalCompareTests
             var f1 = rnd.NextFloat();
             var f2 = rnd.NextFloat();
             var f3 = f1 / f2;
-            var bd3 = (BigDecimal)f1 / (BigDecimal)f2;
+            var bd3 = (BigDecimal)f1 / f2;
 
             if (!float.IsFinite(f3)) continue;
 
             Console.WriteLine($"     float value: {f3:E20}");
             Console.WriteLine($"BigDecimal value: {bd3:E20}");
             Console.WriteLine();
-            Assert.IsTrue(bd3.FuzzyEquals(f3));
+            BigDecimalAssert.AreFuzzyEqual(f3, bd3);
         }
     }
 
@@ -158,14 +159,14 @@ public class BigDecimalCompareTests
             var f1 = rnd.NextDoubleFullRange();
             var f2 = rnd.NextDoubleFullRange();
             var f3 = f1 / f2;
-            var bd3 = (BigDecimal)f1 / (BigDecimal)f2;
+            var bd3 = (BigDecimal)f1 / f2;
 
             if (!double.IsFinite(f3)) continue;
 
-            Console.WriteLine($"    double value: {f3:E40}");
-            Console.WriteLine($"BigDecimal value: {bd3:E40}");
-            Console.WriteLine();
+            Console.WriteLine($"BigDecimal value: {bd3:E20}");
+            Console.WriteLine($"    double value: {f3:E20}");
             Assert.IsTrue(bd3.FuzzyEquals(f3));
+            Console.WriteLine();
         }
     }
 
@@ -176,9 +177,9 @@ public class BigDecimalCompareTests
         var hPi = Half.Pi;
         var fPi = float.Pi;
         var dPi = double.Pi;
-        Assert.IsTrue(bdPi.FuzzyEquals(hPi));
-        Assert.IsTrue(bdPi.FuzzyEquals(fPi));
-        Assert.IsTrue(bdPi.FuzzyEquals(dPi));
+        BigDecimalAssert.AreFuzzyEqual(hPi, bdPi);
+        BigDecimalAssert.AreFuzzyEqual(fPi, bdPi);
+        BigDecimalAssert.AreFuzzyEqual(dPi, bdPi);
     }
 
     [TestMethod]

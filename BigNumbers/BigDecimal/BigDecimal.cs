@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Numerics;
 using Galaxon.Core.Numbers;
 
@@ -8,8 +9,8 @@ namespace Galaxon.BigNumbers;
 /// Contains the core fields and properties, and the constructors.
 /// The other partials contain members grouped by purpose.
 ///
-/// A BigDecimal is represented internally by two BigInteger values, representing the significant
-/// and the exponent. The value of a BigDecimal can thus easily be calculated from:
+/// A BigDecimal is represented internally by a BigInteger value representing the significand,
+/// and an int representing the exponent. The value of a BigDecimal can easily be calculated from:
 ///     value = Significand * 10^Exponent
 ///
 /// No trailing zeros are retained in the significand; rather, the exponent is adjusted instead.
@@ -36,7 +37,7 @@ public partial struct BigDecimal :
     public BigInteger Significand { get; set; }
 
     /// <summary>The power of 10.</summary>
-    public BigInteger Exponent { get; set; }
+    public int Exponent { get; set; }
 
     /// <summary>The sign of the value.</summary>
     /// <remarks>
@@ -48,10 +49,24 @@ public partial struct BigDecimal :
     /// <see cref="BigInteger.Sign"/>
     public readonly int Sign => Significand.Sign;
 
+    /// <summary>Backing field for the DigitsString property.</summary>
+    private string? _digitString;
+
     /// <summary>
-    /// Get the number of significant figures.
+    /// A string containing the digits of the absolute value of the significand. It will not
+    /// include a leading minus sign if the significand is negative.
     /// </summary>
-    public readonly int NumSigFigs => Significand.NumDigits();
+    public string DigitsString
+    {
+        get
+        {
+            _digitString ??= BigInteger.Abs(Significand).ToString();
+            return _digitString;
+        }
+    }
+
+    /// <summary>Get the number of significant figures.</summary>
+    public int NumSigFigs => DigitsString.Length;
 
     #endregion Instance fields and properties
 
@@ -128,7 +143,7 @@ public partial struct BigDecimal :
     /// <summary>Main constructor.</summary>
     /// <param name="significand">The significand or mantissa.</param>
     /// <param name="exponent">The exponent.</param>
-    public BigDecimal(BigInteger significand, BigInteger exponent)
+    public BigDecimal(BigInteger significand, int exponent)
     {
         // If the significant is 0, make sure the exponent is also 0.
         if (significand == 0)

@@ -278,7 +278,7 @@ public partial struct BigDecimal
     public static explicit operator BigInteger(BigDecimal bd)
     {
         var trunc = Truncate(bd);
-        trunc.ShiftToExp(0);
+        trunc.Shift(trunc.Exponent);
         return trunc.Significand;
     }
 
@@ -333,7 +333,7 @@ public partial struct BigDecimal
         }
 
         // If the exponent is greater than 0, shift to exponent 0 to get the correct scale.
-        if (bd.Exponent > 0) bd.ShiftToExp(0);
+        if (bd.Exponent > 0) bd.Shift(bd.Exponent);
 
         // Get the scale.
         var scale = (byte)-bd.Exponent;
@@ -374,7 +374,7 @@ public partial struct BigDecimal
 
     /// <summary>Convert BigDecimal to tuple.</summary>
     /// <returns>A tuple containing the significand and exponent.</returns>
-    public readonly (BigInteger, BigInteger) ToTuple()
+    public readonly (BigInteger, int) ToTuple()
     {
         return (Significand, Exponent);
     }
@@ -382,7 +382,7 @@ public partial struct BigDecimal
     /// <summary>Construct BigDecimal from tuple of 2 BigInteger values.</summary>
     /// <param name="values">The tuple.</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static BigDecimal FromTuple((BigInteger, BigInteger) values)
+    public static BigDecimal FromTuple((BigInteger, int) values)
     {
         return new BigDecimal(values.Item1, values.Item2);
     }
