@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
@@ -20,10 +18,10 @@ public class BigRationalConvertTests
         double d = 5;
         BigRational f = d;
 
-        Trace.WriteLine(d);
-        Trace.WriteLine(f.Numerator);
-        Trace.WriteLine(f.Denominator);
-        Trace.WriteLine((double)f.Numerator / (double)f.Denominator);
+        Console.WriteLine(d);
+        Console.WriteLine(f.Numerator);
+        Console.WriteLine(f.Denominator);
+        Console.WriteLine((double)f.Numerator / (double)f.Denominator);
 
         Assert.AreEqual(5, f.Numerator);
         Assert.AreEqual(1, f.Denominator);
@@ -39,12 +37,12 @@ public class BigRationalConvertTests
         var d = 0.1;
         BigRational f = d;
 
-        Trace.WriteLine(d);
-        Trace.WriteLine(f.Numerator);
-        Trace.WriteLine(f.Denominator);
+        Console.WriteLine(d);
+        Console.WriteLine(f.Numerator);
+        Console.WriteLine(f.Denominator);
 
         var d2 = (double)f.Numerator / (double)f.Denominator;
-        Trace.WriteLine(d2);
+        Console.WriteLine(d2);
 
         Assert.AreEqual(3602879701896397, f.Numerator);
         Assert.AreEqual(36028797018963968, f.Denominator);

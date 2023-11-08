@@ -1572,15 +1572,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.RootN(Galaxon.BigNumbers.BigDecimal,System.Int32)">
             <inheritdoc/>
-            <exception cref="T:System.ArithmeticException"></exception>
-            <exception cref="T:Galaxon.Core.Exceptions.ArgumentInvalidException"></exception>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.RootN(Galaxon.BigNumbers.BigDecimal,System.Numerics.BigInteger)">
-            <summary>
-            Find the nth root of a BigDecimal value.
-            Unlike the method required by the IRootFunctions interface, this version supports a
-            BigInteger degree.
-            </summary>
+            <summary>Find the nth root of a BigDecimal value.</summary>
             <param name="x">The radicand. A BigDecimal value to find the nth root of.</param>
             <param name="n">
             The degree of root to find (2 for square root, 3 for cube root, etc.).
@@ -1702,7 +1694,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Round(Galaxon.BigNumbers.BigDecimal,System.Int32,System.MidpointRounding)">
             <inheritdoc/>
-            <summary>Round off a value to a certain number of decimal places.</summary>
+            <summary>Round off a value to a given number of decimal places.</summary>
             <remarks>
             The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
             in .NET Core.
@@ -1751,31 +1743,17 @@
             supported by Rider so we need this here for now.
             </remarks>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.RoundSignificand(System.Numerics.BigInteger,System.Int32,System.MidpointRounding)">
-            <summary>Divide by a power of 10 and round off to the nearest integer.</summary>
-            <remarks>
-            The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
-            in .NET Core.
-            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
-            </remarks>
-            <param name="sig">The BigInteger value to round off.</param>
-            <param name="nDigitsToCut">The power of 10 (number of digits to cut).</param>
-            <param name="mode">The rounding mode.</param>
-            <returns>The rounded off result of the division.</returns>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Shift(System.Int32)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Shift(Galaxon.BigNumbers.BigDecimal,System.Int32)">
             <summary>
-            Move the decimal point to the right by the specified number of places.
-            This will effectively multiply the significand by 10 and decrement the exponent to maintain
-            the same value, the specified number of times.
-            NB: The value will probably not be canonical after calling this method, so it should only
-            be used on temporary variables.
+            Generate a new significand, found by shifting the exponent of the BigDecimal to the provided
+            new exponent.
+            The combination of the result significand and the new exponent parameter represent a new
+            BigDecimal value equal to the provided value.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Align(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>
-            Adjust the parts of one of the values so both have the same exponent.
-            Two new objects will be returned.
+            Adjust the significand and exponent of one of the values so both have the same exponent.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.MakeCanonical(System.Numerics.BigInteger,System.Int32)">
@@ -1785,11 +1763,6 @@
             </summary>
             <returns>The two updated BigIntegers.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Clone(Galaxon.BigNumbers.BigDecimal)">
-            <summary>Clone method.</summary>
-            <param name="bd">The BigComplex value to clone.</param>
-            <returns>A new BigComplex with the same value as the parameter.</returns>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Negate(Galaxon.BigNumbers.BigDecimal)">
             <summary>Negate method.</summary>
             <param name="bd">The BigDecimal value to negate.</param>
@@ -1797,8 +1770,8 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Add(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <summary>Add 2 BigDecimals.</summary>
-            <param name="a">The left-hand BigDecimal number.</param>
-            <param name="b">The right-hand BigDecimal number.</param>
+            <param name="x">The left-hand BigDecimal number.</param>
+            <param name="y">The right-hand BigDecimal number.</param>
             <returns>The addition of the arguments.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Subtract(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">

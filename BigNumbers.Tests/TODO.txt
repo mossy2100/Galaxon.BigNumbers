@@ -1,3 +1,1 @@
 Go through full suite of use cases for Pow().
-Also, add a version of Pow() that accepts a BigRational exponent. This will allow people to do
-things like x^(1/3) in a way that will work.

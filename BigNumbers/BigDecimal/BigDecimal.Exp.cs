@@ -116,11 +116,17 @@ public partial struct BigDecimal
     public static BigDecimal Pow(BigDecimal x, BigDecimal y)
     {
         // Defer to the BigInteger version of the method if possible.
-        if (IsInteger(y)) return Pow(x, (BigInteger)y);
+        if (IsInteger(y))
+        {
+            return Pow(x, (BigInteger)y);
+        }
 
         // Handle negative exponent.
         // This will throw a DivideByZeroException if x is 0.
-        if (y < 0) return Pow(1 / x, -y);
+        if (y < 0)
+        {
+            return Reciprocal(Pow(x, -y));
+        }
 
         if (x < 0)
         {
@@ -170,7 +176,18 @@ public partial struct BigDecimal
     /// </exception>
     public static BigDecimal Pow(BigDecimal x, BigRational y)
     {
-        return RootN(Pow(x, y.Numerator), y.Denominator);
+        try
+        {
+            // Try to cast the denominator to an int. This will throw an OverflowException if
+            // outside the valid range for int. Do the cast before calling Pow() so we catch the
+            // overflow issue before wasting time on the call to Pow().
+            var i = (int)y.Denominator;
+            return RootN(Pow(x, y.Numerator), i);
+        }
+        catch (OverflowException ex)
+        {
+            throw new OverflowException("Denominator is too large to compute the root.");
+        }
     }
 
     #endregion Power functions
@@ -178,18 +195,7 @@ public partial struct BigDecimal
     #region Root functions
 
     /// <inheritdoc/>
-    /// <exception cref="ArithmeticException"></exception>
-    /// <exception cref="ArgumentInvalidException"></exception>
-    public static BigDecimal RootN(BigDecimal x, int n)
-    {
-        return RootN(x, (BigInteger)n);
-    }
-
-    /// <summary>
-    /// Find the nth root of a BigDecimal value.
-    /// Unlike the method required by the IRootFunctions interface, this version supports a
-    /// BigInteger degree.
-    /// </summary>
+    /// <summary>Find the nth root of a BigDecimal value.</summary>
     /// <param name="x">The radicand. A BigDecimal value to find the nth root of.</param>
     /// <param name="n">
     /// The degree of root to find (2 for square root, 3 for cube root, etc.).
@@ -204,13 +210,14 @@ public partial struct BigDecimal
     /// <exception cref="ArithmeticException">
     /// If the radicand is negative and the degree is even.
     /// </exception>
-    public static BigDecimal RootN(BigDecimal x, BigInteger n)
+    public static BigDecimal RootN(BigDecimal x, int n)
     {
+        Console.WriteLine($"RootN({x}, {n})");
         // Handle special values of n.
         if (n < 0)
         {
             // A negative root is the reciprocal of the positive root.
-            return RootN(1 / x, -n);
+            return Reciprocal(RootN(x, -n));
         }
         else if (n == 0)
         {
@@ -252,15 +259,27 @@ public partial struct BigDecimal
         var origMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
-        // Set the initial estimate to x.
-        BigDecimal yk = x;
-        // Next term, y(k+1)
-        BigDecimal ykp1;
-        // Keep up to 2 previous terms, for bounce detection.
-        // Previous term, y(k-1)
+        // Set the initial estimate. In the absence of a better method, since we know the solution
+        // will be in the range 0..x because both x and n are positive at this point, let's just
+        // start at the midpoint. yk means y[k]
+        BigDecimal yk = x / 2;
+
+        // Keep up to 2 previous terms for bounce detection.
+        // Previous term. ykm1 means y[k-1]
         BigDecimal ykm1 = 0;
-        // Term before the previous term, y(k-2)
+        // Term before the previous term. ykm2 means y[k-2]
         BigDecimal ykm2 = 0;
+
+        // Final result.
+        BigDecimal y;
+
+        // Keep track of difference calculations, so we don't repeat them.
+        BigDecimal? dk = null;
+        BigDecimal? dkm1 = null;
+        BigDecimal? dkm2 = null;
+
+        // Function for calculating differences.
+        BigDecimal CalcDiff(BigDecimal y2) => Abs(Pow(y2, n) - x);
 
         // Precalculate some values.
         var m = (n - 1) / (BigDecimal)n;
@@ -272,61 +291,72 @@ public partial struct BigDecimal
         // Newton's method.
         while (true)
         {
-            // Compute the value of ykp1 and add it to the list.
-            ykp1 = m * yk + p / Pow(yk, n - 1);
+            // Compute the value of the next term. ykp1 means y[k+1]
+            var ykp1 = m * yk + p / Pow(yk, n - 1);
 
             // If the new term is the same, we're done.
-            if (ykp1 == yk) break;
-
-            // // Detect repeated value. This can occur due to rounding.
-            // if (ykp1 == ykm1)
-            // {
-            //     // Figure out which value is best.
-            //     BigDecimal d0 = Abs(Pow(yk, n) - x);
-            //     BigDecimal d1 = Abs(Pow(ykp1, n) - x);
-            //     if (d0 < d1)
-            //     {
-            //         ykp1 = yk;
-            //     }
-            //     break;
-            // }
-            //
-            // // Detect repeated value. This can occur due to rounding.
-            // if (ykp1 == ykm2)
-            // {
-            //     // Figure out value one is best.
-            //     BigDecimal d0 = Abs(Pow(ykm1, n) - x);
-            //     BigDecimal d1 = Abs(Pow(yk, n) - x);
-            //     BigDecimal d2 = Abs(Pow(ykp1, n) - x);
-            //     if (d0 <= d1 && d0 <= d2)
-            //     {
-            //         ykp1 = ykm1;
-            //     }
-            //     else if (d1 <= d0 && d1 <= d2)
-            //     {
-            //         ykp1 = yk;
-            //     }
-            //     break;
-            // }
-
-            // DEBUG
-            Console.WriteLine($"{ykp1:E50}");
-            count++;
-            if (count > 100)
+            if (ykp1 == yk)
             {
-                // return y2;
-                throw new TimeoutException($"Too many iterations. x={x}, n={n}");
+                y = yk;
+                break;
             }
 
-            // Next iteration.
+            // Detect repeated value. This can occur due to rounding.
+            if (ykp1 == ykm1)
+            {
+                Console.WriteLine("bounce detected");
+                // Figure out which value (y[k] or y[k-1]) produces a better result.
+                dk ??= CalcDiff(yk);
+                dkm1 ??= CalcDiff(ykm1);
+                y = dk <= dkm1 ? yk : ykm1;
+                break;
+            }
+
+            // Detect repeated value. This can occur due to rounding.
+            if (ykp1 == ykm2)
+            {
+                Console.WriteLine("double bounce detected");
+                // Figure out which value (y[k] or y[k-1] or y[k-2]) is best.
+                dk ??= CalcDiff(yk);
+                dkm1 ??= CalcDiff(ykm1);
+                dkm2 ??= CalcDiff(ykm2);
+                if (dk <= dkm1 && dk <= dkm2)
+                {
+                    y = yk;
+                }
+                else if (dkm1 <= dk && dkm1 <= dkm2)
+                {
+                    y = ykm1;
+                }
+                else
+                {
+                    y = ykm2;
+                }
+                break;
+            }
+
+            // DEBUG
+            // Console.WriteLine($"{ykp1:E100}");
+            // count++;
+            // if (count > 1000000)
+            // {
+            //     // return y2;
+            //     throw new TimeoutException($"Too many iterations. x={x}, n={n}");
+            // }
+
+            // Next iteration. Shift the terms backwards.
             ykm2 = ykm1;
             ykm1 = yk;
             yk = ykp1;
+
+            // Shift the differences back, too.
+            dkm2 = dkm1;
+            dkm1 = dk;
         }
 
         // Restore the maximum number of significant figures, and round off.
         MaxSigFigs = origMaxSigFigs;
-        return RoundSigFigs(ykp1);
+        return RoundSigFigs(y);
     }
 
     /// <summary>

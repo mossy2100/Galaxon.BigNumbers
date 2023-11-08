@@ -277,9 +277,7 @@ public partial struct BigDecimal
     /// <returns>The BigInteger value formed by truncating the BigDecimal.</returns>
     public static explicit operator BigInteger(BigDecimal bd)
     {
-        var trunc = Truncate(bd);
-        trunc.Shift(trunc.Exponent);
-        return trunc.Significand;
+        return Shift(Truncate(bd));
     }
 
     /// <summary>Cast BigDecimal to Half.</summary>
@@ -332,11 +330,21 @@ public partial struct BigDecimal
             throw new OverflowException("The value is outside the valid range for decimal.");
         }
 
-        // If the exponent is greater than 0, shift to exponent 0 to get the correct scale.
-        if (bd.Exponent > 0) bd.Shift(bd.Exponent);
+        BigInteger sig;
+        int exp;
+        if (bd.Exponent > 0)
+        {
+            // If the exponent is greater than 0, shift to exponent 0 to get the correct scale.
+            exp = 0;
+            sig = Shift(bd);
+        }
+        else
+        {
+            (sig, exp) = bd.ToTuple();
+        }
 
         // Get the scale.
-        var scale = (byte)-bd.Exponent;
+        var scale = (byte)-exp;
 
         // Check the scale is not too large.
         if (scale > DecimalPrecision)
@@ -346,9 +354,10 @@ public partial struct BigDecimal
         }
 
         // Get the bytes for the absolute value of the significand.
-        var sigBytes = BigInteger.Abs(bd.Significand).ToByteArray(true);
+        var sigBytes = BigInteger.Abs(sig).ToByteArray(true);
 
-        // Check we have at most 12 bytes.
+        // Check we have at most 12 bytes. In theory this shouldn't happen since we already checked
+        // the BigDecimal value was within the valid range for decimal.
         if (sigBytes.Length > 12)
         {
             throw new OverflowException("The significand is too large.");
@@ -363,7 +372,7 @@ public partial struct BigDecimal
         }
 
         // Get the sign.
-        var isNegative = bd.Significand < 0;
+        var isNegative = sig < 0;
 
         return new decimal(decInts[0], decInts[1], decInts[2], isNegative, scale);
     }

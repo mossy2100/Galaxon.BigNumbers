@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Numerics;
 
 namespace Galaxon.BigNumbers.Tests;
@@ -150,7 +149,7 @@ public class BigDecimalMathTests
         {
             c += BigDecimal.Tau;
         }
-        Trace.WriteLine(c);
+        Console.WriteLine(c);
     }
 
     [TestMethod]

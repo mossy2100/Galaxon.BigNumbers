@@ -116,18 +116,16 @@ public partial struct BigDecimal
                 };
             }
 
-            var max = MaxMagnitude(ulpThis, ulpOther);
-            delta = max / 2;
-
-            // Calculate the delta from half the maximum ULP.
             Console.WriteLine($"ulpThis = {ulpThis:E10}");
             Console.WriteLine($"ulpOther = {ulpOther:E10}");
-            Console.WriteLine($"max = {max:E10}");
-            Console.WriteLine($"delta = {delta:E10}");
+
+            // Set the maximum acceptable difference equal to the maximum ULP.
+            delta = MaxMagnitude(ulpThis, ulpOther);
         }
 
         // See if they are close enough.
         var diff = Abs(this - bd);
+        Console.WriteLine($"delta = {delta:E10}");
         Console.WriteLine($"diff = {diff:E10}");
         return diff <= delta;
     }
@@ -160,9 +158,9 @@ public partial struct BigDecimal
         if (Sign < other.Sign) return -1;
         if (Sign > other.Sign) return 1;
 
-        // Compare values.
-        var (x, y) = Align(this, other);
-        return x.Significand.CompareTo(y.Significand);
+        // Make the exponents the same, and compare the significands.
+        var (thisSig, otherSig, exp) = Align(this, other);
+        return thisSig.CompareTo(otherSig);
     }
 
     /// <inheritdoc/>

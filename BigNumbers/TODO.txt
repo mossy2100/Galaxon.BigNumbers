@@ -1,5 +1,3 @@
-Complete Sec, Csc, and Cot methods for BigComplex.
-
 Testing, testing, testing.
 
 Test and debug all conversion methods.

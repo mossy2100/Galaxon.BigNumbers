@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Galaxon.BigNumbers.TestTools;
 using Galaxon.Core.Numbers;
 
@@ -96,7 +95,7 @@ public class BigDecimalTrigTests
         {
             inputs[i] = rnd.NextDouble();
             results[i] = double.Tan(inputs[i]);
-            Trace.WriteLine($"double.Tan({inputs[i]}) = {results[i]}");
+            Console.WriteLine($"double.Tan({inputs[i]}) = {results[i]}");
         }
 
         // Step 2. Test performance of BigDecimal.Tan().
@@ -105,14 +104,14 @@ public class BigDecimalTrigTests
         {
             var bd = (BigDecimal)inputs[i];
             var tanBd = BigDecimal.Tan(bd);
-            Trace.WriteLine($"BigDecimal.Tan({bd}) = {tanBd}");
+            Console.WriteLine($"BigDecimal.Tan({bd}) = {tanBd}");
             BigDecimalAssert.AreFuzzyEqual(results[i], tanBd);
         }
         t2 = DateTime.Now;
         var dt = t2 - t1;
-        Trace.WriteLine($"Tan(x) total time elapsed: {dt.TotalSeconds} ticks.");
+        Console.WriteLine($"Tan(x) total time elapsed: {dt.TotalSeconds} ticks.");
         var avg = dt.TotalSeconds / n;
-        Trace.WriteLine($"Average is {avg} seconds per call.");
+        Console.WriteLine($"Average is {avg} seconds per call.");
 
         // Step 3. Test performance of BigDecimal.Tan2().
         // t1 = DateTime.Now;
@@ -120,7 +119,7 @@ public class BigDecimalTrigTests
         // {
         //     var bd = (BigDecimal)inputs[i];
         //     var tanBd = BigDecimal.Tan2(bd);
-        //     Trace.WriteLine($"BigDecimal.Tan({bd}) = {tanBd}");
+        //     Console.WriteLine($"BigDecimal.Tan({bd}) = {tanBd}");
         //     // BigDecimalAssert.AreEqual(results[i], tanBd);
         // }
         // t2 = DateTime.Now;

@@ -24,11 +24,6 @@
         <member name="T:Galaxon.BigNumbers.Tests.BigDecimalCompareTests">
             <summary>Test the methods in BigDecimalCompare.cs.</summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalCompareTests.Equals_EqualValues_ReturnsTrue">
-             <summary>
-            
-             </summary>
-        </member>
         <member name="T:Galaxon.BigNumbers.Tests.BigDecimalConstantsTests">
             <summary>Test generation of constants.</summary>
         </member>
@@ -684,7 +679,7 @@
             that type.
             </summary>
         </member>
-        <member name="T:Galaxon.BigNumbers.Tests.BigDecimalExpTests">
+        <member name="T:Galaxon.BigNumbers.Tests.BigDecimalExpLogTests">
              <summary>
              Test all methods in BigDecimal.Exp.cs.
              That means all methods for exponentiation, finding roots, and logarithms.
@@ -693,68 +688,73 @@
              <see href="https://www.calculator.net/exponent-calculator.html"/>
              </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_0_Returns1">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpLogTests.Exp_0_Returns1">
             <summary>Exp(0) returns 1.</summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_1_ReturnsE">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpLogTests.Exp_1_ReturnsE">
             <summary>Exp(1) returns E.</summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_PositiveIntegers">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpLogTests.Exp_PositiveIntegers">
             <summary>Test Exp() with positive integers.</summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_NegativeIntegers">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpLogTests.Exp_NegativeIntegers">
             <summary>Test Exp() with negative integers.</summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_PositiveFloats">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpLogTests.Exp_PositiveFloats">
             <summary>Test Exp() with positive floating point values.</summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Exp_NegativeFloats">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpLogTests.Exp_NegativeFloats">
             <summary>Test Exp() with negative floating point values.</summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.Pow_BaseNegExponentRationalEvenDenominator_UnsolvableThrows">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalPowTests.Pow_BaseNegExponentRationalEvenDenominator_UnsolvableThrows">
             <summary>
             Test that attempting to calculate x^y where x is negative and y is a rational with an even
             denominator will throw an exception.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestSqrtBig">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestSqrtBig">
             <summary>
             Used https://keisan.casio.com/calculator to get expected result.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestSqrtSmall">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestSqrtSmall">
             <summary>
             Used https://keisan.casio.com/calculator to get expected result.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestSqrtBiggerThanBiggestDouble">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestSqrtBiggerThanBiggestDouble">
             <summary>
             In this test, both the initial argument and the square root are larger than the largest
             possible double value.
             Used https://keisan.casio.com/calculator to get expected result.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestSqrtSmallerThanSmallestDouble">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestSqrtSmallerThanSmallestDouble">
             <summary>
             In this test, both the initial argument and the square root are smaller than the largest
             possible double value.
             Used https://keisan.casio.com/calculator to get expected result.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestCubeRootOfNegativeValueUsingPow">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestRootNLargeNIntegerA">
             <summary>
-            This shows how the cube root of a negative value cannot be achieved using Pow(), because a
-            BigDecimal cannot represent 1/3 exactly. You have to use Cbrt() or RootN().
+            This tests Pow() and RootN() with large exponents.
+            It takes 37 seconds on my computer, so be patient.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestOddRootOfNegative">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestOddRootOfNegative">
             <summary>
             Test odd roots of some negative values.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpTests.TestEvenRootOfNegativeThrowsException">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestEvenRootOfNegativeThrowsException">
             <summary>
             Test even roots of negative values throw exceptions.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestRootMaxNumberOfTerms">
+            <summary>
+            This can be slow and there are no asserts.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRoundTests.TestRoundingMethods">

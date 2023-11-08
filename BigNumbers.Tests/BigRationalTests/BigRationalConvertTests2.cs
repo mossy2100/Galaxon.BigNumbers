@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace Galaxon.BigNumbers;
 
 [TestClass]
@@ -15,7 +13,7 @@ public class BigRationalConvertTests2
                 BigRational f = new (n, d);
                 var x = (double)n / d;
                 var f2 = (BigRational)x;
-                Trace.WriteLine($"Testing that {f} == {x}");
+                Console.WriteLine($"Testing that {f} == {x}");
                 Assert.AreEqual(f, f2);
             }
         }
@@ -57,7 +55,7 @@ public class BigRationalConvertTests2
         BigRational f = new (n, d);
         var x = (double)n / d;
         var f2 = (BigRational)x;
-        Trace.WriteLine($"f = {f}, x = {x}, f2 = {f2}");
+        Console.WriteLine($"f = {f}, x = {x}, f2 = {f2}");
         Assert.AreEqual(f, f2);
     }
 

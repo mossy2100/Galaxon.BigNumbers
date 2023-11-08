@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Globalization;
 using System.Numerics;
 
@@ -17,40 +16,40 @@ public class BigComplexStringsTests
         Complex z;
 
         z = new Complex(0, 0);
-        Trace.WriteLine(z.ToString());
+        Console.WriteLine(z.ToString());
 
         z = new Complex(12, 0);
-        Trace.WriteLine(z.ToString());
+        Console.WriteLine(z.ToString());
 
         z = new Complex(-12, 0);
-        Trace.WriteLine(z.ToString());
+        Console.WriteLine(z.ToString());
 
         z = new Complex(0, 34);
-        Trace.WriteLine(z.ToString());
+        Console.WriteLine(z.ToString());
 
         z = new Complex(0, -34);
-        Trace.WriteLine(z.ToString());
+        Console.WriteLine(z.ToString());
 
         z = new Complex(12, 34);
-        Trace.WriteLine(z.ToString());
+        Console.WriteLine(z.ToString());
 
         z = new Complex(-12, 34);
-        Trace.WriteLine(z.ToString());
+        Console.WriteLine(z.ToString());
 
         z = new Complex(12, -34);
-        Trace.WriteLine(z.ToString());
+        Console.WriteLine(z.ToString());
 
         z = new Complex(-12, -34);
-        Trace.WriteLine(z.ToString());
+        Console.WriteLine(z.ToString());
 
         z = new Complex(12.3456, 34.5678);
-        Trace.WriteLine(z.ToString());
+        Console.WriteLine(z.ToString());
 
         z = new Complex(12.3456, 34.5678);
-        Trace.WriteLine(z.ToString("F2"));
+        Console.WriteLine(z.ToString("F2"));
 
         z = new Complex(12.3456, 34.5678);
-        Trace.WriteLine(z.ToString("E2"));
+        Console.WriteLine(z.ToString("E2"));
     }
 
     /// <summary>
