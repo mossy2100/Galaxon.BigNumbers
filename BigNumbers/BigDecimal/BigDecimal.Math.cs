@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using System.Numerics;
 using Galaxon.Core.Numbers;
 
@@ -6,7 +5,7 @@ namespace Galaxon.BigNumbers;
 
 public partial struct BigDecimal
 {
-    #region Adjustment methods
+    #region Numeric methods
 
     /// <inheritdoc/>
     public static BigDecimal Abs(BigDecimal bd)
@@ -36,7 +35,7 @@ public partial struct BigDecimal
         // Find the number of digits we want in the final answer.
         var maxSigFigs = x.NumSigFigs + x.Exponent + digits;
 
-        return RoundSigFigs(x, maxSigFigs, mode);
+        return maxSigFigs >= 1 ? RoundSigFigs(x, maxSigFigs, mode) : x;
     }
 
     /// <summary>Round off a BigDecimal value to a certain number of significant figures.</summary>
@@ -165,44 +164,6 @@ public partial struct BigDecimal
         return Round(x, 0, MidpointRounding.ToPositiveInfinity);
     }
 
-    // /// <summary>Divide by a power of 10 and round off to the nearest integer.</summary>
-    // /// <remarks>
-    // /// The default rounding mode of MidpointRounding.ToEven is the same as used by similar methods
-    // /// in .NET Core.
-    // /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.math.round?view=net-7.0#system-math-round(system-double-system-int32)"/>
-    // /// </remarks>
-    // /// <param name="sig">The BigInteger value to round off.</param>
-    // /// <param name="nDigitsToCut">The power of 10 (number of digits to cut).</param>
-    // /// <param name="mode">The rounding mode.</param>
-    // /// <returns>The rounded off result of the division.</returns>
-    // private static BigInteger RoundSignificand(BigInteger sig, int nDigitsToCut,
-    //     MidpointRounding mode = MidpointRounding.ToEven)
-    // {
-    //     var exp10 = XBigInteger.Exp10(nDigitsToCut);
-    //     var absSig = BigInteger.Abs(sig);
-    //     var sign = sig.Sign;
-    //     var quotient = absSig / exp10;
-    //     var doubleRemainder = 2 * (absSig % exp10);
-    //
-    //     // Check if rounding is necessary.
-    //     var increment = mode switch
-    //     {
-    //         MidpointRounding.ToEven => doubleRemainder > exp10
-    //             || (doubleRemainder == exp10 && BigInteger.IsOddInteger(quotient)),
-    //         MidpointRounding.AwayFromZero => doubleRemainder >= exp10,
-    //         MidpointRounding.ToZero => false,
-    //         MidpointRounding.ToNegativeInfinity => sign < 0,
-    //         MidpointRounding.ToPositiveInfinity => sign > 0,
-    //         _ => false
-    //     };
-    //     if (increment)
-    //     {
-    //         quotient++;
-    //     }
-    //
-    //     return sign * quotient;
-    // }
-
     /// <summary>
     /// Generate a new significand, found by shifting the exponent of the BigDecimal to the provided
     /// new exponent.
@@ -220,26 +181,6 @@ public partial struct BigDecimal
         // Return the shifted significand.
         return bd.Significand * XBigInteger.Exp10(bd.Exponent - newExponent);
     }
-
-    // /// <summary>
-    // /// Shift such that the significand has a certain number of significant digits.
-    // /// NB: The value will probably not be canonical after calling this method, so it should only
-    // /// be used on temporary variables.
-    // /// </summary>
-    // private void ShiftToSigFigs(int? nSigFigs = null)
-    // {
-    //     ShiftBy((nSigFigs ?? MaxSigFigs) - Significand.NumDigits());
-    // }
-
-    // /// <summary>
-    // /// Shift such that the exponent has a certain value.
-    // /// NB: The value will probably not be canonical after calling this method, so it should only
-    // /// be used on temporary variables.
-    // /// </summary>
-    // private void ShiftToExp(int exp)
-    // {
-    //     ShiftBy(Exponent - exp);
-    // }
 
     /// <summary>
     /// Adjust the significand and exponent of one of the values so both have the same exponent.
@@ -285,10 +226,11 @@ public partial struct BigDecimal
                 exponent++;
             }
         }
+
         return (significand, exponent);
     }
 
-    #endregion Adjustment methods
+    #endregion Numeric methods
 
     #region Arithmetic methods
 
@@ -445,7 +387,7 @@ public partial struct BigDecimal
     /// <returns>The modulus or remainder of x divided by y.</returns>
     public static BigDecimal Modulus(BigDecimal x, BigDecimal y)
     {
-        return x - Truncate(x / y) * y;
+        return x - Floor(x / y) * y;
     }
 
     /// <summary>

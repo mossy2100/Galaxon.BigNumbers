@@ -1,7 +1,4 @@
 using System.Numerics;
-using System.Runtime.CompilerServices;
-using Galaxon.Core.Exceptions;
-using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers;
 
@@ -122,10 +119,13 @@ public partial struct BigDecimal
         }
 
         // Handle negative exponent.
-        // This will throw a DivideByZeroException if x is 0.
+
         if (y < 0)
         {
-            return Reciprocal(Pow(x, -y));
+            // This will throw a DivideByZeroException if x is 0.
+            // Calculate the reciprocal before calling Pow(), so if there's going to be a
+            // DivideByZeroException, it will be thrown earlier.
+            return Pow(1 / x, -y);
         }
 
         if (x < 0)
@@ -212,12 +212,14 @@ public partial struct BigDecimal
     /// </exception>
     public static BigDecimal RootN(BigDecimal x, int n)
     {
-        Console.WriteLine($"RootN({x}, {n})");
+        // Console.WriteLine($"RootN({x}, {n})");
         // Handle special values of n.
         if (n < 0)
         {
             // A negative root is the reciprocal of the positive root.
-            return Reciprocal(RootN(x, -n));
+            // Calculate the reciprocal before calling RootN(), so if there's going to be a
+            // DivideByZeroException, it will be thrown earlier.
+            return RootN(1 / x, -n);
         }
         else if (n == 0)
         {
@@ -304,7 +306,7 @@ public partial struct BigDecimal
             // Detect repeated value. This can occur due to rounding.
             if (ykp1 == ykm1)
             {
-                Console.WriteLine("bounce detected");
+                // Console.WriteLine("bounce detected");
                 // Figure out which value (y[k] or y[k-1]) produces a better result.
                 dk ??= CalcDiff(yk);
                 dkm1 ??= CalcDiff(ykm1);
@@ -315,7 +317,7 @@ public partial struct BigDecimal
             // Detect repeated value. This can occur due to rounding.
             if (ykp1 == ykm2)
             {
-                Console.WriteLine("double bounce detected");
+                // Console.WriteLine("double bounce detected");
                 // Figure out which value (y[k] or y[k-1] or y[k-2]) is best.
                 dk ??= CalcDiff(yk);
                 dkm1 ??= CalcDiff(ykm1);
@@ -399,10 +401,15 @@ public partial struct BigDecimal
     public static BigDecimal Exp(BigDecimal x)
     {
         // Optimizations.
-        if (x == 0) return 1;
-
-        // If the exponent is negative, inverse the result of the positive exponent.
-        if (x < 0) return 1 / Exp(-x);
+        if (x < 0)
+        {
+            // If the exponent is negative, inverse the result of the positive exponent.
+            return 1 / Exp(-x);
+        }
+        else if (x == 0)
+        {
+            return 1;
+        }
 
         // Note, we can't just call Pow(E, x) for this, because this would require computing E
         // (which is not stored as a constant in the class), which in turn calls this method.

@@ -116,8 +116,8 @@ public partial struct BigDecimal
                 };
             }
 
-            Console.WriteLine($"ulpThis = {ulpThis:E10}");
-            Console.WriteLine($"ulpOther = {ulpOther:E10}");
+            // Console.WriteLine($"ulpThis = {ulpThis:E10}");
+            // Console.WriteLine($"ulpOther = {ulpOther:E10}");
 
             // Set the maximum acceptable difference equal to the maximum ULP.
             delta = MaxMagnitude(ulpThis, ulpOther);
@@ -125,8 +125,8 @@ public partial struct BigDecimal
 
         // See if they are close enough.
         var diff = Abs(this - bd);
-        Console.WriteLine($"delta = {delta:E10}");
-        Console.WriteLine($"diff = {diff:E10}");
+        // Console.WriteLine($"delta = {delta:E10}");
+        // Console.WriteLine($"diff = {diff:E10}");
         return diff <= delta;
     }
 
@@ -158,7 +158,15 @@ public partial struct BigDecimal
         if (Sign < other.Sign) return -1;
         if (Sign > other.Sign) return 1;
 
-        // Make the exponents the same, and compare the significands.
+        // Signs are the same. Compare maximum exponents.
+        // The Exponent property gives the minimum exponents (i.e. exponent of the last digit), but
+        // for this we want to compare the maximum exponents (i.e. exponent of the first digit).
+        var thisMaxExp = Exponent + NumSigFigs - 1;
+        var otherMaxExp = other.Exponent + other.NumSigFigs - 1;
+        if (thisMaxExp < otherMaxExp) return -1;
+        if (thisMaxExp > otherMaxExp) return 1;
+
+        // Maximum exponents are the same. Compare the significands.
         var (thisSig, otherSig, exp) = Align(this, other);
         return thisSig.CompareTo(otherSig);
     }

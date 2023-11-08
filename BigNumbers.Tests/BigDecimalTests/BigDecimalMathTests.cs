@@ -5,6 +5,13 @@ namespace Galaxon.BigNumbers.Tests;
 [TestClass]
 public class BigDecimalMathTests
 {
+    #region Numeric methods tests
+
+
+
+
+    #endregion Numeric methods tests
+
     [TestMethod]
     public void TestMultiplySmallInts()
     {
@@ -125,7 +132,7 @@ public class BigDecimalMathTests
         BigDecimal a = 8;
         BigDecimal b = -3;
         var c = a % b;
-        Assert.AreEqual(2, c.Significand);
+        Assert.AreEqual(-1, c.Significand);
         Assert.AreEqual(0, c.Exponent);
     }
 
@@ -135,7 +142,7 @@ public class BigDecimalMathTests
         BigDecimal a = -8;
         BigDecimal b = 3;
         var c = a % b;
-        Assert.AreEqual(-2, c.Significand);
+        Assert.AreEqual(1, c.Significand);
         Assert.AreEqual(0, c.Exponent);
     }
 
@@ -145,11 +152,8 @@ public class BigDecimalMathTests
         var a = -BigDecimal.Tau + 0.1m;
         var b = BigDecimal.Tau;
         var c = a % b;
-        if (c < 0)
-        {
-            c += BigDecimal.Tau;
-        }
-        Console.WriteLine(c);
+        Assert.AreEqual(1, c.Significand);
+        Assert.AreEqual(-1, c.Exponent);
     }
 
     [TestMethod]
