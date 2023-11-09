@@ -466,6 +466,7 @@ public partial struct BigDecimal
     #region Logarithmic functions
 
     /// <inheritdoc/>
+    /// <see href="https://en.wikipedia.org/wiki/Mercator_series"/>
     public static BigDecimal Log(BigDecimal x)
     {
         // Guards.
@@ -494,13 +495,10 @@ public partial struct BigDecimal
 
         // Scale the value to the range (0..1) so the Taylor series converges quickly and to avoid
         // overflow.
-        var nDigits = x.NumSigFigs;
-        var scale = nDigits + x.Exponent;
-        var y = x;
-        y.Exponent = -nDigits;
+        var scale = x.NumSigFigs + x.Exponent;
+        var y = new BigDecimal(x.Significand, -x.NumSigFigs);
 
         // Taylor/Newton-Mercator series.
-        // https://en.wikipedia.org/wiki/Mercator_series
         y--;
         var n = 1;
         var sign = 1;

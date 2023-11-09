@@ -1,16 +1,51 @@
 using System.Numerics;
+using Galaxon.BigNumbers.TestTools;
+using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
 public class BigDecimalMathTests
 {
-    #region Numeric methods tests
+    [TestMethod]
+    public void AddRandomNumbersTest()
+    {
+        var rnd = new Random();
+        var n = 10000;
 
+        for (var i = 0; i < n; i++)
+        {
+            var a = rnd.NextDoubleFullRange();
+            var b = rnd.NextDoubleFullRange();
+            var c = a + b;
+            if (!double.IsFinite(c)) continue;
 
+            var bda = (BigDecimal)a;
+            var bdb = (BigDecimal)b;
+            var bdc = bda + bdb;
+            BigDecimalAssert.AreFuzzyEqual(c, bdc);
+        }
+    }
 
+    [TestMethod]
+    public void SubtractRandomNumbersTest()
+    {
+        var rnd = new Random();
+        var n = 10000;
 
-    #endregion Numeric methods tests
+        for (var i = 0; i < n; i++)
+        {
+            var a = rnd.NextDoubleFullRange();
+            var b = rnd.NextDoubleFullRange();
+            var c = a - b;
+            if (!double.IsFinite(c)) continue;
+
+            var bda = (BigDecimal)a;
+            var bdb = (BigDecimal)b;
+            var bdc = bda - bdb;
+            BigDecimalAssert.AreFuzzyEqual(c, bdc);
+        }
+    }
 
     [TestMethod]
     public void TestMultiplySmallInts()
@@ -64,6 +99,26 @@ public class BigDecimalMathTests
     }
 
     [TestMethod]
+    public void MultiplyRandomNumbersTest()
+    {
+        var rnd = new Random();
+        var n = 10000;
+
+        for (var i = 0; i < n; i++)
+        {
+            var a = rnd.NextDoubleFullRange();
+            var b = rnd.NextDoubleFullRange();
+            var c = a * b;
+            if (!double.IsFinite(c)) continue;
+
+            var bda = (BigDecimal)a;
+            var bdb = (BigDecimal)b;
+            var bdc = bda * bdb;
+            BigDecimalAssert.AreFuzzyEqual(c, bdc);
+        }
+    }
+
+    [TestMethod]
     public void TestDivisionSmall()
     {
         BigDecimal a = 1;
@@ -107,6 +162,26 @@ public class BigDecimalMathTests
     }
 
     [TestMethod]
+    public void DivideRandomNumbersTest()
+    {
+        var rnd = new Random();
+        var n = 10000;
+
+        for (var i = 0; i < n; i++)
+        {
+            var a = rnd.NextDoubleFullRange();
+            var b = rnd.NextDoubleFullRange();
+            var c = a / b;
+            if (!double.IsFinite(c)) continue;
+
+            var bda = (BigDecimal)a;
+            var bdb = (BigDecimal)b;
+            var bdc = bda / bdb;
+            BigDecimalAssert.AreFuzzyEqual(c, bdc);
+        }
+    }
+
+    [TestMethod]
     public void TestModSmallInts()
     {
         BigDecimal a = 7;
@@ -121,39 +196,58 @@ public class BigDecimalMathTests
     {
         BigDecimal a = 7.6543m;
         BigDecimal b = 2.3456m;
-        var c = a % b;
-        Assert.AreEqual(6175, c.Significand);
-        Assert.AreEqual(-4, c.Exponent);
+        var actual = a % b;
+        var expected = 0.6175m;
+        BigDecimalAssert.AreEqual(expected, actual);
     }
 
-    [TestMethod]
-    public void TestModNegativeIntDivisor()
-    {
-        BigDecimal a = 8;
-        BigDecimal b = -3;
-        var c = a % b;
-        Assert.AreEqual(-1, c.Significand);
-        Assert.AreEqual(0, c.Exponent);
-    }
-
+    /// <summary>
+    /// With truncated division, the modulus is zero or has the same sign as the divisor.
+    /// </summary>
     [TestMethod]
     public void TestModNegativeIntDividend()
     {
         BigDecimal a = -8;
         BigDecimal b = 3;
-        var c = a % b;
-        Assert.AreEqual(1, c.Significand);
-        Assert.AreEqual(0, c.Exponent);
+        var actual = a % b;
+        var expected = -2;
+        BigDecimalAssert.AreEqual(expected, actual);
+    }
+
+    /// <summary>
+    /// With truncated division, the modulus is zero or has the same sign as the divisor.
+    /// </summary>
+    [TestMethod]
+    public void TestModNegativeIntDivisor()
+    {
+        BigDecimal a = 8;
+        BigDecimal b = -3;
+        var actual = a % b;
+        var expected = 2;
+        BigDecimalAssert.AreEqual(expected, actual);
     }
 
     [TestMethod]
-    public void TestModAngle1()
+    public void CompareBigDecimalModWithDecimalMod()
     {
-        var a = -BigDecimal.Tau + 0.1m;
-        var b = BigDecimal.Tau;
-        var c = a % b;
-        Assert.AreEqual(1, c.Significand);
-        Assert.AreEqual(-1, c.Exponent);
+        for (var a = -10; a <= 10; a++)
+        {
+            for (var b = -10; b <= 10; b++)
+            {
+                if (b == 0) continue;
+
+                decimal c = (decimal)a % (decimal)b;
+
+                var bda = (BigDecimal)a;
+                var bdb = (BigDecimal)b;
+                var bdc = bda % bdb;
+
+                Console.WriteLine($"{a} % {b} = {c}");
+                Console.WriteLine($"{bda} % {bdb} = {bdc}");
+                Console.WriteLine();
+                BigDecimalAssert.AreEqual(c, bdc);
+            }
+        }
     }
 
     [TestMethod]

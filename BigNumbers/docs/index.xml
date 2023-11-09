@@ -1116,13 +1116,6 @@
         </member>
         <member name="P:Galaxon.BigNumbers.BigDecimal.HalfPi">
             <summary>Half pi (π/2).</summary>
-            <remarks>
-            This value is used in a number of calculations, so it felt warranted to cache it.
-            </remarks>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.ComputeHalfPi">
-            <summary>Compute the value of π/2.</summary>
-            <returns>The value of π/2 to the current number of significant figures.</returns>
         </member>
         <member name="F:Galaxon.BigNumbers.BigDecimal._phi">
             <summary>Cached value for φ, the golden ratio.</summary>
@@ -1411,6 +1404,9 @@
             <param name="bd">The BigDecimal value.</param>
             <returns>The converted value.</returns>
         </member>
+        <member name="F:Galaxon.BigNumbers.BigDecimal._significand">
+            <summary>Backing field for the Significand property.</summary>
+        </member>
         <member name="P:Galaxon.BigNumbers.BigDecimal.Significand">
             <summary>
             The part of a number in scientific notation or in floating-point representation consisting
@@ -1622,6 +1618,7 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Log(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
+            <see href="https://en.wikipedia.org/wiki/Mercator_series"/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Log(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
@@ -1743,26 +1740,6 @@
             supported by Rider so we need this here for now.
             </remarks>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Shift(Galaxon.BigNumbers.BigDecimal,System.Int32)">
-            <summary>
-            Generate a new significand, found by shifting the exponent of the BigDecimal to the provided
-            new exponent.
-            The combination of the result significand and the new exponent parameter represent a new
-            BigDecimal value equal to the provided value.
-            </summary>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Align(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <summary>
-            Adjust the significand and exponent of one of the values so both have the same exponent.
-            </summary>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.MakeCanonical(System.Numerics.BigInteger,System.Int32)">
-            <summary>
-            Modify the provided significand and exponent as needed to find the canonical form.
-            Static form of the method, for use in the constructor.
-            </summary>
-            <returns>The two updated BigIntegers.</returns>
-        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Negate(Galaxon.BigNumbers.BigDecimal)">
             <summary>Negate method.</summary>
             <param name="bd">The BigDecimal value to negate.</param>
@@ -1872,6 +1849,36 @@
             <exception cref="T:System.ArithmeticException">
             If the base is 0 and the exponent is negative or imaginary.
             </exception>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal._CutDigits(Galaxon.BigNumbers.BigDecimal,System.Int32,System.MidpointRounding)">
+            <summary>
+            Remove some digits from the end of the significand, rounding off if needed, using the
+            strategy specified by the rounding mode.
+            </summary>
+            <param name="x"></param>
+            <param name="nDigitsToCut"></param>
+            <param name="mode"></param>
+            <returns>The rounded-off value.</returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal._Shift(Galaxon.BigNumbers.BigDecimal,System.Int32)">
+            <summary>
+            Generate a new significand, found by shifting the exponent of the BigDecimal to the provided
+            new exponent.
+            The combination of the result significand and the new exponent parameter represent a new
+            BigDecimal value equal to the provided value.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Align(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
+            <summary>
+            Adjust the significand and exponent of one of the values so both have the same exponent.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal._MakeCanonical(System.Numerics.BigInteger,System.Int32)">
+            <summary>
+            Modify the provided significand and exponent as needed to find the canonical form.
+            Static form of the method, for use in the constructor.
+            </summary>
+            <returns>The two updated BigIntegers.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Parse(System.String,System.Globalization.NumberStyles,System.IFormatProvider)">
             <inheritdoc/>
@@ -2186,9 +2193,7 @@
             <returns>A tuple containing the x and y coordinates.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.NormalizeAngle(Galaxon.BigNumbers.BigDecimal@)">
-            <summary>
-            Shift given angle to the equivalent angle in the interval [-π, π).
-            </summary>
+            <summary>Find the equivalent angle in the interval [0, 𝞃).</summary>
         </member>
         <member name="T:Galaxon.BigNumbers.BigRational">
             <summary>

@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using System.Numerics;
 using Galaxon.Core.Exceptions;
 
@@ -15,13 +16,44 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Sin(BigDecimal x)
     {
-        // Find the equivalent angle in the interval [-π, π).
+        // Find the equivalent angle in the interval [0, 𝞃).
         x = NormalizeAngle(in x);
 
+        // Make use of identities to reduce x to the interval [0, π/2].
+        if (x > Tau - HalfPi)
+        {
+            return -Sin(Tau - x);
+        }
+        else if (x > Pi)
+        {
+            return -Sin(x - Pi);
+        }
+        else if (x > HalfPi)
+        {
+            return Sin(Pi - x);
+        }
+
         // Optimizations.
-        if (x == 0 || x == Pi) return 0;
-        if (x == HalfPi) return 1;
-        if (x == -HalfPi) return NegativeOne;
+        if (x == 0)
+        {
+            return 0;
+        }
+        else if (x == Pi / 6)
+        {
+            return One / 2;
+        }
+        else if (x == Pi / 4)
+        {
+            return Sqrt(2) / 2;
+        }
+        else if (x == Pi / 3)
+        {
+            return Sqrt(3) / 2;
+        }
+        else if (x == HalfPi)
+        {
+            return 1;
+        }
 
         // Taylor series.
         var sign = 1;
@@ -71,49 +103,7 @@ public partial struct BigDecimal
     /// <see href="https://en.wikipedia.org/wiki/Sine_and_cosine#Series_definitions"/>
     public static BigDecimal Cos(BigDecimal x)
     {
-        // Find the equivalent angle in the interval [-π, π).
-        x = NormalizeAngle(in x);
-
-        // Optimizations.
-        if (x == 0) return 1;
-        if (x == Pi) return NegativeOne;
-        if (Abs(x) == HalfPi) return 0;
-
-        // Taylor series.
-        // https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
-        var sign = 1;
-        BigInteger m = 0; // m = 2n
-        BigDecimal xm = 1;
-        var x2 = x * x;
-        BigInteger mFact = 1;
-        BigDecimal sum = 0;
-
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
-
-        // Add terms until the process ceases to affect the result.
-        // The more significant figures wanted, the longer the process will take.
-        while (true)
-        {
-            // Add the next term in the series.
-            var newSum = sum + sign * xm / mFact;
-
-            // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum) break;
-
-            // Prepare for next iteration.
-            sum = newSum;
-            sign = -sign;
-            m += 2;
-            xm *= x2;
-            mFact *= m * (m - 1);
-        }
-
-        // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(sum);
+        return Sin(HalfPi - x);
     }
 
     /// <inheritdoc/>
@@ -137,9 +127,6 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Tan(BigDecimal x)
     {
-        // Find the equivalent angle in the interval [-π, π).
-        x = NormalizeAngle(in x);
-
         // Test for divide by zero.
         var c = Cos(x);
         if (c == 0) throw new ArithmeticException($"tan({x}) is undefined.");
@@ -159,9 +146,6 @@ public partial struct BigDecimal
     /// <exception cref="DivideByZeroException">If the sine of the angle is 0.</exception>
     public static BigDecimal Cot(BigDecimal x)
     {
-        // Find the equivalent angle in the interval [-π, π).
-        x = NormalizeAngle(in x);
-
         // Test for divide by zero.
         var s = Sin(x);
         if (s == 0) throw new ArithmeticException($"cot({x}) is undefined.");
@@ -175,7 +159,11 @@ public partial struct BigDecimal
     /// <exception cref="DivideByZeroException">If the cosine of the angle is 0.</exception>
     public static BigDecimal Sec(BigDecimal x)
     {
-        return 1 / Cos(x);
+        // Test for divide by zero.
+        var c = Cos(x);
+        if (c == 0) throw new ArithmeticException($"sec({x}) is undefined.");
+
+        return 1 / c;
     }
 
     /// <summary>Calculate the cosecant of a BigDecimal value.</summary>
@@ -184,7 +172,11 @@ public partial struct BigDecimal
     /// <exception cref="DivideByZeroException">If the sine of the angle is 0.</exception>
     public static BigDecimal Csc(BigDecimal x)
     {
-        return 1 / Sin(x);
+        // Test for divide by zero.
+        var s = Sin(x);
+        if (s == 0) throw new ArithmeticException($"csc({x}) is undefined.");
+
+        return 1 / s;
     }
 
     #endregion Trigonometric methods
@@ -270,6 +262,8 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Atan(BigDecimal x)
     {
+        return Asin(x / Sqrt(1 + Sqr(x)));
+
         // Handle negative arguments.
         if (x < 0) return -Atan(-x);
 
@@ -375,7 +369,7 @@ public partial struct BigDecimal
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public static BigDecimal Asec(BigDecimal x)
     {
-        // Guard.
+        // Guards.
         if (Abs(x) < 1)
         {
             throw new ArgumentOutOfRangeException(nameof(x),
@@ -408,6 +402,9 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Sinh(BigDecimal x)
     {
+        var ex = Exp(x);
+        return (ex - 1 / ex) / 2;
+
         // Optimization.
         if (x == 0) return 0;
 
@@ -447,6 +444,9 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Cosh(BigDecimal x)
     {
+        var ex = Exp(x);
+        return (ex + 1 / ex) / 2;
+
         // Optimization.
         if (x == 0) return 1;
 
@@ -487,7 +487,9 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Tanh(BigDecimal x)
     {
-        return Sinh(x) / Cosh(x);
+        var e2x = Exp(2 * x);
+        return (e2x - 1) / (e2x + 1);
+        // return Sinh(x) / Cosh(x);
     }
 
     /// <summary>Calculate the hyperbolic cotangent of a BigDecimal value.</summary>
@@ -495,8 +497,8 @@ public partial struct BigDecimal
     /// <returns>The hyperbolic cotangent.</returns>
     public static BigDecimal Coth(BigDecimal x)
     {
-        var e = Exp(2 * x);
-        return (e + 1) / (e - 1);
+        var e2x = Exp(2 * x);
+        return (e2x + 1) / (e2x - 1);
     }
 
     /// <summary>Calculate the hyperbolic secant of a BigDecimal value.</summary>
@@ -504,7 +506,8 @@ public partial struct BigDecimal
     /// <returns>The hyperbolic secant.</returns>
     public static BigDecimal Sech(BigDecimal x)
     {
-        return 2 / (Exp(x) + Exp(-x));
+        var ex = Exp(x);
+        return 2 / (ex + 1 / ex);
     }
 
     /// <summary>Calculate the hyperbolic cosecant of a BigDecimal value.</summary>
@@ -512,7 +515,8 @@ public partial struct BigDecimal
     /// <returns>The hyperbolic cosecant.</returns>
     public static BigDecimal Csch(BigDecimal x)
     {
-        return 2 / (Exp(x) - Exp(-x));
+        var ex = Exp(x);
+        return 2 / (ex - 1 / ex);
     }
 
     #endregion Hyperbolic methods
@@ -587,21 +591,12 @@ public partial struct BigDecimal
         return r == 0 ? (0, 0) : (r * Cos(theta), r * Sin(theta));
     }
 
-    /// <summary>
-    /// Shift given angle to the equivalent angle in the interval [-π, π).
-    /// </summary>
-    public static BigDecimal NormalizeAngle(in BigDecimal radians)
+    /// <summary>Find the equivalent angle in the interval [0, 𝞃).</summary>
+    public static BigDecimal NormalizeAngle(in BigDecimal theta)
     {
-        var x = radians % Tau;
-
-        // The result of the modulo operator can be anywhere in the interval (-τ, τ) because
-        // the default behaviour of modulo is to assign the sign of the dividend (the left-hand
-        // operand) to the result. So if radians is negative, the result will be, too.
-        // Therefore, we may need to shift the value once more to place it in the desired range.
-        if (x < -Pi) return x + Tau;
-        if (x >= Pi) return x - Tau;
-
-        return x;
+        // Use floored division here instead of the mod operator (which uses truncated division).
+        // This will ensure an answer in the desired range.
+        return theta - Floor(theta / Tau) * Tau;
     }
 
     #endregion Helper methods

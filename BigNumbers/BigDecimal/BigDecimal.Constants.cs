@@ -140,9 +140,6 @@ public partial struct BigDecimal
     private static BigDecimal _halfPi;
 
     /// <summary>Half pi (π/2).</summary>
-    /// <remarks>
-    /// This value is used in a number of calculations, so it felt warranted to cache it.
-    /// </remarks>
     public static BigDecimal HalfPi
     {
         get
@@ -150,27 +147,9 @@ public partial struct BigDecimal
             if (_halfPi.NumSigFigs == MaxSigFigs) return _halfPi;
             if (_halfPi.NumSigFigs > MaxSigFigs) return RoundSigFigs(_halfPi);
 
-            _halfPi = ComputeHalfPi();
+            _halfPi = Pi / 2;
             return _halfPi;
         }
-    }
-
-    /// <summary>Compute the value of π/2.</summary>
-    /// <returns>The value of π/2 to the current number of significant figures.</returns>
-    public static BigDecimal ComputeHalfPi()
-    {
-        // Temporarily increase the maximum number of significant figures to ensure a correct
-        // result.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
-
-        // Compute the value.
-        var halfPi = Pi / 2;
-
-        // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(halfPi);
     }
 
     #endregion HalfPi

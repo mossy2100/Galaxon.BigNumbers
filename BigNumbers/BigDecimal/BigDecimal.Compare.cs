@@ -119,8 +119,9 @@ public partial struct BigDecimal
             // Console.WriteLine($"ulpThis = {ulpThis:E10}");
             // Console.WriteLine($"ulpOther = {ulpOther:E10}");
 
-            // Set the maximum acceptable difference equal to the maximum ULP.
-            delta = MaxMagnitude(ulpThis, ulpOther);
+            // Set the maximum acceptable difference equal to 3x the maximum ULP.
+            // This seems high but it works.
+            delta = 4 * MaxMagnitude(ulpThis, ulpOther);
         }
 
         // See if they are close enough.

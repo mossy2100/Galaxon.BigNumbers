@@ -277,7 +277,7 @@ public partial struct BigDecimal
     /// <returns>The BigInteger value formed by truncating the BigDecimal.</returns>
     public static explicit operator BigInteger(BigDecimal bd)
     {
-        return Shift(Truncate(bd));
+        return _Shift(Truncate(bd));
     }
 
     /// <summary>Cast BigDecimal to Half.</summary>
@@ -336,7 +336,7 @@ public partial struct BigDecimal
         {
             // If the exponent is greater than 0, shift to exponent 0 to get the correct scale.
             exp = 0;
-            sig = Shift(bd);
+            sig = _Shift(bd);
         }
         else
         {

@@ -29,12 +29,25 @@ public partial struct BigDecimal :
 {
     #region Instance fields and properties
 
+    /// <summary>Backing field for the Significand property.</summary>
+    private BigInteger _significand;
+
     /// <summary>
     /// The part of a number in scientific notation or in floating-point representation consisting
     /// of its significant digits. Also known as the mantissa.
     /// </summary>
     /// <see href="https://en.wikipedia.org/wiki/Significand"/>
-    public BigInteger Significand { get; set; }
+    public BigInteger Significand
+    {
+        readonly get => _significand;
+
+        set
+        {
+            _significand = value;
+            // Null the digit string, which will probably now be different.
+            _digitString = null;
+        }
+    }
 
     /// <summary>The power of 10.</summary>
     public int Exponent { get; set; }
@@ -154,7 +167,7 @@ public partial struct BigDecimal :
         }
 
         // Trim trailing 0s on the significand.
-        (significand, exponent) = MakeCanonical(significand, exponent);
+        (significand, exponent) = _MakeCanonical(significand, exponent);
 
         // Set properties.
         Significand = significand;

@@ -706,6 +706,34 @@
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpLogTests.Exp_NegativeFloats">
             <summary>Test Exp() with negative floating point values.</summary>
         </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalExpLogTests.TestExpSmallInts">
+             <summary>
+             I generated these expected results using Python.
+            
+             <code>
+             from mpmath import mp, exp
+            
+             # Set the precision (number of decimal places)
+             mp.dps = 50  # 50 decimal places of precision
+            
+             # Loop through integer values from -12 to 12
+             for i in range(-12, 13):
+                 theta = i * mp.pi / 6
+                 ex = exp(theta)
+                 print(f"{i} =&gt; \"{ex}\",")
+             </code>
+             </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestModNegativeIntDividend">
+            <summary>
+            With truncated division, the modulus is zero or has the same sign as the divisor.
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestModNegativeIntDivisor">
+            <summary>
+            With truncated division, the modulus is zero or has the same sign as the divisor.
+            </summary>
+        </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalPowTests.Pow_BaseNegExponentRationalEvenDenominator_UnsolvableThrows">
             <summary>
             Test that attempting to calculate x^y where x is negative and y is a rational with an even
