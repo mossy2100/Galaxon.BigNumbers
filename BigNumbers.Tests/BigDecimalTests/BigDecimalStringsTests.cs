@@ -842,7 +842,7 @@ public class BigDecimalStringsTests
     }
 
     [TestMethod]
-    public void TestParseInvalidFormat1()
+    public void TestParseEmptyString()
     {
         Assert.ThrowsException<ArgumentFormatException>(() => BigDecimal.Parse(""));
     }

@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Galaxon.BigNumbers.TestTools;
 using Galaxon.Core.Numbers;
 
@@ -8,19 +7,6 @@ namespace Galaxon.BigNumbers.Tests;
 public class BigDecimalTrigTests
 {
     public const int Denominator = 12;
-
-    [TestMethod]
-    public void TestNormalizeAngle()
-    {
-        for (var i = -10; i <= 10; i++)
-        {
-            var thetaDeg = (BigDecimal)45 * i;
-            var thetaRad = thetaDeg * BigDecimal.Pi / 180;
-            var betaRad = BigDecimal.NormalizeAngle(thetaRad);
-            var betaDeg = betaRad * 180 / BigDecimal.Pi;
-            Console.WriteLine($"NormalizeAngle({thetaDeg:F2}) = {betaDeg:F2}");
-        }
-    }
 
     public static IEnumerable<object[]> Numerators
     {
@@ -32,6 +18,19 @@ public class BigDecimalTrigTests
                 fractions.Add(new object[] { i });
             }
             return fractions;
+        }
+    }
+
+    [TestMethod]
+    public void TestNormalizeAngle()
+    {
+        for (var i = -10; i <= 10; i++)
+        {
+            var thetaDeg = (BigDecimal)45 * i;
+            var thetaRad = thetaDeg * BigDecimal.Pi / 180;
+            var betaRad = BigDecimal.NormalizeAngle(thetaRad);
+            var betaDeg = betaRad * 180 / BigDecimal.Pi;
+            Console.WriteLine($"NormalizeAngle({thetaDeg:F2}) = {betaDeg:F2}");
         }
     }
 
@@ -276,7 +275,7 @@ public class BigDecimalTrigTests
             9 => "55.654397599417548299475671490540458958762668652846",
             10 => "93.954653468459854428317163719906921644545595924175",
             11 => "158.60699505697111480028788990902014567957642767811",
-            12 => "267.74489404101651425711744968805617722370618739915",
+            12 => "267.74489404101651425711744968805617722370618739915"
         };
         var expected = BigDecimal.Parse(sResult);
 
@@ -323,7 +322,7 @@ public class BigDecimalTrigTests
             9 => "55.663380890438677727365336442448384212484006419052",
             10 => "93.959975033938655011290221658322180814351021883597",
             11 => "158.61014747172407708968795584746142966234045145654",
-            12 => "267.74676148374822224593187990099100425409961020415",
+            12 => "267.74676148374822224593187990099100425409961020415"
         };
         var expected = BigDecimal.Parse(sResult);
 
@@ -370,7 +369,7 @@ public class BigDecimalTrigTests
             9 => "0.99983861398863265074230079223665552043801446853656",
             10 => "0.99994336348560247684346575838967997004954141370184",
             11 => "0.99998012475996515746159863388486198275063429879461",
-            12 => "0.99999302533961061060510721183234574642771937737571",
+            12 => "0.99999302533961061060510721183234574642771937737571"
         };
         var expected = BigDecimal.Parse(sResult);
 
@@ -383,7 +382,6 @@ public class BigDecimalTrigTests
 
         BigDecimalAssert.AreFuzzyEqual(expected, actual);
     }
-
 
     [TestMethod]
     public void TestPolarToCartesian()

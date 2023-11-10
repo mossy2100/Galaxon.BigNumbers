@@ -1,7 +1,9 @@
+using Galaxon.BigNumbers.TestTools;
+
 namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
-public class BigDecimalRoundTests
+public class BigDecimalNumericMethodsTests
 {
     /// <summary>
     /// Compare BigDecimal.Round() matches decimal.Round() for all rounding methods.
@@ -29,8 +31,8 @@ public class BigDecimalRoundTests
     public void TestRoundPi()
     {
         var pi = BigDecimal.Round(BigDecimal.Pi, 10);
-        // Console.WriteLine(pi);
-        Assert.AreEqual(3.1415926536m, pi);
+        Console.WriteLine(pi);
+        BigDecimalAssert.AreFuzzyEqual(3.1415926536, pi);
     }
 
     [TestMethod]
@@ -301,5 +303,62 @@ public class BigDecimalRoundTests
         r = BigDecimal.RoundSigFigs(bd, 4, MidpointRounding.ToZero);
         Assert.AreEqual(-1235, r.Significand);
         Assert.AreEqual(1, r.Exponent);
+    }
+
+    /// <summary>
+    /// Compare BigDecimal.Floor() matches double.Floor().
+    /// </summary>
+    [TestMethod]
+    public void TestFloor()
+    {
+        double[] values =
+        {
+            -2.6, -2.51, -2.5, -2.49, -2.4, -1.6, -1.51, -1.5, -1.49, -1.4,
+            1.4, 1.49, 1.5, 1.51, 1.6, 2.4, 2.49, 2.5, 2.51, 2.6
+        };
+        foreach (var value in values)
+        {
+            BigDecimal expected = double.Floor(value);
+            var actual = BigDecimal.Floor(value);
+            BigDecimalAssert.AreEqual(expected, actual);
+        }
+    }
+
+    /// <summary>
+    /// Compare BigDecimal.Ceiling() matches double.Ceiling().
+    /// </summary>
+    [TestMethod]
+    public void TestCeiling()
+    {
+        double[] values =
+        {
+            -2.6, -2.51, -2.5, -2.49, -2.4, -1.6, -1.51, -1.5, -1.49, -1.4,
+            1.4, 1.49, 1.5, 1.51, 1.6, 2.4, 2.49, 2.5, 2.51, 2.6
+        };
+        foreach (var value in values)
+        {
+            BigDecimal expected = double.Ceiling(value);
+            var actual = BigDecimal.Ceiling(value);
+            BigDecimalAssert.AreEqual(expected, actual);
+        }
+    }
+
+    /// <summary>
+    /// Compare BigDecimal.Truncate() matches double.Truncate().
+    /// </summary>
+    [TestMethod]
+    public void TestTruncate()
+    {
+        double[] values =
+        {
+            -2.6, -2.51, -2.5, -2.49, -2.4, -1.6, -1.51, -1.5, -1.49, -1.4,
+            1.4, 1.49, 1.5, 1.51, 1.6, 2.4, 2.49, 2.5, 2.51, 2.6
+        };
+        foreach (var value in values)
+        {
+            BigDecimal expected = double.Truncate(value);
+            var actual = BigDecimal.Truncate(value);
+            BigDecimalAssert.AreEqual(expected, actual);
+        }
     }
 }

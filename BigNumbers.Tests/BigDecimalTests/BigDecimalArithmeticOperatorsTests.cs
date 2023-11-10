@@ -5,7 +5,7 @@ using Galaxon.Core.Numbers;
 namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
-public class BigDecimalMathTests
+public class BigDecimalArithmeticOperatorsTests
 {
     [TestMethod]
     public void AddRandomNumbersTest()
@@ -236,7 +236,7 @@ public class BigDecimalMathTests
             {
                 if (b == 0) continue;
 
-                decimal c = (decimal)a % (decimal)b;
+                var c = a % (decimal)b;
 
                 var bda = (BigDecimal)a;
                 var bdb = (BigDecimal)b;

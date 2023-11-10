@@ -5,6 +5,30 @@ namespace Galaxon.BigNumbers.Tests;
 [TestClass]
 public class BigDecimalPowTests
 {
+    [TestMethod]
+    public void CubeRootOfNegative()
+    {
+        BigDecimal x;
+        BigRational y;
+        BigDecimal actual;
+        BigDecimal expected;
+
+        // Cube root of -27 using the Pow(BigDecimal, BigRational) method.
+        x = -27;
+        y = new BigRational(1, 3);
+        actual = BigDecimal.Pow(x, y);
+        expected = -3;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual);
+
+        // Compare with the Cbrt() method.
+        actual = BigDecimal.Cbrt(x);
+        BigDecimalAssert.AreFuzzyEqual(expected, actual);
+
+        // Test how this doesn't work for a BigDecimal value because we can't represent 1/3 exactly.
+        var y2 = (BigDecimal)1 / 3;
+        Assert.ThrowsException<OverflowException>(() => BigDecimal.Pow(x, y2));
+    }
+
     #region Base 0
 
     [TestMethod]
@@ -12,7 +36,7 @@ public class BigDecimalPowTests
     {
         BigDecimal x = 0;
         BigDecimal y = 0;
-        BigDecimal actual = BigDecimal.Pow(x, y);
+        var actual = BigDecimal.Pow(x, y);
         BigDecimal expected = 1;
         Assert.AreEqual(expected, actual);
     }
@@ -22,7 +46,7 @@ public class BigDecimalPowTests
     {
         BigDecimal x = 0;
         BigDecimal y = 1;
-        BigDecimal actual = BigDecimal.Pow(x, y);
+        var actual = BigDecimal.Pow(x, y);
         BigDecimal expected = 0;
         Assert.AreEqual(expected, actual);
     }
@@ -76,7 +100,7 @@ public class BigDecimalPowTests
     {
         BigDecimal x = 1;
         BigDecimal y = 0;
-        BigDecimal actual = BigDecimal.Pow(x, y);
+        var actual = BigDecimal.Pow(x, y);
         BigDecimal expected = 1;
         Assert.AreEqual(expected, actual);
     }
@@ -86,7 +110,7 @@ public class BigDecimalPowTests
     {
         BigDecimal x = 1;
         BigDecimal y = 1;
-        BigDecimal actual = BigDecimal.Pow(x, y);
+        var actual = BigDecimal.Pow(x, y);
         BigDecimal expected = 1;
         Assert.AreEqual(expected, actual);
     }
@@ -505,28 +529,4 @@ public class BigDecimalPowTests
     }
 
     #endregion Base negative
-
-    [TestMethod]
-    public void CubeRootOfNegative()
-    {
-        BigDecimal x;
-        BigRational y;
-        BigDecimal actual;
-        BigDecimal expected;
-
-        // Cube root of -27 using the Pow(BigDecimal, BigRational) method.
-        x = -27;
-        y = new BigRational(1, 3);
-        actual = BigDecimal.Pow(x, y);
-        expected = -3;
-        BigDecimalAssert.AreFuzzyEqual(expected, actual);
-
-        // Compare with the Cbrt() method.
-        actual = BigDecimal.Cbrt(x);
-        BigDecimalAssert.AreFuzzyEqual(expected, actual);
-
-        // Test how this doesn't work for a BigDecimal value because we can't represent 1/3 exactly.
-        BigDecimal y2 = (BigDecimal)1 / 3;
-        Assert.ThrowsException<OverflowException>(() => BigDecimal.Pow(x, y2));
-    }
 }

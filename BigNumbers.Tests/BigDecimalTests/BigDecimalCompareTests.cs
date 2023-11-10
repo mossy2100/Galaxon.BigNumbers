@@ -7,25 +7,87 @@ namespace Galaxon.BigNumbers.Tests;
 [TestClass]
 public class BigDecimalCompareTests
 {
+    #region ULP tests
+
+    [TestMethod]
+    public void ULP_Decimal_Tests()
+    {
+        decimal m;
+        BigDecimal ulp;
+
+        // Integer.
+        m = 123456789;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(1, ulp);
+
+        // Multiple of 10 does not give 10 for the ULP. Proves maximum ULP for decimal is 1.
+        m = 1234567890;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(1, ulp);
+
+        m = 12345678.9m;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(0.1m, ulp);
+
+        m = 123456.789m;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(0.001m, ulp);
+
+        m = 1.23456789e-10m;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(1e-18m, ulp);
+
+        m = -123456789;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(1, ulp);
+
+        m = -12345678.9m;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(0.1m, ulp);
+
+        m = -123456.789m;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(0.001m, ulp);
+
+        m = -1.23456789e-10m;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(1e-18m, ulp);
+
+        m = decimal.MaxValue;
+        ulp = BigDecimal.UnitOfLeastPrecision(m);
+        Assert.AreEqual(1, ulp);
+    }
+
+    #endregion ULP tests
     #region Data
 
     private static IEnumerable<object[]> _LessThanInts =>
         new[]
         {
-            new object[] { -456, -123 },
+            // Different sign.
             new object[] { -456, 0 },
-            new object[] { -456, 123 },
             new object[] { 0, 123 },
+            new object[] { -456, 123 },
+            // Same sign, different exponent.
+            new object[] { -123789, -456 },
+            new object[] { 456, 123789 },
+            // Same sign, same exponent.
+            new object[] { -456, -123 },
             new object[] { 123, 456 }
         };
 
     private static IEnumerable<object[]> _GreaterThanInts =>
         new[]
         {
-            new object[] { -123, -456 },
+            // Different sign.
             new object[] { 0, -456 },
-            new object[] { 123, -456 },
             new object[] { 123, 0 },
+            new object[] { 123, -456 },
+            // Same sign, different exponent.
+            new object[] { -456, -123789 },
+            new object[] { 123789, 456 },
+            // Same sign, same exponent.
+            new object[] { -123, -456 },
             new object[] { 456, 123 }
         };
 
@@ -34,26 +96,36 @@ public class BigDecimalCompareTests
         {
             new object[] { 0, 0 },
             new object[] { -123, -123 },
-            new object[] { 123, 123 }
+            new object[] { 456, 456 }
         };
 
     private static IEnumerable<object[]> _LessThanDoubles =>
         new[]
         {
-            new object[] { -456.789, -123.456 },
-            new object[] { -456.789, 0.0 },
+            // Different sign.
+            new object[] { -123.456, 0 },
+            new object[] { 0, 123.456 },
             new object[] { -456.789, 123.456 },
-            new object[] { 0.0, 123.456 },
+            // Same sign, different exponent.
+            new object[] { -123456.789, -987.654 },
+            new object[] { 456.789, 987654.321 },
+            // Same sign, same exponent.
+            new object[] { -456.789, -123.456 },
             new object[] { 123.456, 456.789 }
         };
 
     private static IEnumerable<object[]> _GreaterThanDoubles =>
         new[]
         {
-            new object[] { -123.456, -456.789 },
-            new object[] { 0.0, -456.789 },
+            // Different sign.
+            new object[] { 0, -123.456 },
+            new object[] { 123.456, 0 },
             new object[] { 123.456, -456.789 },
-            new object[] { 123.456, 0.0 },
+            // Same sign, different exponent.
+            new object[] { -987.654, -123456.789 },
+            new object[] { 987654.321, 456.789 },
+            // Same sign, same exponent.
+            new object[] { -123.456, -456.789 },
             new object[] { 456.789, 123.456 }
         };
 
@@ -177,9 +249,9 @@ public class BigDecimalCompareTests
         var hPi = Half.Pi;
         var fPi = float.Pi;
         var dPi = double.Pi;
-        BigDecimalAssert.AreFuzzyEqual(hPi, bdPi);
-        BigDecimalAssert.AreFuzzyEqual(fPi, bdPi);
-        BigDecimalAssert.AreFuzzyEqual(dPi, bdPi);
+        Assert.IsTrue(bdPi.FuzzyEquals(hPi));
+        Assert.IsTrue(bdPi.FuzzyEquals(fPi));
+        Assert.IsTrue(bdPi.FuzzyEquals(dPi));
     }
 
     [TestMethod]
@@ -195,59 +267,6 @@ public class BigDecimalCompareTests
     }
 
     #endregion FuzzyEquals
-
-    #region ULP tests
-
-    [TestMethod]
-    public void ULP_Decimal_Tests()
-    {
-        decimal m;
-        BigDecimal ulp;
-
-        // Integer.
-        m = 123456789;
-        ulp = BigDecimal.UnitOfLeastPrecision(m);
-        Assert.AreEqual(1, ulp);
-
-        // Multiple of 10 does not give 10 for the ULP. Proves maximum ULP for decimal is 1.
-        m = 1234567890;
-        ulp = BigDecimal.UnitOfLeastPrecision(m);
-        Assert.AreEqual(1, ulp);
-
-        m = 12345678.9m;
-        ulp = BigDecimal.UnitOfLeastPrecision(m);
-        Assert.AreEqual(0.1m, ulp);
-
-        m = 123456.789m;
-        ulp = BigDecimal.UnitOfLeastPrecision(m);
-        Assert.AreEqual(0.001m, ulp);
-
-        m = 1.23456789e-10m;
-        ulp = BigDecimal.UnitOfLeastPrecision(m);
-        Assert.AreEqual(1e-18m, ulp);
-
-        m = -123456789;
-        ulp = BigDecimal.UnitOfLeastPrecision(m);
-        Assert.AreEqual(1, ulp);
-
-        m = -12345678.9m;
-        ulp = BigDecimal.UnitOfLeastPrecision(m);
-        Assert.AreEqual(0.1m, ulp);
-
-        m = -123456.789m;
-        ulp = BigDecimal.UnitOfLeastPrecision(m);
-        Assert.AreEqual(0.001m, ulp);
-
-        m = -1.23456789e-10m;
-        ulp = BigDecimal.UnitOfLeastPrecision(m);
-        Assert.AreEqual(1e-18m, ulp);
-
-        m = decimal.MaxValue;
-        ulp = BigDecimal.UnitOfLeastPrecision(m);
-        Assert.AreEqual(1, ulp);
-    }
-
-    #endregion ULP tests
 
     #region CompareTo tests
 

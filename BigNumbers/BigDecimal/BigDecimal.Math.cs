@@ -8,9 +8,9 @@ public partial struct BigDecimal
     #region Numeric methods
 
     /// <inheritdoc/>
-    public static BigDecimal Abs(BigDecimal bd)
+    public static BigDecimal Abs(BigDecimal x)
     {
-        return new BigDecimal(BigInteger.Abs(bd.Significand), bd.Exponent);
+        return new BigDecimal(BigInteger.Abs(x.Significand), x.Exponent);
     }
 
     /// <inheritdoc/>
@@ -64,17 +64,16 @@ public partial struct BigDecimal
 
     /// <summary>Return the fractional part of the value.</summary>
     /// <remarks>
-    /// There are multiple ways to define the frac() function for negative numbers.
-    /// (Refer to the Wikipedia link below.)
-    /// The definition used in this implementation simply takes the digits to the right of the
-    /// decimal point, with the sign matching the argument.
+    /// There are multiple ways to define the frac() function for negative numbers:
+    /// <see href="https://en.wikipedia.org/wiki/Fractional_part"/>
+    /// The definition used in this implementation simply keeps the digits to the right of the
+    /// decimal point, and keeps the sign.
     /// e.g.
     /// Frac(12.345) => 0.345
     /// Frac(-12.345) => -0.345
     /// The following expression will be true for both positive and negative numbers:
     /// x == Truncate(x) + Frac(x)
     /// </remarks>
-    /// <see href="https://en.wikipedia.org/wiki/Fractional_part"/>
     public static BigDecimal Frac(BigDecimal x)
     {
         return x - Truncate(x);
@@ -102,166 +101,6 @@ public partial struct BigDecimal
         return Round(x, 0, MidpointRounding.ToPositiveInfinity);
     }
 
-    #endregion Numeric methods
-
-    #region Arithmetic methods
-
-    /// <summary>Negate method.</summary>
-    /// <param name="bd">The BigDecimal value to negate.</param>
-    /// <returns>The negation of the parameter.</returns>
-    public static BigDecimal Negate(BigDecimal bd)
-    {
-        return new BigDecimal(-bd.Significand, bd.Exponent);
-    }
-
-    /// <summary>Add 2 BigDecimals.</summary>
-    /// <param name="x">The left-hand BigDecimal number.</param>
-    /// <param name="y">The right-hand BigDecimal number.</param>
-    /// <returns>The addition of the arguments.</returns>
-    public static BigDecimal Add(BigDecimal x, BigDecimal y)
-    {
-        // If the orders of magnitude of the two values are too different, adding them will have no
-        // effect. We want to detect this situation to save time, and avoid the call to Align(),
-        // which can cause overflow if the difference in exponents is very large.
-        var xMaxExp = x.Exponent + x.NumSigFigs - 1;
-        var yMaxExp = y.Exponent + y.NumSigFigs - 1;
-        if (xMaxExp - MaxSigFigs > yMaxExp)
-        {
-            return x;
-        }
-        else if (yMaxExp - MaxSigFigs > xMaxExp)
-        {
-            return y;
-        }
-
-        // Make the exponents the same.
-        var (x2Sig, y2Sig, exp) = Align(x, y);
-
-        // Sum the significands and round off.
-        return RoundSigFigs(new BigDecimal(x2Sig + y2Sig, exp));
-    }
-
-    /// <summary>Subtract one BigDecimal from another.</summary>
-    /// <param name="a">The left-hand BigDecimal number.</param>
-    /// <param name="b">The right-hand BigDecimal number.</param>
-    /// <returns>The result of the subtraction.</returns>
-    public static BigDecimal Subtract(BigDecimal a, BigDecimal b)
-    {
-        return Add(a, -b);
-    }
-
-    /// <summary>
-    /// Increment method.
-    /// </summary>
-    /// <param name="a">The BigDecimal number.</param>
-    /// <returns>The parameter incremented by 1.</returns>
-    public static BigDecimal Increment(BigDecimal a)
-    {
-        return Add(a, 1);
-    }
-
-    /// <summary>
-    /// Decrement method.
-    /// </summary>
-    /// <param name="a">The BigDecimal number.</param>
-    /// <returns>The parameter decremented by 1.</returns>
-    public static BigDecimal Decrement(BigDecimal a)
-    {
-        return Add(a, -1);
-    }
-
-    /// <summary>
-    /// Multiply two BigDecimal values.
-    /// </summary>
-    /// <param name="a">The left-hand BigDecimal number.</param>
-    /// <param name="b">The right-hand BigDecimal number.</param>
-    /// <returns>The multiplication of the arguments.</returns>
-    public static BigDecimal Multiply(BigDecimal a, BigDecimal b)
-    {
-        return RoundSigFigs(new BigDecimal(a.Significand * b.Significand, a.Exponent + b.Exponent));
-    }
-
-    /// <summary>
-    /// Divide a BigDecimal by a BigDecimal.
-    /// </summary>
-    /// <remarks>
-    /// Computes division using the Goldschmidt algorithm.
-    /// <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division"/>
-    /// </remarks>
-    /// <param name="x">The left-hand BigDecimal number.</param>
-    /// <param name="y">The right-hand BigDecimal number.</param>
-    /// <returns>The division of the arguments.</returns>
-    /// <exception cref="System.DivideByZeroException">If b == 0</exception>
-    public static BigDecimal Divide(BigDecimal x, BigDecimal y)
-    {
-        // Guard.
-        if (y == 0)
-        {
-            throw new DivideByZeroException("Division by 0 is undefined.");
-        }
-
-        // Optimizations.
-        if (y == 1) return x;
-        if (x == y) return 1;
-
-        // Find f ~= 1/b as an initial estimate of the multiplication factor.
-
-        // We can quickly get a very good initial estimate by leveraging the decimal type.
-        // In other places we've used the double type for calculating estimates, both for speed and
-        // to access methods that the decimal type doesn't provide. However, because division may be
-        // needed when casting from double to BigDecimal, using double here causes infinite
-        // recursion. Casting from decimal to BigDecimal doesn't require division so it doesn't have
-        // that problem.
-
-        var yRounded = RoundSigFigs(y, DecimalPrecision);
-        BigDecimal f = 1 / (decimal)yRounded.Significand;
-        f.Exponent -= yRounded.Exponent;
-
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
-
-        while (true)
-        {
-            x *= f;
-            y *= f;
-
-            // If y is 1, then n is the result.
-            if (y == 1) break;
-
-            f = 2 - y;
-
-            // If y is not 1, but is close to 1, then f can be 1 due to rounding after the
-            // subtraction. If it is, there's no point continuing.
-            if (f == 1) break;
-        }
-
-        // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(x);
-    }
-
-    /// <summary>
-    /// Calculate reciprocal.
-    /// </summary>
-    /// <returns>The reciprocal of the argument.</returns>
-    public static BigDecimal Reciprocal(BigDecimal x)
-    {
-        return Divide(1, x);
-    }
-
-    /// <summary>
-    /// Divides two BigDecimal values together to compute their modulus or remainder.
-    /// </summary>
-    /// <param name="x">The value which y divides.</param>
-    /// <param name="y">The value which divides x.</param>
-    /// <returns>The modulus or remainder of x divided by y.</returns>
-    public static BigDecimal Modulus(BigDecimal x, BigDecimal y)
-    {
-        return x - Truncate(x / y) * y;
-    }
-
     /// <summary>
     /// Compute the arithmetic-geometric mean of two values.
     /// </summary>
@@ -282,7 +121,8 @@ public partial struct BigDecimal
         var g0 = y;
         BigDecimal result;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        // Temporarily increase the maximum number of significant figures to ensure an accurate
+        // result.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -317,76 +157,158 @@ public partial struct BigDecimal
         return result;
     }
 
-    #endregion Arithmetic methods
+    #endregion Numeric methods
 
     #region Arithmetic operators
 
     /// <inheritdoc/>
-    public static BigDecimal operator +(BigDecimal bd)
+    public static BigDecimal operator +(BigDecimal x)
     {
-        return bd;
+        return x;
     }
 
     /// <inheritdoc/>
-    public static BigDecimal operator -(BigDecimal bd)
+    public static BigDecimal operator -(BigDecimal x)
     {
-        return Negate(bd);
+        return new BigDecimal(-x.Significand, x.Exponent);
     }
 
     /// <inheritdoc/>
-    public static BigDecimal operator +(BigDecimal a, BigDecimal b)
+    public static BigDecimal operator +(BigDecimal x, BigDecimal y)
     {
-        return Add(a, b);
+        // If the orders of magnitude of the two values are different enough, adding them will have
+        // no effect after rounding off to the maximum number of significant figures. We want to
+        // detect this situation to save time, mainly by avoiding the call to Align().
+        var xMaxExp = x.Exponent + x.NumSigFigs - 1;
+        var yMaxExp = y.Exponent + y.NumSigFigs - 1;
+        if (xMaxExp - MaxSigFigs > yMaxExp)
+        {
+            return x;
+        }
+        if (yMaxExp - MaxSigFigs > xMaxExp)
+        {
+            return y;
+        }
+
+        // Align the values to the same exponent.
+        var (x2Sig, y2Sig, exp) = Align(x, y);
+
+        // Sum the significands and round off.
+        return RoundSigFigs(new BigDecimal(x2Sig + y2Sig, exp));
     }
 
     /// <inheritdoc/>
-    public static BigDecimal operator -(BigDecimal a, BigDecimal b)
+    public static BigDecimal operator -(BigDecimal x, BigDecimal y)
     {
-        return Subtract(a, b);
+        return x + -y;
     }
 
     /// <inheritdoc/>
-    public static BigDecimal operator ++(BigDecimal bd)
+    public static BigDecimal operator ++(BigDecimal x)
     {
-        return Increment(bd);
+        return x + 1;
     }
 
     /// <inheritdoc/>
-    public static BigDecimal operator --(BigDecimal bd)
+    public static BigDecimal operator --(BigDecimal x)
     {
-        return Decrement(bd);
+        return x - 1;
     }
 
     /// <inheritdoc/>
-    public static BigDecimal operator *(BigDecimal a, BigDecimal b)
+    public static BigDecimal operator *(BigDecimal x, BigDecimal y)
     {
-        return Multiply(a, b);
+        return RoundSigFigs(new BigDecimal(x.Significand * y.Significand, x.Exponent + y.Exponent));
     }
 
     /// <inheritdoc/>
-    public static BigDecimal operator /(BigDecimal a, BigDecimal b)
+    /// <remarks>
+    /// Computes division using the Goldschmidt algorithm:
+    /// <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division"/>
+    /// </remarks>
+    /// <exception cref="System.DivideByZeroException">If y == 0</exception>
+    public static BigDecimal operator /(BigDecimal x, BigDecimal y)
     {
-        return Divide(a, b);
+        // Guard.
+        if (y == 0)
+        {
+            throw new DivideByZeroException("Division by 0 is undefined.");
+        }
+
+        // Optimizations.
+        if (y == 1) return x;
+        if (x == y) return 1;
+
+        // Find f ~= 1/y as an initial estimate of the multiplication factor.
+        // We can quickly get a very good initial estimate by leveraging the decimal type.
+        // In other places we've used the double type for calculating estimates, both for speed and
+        // to access methods that the decimal type doesn't provide. However, because division may be
+        // needed when casting a double to BigDecimal, using double here causes infinite recursion.
+        // Casting from decimal to BigDecimal doesn't require division so it doesn't have that
+        // problem.
+        var yRounded = RoundSigFigs(y, DecimalPrecision);
+        BigDecimal f = 1 / (decimal)yRounded.Significand;
+        f.Exponent -= yRounded.Exponent;
+
+        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        var prevMaxSigFigs = MaxSigFigs;
+        MaxSigFigs += 2;
+
+        while (true)
+        {
+            x *= f;
+            y *= f;
+
+            // If y is 1, then n is the result.
+            if (y == 1) break;
+
+            f = 2 - y;
+
+            // If y is not 1, but is close to 1, then f can be 1 due to rounding after the
+            // subtraction. If it is, there's no point continuing.
+            if (f == 1) break;
+        }
+
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
+
+        return RoundSigFigs(x);
     }
 
     /// <inheritdoc/>
-    public static BigDecimal operator %(BigDecimal a, BigDecimal b)
+    /// <remarks>
+    /// There are various ways to implement the modulo operator:
+    /// <see href="https://en.wikipedia.org/wiki/Modulo"/>
+    /// This method uses truncated division, to match the behaviour of the operator as used with the
+    /// standard number types in .NET.
+    /// It means the result (the remainder) will have the same sign as the dividend (x).
+    /// </remarks>
+    /// <exception cref="DivideByZeroException">if the divisor is 0.</exception>
+    public static BigDecimal operator %(BigDecimal x, BigDecimal y)
     {
-        return Modulus(a, b);
+        return x - Truncate(x / y) * y;
     }
 
-    /// <summary>
-    /// Exponentiation operator.
-    /// </summary>
-    /// <param name="a">The base.</param>
-    /// <param name="b">The exponent.</param>
+    /// <summary>Exponentiation operator.</summary>
+    /// <remarks>
+    /// Overloads the ^ operator to perform exponentiation, consistent with common mathematical
+    /// usage.
+    /// While C-based languages traditionally use ^ for bitwise XOR, operator overloading in C#
+    /// allows for a more intuitive use in the context of custom numerical types like BigDecimal,
+    /// BigRational, and BigComplex.
+    /// Many C-inspired languages use ** for the exponentiation operator, but this hasn't been done
+    /// in C# (yet) and isn't possible with operator overloading, as only a small set of standard
+    /// operator tokens can be overloaded.
+    /// </remarks>
+    /// <param name="x">The base.</param>
+    /// <param name="y">The exponent.</param>
     /// <returns>The first operand raised to the power of the second.</returns>
     /// <exception cref="ArithmeticException">
-    /// If the base is 0 and the exponent is negative or imaginary.
+    /// If the base is 0 and the exponent is negative.
     /// </exception>
-    public static BigDecimal operator ^(BigDecimal a, BigDecimal b)
+    public static BigDecimal operator ^(BigDecimal x, BigDecimal y)
     {
-        return Pow(a, b);
+        return Pow(x, y);
     }
 
     #endregion Arithmetic operators
@@ -412,6 +334,10 @@ public partial struct BigDecimal
 
         // Find out how many digits to keep.
         var nDigitsToKeep = nSigFigs - nDigitsToCut;
+        if (nDigitsToKeep < 0)
+        {
+            nDigitsToKeep = 0;
+        }
 
         // Get the sign.
         var sign = x.Sign;
@@ -421,7 +347,7 @@ public partial struct BigDecimal
         var newSig = nDigitsToKeep <= 0 ? 0 : BigInteger.Parse(digits[..nDigitsToKeep]);
 
         // Determine from the rounding method if we should increment the new significand.
-        bool increment = false;
+        var increment = false;
         switch (mode)
         {
             case MidpointRounding.AwayFromZero:
@@ -471,16 +397,16 @@ public partial struct BigDecimal
     /// The combination of the result significand and the new exponent parameter represent a new
     /// BigDecimal value equal to the provided value.
     /// </summary>
-    private static BigInteger _Shift(BigDecimal bd, int newExponent = 0)
+    private static BigInteger _Shift(BigDecimal x, int newExponent = 0)
     {
         // See if there's anything to do.
-        if (bd.Exponent == newExponent)
+        if (x.Exponent == newExponent)
         {
-            return bd.Significand;
+            return x.Significand;
         }
 
         // Return the shifted significand.
-        return bd.Significand * XBigInteger.Exp10(bd.Exponent - newExponent);
+        return x.Significand * XBigInteger.Exp10(x.Exponent - newExponent);
     }
 
     /// <summary>

@@ -119,9 +119,8 @@ public partial struct BigDecimal
             // Console.WriteLine($"ulpThis = {ulpThis:E10}");
             // Console.WriteLine($"ulpOther = {ulpOther:E10}");
 
-            // Set the maximum acceptable difference equal to 3x the maximum ULP.
-            // This seems high but it works.
-            delta = 4 * MaxMagnitude(ulpThis, ulpOther);
+            // Set the maximum acceptable difference equal to the larger ULP.
+            delta = MaxMagnitude(ulpThis, ulpOther);
         }
 
         // See if they are close enough.
@@ -164,8 +163,8 @@ public partial struct BigDecimal
         // for this we want to compare the maximum exponents (i.e. exponent of the first digit).
         var thisMaxExp = Exponent + NumSigFigs - 1;
         var otherMaxExp = other.Exponent + other.NumSigFigs - 1;
-        if (thisMaxExp < otherMaxExp) return -1;
-        if (thisMaxExp > otherMaxExp) return 1;
+        if (thisMaxExp < otherMaxExp) return -Sign;
+        if (thisMaxExp > otherMaxExp) return Sign;
 
         // Maximum exponents are the same. Compare the significands.
         var (thisSig, otherSig, exp) = Align(this, other);

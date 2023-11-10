@@ -144,13 +144,12 @@ public class BigDecimalExpLogTests
 
     /// <summary>
     /// I generated these expected results using Python.
-    ///
     /// <code>
     /// from mpmath import mp, exp
-    ///
+    /// 
     /// # Set the precision (number of decimal places)
     /// mp.dps = 50  # 50 decimal places of precision
-    ///
+    /// 
     /// # Loop through integer values from -12 to 12
     /// for i in range(-12, 13):
     ///     theta = i * mp.pi / 6
@@ -191,7 +190,7 @@ public class BigDecimalExpLogTests
                 9 => "111.3177784898562260268410079329888431712466750719",
                 10 => "187.91462850239850943960738537822910245889661780777",
                 11 => "317.21714252869519188997584575648157534191687913466",
-                12 => "535.4916555247647365030493295890471814778057976033",
+                12 => "535.4916555247647365030493295890471814778057976033"
             };
             var expected = BigDecimal.Parse(sExpected);
             var diff = BigDecimal.Abs(expected - actual);

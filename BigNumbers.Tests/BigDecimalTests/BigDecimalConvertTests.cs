@@ -12,14 +12,13 @@ public class BigDecimalConvertTests
 
     /// <summary>A few test values for sbyte.</summary>
     private static object[][] _SbyteTestValues { get; } =
-        new[]
-        {
-            new object[] { sbyte.MinValue },
-            new object[] { (sbyte)(-1) },
-            new object[] { (sbyte)0 },
-            new object[] { (sbyte)1 },
-            new object[] { sbyte.MaxValue }
-        };
+    {
+        new object[] { sbyte.MinValue },
+        new object[] { (sbyte)-1 },
+        new object[] { (sbyte)0 },
+        new object[] { (sbyte)1 },
+        new object[] { sbyte.MaxValue }
+    };
 
     /// <summary>
     /// Test casting from BigDecimal to sbyte and back.
@@ -133,12 +132,11 @@ public class BigDecimalConvertTests
 
     /// <summary>A few test values for byte.</summary>
     private static object[][] _ByteTestValues { get; } =
-        new[]
-        {
-            new object[] { (byte)0 },
-            new object[] { (byte)1 },
-            new object[] { byte.MaxValue }
-        };
+    {
+        new object[] { (byte)0 },
+        new object[] { (byte)1 },
+        new object[] { byte.MaxValue }
+    };
 
     /// <summary>
     /// Test casting from BigDecimal to byte and back.
@@ -252,14 +250,13 @@ public class BigDecimalConvertTests
 
     /// <summary>A few test values for short.</summary>
     private static object[][] _ShortTestValues { get; } =
-        new[]
-        {
-            new object[] { short.MinValue },
-            new object[] { (short)(-1) },
-            new object[] { (short)0 },
-            new object[] { (short)1 },
-            new object[] { short.MaxValue }
-        };
+    {
+        new object[] { short.MinValue },
+        new object[] { (short)-1 },
+        new object[] { (short)0 },
+        new object[] { (short)1 },
+        new object[] { short.MaxValue }
+    };
 
     /// <summary>
     /// Test casting from BigDecimal to short and back.
@@ -373,12 +370,11 @@ public class BigDecimalConvertTests
 
     /// <summary>A few test values for ushort.</summary>
     private static object[][] _UshortTestValues { get; } =
-        new[]
-        {
-            new object[] { (ushort)0 },
-            new object[] { (ushort)1 },
-            new object[] { ushort.MaxValue }
-        };
+    {
+        new object[] { (ushort)0 },
+        new object[] { (ushort)1 },
+        new object[] { ushort.MaxValue }
+    };
 
     /// <summary>
     /// Test casting from BigDecimal to ushort and back.
@@ -492,14 +488,13 @@ public class BigDecimalConvertTests
 
     /// <summary>A few test values for int.</summary>
     private static object[][] _IntTestValues { get; } =
-        new[]
-        {
-            new object[] { int.MinValue },
-            new object[] { (int)(-1) },
-            new object[] { (int)0 },
-            new object[] { (int)1 },
-            new object[] { int.MaxValue }
-        };
+    {
+        new object[] { int.MinValue },
+        new object[] { -1 },
+        new object[] { 0 },
+        new object[] { 1 },
+        new object[] { int.MaxValue }
+    };
 
     /// <summary>
     /// Test casting from BigDecimal to int and back.
@@ -613,12 +608,11 @@ public class BigDecimalConvertTests
 
     /// <summary>A few test values for uint.</summary>
     private static object[][] _UintTestValues { get; } =
-        new[]
-        {
-            new object[] { (uint)0 },
-            new object[] { (uint)1 },
-            new object[] { uint.MaxValue }
-        };
+    {
+        new object[] { (uint)0 },
+        new object[] { (uint)1 },
+        new object[] { uint.MaxValue }
+    };
 
     /// <summary>
     /// Test casting from BigDecimal to uint and back.
@@ -732,14 +726,13 @@ public class BigDecimalConvertTests
 
     /// <summary>A few test values for long.</summary>
     private static object[][] _LongTestValues { get; } =
-        new[]
-        {
-            new object[] { long.MinValue },
-            new object[] { (long)(-1) },
-            new object[] { (long)0 },
-            new object[] { (long)1 },
-            new object[] { long.MaxValue }
-        };
+    {
+        new object[] { long.MinValue },
+        new object[] { (long)-1 },
+        new object[] { (long)0 },
+        new object[] { (long)1 },
+        new object[] { long.MaxValue }
+    };
 
     /// <summary>
     /// Test casting from BigDecimal to long and back.
@@ -854,12 +847,11 @@ public class BigDecimalConvertTests
 
     /// <summary>A few test values for ulong.</summary>
     private static object[][] _UlongTestValues { get; } =
-        new[]
-        {
-            new object[] { (ulong)0 },
-            new object[] { (ulong)1 },
-            new object[] { ulong.MaxValue }
-        };
+    {
+        new object[] { (ulong)0 },
+        new object[] { (ulong)1 },
+        new object[] { ulong.MaxValue }
+    };
 
     /// <summary>
     /// Test casting from BigDecimal to ulong and back.
@@ -973,14 +965,13 @@ public class BigDecimalConvertTests
 
     /// <summary>A few test values for Int128.</summary>
     private static object[][] _Int128TestValues { get; } =
-        new[]
-        {
-            new object[] { Int128.MinValue },
-            new object[] { (Int128)(-1) },
-            new object[] { (Int128)0 },
-            new object[] { (Int128)1 },
-            new object[] { Int128.MaxValue }
-        };
+    {
+        new object[] { Int128.MinValue },
+        new object[] { (Int128)(-1) },
+        new object[] { (Int128)0 },
+        new object[] { (Int128)1 },
+        new object[] { Int128.MaxValue }
+    };
 
     /// <summary>
     /// Test casting from BigDecimal to Int128 and back.
@@ -1094,12 +1085,11 @@ public class BigDecimalConvertTests
 
     /// <summary>A few test values for UInt128.</summary>
     private static object[][] _Uint128TestValues { get; } =
-        new[]
-        {
-            new object[] { (UInt128)0 },
-            new object[] { (UInt128)1 },
-            new object[] { UInt128.MaxValue }
-        };
+    {
+        new object[] { (UInt128)0 },
+        new object[] { (UInt128)1 },
+        new object[] { UInt128.MaxValue }
+    };
 
     /// <summary>
     /// Test casting from BigDecimal to UInt128 and back.
@@ -1746,7 +1736,7 @@ public class BigDecimalConvertTests
     /// <summary>
     /// A few test values for decimal.
     /// </summary>
-    private static object[][] _DecimalTestValues { get; } = new[]
+    private static object[][] _DecimalTestValues { get; } =
     {
         new object[] { decimal.MinValue },
         new object[] { -1m },
@@ -1806,15 +1796,16 @@ public class BigDecimalConvertTests
     /// </summary>
     [TestMethod]
     [DynamicData(nameof(_DecimalTestValues))]
-    public void TryConvertFromCheckedDecimalInRangeTest(decimal f)
+    public void TryConvertFromCheckedDecimalInRangeTest(decimal m)
     {
-        Console.WriteLine($"f = {f:E17}");
-        var ok = BigDecimal.TryConvertFromChecked(f, out var bd);
+        m = -1;
+        Console.WriteLine($"m = {m:E17}");
+        var ok = BigDecimal.TryConvertFromChecked(m, out var bd);
         Console.WriteLine($"bd = {bd:E17}");
         Assert.IsTrue(ok);
         var g = (decimal)bd;
         Console.WriteLine($"g = {g:E17}");
-        Assert.AreEqual(f, g);
+        Assert.AreEqual(m, g);
         Console.WriteLine("");
     }
 

@@ -1,5 +1,4 @@
 using System.Numerics;
-using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers;
 
@@ -22,23 +21,20 @@ public partial struct BigRational
             // x^(-y) == 1/(x^y)
             return Reciprocal(Pow(x, -y));
         }
-        else if (y == 0)
+        if (y == 0)
         {
             // x^0 == 1 for all x
             return 1;
         }
-        else if (y == 1)
+        if (y == 1)
         {
             return x;
         }
-        else
-        {
-            // y > 1
-            // Raise both the numerator and denominator to the power of y.
-            var num = BigInteger.Pow(x.Numerator, y);
-            var den = BigInteger.Pow(x.Denominator, y);
-            return new BigRational(num, den);
-        }
+        // y > 1
+        // Raise both the numerator and denominator to the power of y.
+        var num = BigInteger.Pow(x.Numerator, y);
+        var den = BigInteger.Pow(x.Denominator, y);
+        return new BigRational(num, den);
     }
 
     /// <summary>Calculate the square of a BigRational number.</summary>

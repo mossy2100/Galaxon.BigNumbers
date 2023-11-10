@@ -118,16 +118,13 @@ public partial struct BigRational
             // Negative exponent.
             return new BigRational(x.Significand, XBigInteger.Exp10(-x.Exponent));
         }
-        else if (x.Exponent == 0)
+        if (x.Exponent == 0)
         {
             // Zero exponent.
             return new BigRational(x.Significand);
         }
-        else
-        {
-            // Positive exponent.
-            return new BigRational(x.Significand * XBigInteger.Exp10(x.Exponent));
-        }
+        // Positive exponent.
+        return new BigRational(x.Significand * XBigInteger.Exp10(x.Exponent));
     }
 
     #endregion Casting to BigRational

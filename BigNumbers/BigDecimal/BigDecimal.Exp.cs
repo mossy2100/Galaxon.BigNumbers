@@ -48,53 +48,47 @@ public partial struct BigDecimal
             // DivideByZeroException, it will be thrown earlier.
             return Pow(1 / x, -y);
         }
-        else if (y == 0)
+        if (y == 0)
         {
             // x^0 == 1
             return 1;
         }
-        else if (y == 1)
+        if (y == 1)
         {
             // x^1 == x
             return x;
         }
-        else
+        // y > 1
+
+        // Handle easy cases of x.
+        if (x == 0 || x == 1)
         {
-            // y > 1
-
-            // Handle easy cases of x.
-            if (x == 0 || x == 1)
-            {
-                // 0^y == 0 for all y > 0
-                // 1^y == 1 for all y
-                return x;
-            }
-            else if (x == 10 && y >= int.MinValue && y <= int.MaxValue)
-            {
-                // 10 raised to an integer power is easy, given the structure of the BigDecimal type.
-                return new BigDecimal(1, (int)y);
-            }
-
-            // Exponentiation by squaring.
-            if (y == 2)
-            {
-                return Sqr(x);
-            }
-            else if (y == 3)
-            {
-                return Cube(x);
-            }
-            else if (IsEvenInteger(y))
-            {
-                // y is even: x^y = (x^2)^(y/2)
-                return Pow(Sqr(x), y / 2);
-            }
-            else
-            {
-                // y is odd: x^y = x * (x^2)^((y-1)/2)
-                return x * Pow(Sqr(x), (y - 1) / 2);
-            }
+            // 0^y == 0 for all y > 0
+            // 1^y == 1 for all y
+            return x;
         }
+        if (x == 10 && y >= int.MinValue && y <= int.MaxValue)
+        {
+            // 10 raised to an integer power is easy, given the structure of the BigDecimal type.
+            return new BigDecimal(1, (int)y);
+        }
+
+        // Exponentiation by squaring.
+        if (y == 2)
+        {
+            return Sqr(x);
+        }
+        if (y == 3)
+        {
+            return Cube(x);
+        }
+        if (IsEvenInteger(y))
+        {
+            // y is even: x^y = (x^2)^(y/2)
+            return Pow(Sqr(x), y / 2);
+        }
+        // y is odd: x^y = x * (x^2)^((y-1)/2)
+        return x * Pow(Sqr(x), (y - 1) / 2);
     }
 
     /// <inheritdoc/>
@@ -135,20 +129,17 @@ public partial struct BigDecimal
             // call that version of Pow(). Note: this can throw an exception.
             return Pow(x, (BigRational)y);
         }
-        else if (x == 0 || x == 1)
+        if (x == 0 || x == 1)
         {
             // 0 raised to any positive value is 0.
             // 1 raised to any value is 1.
             return x;
         }
-        else
-        {
-            // x > 0
-            // We can compute the result using Exp() and Log().
-            // We could use the same method as used above for x < 0 (Pow with BigRational) but
-            // I suspect that would be slower. TODO Test that assumption.
-            return Exp(y * Log(x));
-        }
+        // x > 0
+        // We can compute the result using Exp() and Log().
+        // We could use the same method as used above for x < 0 (Pow with BigRational) but
+        // I suspect that would be slower. TODO Test that assumption.
+        return Exp(y * Log(x));
     }
 
     /// <summary>
@@ -184,7 +175,7 @@ public partial struct BigDecimal
             var i = (int)y.Denominator;
             return RootN(Pow(x, y.Numerator), i);
         }
-        catch (OverflowException ex)
+        catch (OverflowException)
         {
             throw new OverflowException("Denominator is too large to compute the root.");
         }
@@ -221,13 +212,13 @@ public partial struct BigDecimal
             // DivideByZeroException, it will be thrown earlier.
             return RootN(1 / x, -n);
         }
-        else if (n == 0)
+        if (n == 0)
         {
             // The 0th root is undefined.
             throw new ArgumentOutOfRangeException(nameof(n),
                 "The 0th root is undefined since any number to the power of 0 is 1.");
         }
-        else if (n == 1)
+        if (n == 1)
         {
             // The 1st root of a number is itself.
             return x;
@@ -246,7 +237,7 @@ public partial struct BigDecimal
             // Calculate the only real root, which will be negative.
             return -RootN(-x, n);
         }
-        else if (x == 0 || x == 1)
+        if (x == 0 || x == 1)
         {
             // If x == 0 the root will be 0, since 0^n = 0 for all n > 0.
             // If x == 1 the root will be 1, since 1^n = 1 for all n.
@@ -264,7 +255,7 @@ public partial struct BigDecimal
         // Set the initial estimate. In the absence of a better method, since we know the solution
         // will be in the range 0..x because both x and n are positive at this point, let's just
         // start at the midpoint. yk means y[k]
-        BigDecimal yk = x / 2;
+        var yk = x / 2;
 
         // Keep up to 2 previous terms for bounce detection.
         // Previous term. ykm1 means y[k-1]
@@ -288,7 +279,7 @@ public partial struct BigDecimal
         var p = x / n;
 
         // DEBUG
-        var count = 0;
+        // var count = 0;
 
         // Newton's method.
         while (true)
@@ -406,7 +397,7 @@ public partial struct BigDecimal
             // If the exponent is negative, inverse the result of the positive exponent.
             return 1 / Exp(-x);
         }
-        else if (x == 0)
+        if (x == 0)
         {
             return 1;
         }
@@ -424,7 +415,7 @@ public partial struct BigDecimal
 
         // Temporarily increase the maximum number of significant figures to ensure a correct result.
         var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
+        MaxSigFigs += 3;
 
         // Add terms until the process ceases to affect the result.
         // The more significant figures wanted, the longer the process will take.

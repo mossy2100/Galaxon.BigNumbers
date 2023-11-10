@@ -20,14 +20,17 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Parse(string s, IFormatProvider? provider)
     {
-        // Optimization.
-        if (string.IsNullOrWhiteSpace(s)) return 0;
-
         // Get a NumberFormatInfo object so we know what characters to look for.
         var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
 
         // Remove ignored characters from the string.
         s = RemoveIgnoredCharacters(s, nfi);
+
+        // See if there are any characters left.
+        if (string.IsNullOrWhiteSpace(s))
+        {
+            throw new ArgumentFormatException(nameof(s), "Invalid BigDecimal format.");
+        }
 
         // Check the string format and extract salient info.
         var strRxSign = $"[{nfi.NegativeSign}{nfi.PositiveSign}]?";
@@ -357,7 +360,7 @@ public partial struct BigDecimal
     /// Note, this is not technically formatting as significant figures, since trailing 0s following
     /// the decimal point are not retained, as per the usual format for "G".
     /// </summary>
-    private readonly string FormatFixedSigFigs(int? nSigFigs, IFormatProvider? provider)
+    private string FormatFixedSigFigs(int? nSigFigs, IFormatProvider? provider)
     {
         // If we don't have to remove any digits, use default fixed-point format.
         var nDigitsToCut = nSigFigs is null or 0 ? 0 : NumSigFigs - nSigFigs.Value;
@@ -377,8 +380,7 @@ public partial struct BigDecimal
     /// <summary>
     /// Format the value using scientific notation.
     /// </summary>
-    private readonly string FormatScientific(string format, int? precision, bool unicode,
-        int expWidth,
+    private string FormatScientific(string format, int? precision, bool unicode, int expWidth,
         IFormatProvider? provider)
     {
         // Format the significand.

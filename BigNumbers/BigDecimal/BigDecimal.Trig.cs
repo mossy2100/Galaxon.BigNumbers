@@ -1,4 +1,3 @@
-using System.Net.NetworkInformation;
 using System.Numerics;
 using Galaxon.Core.Exceptions;
 
@@ -24,11 +23,11 @@ public partial struct BigDecimal
         {
             return -Sin(Tau - x);
         }
-        else if (x > Pi)
+        if (x > Pi)
         {
             return -Sin(x - Pi);
         }
-        else if (x > HalfPi)
+        if (x > HalfPi)
         {
             return Sin(Pi - x);
         }
@@ -38,19 +37,19 @@ public partial struct BigDecimal
         {
             return 0;
         }
-        else if (x == Pi / 6)
+        if (x == Pi / 6)
         {
             return One / 2;
         }
-        else if (x == Pi / 4)
+        if (x == Pi / 4)
         {
             return Sqrt(2) / 2;
         }
-        else if (x == Pi / 3)
+        if (x == Pi / 3)
         {
             return Sqrt(3) / 2;
         }
-        else if (x == HalfPi)
+        if (x == HalfPi)
         {
             return 1;
         }
