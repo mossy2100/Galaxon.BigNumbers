@@ -25,8 +25,14 @@ public partial struct BigRational
         }
 
         // Optimizations.
-        if (num == 0) return (0, 1);
-        if (num == den) return (1, 1);
+        if (num == 0)
+        {
+            return (0, 1);
+        }
+        if (num == den)
+        {
+            return (1, 1);
+        }
 
         // Make sure the denominator is always positive.
         if (den < 0)
@@ -36,8 +42,14 @@ public partial struct BigRational
         }
 
         // Check for simple, irreducible fractions.
-        if (num == 1) return (1, den);
-        if (den == 1) return (num, 1);
+        if (num == 1)
+        {
+            return (1, den);
+        }
+        if (den == 1)
+        {
+            return (num, 1);
+        }
 
         // Get the greatest common divisor.
         var gcd = XBigInteger.GreatestCommonDivisor(num, den);

@@ -31,7 +31,10 @@ public partial struct BigRational
     /// <inheritdoc/>
     public int CompareTo(object? obj)
     {
-        if (obj is BigRational br) return CompareTo(br);
+        if (obj is BigRational br)
+        {
+            return CompareTo(br);
+        }
 
         throw new ArgumentInvalidException(nameof(obj), "Must be a BigRational.");
     }
@@ -48,13 +51,22 @@ public partial struct BigRational
     public int CompareTo(BigRational br)
     {
         // Compare signs.
-        if (Sign < br.Sign) return -1;
-        if (Sign > br.Sign) return 1;
+        if (Sign < br.Sign)
+        {
+            return -1;
+        }
+        if (Sign > br.Sign)
+        {
+            return 1;
+        }
 
         // Signs are the same.
         // If the denominators are the same, just compare the numerators, avoiding the casts to
         // BigDecimal.
-        if (Denominator == br.Denominator) return Numerator.CompareTo(br.Numerator);
+        if (Denominator == br.Denominator)
+        {
+            return Numerator.CompareTo(br.Numerator);
+        }
 
         // Convert both to BigDecimal values and compare them.
         var bd = (BigDecimal)this;

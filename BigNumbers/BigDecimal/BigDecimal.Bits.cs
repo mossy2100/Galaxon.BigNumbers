@@ -30,14 +30,15 @@ public partial struct BigDecimal
     {
         var exponent = Exponent;
         const int BITS_PER_INT = sizeof(int) * 8;
+
+        // Non-negative exponent.
         if (exponent >= 0)
         {
             return BITS_PER_INT - int.LeadingZeroCount(exponent);
         }
-        else
-        {
-            return BITS_PER_INT + 1 - int.LeadingZeroCount(~exponent);
-        }
+
+        // Negative exponent.
+        return BITS_PER_INT + 1 - int.LeadingZeroCount(~exponent);
     }
 
     /// <inheritdoc/>

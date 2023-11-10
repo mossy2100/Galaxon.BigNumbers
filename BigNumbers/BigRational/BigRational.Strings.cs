@@ -30,7 +30,10 @@ public partial struct BigRational
     public static BigRational Parse(string s, IFormatProvider? provider)
     {
         // Optimization.
-        if (string.IsNullOrWhiteSpace(s)) return 0;
+        if (string.IsNullOrWhiteSpace(s))
+        {
+            return 0;
+        }
 
         // Get a NumberFormatInfo object so we know what decimal point character to accept.
         var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
@@ -151,7 +154,10 @@ public partial struct BigRational
         }
 
         // If the denominator is 1 then just return the numerator as a string.
-        if (Denominator == 1) return Numerator.ToString();
+        if (Denominator == 1)
+        {
+            return Numerator.ToString();
+        }
 
         // Get the parts we need.
         var sign = this < 0 ? "-" : "";

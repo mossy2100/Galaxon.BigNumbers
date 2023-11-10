@@ -34,7 +34,10 @@ public partial struct BigDecimal
     public static BigDecimal UnitOfLeastPrecision<T>(T f) where T : IFloatingPointIeee754<T>
     {
         // Subnormal value.
-        if (T.IsSubnormal(f)) return XReflection.Cast<T, BigDecimal>(T.Epsilon);
+        if (T.IsSubnormal(f))
+        {
+            return XReflection.Cast<T, BigDecimal>(T.Epsilon);
+        }
 
         // Normal value.
         var expBits = f.GetExpBits();
@@ -143,7 +146,10 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public int CompareTo(object? obj)
     {
-        if (obj is BigDecimal x) return CompareTo(x);
+        if (obj is BigDecimal x)
+        {
+            return CompareTo(x);
+        }
 
         throw new ArgumentInvalidException(nameof(obj), "Must be a BigDecimal.");
     }
@@ -152,19 +158,34 @@ public partial struct BigDecimal
     public int CompareTo(BigDecimal other)
     {
         // Check for equality.
-        if (Equals(other)) return 0;
+        if (Equals(other))
+        {
+            return 0;
+        }
 
         // Compare signs.
-        if (Sign < other.Sign) return -1;
-        if (Sign > other.Sign) return 1;
+        if (Sign < other.Sign)
+        {
+            return -1;
+        }
+        if (Sign > other.Sign)
+        {
+            return 1;
+        }
 
         // Signs are the same. Compare maximum exponents.
         // The Exponent property gives the minimum exponents (i.e. exponent of the last digit), but
         // for this we want to compare the maximum exponents (i.e. exponent of the first digit).
         var thisMaxExp = Exponent + NumSigFigs - 1;
         var otherMaxExp = other.Exponent + other.NumSigFigs - 1;
-        if (thisMaxExp < otherMaxExp) return -Sign;
-        if (thisMaxExp > otherMaxExp) return Sign;
+        if (thisMaxExp < otherMaxExp)
+        {
+            return -Sign;
+        }
+        if (thisMaxExp > otherMaxExp)
+        {
+            return Sign;
+        }
 
         // Maximum exponents are the same. Compare the significands.
         var (thisSig, otherSig, exp) = Align(this, other);

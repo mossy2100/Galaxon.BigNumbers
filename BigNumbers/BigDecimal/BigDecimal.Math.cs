@@ -236,8 +236,14 @@ public partial struct BigDecimal
         }
 
         // Optimizations.
-        if (y == 1) return x;
-        if (x == y) return 1;
+        if (y == 1)
+        {
+            return x;
+        }
+        if (x == y)
+        {
+            return 1;
+        }
 
         // Find f ~= 1/y as an initial estimate of the multiplication factor.
         // We can quickly get a very good initial estimate by leveraging the decimal type.
@@ -260,13 +266,19 @@ public partial struct BigDecimal
             y *= f;
 
             // If y is 1, then n is the result.
-            if (y == 1) break;
+            if (y == 1)
+            {
+                break;
+            }
 
             f = 2 - y;
 
             // If y is not 1, but is close to 1, then f can be 1 due to rounding after the
             // subtraction. If it is, there's no point continuing.
-            if (f == 1) break;
+            if (f == 1)
+            {
+                break;
+            }
         }
 
         // Restore the maximum number of significant figures.
@@ -327,7 +339,10 @@ public partial struct BigDecimal
         MidpointRounding mode = MidpointRounding.ToEven)
     {
         // Anything to do?
-        if (nDigitsToCut <= 0) return x;
+        if (nDigitsToCut <= 0)
+        {
+            return x;
+        }
 
         // Get current num of significant figures.
         var nSigFigs = x.NumSigFigs;

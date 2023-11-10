@@ -18,7 +18,10 @@ public class BigDecimalArithmeticOperatorsTests
             var a = rnd.NextDoubleFullRange();
             var b = rnd.NextDoubleFullRange();
             var c = a + b;
-            if (!double.IsFinite(c)) continue;
+            if (!double.IsFinite(c))
+            {
+                continue;
+            }
 
             var bda = (BigDecimal)a;
             var bdb = (BigDecimal)b;
@@ -38,7 +41,10 @@ public class BigDecimalArithmeticOperatorsTests
             var a = rnd.NextDoubleFullRange();
             var b = rnd.NextDoubleFullRange();
             var c = a - b;
-            if (!double.IsFinite(c)) continue;
+            if (!double.IsFinite(c))
+            {
+                continue;
+            }
 
             var bda = (BigDecimal)a;
             var bdb = (BigDecimal)b;
@@ -109,7 +115,10 @@ public class BigDecimalArithmeticOperatorsTests
             var a = rnd.NextDoubleFullRange();
             var b = rnd.NextDoubleFullRange();
             var c = a * b;
-            if (!double.IsFinite(c)) continue;
+            if (!double.IsFinite(c))
+            {
+                continue;
+            }
 
             var bda = (BigDecimal)a;
             var bdb = (BigDecimal)b;
@@ -172,7 +181,10 @@ public class BigDecimalArithmeticOperatorsTests
             var a = rnd.NextDoubleFullRange();
             var b = rnd.NextDoubleFullRange();
             var c = a / b;
-            if (!double.IsFinite(c)) continue;
+            if (!double.IsFinite(c))
+            {
+                continue;
+            }
 
             var bda = (BigDecimal)a;
             var bdb = (BigDecimal)b;
@@ -234,7 +246,10 @@ public class BigDecimalArithmeticOperatorsTests
         {
             for (var b = -10; b <= 10; b++)
             {
-                if (b == 0) continue;
+                if (b == 0)
+                {
+                    continue;
+                }
 
                 var c = a % (decimal)b;
 

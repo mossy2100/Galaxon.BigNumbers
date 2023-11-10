@@ -17,8 +17,14 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_e.NumSigFigs == MaxSigFigs) return _e;
-            if (_e.NumSigFigs > MaxSigFigs) return RoundSigFigs(_e);
+            if (_e.NumSigFigs == MaxSigFigs)
+            {
+                return _e;
+            }
+            if (_e.NumSigFigs > MaxSigFigs)
+            {
+                return RoundSigFigs(_e);
+            }
 
             // Calculate e:
             _e = Exp(1);
@@ -38,8 +44,14 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_pi.NumSigFigs == MaxSigFigs) return _pi;
-            if (_pi.NumSigFigs > MaxSigFigs) return RoundSigFigs(_pi);
+            if (_pi.NumSigFigs == MaxSigFigs)
+            {
+                return _pi;
+            }
+            if (_pi.NumSigFigs > MaxSigFigs)
+            {
+                return RoundSigFigs(_pi);
+            }
 
             _pi = ComputePi();
             return _pi;
@@ -75,7 +87,10 @@ public partial struct BigDecimal
             var newSum = sum + M * L / X;
 
             // If adding the new term hasn't affected the sum, we're done.
-            if (sum == newSum) break;
+            if (sum == newSum)
+            {
+                break;
+            }
 
             // Prepare for next iteration.
             sum = newSum;
@@ -107,8 +122,14 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_tau.NumSigFigs == MaxSigFigs) return _tau;
-            if (_tau.NumSigFigs > MaxSigFigs) return RoundSigFigs(_tau);
+            if (_tau.NumSigFigs == MaxSigFigs)
+            {
+                return _tau;
+            }
+            if (_tau.NumSigFigs > MaxSigFigs)
+            {
+                return RoundSigFigs(_tau);
+            }
 
             _tau = ComputeTau();
             return _tau;
@@ -144,8 +165,14 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_halfPi.NumSigFigs == MaxSigFigs) return _halfPi;
-            if (_halfPi.NumSigFigs > MaxSigFigs) return RoundSigFigs(_halfPi);
+            if (_halfPi.NumSigFigs == MaxSigFigs)
+            {
+                return _halfPi;
+            }
+            if (_halfPi.NumSigFigs > MaxSigFigs)
+            {
+                return RoundSigFigs(_halfPi);
+            }
 
             _halfPi = Pi / 2;
             return _halfPi;
@@ -164,8 +191,14 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_phi.NumSigFigs == MaxSigFigs) return _phi;
-            if (_phi.NumSigFigs > MaxSigFigs) return RoundSigFigs(_phi);
+            if (_phi.NumSigFigs == MaxSigFigs)
+            {
+                return _phi;
+            }
+            if (_phi.NumSigFigs > MaxSigFigs)
+            {
+                return RoundSigFigs(_phi);
+            }
 
             _phi = ComputePhi();
             return _phi;
@@ -205,8 +238,14 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_ln10.NumSigFigs == MaxSigFigs) return _ln10;
-            if (_ln10.NumSigFigs > MaxSigFigs) return RoundSigFigs(_ln10);
+            if (_ln10.NumSigFigs == MaxSigFigs)
+            {
+                return _ln10;
+            }
+            if (_ln10.NumSigFigs > MaxSigFigs)
+            {
+                return RoundSigFigs(_ln10);
+            }
 
             _ln10 = Log(10);
             return _ln10;

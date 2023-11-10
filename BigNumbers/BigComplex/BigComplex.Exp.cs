@@ -39,22 +39,37 @@ public partial struct BigComplex
         // Any value (real or complex) raised to the 0 power is 1.
         // 0^0 has no agreed-upon value, but some programming languages, including C#, return 1
         // (i.e. Math.Pow(0, 0) == 1). We'll do that here, too, for consistency.
-        if (w == 0) return 1;
+        if (w == 0)
+        {
+            return 1;
+        }
 
         // Any value (real or complex) raised to the power of 1 is itself.
-        if (w == 1) return z;
+        if (w == 1)
+        {
+            return z;
+        }
 
         // 1 raised to any real value is 1.
         // 1 raised to any complex value has multiple results, including 1.
         // We'll just return 1 (the principal value) for simplicity and consistency with
         // Complex.Pow().
-        if (z == 1) return 1;
+        if (z == 1)
+        {
+            return 1;
+        }
 
         // i^2 == -1 by definition.
-        if (z == I && w == 2) return -1;
+        if (z == I && w == 2)
+        {
+            return -1;
+        }
 
         // If the values are both real, pass it to the BigDecimal calculation.
-        if (z.Imaginary == 0 && w.Imaginary == 0) return BigDecimal.Pow(z.Real, w.Real);
+        if (z.Imaginary == 0 && w.Imaginary == 0)
+        {
+            return BigDecimal.Pow(z.Real, w.Real);
+        }
 
         // Use formula for principal value.
         return Exp(w * Log(z));
@@ -97,7 +112,10 @@ public partial struct BigComplex
         }
 
         // The first root of a number is itself.
-        if (n == 1) return z;
+        if (n == 1)
+        {
+            return z;
+        }
 
         // Calculate the first root.
         var s = BigDecimal.RootN(z.Magnitude, n);
@@ -168,9 +186,18 @@ public partial struct BigComplex
     public static BigComplex Sqrt(BigComplex z)
     {
         // Optimizations.
-        if (z == 0) return 0;
-        if (z == 1) return 1;
-        if (z == -1) return I;
+        if (z == 0)
+        {
+            return 0;
+        }
+        if (z == 1)
+        {
+            return 1;
+        }
+        if (z == -1)
+        {
+            return I;
+        }
 
         // Handle real values.
         var (a, b) = z.ToTuple();
@@ -210,10 +237,16 @@ public partial struct BigComplex
         if (z.Real == 0)
         {
             // Euler's identity with π: e^πi = -1
-            if (z.Imaginary == Pi) return -1;
+            if (z.Imaginary == Pi)
+            {
+                return -1;
+            }
 
             // Euler's identity with τ: e^τi = 1
-            if (z.Imaginary == Tau) return 1;
+            if (z.Imaginary == Tau)
+            {
+                return 1;
+            }
         }
 
         // Euler's formula.
@@ -245,7 +278,10 @@ public partial struct BigComplex
         // Optimization.
         // For non-negative real values, use the real version of the method, avoiding the calculation of magnitude and phase.
         // This will throw an exception if real == 0.
-        if (z.Real >= 0 && z.Imaginary == 0) return BigDecimal.Log(z.Real);
+        if (z.Real >= 0 && z.Imaginary == 0)
+        {
+            return BigDecimal.Log(z.Real);
+        }
 
         // Calculate the complex logarithm.
         return new BigComplex(BigDecimal.Log(z.Magnitude), z.Phase);
@@ -262,7 +298,10 @@ public partial struct BigComplex
         }
 
         // 0^0 == 1. Mimics Math.Log().
-        if (x == 1 && b == 0) return 0;
+        if (x == 1 && b == 0)
+        {
+            return 0;
+        }
 
         return Log(x) / Log(b);
     }

@@ -425,7 +425,10 @@ public partial struct BigDecimal
             var newSum = sum + xn / nf;
 
             // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum) break;
+            if (sum == newSum)
+            {
+                break;
+            }
 
             // Prepare for next iteration.
             sum = newSum;

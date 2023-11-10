@@ -75,7 +75,10 @@ public partial struct BigDecimal
             var newSum = sum + sign * xm / mFact;
 
             // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum) break;
+            if (sum == newSum)
+            {
+                break;
+            }
 
             // Prepare for next iteration.
             sum = newSum;
@@ -128,7 +131,10 @@ public partial struct BigDecimal
     {
         // Test for divide by zero.
         var c = Cos(x);
-        if (c == 0) throw new ArithmeticException($"tan({x}) is undefined.");
+        if (c == 0)
+        {
+            throw new ArithmeticException($"tan({x}) is undefined.");
+        }
 
         return Sin(x) / c;
     }
@@ -147,7 +153,10 @@ public partial struct BigDecimal
     {
         // Test for divide by zero.
         var s = Sin(x);
-        if (s == 0) throw new ArithmeticException($"cot({x}) is undefined.");
+        if (s == 0)
+        {
+            throw new ArithmeticException($"cot({x}) is undefined.");
+        }
 
         return Cos(x) / s;
     }
@@ -160,7 +169,10 @@ public partial struct BigDecimal
     {
         // Test for divide by zero.
         var c = Cos(x);
-        if (c == 0) throw new ArithmeticException($"sec({x}) is undefined.");
+        if (c == 0)
+        {
+            throw new ArithmeticException($"sec({x}) is undefined.");
+        }
 
         return 1 / c;
     }
@@ -173,7 +185,10 @@ public partial struct BigDecimal
     {
         // Test for divide by zero.
         var s = Sin(x);
-        if (s == 0) throw new ArithmeticException($"csc({x}) is undefined.");
+        if (s == 0)
+        {
+            throw new ArithmeticException($"csc({x}) is undefined.");
+        }
 
         return 1 / s;
     }
@@ -186,22 +201,37 @@ public partial struct BigDecimal
     public static BigDecimal Asin(BigDecimal x)
     {
         // Optimization.
-        if (x == 0) return 0;
+        if (x == 0)
+        {
+            return 0;
+        }
 
         // Handle negative arguments.
-        if (x < 0) return -Asin(-x);
+        if (x < 0)
+        {
+            return -Asin(-x);
+        }
 
         // Guard.
-        if (x > 1) throw new ArgumentOutOfRangeException(nameof(x), "Must be in the range -1..1.");
+        if (x > 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(x), "Must be in the range -1..1.");
+        }
 
         // Optimization.
-        if (x == 1) return HalfPi;
+        if (x == 1)
+        {
+            return HalfPi;
+        }
 
         // The Taylor series is slow to converge near x = ±1, but we can the following identity
         // relationship and calculate Asin() accurately and quickly for a smaller value:
         // Asin(θ) = π/2 - Asin(√(1-θ²))
         var xSqr = Sqr(x);
-        if (x > 0.75m) return HalfPi - Asin(Sqrt(1 - xSqr));
+        if (x > 0.75m)
+        {
+            return HalfPi - Asin(Sqrt(1 - xSqr));
+        }
 
         // Taylor series.
         BigInteger n = 1;
@@ -223,7 +253,10 @@ public partial struct BigDecimal
             var newSum = sum + b * xToM / (c * m);
 
             // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum) break;
+            if (sum == newSum)
+            {
+                break;
+            }
 
             // Prepare for next iteration.
             sum = newSum;
@@ -264,11 +297,20 @@ public partial struct BigDecimal
         return Asin(x / Sqrt(1 + Sqr(x)));
 
         // Handle negative arguments.
-        if (x < 0) return -Atan(-x);
+        if (x < 0)
+        {
+            return -Atan(-x);
+        }
 
         // Optimization.
-        if (x == 0) return 0;
-        if (x == 1) return Pi / 4;
+        if (x == 0)
+        {
+            return 0;
+        }
+        if (x == 1)
+        {
+            return Pi / 4;
+        }
 
         // Taylor series.
         var m = 1;
@@ -290,7 +332,10 @@ public partial struct BigDecimal
             var newSum = sum + sign * (small ? xToM / m : 1 / (m * xToM));
 
             // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum) break;
+            if (sum == newSum)
+            {
+                break;
+            }
 
             // Prepare for next iteration.
             sum = newSum;
@@ -331,7 +376,10 @@ public partial struct BigDecimal
 
         if (x == 0)
         {
-            if (y == 0) return 0;
+            if (y == 0)
+            {
+                return 0;
+            }
 
             result = HalfPi;
             return y > 0 ? result : -result;
@@ -405,7 +453,10 @@ public partial struct BigDecimal
         return (ex - 1 / ex) / 2;
 
         // Optimization.
-        if (x == 0) return 0;
+        if (x == 0)
+        {
+            return 0;
+        }
 
         // Taylor series.
         var m = 1;
@@ -425,7 +476,10 @@ public partial struct BigDecimal
             var newSum = sum + xm / mFact;
 
             // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum) break;
+            if (sum == newSum)
+            {
+                break;
+            }
 
             // Prepare for next iteration.
             m += 2;
@@ -447,7 +501,10 @@ public partial struct BigDecimal
         return (ex + 1 / ex) / 2;
 
         // Optimization.
-        if (x == 0) return 1;
+        if (x == 0)
+        {
+            return 1;
+        }
 
         // Taylor series.
         var m = 0;
@@ -468,7 +525,10 @@ public partial struct BigDecimal
             var newSum = sum + xm / mFact;
 
             // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum) break;
+            if (sum == newSum)
+            {
+                break;
+            }
 
             // Prepare for next iteration.
             m += 2;

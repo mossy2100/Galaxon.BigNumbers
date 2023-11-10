@@ -38,7 +38,10 @@ public partial struct BigComplex
     public static BigComplex Parse(string s, IFormatProvider? provider)
     {
         // Optimization.
-        if (string.IsNullOrWhiteSpace(s)) return 0;
+        if (string.IsNullOrWhiteSpace(s))
+        {
+            return 0;
+        }
 
         // Get a NumberFormatInfo object so we know what decimal point character to accept.
         var nfi = provider as NumberFormatInfo ?? NumberFormatInfo.InvariantInfo;
@@ -72,7 +75,10 @@ public partial struct BigComplex
         {
             // Test the pattern.
             var match = Regex.Match(s, pattern, RegexOptions.IgnoreCase);
-            if (!match.Success) continue;
+            if (!match.Success)
+            {
+                continue;
+            }
 
             // Extract the components.
             var sReal = match.Groups["real"].Value;
@@ -226,7 +232,10 @@ public partial struct BigComplex
             format = format.Length == 1 ? "G" : format[1..];
 
             // Handle real numbers.
-            if (Imaginary == 0) return Real.ToString(format);
+            if (Imaginary == 0)
+            {
+                return Real.ToString(format);
+            }
 
             // Construct the "a + bi" string.
             var sReal = Real == 0 ? "" : Real.ToString(format);

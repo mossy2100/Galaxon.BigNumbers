@@ -95,7 +95,10 @@ public partial struct BigRational
     public static implicit operator BigRational(decimal x)
     {
         // Handle zero.
-        if (x == 0m) return Zero;
+        if (x == 0m)
+        {
+            return Zero;
+        }
 
         // Get the parts of the floating point value.
         (var signBit, ushort scaleBits, var intBits) = x.Disassemble();
@@ -573,7 +576,10 @@ public partial struct BigRational
         }
 
         // Handle zero.
-        if (x == T.Zero) return Zero;
+        if (x == T.Zero)
+        {
+            return Zero;
+        }
 
         // Get the parts of the floating point value.
         var (signBit, expBits, fracBits) = x.Disassemble();

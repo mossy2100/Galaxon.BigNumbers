@@ -559,7 +559,10 @@ public partial struct BigComplex
     /// </exception>
     private static T ConvertToReal<T>(BigComplex bc) where T : INumberBase<T>
     {
-        if (IsRealNumber(bc)) return XReflection.Cast<BigDecimal, T>(bc.Real);
+        if (IsRealNumber(bc))
+        {
+            return XReflection.Cast<BigDecimal, T>(bc.Real);
+        }
 
         throw new InvalidCastException("Cannot cast a complex number to a real number.");
     }

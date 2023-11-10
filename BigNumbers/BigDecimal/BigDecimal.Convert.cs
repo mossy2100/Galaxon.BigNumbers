@@ -730,7 +730,10 @@ public partial struct BigDecimal
         var (signBit, expBits, fracBits) = x.Disassemble();
 
         // Check for ±0.
-        if (expBits == 0 && fracBits == 0) return 0;
+        if (expBits == 0 && fracBits == 0)
+        {
+            return 0;
+        }
 
         // Check if the number is normal or subnormal.
         var isSubnormal = expBits == 0;
@@ -784,15 +787,24 @@ public partial struct BigDecimal
         where T : IBinaryFloatingPointIeee754<T>
     {
         // Check for 0.
-        if (bd == 0) return T.Zero;
+        if (bd == 0)
+        {
+            return T.Zero;
+        }
 
         // Check for -∞.
         var minValue = XReflection.Cast<T, BigDecimal>(XNumber.GetMinValue<T>());
-        if (bd < minValue) return XFloatingPoint.GetNegativeInfinity<T>();
+        if (bd < minValue)
+        {
+            return XFloatingPoint.GetNegativeInfinity<T>();
+        }
 
         // Check for +∞.
         var maxValue = XReflection.Cast<T, BigDecimal>(XNumber.GetMaxValue<T>());
-        if (bd > maxValue) return XFloatingPoint.GetPositiveInfinity<T>();
+        if (bd > maxValue)
+        {
+            return XFloatingPoint.GetPositiveInfinity<T>();
+        }
 
         // Check if its subnormal.
         var minPosNormalValue = XFloatingPoint.GetMinPosNormalValue<T>();

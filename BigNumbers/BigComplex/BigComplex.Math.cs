@@ -104,7 +104,10 @@ public partial struct BigComplex
     public static BigComplex Divide(BigComplex z, BigComplex w)
     {
         // Guard.
-        if (w == 0) throw new DivideByZeroException();
+        if (w == 0)
+        {
+            throw new DivideByZeroException();
+        }
 
         // Extract parts for convenience.
         var (a, b) = z.ToTuple();

@@ -189,7 +189,10 @@ public class BigDecimalCompareTests
             var f3 = f1 / f2;
             var bd3 = (BigDecimal)f1 / f2;
 
-            if (!Half.IsFinite(f3)) continue;
+            if (!Half.IsFinite(f3))
+            {
+                continue;
+            }
 
             Console.WriteLine($"      Half value: {f3:E20}");
             Console.WriteLine($"BigDecimal value: {bd3:E20}");
@@ -211,7 +214,10 @@ public class BigDecimalCompareTests
             var f3 = f1 / f2;
             var bd3 = (BigDecimal)f1 / f2;
 
-            if (!float.IsFinite(f3)) continue;
+            if (!float.IsFinite(f3))
+            {
+                continue;
+            }
 
             Console.WriteLine($"     float value: {f3:E20}");
             Console.WriteLine($"BigDecimal value: {bd3:E20}");
@@ -233,7 +239,10 @@ public class BigDecimalCompareTests
             var f3 = f1 / f2;
             var bd3 = (BigDecimal)f1 / f2;
 
-            if (!double.IsFinite(f3)) continue;
+            if (!double.IsFinite(f3))
+            {
+                continue;
+            }
 
             Console.WriteLine($"BigDecimal value: {bd3:E20}");
             Console.WriteLine($"    double value: {f3:E20}");
