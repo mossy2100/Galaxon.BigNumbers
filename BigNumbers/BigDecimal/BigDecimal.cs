@@ -41,21 +41,35 @@ public partial struct BigDecimal :
 
         set
         {
-            _significand = value;
-            // Null the digit string, which will probably now be different.
-            _digitString = null;
+            if (value != _significand)
+            {
+                // Update the significant and exponent fields together, making sure the BigDecimal
+                // remains in canonical form.
+                (_significand, _exponent) = _MakeCanonical(value, _exponent);
+
+                // Null the digit string, which will now be different.
+                _digitString = null;
+            }
         }
     }
 
-    /// <summary>The power of 10.</summary>
-    public int Exponent { get; set; }
+    /// <summary>Backing field for the Exponent property.</summary>
+    private int _exponent;
 
-    /// <summary>The sign of the value.</summary>
+    /// <summary>The power of 10.</summary>
+    public int Exponent
+    {
+        readonly get => _exponent;
+
+        set => _exponent = value;
+    }
+
+    /// <summary>The sign of the value (-1, 0, or 1).</summary>
     /// <remarks>
     /// The same convention is used as for BigInteger:
-    /// -1 means negative
-    /// 0 means zero
-    /// 1 means positive
+    ///    -1 means negative
+    ///     0 means zero
+    ///     1 means positive
     /// </remarks>
     /// <see cref="BigInteger.Sign"/>
     public readonly int Sign => Significand.Sign;
@@ -64,8 +78,10 @@ public partial struct BigDecimal :
     private string? _digitString;
 
     /// <summary>
-    /// A string containing the digits of the absolute value of the significand. It will not
-    /// include a leading minus sign if the significand is negative.
+    /// A string containing the digits of the absolute value of the significand.
+    /// This will not include a leading minus sign if the significand is negative.
+    /// Also, because the BigDecimal is maintained in canonical form, this string will not have any
+    /// leading or trailing zeros, unless the BigDecimal is actually equal to 0.
     /// </summary>
     public string DigitsString
     {
@@ -83,9 +99,7 @@ public partial struct BigDecimal :
 
     #region Static fields and properties
 
-    /// <summary>
-    /// Private backing field for MaxSigFigs.
-    /// </summary>
+    /// <summary>Private backing field for MaxSigFigs.</summary>
     private static int _maxSigFigs = 100;
 
     /// <summary>
@@ -132,51 +146,41 @@ public partial struct BigDecimal :
     /// <inheritdoc/>
     public static BigDecimal MultiplicativeIdentity { get; } = One;
 
-    /// <summary>Precision supported by the Half type.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
-    public const int HalfPrecision = 5;
-
-    /// <summary>Precision supported by the float type.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
-    public const int FloatPrecision = 9;
-
-    /// <summary>Precision supported by the double type.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
-    public const int DoublePrecision = 17;
+    // /// <summary>Precision supported by the Half type.</summary>
+    // /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
+    // public const int HalfPrecision = 5;
+    //
+    // /// <summary>Precision supported by the float type.</summary>
+    // /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
+    // public const int FloatPrecision = 9;
+    //
+    // /// <summary>Precision supported by the double type.</summary>
+    // /// <see href="https://en.wikipedia.org/wiki/IEEE_754#Character_representation"/>
+    // public const int DoublePrecision = 17;
 
     /// <summary>Precision supported by the decimal type.</summary>
-    public const int DecimalPrecision = 28;
+    private const int _DECIMAL_PRECISION = 28;
 
     #endregion Static fields and properties
 
     #region Constructors
 
-    /// <summary>Main constructor.</summary>
+    /// <summary>
+    /// Construct a BigDecimal from a BigInteger significand and an integer exponent.
+    /// </summary>
     /// <param name="significand">The significand or mantissa.</param>
-    /// <param name="exponent">The exponent.</param>
-    public BigDecimal(BigInteger significand, int exponent)
+    /// <param name="exponent">The exponent (defaults to 0).</param>
+    public BigDecimal(BigInteger significand, int exponent = 0)
     {
-        // If the significant is 0, make sure the exponent is also 0.
-        if (significand == 0)
-        {
-            Significand = 0;
-            Exponent = 0;
-            return;
-        }
-
-        // Trim trailing 0s on the significand.
-        (significand, exponent) = _MakeCanonical(significand, exponent);
-
-        // Set properties.
-        Significand = significand;
-        Exponent = exponent;
+        // Make sure the values are canonical and set the fields.
+        (_significand, _exponent) = _MakeCanonical(significand, exponent);
     }
 
-    /// <summary>Constructor for integers. Sets default value of exponent to 0.</summary>
-    public BigDecimal(BigInteger significand) : this(significand, 0) { }
-
     /// <summary>Construct a zero BigDecimal.</summary>
-    public BigDecimal() : this(0, 0) { }
+    public BigDecimal()
+    {
+        (_significand, _exponent) = (0, 0);
+    }
 
     #endregion Constructors
 }

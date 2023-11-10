@@ -347,10 +347,10 @@ public partial struct BigDecimal
         var scale = (byte)-exp;
 
         // Check the scale is not too large.
-        if (scale > DecimalPrecision)
+        if (scale > _DECIMAL_PRECISION)
         {
             throw new
-                OverflowException($"The exponent must be in the range -{DecimalPrecision}..0.");
+                OverflowException($"The exponent must be in the range -{_DECIMAL_PRECISION}..0.");
         }
 
         // Get the bytes for the absolute value of the significand.
@@ -379,7 +379,7 @@ public partial struct BigDecimal
 
     #endregion Casting from BigDecimal
 
-    #region Convert to and from tuple
+    #region Conversion methods
 
     /// <summary>Convert BigDecimal to tuple.</summary>
     /// <returns>A tuple containing the significand and exponent.</returns>
@@ -394,6 +394,27 @@ public partial struct BigDecimal
     public static BigDecimal FromTuple((BigInteger, int) values)
     {
         return new BigDecimal(values.Item1, values.Item2);
+    }
+
+    /// <summary>
+    /// Construct a BigDecimal from a decimal significand and an integer exponent.
+    /// </summary>
+    /// <remarks>
+    /// This method is useful for converting a value expressed in scientific notation to a
+    /// BigDecimal.
+    /// e.g. Avogadro's number = 6.02214 * 10^23
+    /// <code>
+    /// var a = BigDecimal.FromDecimal(6.02214m, 23);
+    /// </code>
+    /// </remarks>
+    /// <param name="significand">The significand or mantissa.</param>
+    /// <param name="exponent">The exponent (defaults to 0).</param>
+    /// <returns>The equivalent BigDecimal value.</returns>
+    public static BigDecimal FromDecimal(decimal significand, int exponent = 0)
+    {
+        BigDecimal x = significand;
+        x.Exponent += exponent;
+        return x;
     }
 
     #endregion Convert to and from tuple

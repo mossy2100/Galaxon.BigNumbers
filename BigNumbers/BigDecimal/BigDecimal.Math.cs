@@ -246,7 +246,7 @@ public partial struct BigDecimal
         // needed when casting a double to BigDecimal, using double here causes infinite recursion.
         // Casting from decimal to BigDecimal doesn't require division so it doesn't have that
         // problem.
-        var yRounded = RoundSigFigs(y, DecimalPrecision);
+        var yRounded = RoundSigFigs(y, _DECIMAL_PRECISION);
         BigDecimal f = 1 / (decimal)yRounded.Significand;
         f.Exponent -= yRounded.Exponent;
 

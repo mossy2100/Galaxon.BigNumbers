@@ -1886,5 +1886,19 @@ public class BigDecimalConvertTests
         Assert.AreEqual(decimal.MaxValue, f);
     }
 
+    [TestMethod]
+    public void TestFromDecimal()
+    {
+        // Avogadro's number.
+        var a = BigDecimal.FromDecimal(6.02214m, 23);
+        Assert.AreEqual(602214, a.Significand);
+        Assert.AreEqual(18, a.Exponent);
+
+        // Gravitational constant.
+        var g = BigDecimal.FromDecimal(6.6743m, -11);
+        Assert.AreEqual(66743, g.Significand);
+        Assert.AreEqual(-15, g.Exponent);
+    }
+
     #endregion Conversion to and from decimal
 }

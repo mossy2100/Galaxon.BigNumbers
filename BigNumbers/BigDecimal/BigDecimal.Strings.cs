@@ -158,7 +158,7 @@ public partial struct BigDecimal
     /// <param name="provider">The format provider (default null).</param>
     /// <returns>The formatted string.</returns>
     /// <exception cref="ArgumentInvalidException">If the format specifier is invalid.</exception>
-    public readonly string ToString(string? specifier, IFormatProvider? provider)
+    public string ToString(string? specifier, IFormatProvider? provider)
     {
         // Set defaults.
         var format = "G";
@@ -240,19 +240,19 @@ public partial struct BigDecimal
     /// <summary>
     /// Format the BigDecimal as a string.
     /// </summary>
-    public readonly string ToString(string format)
+    public string ToString(string format)
     {
         return ToString(format, CultureInfo.InvariantCulture);
     }
 
     /// <inheritdoc/>
-    public readonly override string ToString()
+    public override string ToString()
     {
         return ToString("G");
     }
 
     /// <inheritdoc/>
-    public readonly bool TryFormat(Span<char> destination, out int charsWritten,
+    public bool TryFormat(Span<char> destination, out int charsWritten,
         ReadOnlySpan<char> format, IFormatProvider? provider)
     {
         var formattedValue = ToString(new string(format), provider);
