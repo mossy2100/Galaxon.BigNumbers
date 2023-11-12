@@ -15,8 +15,8 @@ public class BigDecimalArithmeticOperatorsTests
 
         for (var i = 0; i < n; i++)
         {
-            var a = rnd.NextDoubleFullRange();
-            var b = rnd.NextDoubleFullRange();
+            var a = rnd.GetDouble();
+            var b = rnd.GetDouble();
             var c = a + b;
             if (!double.IsFinite(c))
             {
@@ -38,8 +38,8 @@ public class BigDecimalArithmeticOperatorsTests
 
         for (var i = 0; i < n; i++)
         {
-            var a = rnd.NextDoubleFullRange();
-            var b = rnd.NextDoubleFullRange();
+            var a = rnd.GetDouble();
+            var b = rnd.GetDouble();
             var c = a - b;
             if (!double.IsFinite(c))
             {
@@ -112,8 +112,8 @@ public class BigDecimalArithmeticOperatorsTests
 
         for (var i = 0; i < n; i++)
         {
-            var a = rnd.NextDoubleFullRange();
-            var b = rnd.NextDoubleFullRange();
+            var a = rnd.GetDouble();
+            var b = rnd.GetDouble();
             var c = a * b;
             if (!double.IsFinite(c))
             {
@@ -178,8 +178,8 @@ public class BigDecimalArithmeticOperatorsTests
 
         for (var i = 0; i < n; i++)
         {
-            var a = rnd.NextDoubleFullRange();
-            var b = rnd.NextDoubleFullRange();
+            var a = rnd.GetDouble();
+            var b = rnd.GetDouble();
             var c = a / b;
             if (!double.IsFinite(c))
             {

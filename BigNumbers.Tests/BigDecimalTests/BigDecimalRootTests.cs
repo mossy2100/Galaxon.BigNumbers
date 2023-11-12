@@ -255,7 +255,7 @@ public class BigDecimalRootTests
 
         for (var i = 0; i < nTerms; i++)
         {
-            x = double.Abs(rnd.NextDoubleFullRange());
+            x = double.Abs(rnd.GetDouble());
             n = rnd.Next(100);
             Console.WriteLine($"x = {x}, n = {n}");
             y = BigDecimal.RootN(x, n);

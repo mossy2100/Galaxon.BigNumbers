@@ -25,49 +25,6 @@ public partial struct BigDecimal
     }
 
     /// <summary>
-    /// Get the unit of least precision (ULP) in the provided floating point number.
-    /// </summary>
-    /// <see href="https://en.wikipedia.org/wiki/Unit_in_the_last_place"/>
-    /// <param name="f">A floating point number.</param>
-    /// <typeparam name="T">A standard floating point type.</typeparam>
-    /// <returns>The value of the unit of least precision.</returns>
-    public static BigDecimal UnitOfLeastPrecision<T>(T f) where T : IFloatingPointIeee754<T>
-    {
-        // Subnormal value.
-        if (T.IsSubnormal(f))
-        {
-            return XReflection.Cast<T, BigDecimal>(T.Epsilon);
-        }
-
-        // Normal value.
-        var expBits = f.GetExpBits();
-        var expBias = XFloatingPoint.GetExpBias<T>();
-        var nFracBits = XFloatingPoint.GetNumFracBits<T>();
-        return Exp2(expBits - expBias - nFracBits);
-    }
-
-    /// <summary>
-    /// Get the unit of least precision (ULP) in the provided decimal number.
-    /// </summary>
-    /// <param name="m">A decimal value.</param>
-    /// <returns>The value of the unit of least precision.</returns>
-    public static BigDecimal UnitOfLeastPrecision(decimal m)
-    {
-        var scaleBits = m.GetScaleBits();
-        return new decimal(1, 0, 0, false, scaleBits);
-    }
-
-    /// <summary>
-    /// Get the unit of least precision (ULP) in the provided BigDecimal number.
-    /// </summary>
-    /// <param name="x">A BigDecimal value.</param>
-    /// <returns>The value of the unit of least precision.</returns>
-    public static BigDecimal UnitOfLeastPrecision(BigDecimal x)
-    {
-        return new BigDecimal(1, x.Exponent);
-    }
-
-    /// <summary>
     /// See if the BigDecimal value is *effectively* equal (within a given tolerance) to another
     /// numeric value, which could be another BigDecimal, or a standard number type.
     /// </summary>
@@ -174,8 +131,9 @@ public partial struct BigDecimal
         }
 
         // Signs are the same. Compare maximum exponents.
-        // The Exponent property gives the minimum exponents (i.e. exponent of the last digit), but
-        // for this we want to compare the maximum exponents (i.e. exponent of the first digit).
+        // The Exponent property gives the minimum exponent (i.e. exponent of the last digit in the
+        // significand), but for this comparison we need to know the maximum exponents (i.e.
+        // exponent of the first digit in the significand).
         var thisMaxExp = Exponent + NumSigFigs - 1;
         var otherMaxExp = other.Exponent + other.NumSigFigs - 1;
         if (thisMaxExp < otherMaxExp)
@@ -193,11 +151,12 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc/>
+    /// <see href="https://developer.apple.com/documentation/swift/floatingpoint/maximummagnitude(_:_:)-820gl"/>
     public static BigDecimal MaxMagnitude(BigDecimal x, BigDecimal y)
     {
         var absX = Abs(x);
         var absY = Abs(y);
-        return absX > absY ? absX : absY;
+        return absX > absY ? x : y;
     }
 
     /// <inheritdoc/>
@@ -207,11 +166,12 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc/>
+    /// <see href="https://developer.apple.com/documentation/swift/floatingpoint/minimummagnitude(_:_:)-2i4od"/>
     public static BigDecimal MinMagnitude(BigDecimal x, BigDecimal y)
     {
         var absX = Abs(x);
         var absY = Abs(y);
-        return absX < absY ? absX : absY;
+        return absX < absY ? x : y;
     }
 
     /// <inheritdoc/>
@@ -261,4 +221,51 @@ public partial struct BigDecimal
     }
 
     #endregion Comparison operators
+
+    #region Helper methods
+
+    /// <summary>
+    /// Get the unit of least precision (ULP) in the provided floating point number.
+    /// </summary>
+    /// <see href="https://en.wikipedia.org/wiki/Unit_in_the_last_place"/>
+    /// <param name="f">A floating point number.</param>
+    /// <typeparam name="T">A standard floating point type.</typeparam>
+    /// <returns>The value of the unit of least precision.</returns>
+    public static BigDecimal UnitOfLeastPrecision<T>(T f) where T : IFloatingPointIeee754<T>
+    {
+        // Subnormal value.
+        if (T.IsSubnormal(f))
+        {
+            return XReflection.Cast<T, BigDecimal>(T.Epsilon);
+        }
+
+        // Normal value.
+        var expBits = f.GetExpBits();
+        var expBias = XFloatingPoint.GetExpBias<T>();
+        var nFracBits = XFloatingPoint.GetNumFracBits<T>();
+        return Exp2(expBits - expBias - nFracBits);
+    }
+
+    /// <summary>
+    /// Get the unit of least precision (ULP) in the provided decimal number.
+    /// </summary>
+    /// <param name="m">A decimal value.</param>
+    /// <returns>The value of the unit of least precision.</returns>
+    public static BigDecimal UnitOfLeastPrecision(decimal m)
+    {
+        var scaleBits = m.GetScaleBits();
+        return new decimal(1, 0, 0, false, scaleBits);
+    }
+
+    /// <summary>
+    /// Get the unit of least precision (ULP) in the provided BigDecimal number.
+    /// </summary>
+    /// <param name="x">A BigDecimal value.</param>
+    /// <returns>The value of the unit of least precision.</returns>
+    public static BigDecimal UnitOfLeastPrecision(BigDecimal x)
+    {
+        return new BigDecimal(1, x.Exponent);
+    }
+
+    #endregion Helper methods
 }

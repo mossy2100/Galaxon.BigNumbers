@@ -137,25 +137,28 @@ public class BigDecimalCompareTests
             new object[] { 123.456, 123.456 }
         };
 
+    private static IEnumerable<object[]> _LessThanMagnitudes =>
+        new[]
+        {
+            new object[] { 0, -456 },
+            new object[] { 0, 123 },
+            new object[] { 123, -456 },
+            new object[] { -456, -123789 },
+            new object[] { 456, 123789 },
+            new object[] { -123, -456 },
+            new object[] { 123, 456 },
+            new object[] { 0, -123.456 },
+            new object[] { 0, 123.456 },
+            new object[] { 123.456, -456.789 },
+            new object[] { -987.654, -123456.789 },
+            new object[] { 456.789, 987654.321 },
+            new object[] { -123.456, -456.789 },
+            new object[] { 123.456, 456.789 }
+        };
+
     #endregion Data
 
     #region Equals
-
-    [TestMethod]
-    public void Equals_EqualValues_ReturnsTrue()
-    {
-        BigDecimal x = 123;
-        BigDecimal y = 123;
-        Assert.IsTrue(x.Equals(y));
-    }
-
-    [TestMethod]
-    public void Equals_InequalValues_ReturnsTrue()
-    {
-        BigDecimal x = 123;
-        BigDecimal y = -456;
-        Assert.IsFalse(x.Equals(y));
-    }
 
     [TestMethod]
     public void Equals_Null_ReturnsFalse()
@@ -165,11 +168,67 @@ public class BigDecimalCompareTests
     }
 
     [TestMethod]
-    public void Equals_NotBigDecimal_ReturnsFalse()
+    public void Equals_Float_ReturnsFalse()
     {
         BigDecimal x = 123;
         var f = 456.78f;
         Assert.IsFalse(x.Equals(f));
+    }
+
+    [TestMethod]
+    public void Equals_String_ReturnsFalse()
+    {
+        BigDecimal x = 123;
+        var s = "cat";
+        Assert.IsFalse(x.Equals(s));
+    }
+
+    [TestMethod]
+    public void Equals_EqualValues_ReturnsTrue()
+    {
+        BigDecimal x = 123;
+        BigDecimal y = 123;
+        Assert.IsTrue(x.Equals(y));
+
+        x = -456;
+        y = -456;
+        Assert.IsTrue(x.Equals(y));
+
+        x = 0;
+        y = 0;
+        Assert.IsTrue(x.Equals(y));
+
+        x = 12.345e67;
+        y = 12.345e67;
+        Assert.IsTrue(x.Equals(y));
+
+        x = -9.87e-123;
+        y = -9.87e-123;
+        Assert.IsTrue(x.Equals(y));
+    }
+
+    [TestMethod]
+    public void Equals_InequalValues_ReturnsTrue()
+    {
+        BigDecimal x = 123;
+        BigDecimal y = 789;
+        Assert.IsFalse(x.Equals(y));
+
+        x = -456;
+        y = -123;
+        Assert.IsFalse(x.Equals(y));
+
+        x = 0;
+        y = 5;
+        Assert.IsFalse(x.Equals(y));
+
+        x = 12.345e67;
+        y = 92.345e67;
+        Assert.IsFalse(x.Equals(y));
+
+        x = -9.87e-123;
+        y = -1.87e-123;
+        Assert.IsFalse(x.Equals(y));
     }
 
     #endregion Equals
@@ -184,8 +243,8 @@ public class BigDecimalCompareTests
         for (var i = 0; i < n; i++)
         {
             // A divide operation should introduce some diversion in precision.
-            var f1 = rnd.NextHalf();
-            var f2 = rnd.NextHalf();
+            var f1 = rnd.GetHalf();
+            var f2 = rnd.GetHalf();
             var f3 = f1 / f2;
             var bd3 = (BigDecimal)f1 / f2;
 
@@ -194,7 +253,7 @@ public class BigDecimalCompareTests
                 continue;
             }
 
-            Console.WriteLine($"      Half value: {f3:E20}");
+            Console.WriteLine($"Half value:       {f3:E20}");
             Console.WriteLine($"BigDecimal value: {bd3:E20}");
             Console.WriteLine();
             Assert.IsTrue(bd3.FuzzyEquals(f3));
@@ -209,8 +268,8 @@ public class BigDecimalCompareTests
         for (var i = 0; i < n; i++)
         {
             // A divide operation should introduce some diversion in precision.
-            var f1 = rnd.NextFloat();
-            var f2 = rnd.NextFloat();
+            var f1 = rnd.GetFloat();
+            var f2 = rnd.GetFloat();
             var f3 = f1 / f2;
             var bd3 = (BigDecimal)f1 / f2;
 
@@ -219,7 +278,7 @@ public class BigDecimalCompareTests
                 continue;
             }
 
-            Console.WriteLine($"     float value: {f3:E20}");
+            Console.WriteLine($"float value:      {f3:E20}");
             Console.WriteLine($"BigDecimal value: {bd3:E20}");
             Console.WriteLine();
             BigDecimalAssert.AreFuzzyEqual(f3, bd3);
@@ -234,8 +293,8 @@ public class BigDecimalCompareTests
         for (var i = 0; i < n; i++)
         {
             // A divide operation should introduce some diversion in precision.
-            var f1 = rnd.NextDoubleFullRange();
-            var f2 = rnd.NextDoubleFullRange();
+            var f1 = rnd.GetDouble();
+            var f2 = rnd.GetDouble();
             var f3 = f1 / f2;
             var bd3 = (BigDecimal)f1 / f2;
 
@@ -244,8 +303,8 @@ public class BigDecimalCompareTests
                 continue;
             }
 
+            Console.WriteLine($"double value:     {f3:E20}");
             Console.WriteLine($"BigDecimal value: {bd3:E20}");
-            Console.WriteLine($"    double value: {f3:E20}");
             Assert.IsTrue(bd3.FuzzyEquals(f3));
             Console.WriteLine();
         }
@@ -440,4 +499,18 @@ public class BigDecimalCompareTests
     }
 
     #endregion Comparison operator tests
+
+    #region Min and MaxMagnitude tests
+
+    [TestMethod]
+    [DynamicData(nameof(_LessThanMagnitudes))]
+    public void MaxMagnitude_ReturnsCorrectResult(object x, object y)
+    {
+        BigDecimal bdx = x is int i ? i : x is double d ? d : 0;
+        BigDecimal bdy = y is int j ? j : x is double f ? f : 0;
+        Assert.AreEqual(bdy, BigDecimal.MaxMagnitude(bdx, bdy));
+        Assert.AreEqual(bdx, BigDecimal.MinMagnitude(bdx, bdy));
+    }
+
+    #endregion Min and MaxMagnitude tests
 }
