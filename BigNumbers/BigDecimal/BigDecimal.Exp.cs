@@ -203,7 +203,6 @@ public partial struct BigDecimal
     /// </exception>
     public static BigDecimal RootN(BigDecimal x, int n)
     {
-        // Console.WriteLine($"RootN({x}, {n})");
         // Handle special values of n.
         if (n < 0)
         {
@@ -234,7 +233,7 @@ public partial struct BigDecimal
                     "Negative numbers have no real even roots, only complex ones. Try BigComplex.Roots().");
             }
 
-            // Calculate the only real root, which will be negative.
+            // n is odd. Calculate the only real root, which will be negative.
             return -RootN(-x, n);
         }
         if (x == 0 || x == 1)
@@ -255,16 +254,14 @@ public partial struct BigDecimal
         // Set the initial estimate. In the absence of a better method, since we know the solution
         // will be in the range 0..x because both x and n are positive at this point, let's just
         // start at the midpoint. yk means y[k]
-        var yk = x / 2;
-
-        // Keep up to 2 previous terms for bounce detection.
+        BigDecimal yk = x / 2;
+        // Final result.
+        BigDecimal y;
+        // Keep up to 2 previous terms for bounce detection (cycling between 2-3 close values).
         // Previous term. ykm1 means y[k-1]
         BigDecimal ykm1 = 0;
         // Term before the previous term. ykm2 means y[k-2]
         BigDecimal ykm2 = 0;
-
-        // Final result.
-        BigDecimal y;
 
         // Keep track of difference calculations, so we don't repeat them.
         BigDecimal? dk = null;
@@ -309,7 +306,8 @@ public partial struct BigDecimal
             if (ykp1 == ykm2)
             {
                 // Console.WriteLine("double bounce detected");
-                // Figure out which value (y[k] or y[k-1] or y[k-2]) is best.
+                // Figure out which value (y[k] or y[k-1] or y[k-2]) is best (i.e. if raised to the
+                // power n, produces the values closest to x).
                 dk ??= CalcDiff(yk);
                 dkm1 ??= CalcDiff(ykm1);
                 dkm2 ??= CalcDiff(ykm2);
@@ -352,33 +350,20 @@ public partial struct BigDecimal
         return RoundSigFigs(y);
     }
 
-    /// <summary>
-    /// Calculate the square root of a real number.
-    /// </summary>
-    /// <param name="x">The number.</param>
-    /// <returns>The square root of the number.</returns>
+    /// <inheritdoc/>
     /// <exception cref="ArithmeticException">If the argument is negative.</exception>
     public static BigDecimal Sqrt(BigDecimal x)
     {
         return RootN(x, 2);
     }
 
-    /// <summary>
-    /// Calculate the cube root of a real number.
-    /// </summary>
-    /// <param name="x">The number.</param>
-    /// <returns>The cube root of the number.</returns>
+    /// <inheritdoc/>
     public static BigDecimal Cbrt(BigDecimal x)
     {
         return RootN(x, 3);
     }
 
-    /// <summary>
-    /// Calculate the length of the hypotenuse of a right triangle.
-    /// </summary>
-    /// <param name="x">The length of one of the short sides of the triangle.</param>
-    /// <param name="y">The length of the other short side of the triangle.</param>
-    /// <returns>The length of the hypotenuse.</returns>
+    /// <inheritdoc/>
     public static BigDecimal Hypot(BigDecimal x, BigDecimal y)
     {
         return x == 0 ? y : y == 0 ? x : Sqrt(Sqr(x) + Sqr(y));

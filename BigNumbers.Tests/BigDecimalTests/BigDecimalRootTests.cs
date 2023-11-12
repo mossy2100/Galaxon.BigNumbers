@@ -1,41 +1,86 @@
 using System.Numerics;
 using Galaxon.BigNumbers.TestTools;
-using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
 public class BigDecimalRootTests
 {
+    #region Sqrt() tests
+
     [TestMethod]
-    public void TestSqrt0()
+    public void Sqrt_0_Returns0()
     {
         BigDecimalAssert.AreFuzzyEqual(BigDecimal.Zero, BigDecimal.Sqrt(0));
     }
 
     [TestMethod]
-    public void TestSqrt1()
+    public void Sqrt_1_Returns1()
     {
         BigDecimalAssert.AreFuzzyEqual(BigDecimal.One, BigDecimal.Sqrt(1));
     }
 
     [TestMethod]
-    public void TestSqrtPiSquared()
+    public void Sqrt_Negative1_ThrowsException()
     {
-        var bd = BigDecimal.Sqrt(BigDecimal.Pi * BigDecimal.Pi);
-        BigDecimalAssert.AreFuzzyEqual(BigDecimal.Pi, bd);
+        Assert.ThrowsException<ArithmeticException>(() => BigDecimal.Sqrt(-1));
     }
 
-    // No asserts, just want to make sure the method calls complete fast enough and without error.
-    // Also testing rounding to required sig figs.
     [TestMethod]
-    public void TestSqrtSmallInts()
+    public void Sqrt_PositiveNumberSquared_ReturnsNumber()
     {
-        for (var i = 1; i <= 10; i++)
+        BigDecimal x, y;
+
+        x = 12345;
+        y = BigDecimal.Sqrt(BigDecimal.Sqr(x));
+        BigDecimalAssert.AreFuzzyEqual(x, y);
+
+        x = 6.22e23;
+        y = BigDecimal.Sqrt(BigDecimal.Sqr(x));
+        BigDecimalAssert.AreFuzzyEqual(x, y);
+
+        x = BigDecimal.Pi;
+        y = BigDecimal.Sqrt(BigDecimal.Sqr(x));
+        BigDecimalAssert.AreFuzzyEqual(x, y);
+
+        x = BigDecimal.E;
+        y = BigDecimal.Sqrt(BigDecimal.Sqr(x));
+        BigDecimalAssert.AreFuzzyEqual(x, y);
+    }
+
+    [TestMethod]
+    public void Sqrt_NegativeNumberSquared_ReturnsPositiveNumber()
+    {
+        BigDecimal x, y;
+
+        x = -12345;
+        y = BigDecimal.Sqrt(BigDecimal.Sqr(x));
+        BigDecimalAssert.AreFuzzyEqual(-x, y);
+
+        x = -6.22e23;
+        y = BigDecimal.Sqrt(BigDecimal.Sqr(x));
+        BigDecimalAssert.AreFuzzyEqual(-x, y);
+
+        x = -BigDecimal.Pi;
+        y = BigDecimal.Sqrt(BigDecimal.Sqr(x));
+        BigDecimalAssert.AreFuzzyEqual(-x, y);
+
+        x = -BigDecimal.E;
+        y = BigDecimal.Sqrt(BigDecimal.Sqr(x));
+        BigDecimalAssert.AreFuzzyEqual(-x, y);
+    }
+
+    [TestMethod]
+    public void Sqrt_SmallInts_ReturnsCorrectResult()
+    {
+        for (var i = 1; i <= 100; i++)
         {
+            var d = double.Sqrt(i);
             BigDecimal.MaxSigFigs = 55;
             var bd1 = BigDecimal.Sqrt(i);
             Console.WriteLine($"√{i} = {bd1}");
+            BigDecimalAssert.AreFuzzyEqual(d, bd1);
+
             BigDecimal.MaxSigFigs = 50;
             var bd2 = BigDecimal.Sqrt(i);
             Console.WriteLine($"√{i} = {bd2}");
@@ -44,11 +89,8 @@ public class BigDecimalRootTests
         }
     }
 
-    /// <summary>
-    /// Used https://keisan.casio.com/calculator to get expected result.
-    /// </summary>
     [TestMethod]
-    public void TestSqrtBig()
+    public void Sqrt_LargeNumber_ReturnsCorrectResult()
     {
         BigDecimal.MaxSigFigs = 130;
         var x = BigDecimal.Parse("6.02214076E23");
@@ -58,11 +100,8 @@ public class BigDecimalRootTests
         BigDecimalAssert.AreFuzzyEqual(expected, actual);
     }
 
-    /// <summary>
-    /// Used https://keisan.casio.com/calculator to get expected result.
-    /// </summary>
     [TestMethod]
-    public void TestSqrtSmall()
+    public void Sqrt_SmallNumber_ReturnsCorrectResult()
     {
         BigDecimal.MaxSigFigs = 130;
         var x = BigDecimal.Parse("1.602176634E-19");
@@ -75,10 +114,9 @@ public class BigDecimalRootTests
     /// <summary>
     /// In this test, both the initial argument and the square root are larger than the largest
     /// possible double value.
-    /// Used https://keisan.casio.com/calculator to get expected result.
     /// </summary>
     [TestMethod]
-    public void TestSqrtBiggerThanBiggestDouble()
+    public void Sqrt_NumberLargerThanLargestDouble_ReturnsCorrectResult()
     {
         BigDecimal.MaxSigFigs = 130;
         var x = BigDecimal.Parse("1.2345678E789");
@@ -89,12 +127,11 @@ public class BigDecimalRootTests
     }
 
     /// <summary>
-    /// In this test, both the initial argument and the square root are smaller than the largest
+    /// In this test, both the initial argument and the square root are smaller than the smallest
     /// possible double value.
-    /// Used https://keisan.casio.com/calculator to get expected result.
     /// </summary>
     [TestMethod]
-    public void TestSqrtSmallerThanSmallestDouble()
+    public void Sqrt_NumberSmallerThanSmallestDouble_ReturnsCorrectResult()
     {
         BigDecimal.MaxSigFigs = 130;
         var x = BigDecimal.Parse("1.2345678E-789");
@@ -105,44 +142,82 @@ public class BigDecimalRootTests
     }
 
     [TestMethod]
-    public void TestSqrtNegative()
+    public void Sqrt_NegativeNumber_ThrowsException()
     {
-        Assert.ThrowsException<ArithmeticException>(() => BigDecimal.Sqrt(-1));
+        Assert.ThrowsException<ArithmeticException>(() => BigDecimal.Sqrt(-123.456));
     }
 
+    #endregion Sqrt() tests
+
+    #region Cbrt() tests
+
     [TestMethod]
-    public void TestCbrt0()
+    public void Cbrt_0_ReturnsCorrectResult()
     {
         BigDecimalAssert.AreFuzzyEqual(BigDecimal.Zero, BigDecimal.Cbrt(0));
     }
 
     [TestMethod]
-    public void TestCbrt1()
+    public void Cbrt_1_ReturnsCorrectResult()
     {
         BigDecimalAssert.AreFuzzyEqual(BigDecimal.One, BigDecimal.Cbrt(1));
     }
 
-    // No asserts, just want to make sure the method calls complete fast enough and without error or
-    // infinite looping.
     [TestMethod]
-    public void TestCbrtSmallValues()
+    public void Cbrt_Negative1_ReturnsCorrectResult()
+    {
+        BigDecimalAssert.AreFuzzyEqual(BigDecimal.NegativeOne, BigDecimal.Cbrt(-1));
+    }
+
+    /// <summary>Test cube root of values up to 1000.</summary>
+    [TestMethod]
+    public void Cbrt_SmallIntegers_ReturnsCorrectResult()
     {
         for (var i = 1; i <= 1000; i++)
         {
-            BigDecimal.MaxSigFigs = 54;
-            Console.WriteLine($"³√{i} = {BigDecimal.Cbrt(i):E100}");
+            // Compare with double.
             BigDecimal.MaxSigFigs = 50;
-            Console.WriteLine($"³√{i} = {BigDecimal.Cbrt(i):E100}");
+            double d = double.Cbrt(i);
+            BigDecimal bd = BigDecimal.Cbrt(i);
+            Console.WriteLine($"³√{i} = {bd:E49}");
+            BigDecimalAssert.AreFuzzyEqual(d, bd);
+
+            // Compare with greater sig figs (visual check).
+            BigDecimal.MaxSigFigs = 55;
+            bd = BigDecimal.Cbrt(i);
+            Console.WriteLine($"³√{i} = {bd:E54}");
             Console.WriteLine("");
         }
     }
+
+    [TestMethod]
+    public void Cbrt_NegativeNumbers_ReturnsCorrectResult()
+    {
+        BigDecimal expected;
+        BigDecimal actual;
+
+        actual = BigDecimal.Cbrt(-27);
+        BigDecimalAssert.AreFuzzyEqual(-3, actual);
+
+        actual = BigDecimal.Cbrt(-16);
+        expected = -2.519842099789746m;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual);
+
+        actual = BigDecimal.Cbrt(-1234.5678);
+        expected = -10.727659535728732m;
+        BigDecimalAssert.AreFuzzyEqual(expected, actual);
+    }
+
+    #endregion Cbrt() tests
+
+    #region RootN() tests
 
     /// <summary>
     /// This tests Pow() and RootN() with large exponents.
     /// It takes 37 seconds on my computer, so be patient.
     /// </summary>
     [TestMethod]
-    public void TestRootNLargeNIntegerA()
+    public void RootN_PositiveIntegerParameter_LargeN_ReturnsCorrectValue()
     {
         var a = 5;
         var b = 500;
@@ -161,57 +236,34 @@ public class BigDecimalRootTests
     }
 
     [TestMethod]
-    public void TestRootNLargeNDecimalA()
+    public void RootN_PositiveFloatingPointParameter_LargeN_ReturnsCorrectValue()
     {
-        var a = BigDecimal.Pi;
-        var b = 50;
-        var c = BigDecimal.Pow(a, b);
-        BigDecimalAssert.AreFuzzyEqual(a, BigDecimal.RootN(c, b));
-    }
+        var x = BigDecimal.Pi;
+        var n = 50;
 
-    [TestMethod]
-    public void TestRootNWithNegativeArgumentAndOddRoot()
-    {
-        BigDecimal x = -123;
-        var y = 71;
-        var z = BigDecimal.RootN(x, y);
-        Assert.IsTrue(z < 0);
-    }
+        // Test BigDecimal.RootN().
+        var rootActual = BigDecimal.RootN(x, n);
+        Console.WriteLine($"rootActual   = {rootActual}");
+        var rootExpected = 1.0231586906017m;
+        Console.WriteLine($"rootExpected = {rootExpected}");
+        var delta = 0.0000000000001m;
+        BigDecimalAssert.AreFuzzyEqual(rootExpected, rootActual, delta);
 
-    [TestMethod]
-    public void TestRootNWithNegativeArgumentAndEvenRoot()
-    {
-        BigDecimal x = -123;
-        var y = 70;
-        Assert.ThrowsException<ArithmeticException>(() => BigDecimal.RootN(x, y));
-    }
+        // Test BigInteger.Pow().
+        var powActual = BigDecimal.Pow(rootActual, n);
+        Console.WriteLine($"powActual   = {powActual}");
+        var powExpected = x;
+        Console.WriteLine($"powExpected = {x}");
 
-    [TestMethod]
-    public void TestCbrtOfNegative()
-    {
-        BigDecimal expected;
-        BigDecimal actual;
-        BigDecimal delta;
-
-        actual = BigDecimal.Cbrt(-27);
-        BigDecimalAssert.AreFuzzyEqual(-3, actual);
-
-        actual = BigDecimal.Cbrt(-16);
-        expected = -2.519842099789746;
-        delta = 0.000000000000001;
-        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
-
-        actual = BigDecimal.Cbrt(-1234.5678);
-        expected = -10.727659535728732;
-        delta = 0.000000000000001;
-        BigDecimalAssert.AreFuzzyEqual(expected, actual, delta);
+        var delta2 = BigDecimal.Parse("0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001");
+        BigDecimalAssert.AreFuzzyEqual(powExpected, powActual, delta2);
     }
 
     /// <summary>
     /// Test odd roots of some negative values.
     /// </summary>
     [TestMethod]
-    public void TestOddRootOfNegative()
+    public void RootN_NegativeParameter_OddN_ReturnsCorrectResult()
     {
         var actual = BigDecimal.RootN(-27, 5);
         var expected = -1.933182044931763;
@@ -233,33 +285,12 @@ public class BigDecimalRootTests
     /// Test even roots of negative values throw exceptions.
     /// </summary>
     [TestMethod]
-    public void TestEvenRootOfNegativeThrowsException()
+    public void RootN_NegativeParameter_EvenN_Throws()
     {
         Assert.ThrowsException<ArithmeticException>(() => BigDecimal.RootN(-27, 4));
         Assert.ThrowsException<ArithmeticException>(() => BigDecimal.RootN(-16, 6));
         Assert.ThrowsException<ArithmeticException>(() => BigDecimal.RootN(-1234.5678, 16));
     }
 
-    /// <summary>
-    /// This can be slow and there are no asserts.
-    /// </summary>
-    [Ignore]
-    [TestMethod]
-    public void TestRootMaxNumberOfTerms()
-    {
-        double x;
-        int n;
-        var nTerms = 3;
-        var rnd = new Random();
-        BigDecimal y = 0;
-
-        for (var i = 0; i < nTerms; i++)
-        {
-            x = double.Abs(rnd.GetDouble());
-            n = rnd.Next(100);
-            Console.WriteLine($"x = {x}, n = {n}");
-            y = BigDecimal.RootN(x, n);
-            Console.WriteLine($"RootN({x}, {n}) = {y:E10}");
-        }
-    }
+    #endregion RootN() tests
 }

@@ -765,49 +765,35 @@
             denominator will throw an exception.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestSqrtBig">
-            <summary>
-            Used https://keisan.casio.com/calculator to get expected result.
-            </summary>
-        </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestSqrtSmall">
-            <summary>
-            Used https://keisan.casio.com/calculator to get expected result.
-            </summary>
-        </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestSqrtBiggerThanBiggestDouble">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.Sqrt_NumberLargerThanLargestDouble_ReturnsCorrectResult">
             <summary>
             In this test, both the initial argument and the square root are larger than the largest
             possible double value.
-            Used https://keisan.casio.com/calculator to get expected result.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestSqrtSmallerThanSmallestDouble">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.Sqrt_NumberSmallerThanSmallestDouble_ReturnsCorrectResult">
             <summary>
-            In this test, both the initial argument and the square root are smaller than the largest
+            In this test, both the initial argument and the square root are smaller than the smallest
             possible double value.
-            Used https://keisan.casio.com/calculator to get expected result.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestRootNLargeNIntegerA">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.Cbrt_SmallIntegers_ReturnsCorrectResult">
+            <summary>Test cube root of values up to 1000.</summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.RootN_PositiveIntegerParameter_LargeN_ReturnsCorrectValue">
             <summary>
             This tests Pow() and RootN() with large exponents.
             It takes 37 seconds on my computer, so be patient.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestOddRootOfNegative">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.RootN_NegativeParameter_OddN_ReturnsCorrectResult">
             <summary>
             Test odd roots of some negative values.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestEvenRootOfNegativeThrowsException">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.RootN_NegativeParameter_EvenN_Throws">
             <summary>
             Test even roots of negative values throw exceptions.
-            </summary>
-        </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalRootTests.TestRootMaxNumberOfTerms">
-            <summary>
-            This can be slow and there are no asserts.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigRationalConvertTests.TestCastFromDoubleFuzzy">

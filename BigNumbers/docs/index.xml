@@ -1602,27 +1602,14 @@
             </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Sqrt(Galaxon.BigNumbers.BigDecimal)">
-            <summary>
-            Calculate the square root of a real number.
-            </summary>
-            <param name="x">The number.</param>
-            <returns>The square root of the number.</returns>
+            <inheritdoc/>
             <exception cref="T:System.ArithmeticException">If the argument is negative.</exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Cbrt(Galaxon.BigNumbers.BigDecimal)">
-            <summary>
-            Calculate the cube root of a real number.
-            </summary>
-            <param name="x">The number.</param>
-            <returns>The cube root of the number.</returns>
+            <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Hypot(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <summary>
-            Calculate the length of the hypotenuse of a right triangle.
-            </summary>
-            <param name="x">The length of one of the short sides of the triangle.</param>
-            <param name="y">The length of the other short side of the triangle.</param>
-            <returns>The length of the hypotenuse.</returns>
+            <inheritdoc/>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Exp(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>

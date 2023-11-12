@@ -34,17 +34,6 @@ public class BigDecimalTrigTests
         }
     }
 
-    [ClassInitialize]
-    public static void Initialize(TestContext context)
-    {
-        BigDecimal.MaxSigFigs = 50;
-    }
-
-    private static bool DoubleEqualsBigDecimal(double d, BigDecimal bd)
-    {
-        return d.FuzzyEquals((double)bd);
-    }
-
     [TestMethod]
     [DynamicData(nameof(Numerators))]
     public void TestSin(int i)

@@ -6,7 +6,7 @@ namespace Galaxon.BigNumbers.Tests;
 public class BigDecimalPowTests
 {
     [TestMethod]
-    public void CubeRootOfNegative()
+    public void CubeRootOfNegative_VariousMethods()
     {
         BigDecimal x;
         BigRational y;
@@ -25,8 +25,11 @@ public class BigDecimalPowTests
         BigDecimalAssert.AreFuzzyEqual(expected, actual);
 
         // Test how this doesn't work for a BigDecimal value because we can't represent 1/3 exactly.
-        var y2 = (BigDecimal)1 / 3;
-        Assert.ThrowsException<OverflowException>(() => BigDecimal.Pow(x, y2));
+        Assert.ThrowsException<OverflowException>(() =>
+        {
+            var y2 = (BigDecimal)1 / 3;
+            return BigDecimal.Pow(x, y2);
+        });
     }
 
     #region Base 0
