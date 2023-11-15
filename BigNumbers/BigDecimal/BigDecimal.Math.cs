@@ -121,10 +121,8 @@ public partial struct BigDecimal
         var g0 = y;
         BigDecimal result;
 
-        // Temporarily increase the maximum number of significant figures to ensure an accurate
-        // result.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
+        // Add guard digits to reduce accumulated errors due to rounding.
+        var prevMaxSigFigs = AddGuardDigits(2);
 
         while (true)
         {
@@ -134,7 +132,7 @@ public partial struct BigDecimal
             // Test for equality.
             if (a1 == g1)
             {
-                result = RoundSigFigs(a1, prevMaxSigFigs);
+                result = a1;
                 break;
             }
 
@@ -154,7 +152,20 @@ public partial struct BigDecimal
         // Restore the maximum number of significant figures.
         MaxSigFigs = prevMaxSigFigs;
 
-        return result;
+        return RoundSigFigs(result);
+    }
+
+    /// <summary>
+    /// Add guard digits. This reduces errors due to rounding when performing a series of
+    /// calculations.
+    /// </summary>
+    /// <param name="nDigits">The number of guard digits to add.</param>
+    /// <returns>The previous number of guard digits.</returns>
+    public static int AddGuardDigits(int nDigits)
+    {
+        var prevMaxSigFigs = MaxSigFigs;
+        MaxSigFigs += nDigits;
+        return prevMaxSigFigs;
     }
 
     #endregion Numeric methods
@@ -193,8 +204,10 @@ public partial struct BigDecimal
         // Align the values to the same exponent.
         var (x2Sig, y2Sig, exp) = Align(x, y);
 
-        // Sum the significands and round off.
-        return RoundSigFigs(new BigDecimal(x2Sig + y2Sig, exp));
+        // Sum the significands.
+        var sum = new BigDecimal(x2Sig + y2Sig, exp);
+
+        return RoundSigFigs(sum);
     }
 
     /// <inheritdoc/>
@@ -218,7 +231,8 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal operator *(BigDecimal x, BigDecimal y)
     {
-        return RoundSigFigs(new BigDecimal(x.Significand * y.Significand, x.Exponent + y.Exponent));
+        var prod = new BigDecimal(x.Significand * y.Significand, x.Exponent + y.Exponent);
+        return RoundSigFigs(prod);
     }
 
     /// <inheritdoc/>
@@ -253,12 +267,11 @@ public partial struct BigDecimal
         // Casting from decimal to BigDecimal doesn't require division so it doesn't have that
         // problem.
         var yRounded = RoundSigFigs(y, _DECIMAL_PRECISION);
-        BigDecimal f = 1 / (decimal)yRounded.Significand;
+        BigDecimal f = 1 / (decimal)(yRounded.Significand);
         f.Exponent -= yRounded.Exponent;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
+        // Add guard digits to reduce round-off error.
+        var prevMaxSigFigs = AddGuardDigits(2);
 
         while (true)
         {
@@ -379,8 +392,9 @@ public partial struct BigDecimal
                 // If the decimal fraction is < 0.5, don't round up.
                 // If it's exactly 0.5, round up if the new significand is odd.
                 var firstDecimal = BigInteger.Parse(digits[nDigitsToKeep].ToString());
-                increment = firstDecimal > 5 || (firstDecimal == 5 && (nSigFigs - nDigitsToKeep > 1
-                    || (nSigFigs - nDigitsToKeep == 1 && BigInteger.IsOddInteger(newSig))));
+                increment = firstDecimal > 5
+                    || (firstDecimal == 5 && nDigitsToCut > 1)
+                    || (firstDecimal == 5 && nDigitsToCut == 1 && BigInteger.IsOddInteger(newSig));
                 break;
             }
 
@@ -409,8 +423,8 @@ public partial struct BigDecimal
     /// <summary>
     /// Generate a new significand, found by shifting the exponent of the BigDecimal to the provided
     /// new exponent.
-    /// The combination of the result significand and the new exponent parameter represent a new
-    /// BigDecimal value equal to the provided value.
+    /// The combination of the result significand and the provided exponent parameter represent a
+    /// new BigDecimal value equal to the provided value.
     /// </summary>
     private static BigInteger _Shift(BigDecimal x, int newExponent = 0)
     {

@@ -25,7 +25,7 @@ public class BigDecimalPowTests
         BigDecimalAssert.AreFuzzyEqual(expected, actual);
 
         // Test how this doesn't work for a BigDecimal value because we can't represent 1/3 exactly.
-        Assert.ThrowsException<OverflowException>(() =>
+        Assert.ThrowsException<ArithmeticException>(() =>
         {
             var y2 = (BigDecimal)1 / 3;
             return BigDecimal.Pow(x, y2);
@@ -88,10 +88,10 @@ public class BigDecimalPowTests
     {
         BigDecimal x = 0;
         BigDecimal y = -2;
-        Assert.ThrowsException<DivideByZeroException>(() => BigDecimal.Pow(x, y));
+        Assert.ThrowsException<ArithmeticException>(() => BigDecimal.Pow(x, y));
 
         y = -12345.6789;
-        Assert.ThrowsException<DivideByZeroException>(() => BigDecimal.Pow(x, y));
+        Assert.ThrowsException<ArithmeticException>(() => BigDecimal.Pow(x, y));
     }
 
     #endregion Base 0

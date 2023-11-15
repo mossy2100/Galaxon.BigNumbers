@@ -17,11 +17,7 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_e.NumSigFigs == MaxSigFigs)
-            {
-                return _e;
-            }
-            if (_e.NumSigFigs > MaxSigFigs)
+            if (_e.NumSigFigs >= MaxSigFigs)
             {
                 return RoundSigFigs(_e);
             }
@@ -44,11 +40,7 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_pi.NumSigFigs == MaxSigFigs)
-            {
-                return _pi;
-            }
-            if (_pi.NumSigFigs > MaxSigFigs)
+            if (_pi.NumSigFigs >= MaxSigFigs)
             {
                 return RoundSigFigs(_pi);
             }
@@ -66,10 +58,9 @@ public partial struct BigDecimal
     /// </remarks>
     public static BigDecimal ComputePi()
     {
-        // Temporarily increase the maximum number of significant figures to ensure a correct
-        // result. Tests have revealed 3 extra decimal places are needed.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 3;
+        // Add guard digits to reduce round-off error.
+        // Tests have revealed 3 extra decimal places are needed.
+        var prevMaxSigFigs = AddGuardDigits(3);
 
         // Chudnovsky algorithm.
         var q = 0;
@@ -122,11 +113,7 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_tau.NumSigFigs == MaxSigFigs)
-            {
-                return _tau;
-            }
-            if (_tau.NumSigFigs > MaxSigFigs)
+            if (_tau.NumSigFigs >= MaxSigFigs)
             {
                 return RoundSigFigs(_tau);
             }
@@ -140,9 +127,8 @@ public partial struct BigDecimal
     /// <returns>The value of τ to the current number of significant figures.</returns>
     public static BigDecimal ComputeTau()
     {
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
+        // Add guard digits to reduce round-off error.
+        var prevMaxSigFigs = AddGuardDigits(2);
 
         // τ = 2π
         var tau = 2 * Pi;
@@ -165,11 +151,7 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_halfPi.NumSigFigs == MaxSigFigs)
-            {
-                return _halfPi;
-            }
-            if (_halfPi.NumSigFigs > MaxSigFigs)
+            if (_halfPi.NumSigFigs >= MaxSigFigs)
             {
                 return RoundSigFigs(_halfPi);
             }
@@ -191,11 +173,7 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_phi.NumSigFigs == MaxSigFigs)
-            {
-                return _phi;
-            }
-            if (_phi.NumSigFigs > MaxSigFigs)
+            if (_phi.NumSigFigs >= MaxSigFigs)
             {
                 return RoundSigFigs(_phi);
             }
@@ -209,9 +187,8 @@ public partial struct BigDecimal
     /// <returns>The value of φ to the current number of significant figures.</returns>
     public static BigDecimal ComputePhi()
     {
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
+        // Add guard digits to ensure a correct result.
+        var prevMaxSigFigs = AddGuardDigits(2);
 
         // Calculate phi.
         var phi = (1 + Sqrt(5)) / 2;
@@ -238,11 +215,7 @@ public partial struct BigDecimal
     {
         get
         {
-            if (_ln10.NumSigFigs == MaxSigFigs)
-            {
-                return _ln10;
-            }
-            if (_ln10.NumSigFigs > MaxSigFigs)
+            if (_ln10.NumSigFigs >= MaxSigFigs)
             {
                 return RoundSigFigs(_ln10);
             }

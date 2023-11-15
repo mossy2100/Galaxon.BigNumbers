@@ -796,11 +796,43 @@
             Test even roots of negative values throw exceptions.
             </summary>
         </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalTestsInitialize.Initialize(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext)">
+            <summary>
+            This code will run before every test in the project.
+            </summary>
+            <param name="context"></param>
+        </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigRationalConvertTests.TestCastFromDoubleFuzzy">
             <summary>
             This example shows how a double converts exactly to a BigRational, but also how the double
             only stores an approximation of the original decimal fraction.
             </summary>
+        </member>
+        <member name="T:Galaxon.BigNumbers.Tests.PythonRunner">
+            <summary>
+            Methods and stuff for calling Python scripts.
+            </summary>
+        </member>
+        <member name="P:Galaxon.BigNumbers.Tests.PythonRunner.PathToScripts">
+            <summary>Absolute path to the directory where the scripts are located.</summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.PythonRunner.RunPythonScript(System.String,System.Object[])">
+            <summary>
+            Run a Python script.
+            It must be located in the Python directory within the test project.
+            </summary>
+            <param name="scriptFileName">The filename of the script to run.</param>
+            <param name="args">The arguments to pass to the script.</param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.PythonRunner.CallMathFunction(System.String,Galaxon.BigNumbers.BigDecimal,System.Int32)">
+            <summary>Call a Python mpmath function.</summary>
+            <param name="functionName">The function to call. e.g. "exp", "sin", etc.</param>
+            <param name="x">The argument.</param>
+            <param name="precision">The number of decimal places.</param>
+            <returns>The result, converted to a BigDecimal.</returns>
+            <exception cref="T:System.InvalidOperationException">If something goes wrong.</exception>
         </member>
     </members>
 </doc>

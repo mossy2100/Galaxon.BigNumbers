@@ -14,7 +14,8 @@ public partial struct BigDecimal
     /// <returns>The square of the BigDecimal.</returns>
     public static BigDecimal Sqr(BigDecimal x)
     {
-        return x * x;
+        var result = x * x;
+        return RoundSigFigs(result);
     }
 
     /// <summary>Calculate the cube of a BigDecimal value.</summary>
@@ -22,7 +23,8 @@ public partial struct BigDecimal
     /// <returns>The cube of the BigDecimal.</returns>
     public static BigDecimal Cube(BigDecimal x)
     {
-        return x * x * x;
+        var result = x * x * x;
+        return RoundSigFigs(result);
     }
 
     /// <summary>
@@ -35,19 +37,26 @@ public partial struct BigDecimal
     /// <returns>
     /// The result of the calculation, rounded off to the current value of MaxSigFigs.
     /// </returns>
-    /// <exception cref="DivideByZeroException">
+    /// <exception cref="ArithmeticException">
     /// If trying to raise 0 to a negative power.
     /// </exception>
     public static BigDecimal Pow(BigDecimal x, BigInteger y)
     {
-        // Handle non-positive values of y.
+        // Handle negative y.
         if (y < 0)
         {
-            // x^(-y) = (1/x)^y
-            // Calculate the reciprocal before calling Pow() so that, if there's going to be a
-            // DivideByZeroException, it will be thrown earlier.
-            return Pow(1 / x, -y);
+            // Avoid divide by zero.
+            if (x == 0)
+            {
+                throw new ArithmeticException("Cannot raise 0 to a negative power.");
+            }
+
+            // x^y = 1/(x^(-y))
+            var result = 1 / Pow(x, -y);
+            return RoundSigFigs(result);
         }
+
+        // Optimizations.
         if (y == 0)
         {
             // x^0 == 1
@@ -58,9 +67,6 @@ public partial struct BigDecimal
             // x^1 == x
             return x;
         }
-        // y > 1
-
-        // Handle easy cases of x.
         if (x == 0 || x == 1)
         {
             // 0^y == 0 for all y > 0
@@ -85,61 +91,73 @@ public partial struct BigDecimal
         if (IsEvenInteger(y))
         {
             // y is even: x^y = (x^2)^(y/2)
-            return Pow(Sqr(x), y / 2);
+            var result = Pow(Sqr(x), y / 2);
+            return RoundSigFigs(result);
         }
         // y is odd: x^y = x * (x^2)^((y-1)/2)
-        return x * Pow(Sqr(x), (y - 1) / 2);
+        var result2 = x * Pow(Sqr(x), (y - 1) / 2);
+        return RoundSigFigs(result2);
     }
 
     /// <inheritdoc/>
-    /// <summary>Calculate the value of x^y where x and y are both BigDecimal values.</summary>
-    /// <param name="x">The base.</param>
-    /// <param name="y">The exponent.</param>
-    /// <returns>
-    /// The result of the calculation, rounded off to the current value of MaxSigFigs.
-    /// </returns>
-    /// <exception cref="DivideByZeroException">
-    /// If trying to raise 0 to a negative power.
-    /// </exception>
     /// <exception cref="ArithmeticException">
-    /// If no real result can be computed.
+    /// 1. If trying to raise 0 to a negative power.
+    /// 2. If no real result can be computed.
     /// </exception>
     public static BigDecimal Pow(BigDecimal x, BigDecimal y)
     {
         // Defer to the BigInteger version of the method if possible.
         if (IsInteger(y))
         {
-            return Pow(x, (BigInteger)y);
+            var result = Pow(x, (BigInteger)y);
+            return RoundSigFigs(result);
         }
 
-        // Handle negative exponent.
-
+        // Handle negative y.
         if (y < 0)
         {
-            // This will throw a DivideByZeroException if x is 0.
-            // Calculate the reciprocal before calling Pow(), so if there's going to be a
-            // DivideByZeroException, it will be thrown earlier.
-            return Pow(1 / x, -y);
+            // Avoid divide by zero.
+            if (x == 0)
+            {
+                throw new ArithmeticException("Cannot raise 0 to a negative power.");
+            }
+
+            // x^y = 1/(x^(-y))
+            var result = 1 / Pow(x, -y);
+            return RoundSigFigs(result);
         }
 
-        if (x < 0)
-        {
-            // For negative x, the Exp(Log) method (below) won't work, because we can't get the log
-            // of a negative number as a real value. Instead, we can convert y to a BigRational and
-            // call that version of Pow(). Note: this can throw an exception.
-            return Pow(x, (BigRational)y);
-        }
+        // Optimizations.
         if (x == 0 || x == 1)
         {
             // 0 raised to any positive value is 0.
             // 1 raised to any value is 1.
             return x;
         }
+
+        // Handle negative x.
+        if (x < 0)
+        {
+            // For negative x, the Exp(Log) method (below) won't work, because we can't get the log
+            // of a negative number as a real value. Instead, we can try converting y to a
+            // BigRational and call that version of Pow().
+            try
+            {
+                var result = Pow(x, (BigRational)y);
+                return RoundSigFigs(result);
+            }
+            catch (ArithmeticException ex)
+            {
+                throw new ArithmeticException("Could not compute a result.", ex);
+            }
+        }
+
         // x > 0
         // We can compute the result using Exp() and Log().
         // We could use the same method as used above for x < 0 (Pow with BigRational) but
         // I suspect that would be slower. TODO Test that assumption.
-        return Exp(y * Log(x));
+        var result2 = Exp(y * Log(x));
+        return RoundSigFigs(result2);
     }
 
     /// <summary>
@@ -154,31 +172,30 @@ public partial struct BigDecimal
     /// <code>
     /// BigDecimal y = BigDecimal.Pow(x, new BigRational(1, 3));
     /// </code>
+    /// This method is only really practical if the denominator of the rational is reasonably small,
+    /// even though in principle it can be any integer value.
     /// </summary>
     /// <param name="x">The base.</param>
     /// <param name="y">The exponent.</param>
     /// <returns>The result of x raised to the power of y.</returns>
-    /// <exception cref="DivideByZeroException">
-    /// If trying to raise 0 to a negative power.
-    /// </exception>
     /// <exception cref="ArithmeticException">
-    /// If the base is negative, the numerator of the exponent is odd, and the denominator of the
+    /// 1. If trying to raise 0 to a negative power.
+    /// 2. If the denominator is outside the valid range for int.
+    /// 3. If the base is negative, the numerator of the exponent is odd, and the denominator of the
     /// exponent is even. In this case, no real result exists (although a complex result will).
     /// </exception>
     public static BigDecimal Pow(BigDecimal x, BigRational y)
     {
-        try
+        // Check if we can cast the denominator to an int. Avoid OverflowException.
+        if (y.Denominator < int.MinValue || y.Denominator > int.MaxValue)
         {
-            // Try to cast the denominator to an int. This will throw an OverflowException if
-            // outside the valid range for int. Do the cast before calling Pow() so we catch the
-            // overflow issue before wasting time on the call to Pow().
-            var i = (int)y.Denominator;
-            return RootN(Pow(x, y.Numerator), i);
+            throw new ArithmeticException(
+                "The magnitude of the denominator is too large to compute a result.");
         }
-        catch (OverflowException)
-        {
-            throw new OverflowException("Denominator is too large to compute the root.");
-        }
+
+        // Do the calculation.
+        var result = RootN(Pow(x, y.Numerator), (int)y.Denominator);
+        return RoundSigFigs(result);
     }
 
     #endregion Power functions
@@ -195,21 +212,23 @@ public partial struct BigDecimal
     /// <exception cref="ArgumentOutOfRangeException">
     /// If the degree is zero.
     /// </exception>
-    /// <exception cref="DivideByZeroException">
-    /// If the radicand is 0 and the degree is negative.
-    /// </exception>
     /// <exception cref="ArithmeticException">
     /// If the radicand is negative and the degree is even.
     /// </exception>
     public static BigDecimal RootN(BigDecimal x, int n)
     {
-        // Handle special values of n.
+        // Handle non-positive n.
         if (n < 0)
         {
             // A negative root is the reciprocal of the positive root.
-            // Calculate the reciprocal before calling RootN(), so if there's going to be a
-            // DivideByZeroException, it will be thrown earlier.
-            return RootN(1 / x, -n);
+            // Avoid a divide by zero error.
+            if (x == 0)
+            {
+                throw new ArithmeticException("Cannot compute the nth root of 0 if n is negative.");
+            }
+            // n√x = 1/((-n)√x)
+            var result = 1 / RootN(x, -n);
+            return RoundSigFigs(result);
         }
         if (n == 0)
         {
@@ -217,56 +236,52 @@ public partial struct BigDecimal
             throw new ArgumentOutOfRangeException(nameof(n),
                 "The 0th root is undefined since any number to the power of 0 is 1.");
         }
-        if (n == 1)
-        {
-            // The 1st root of a number is itself.
-            return x;
-        }
 
-        // Handle special values of x.
-        if (x < 0)
-        {
-            // If n is even there will be no real results, only complex ones.
-            if (BigInteger.IsEvenInteger(n))
-            {
-                throw new ArithmeticException(
-                    "Negative numbers have no real even roots, only complex ones. Try BigComplex.Roots().");
-            }
-
-            // n is odd. Calculate the only real root, which will be negative.
-            return -RootN(-x, n);
-        }
+        // Optimizations.
         if (x == 0 || x == 1)
         {
             // If x == 0 the root will be 0, since 0^n = 0 for all n > 0.
             // If x == 1 the root will be 1, since 1^n = 1 for all n.
             return x;
         }
+        if (n == 1)
+        {
+            // The 1st root of a number is itself.
+            return RoundSigFigs(x);
+        }
+
+        // Handle negative x.
+        if (x < 0)
+        {
+            // If n is even there will be no real result, only complex ones.
+            if (BigInteger.IsEvenInteger(n))
+            {
+                throw new ArithmeticException(
+                    "Negative numbers have no real even roots, only complex ones.");
+            }
+
+            // n is odd. Calculate the only real root, which will be negative.
+            var result = -RootN(-x, n);
+            return RoundSigFigs(result);
+        }
 
         // At this point we know x > 0 and n > 1.
         // Use Newton's method to find the root.
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct
-        // result.
-        var origMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
+        // Add guard digits to reduce round-off error.
+        var prevMaxSigFigs = AddGuardDigits(2);
 
         // Set the initial estimate. In the absence of a better method, since we know the solution
         // will be in the range 0..x because both x and n are positive at this point, let's just
         // start at the midpoint. yk means y[k]
         BigDecimal yk = x / 2;
-        // Final result.
-        BigDecimal y;
+        // Next term and final term. ykp1 means y[k+1]
+        BigDecimal ykp1;
         // Keep up to 2 previous terms for bounce detection (cycling between 2-3 close values).
         // Previous term. ykm1 means y[k-1]
         BigDecimal ykm1 = 0;
         // Term before the previous term. ykm2 means y[k-2]
         BigDecimal ykm2 = 0;
-
-        // Keep track of difference calculations, so we don't repeat them.
-        BigDecimal? dk = null;
-        BigDecimal? dkm1 = null;
-        BigDecimal? dkm2 = null;
 
         // Function for calculating differences.
         BigDecimal CalcDiff(BigDecimal y2) => Abs(Pow(y2, n) - x);
@@ -282,12 +297,11 @@ public partial struct BigDecimal
         while (true)
         {
             // Compute the value of the next term. ykp1 means y[k+1]
-            var ykp1 = m * yk + p / Pow(yk, n - 1);
+            ykp1 = m * yk + p / Pow(yk, n - 1);
 
             // If the new term is the same, we're done.
             if (ykp1 == yk)
             {
-                y = yk;
                 break;
             }
 
@@ -296,9 +310,12 @@ public partial struct BigDecimal
             {
                 // Console.WriteLine("bounce detected");
                 // Figure out which value (y[k] or y[k-1]) produces a better result.
-                dk ??= CalcDiff(yk);
-                dkm1 ??= CalcDiff(ykm1);
-                y = dk <= dkm1 ? yk : ykm1;
+                var dk = CalcDiff(yk);
+                var dkm1 = CalcDiff(ykm1);
+                if (dk <= dkm1)
+                {
+                    ykp1 = yk;
+                }
                 break;
             }
 
@@ -308,20 +325,16 @@ public partial struct BigDecimal
                 // Console.WriteLine("double bounce detected");
                 // Figure out which value (y[k] or y[k-1] or y[k-2]) is best (i.e. if raised to the
                 // power n, produces the values closest to x).
-                dk ??= CalcDiff(yk);
-                dkm1 ??= CalcDiff(ykm1);
-                dkm2 ??= CalcDiff(ykm2);
+                var dk = CalcDiff(yk);
+                var dkm1 = CalcDiff(ykm1);
+                var dkm2 = CalcDiff(ykm2);
                 if (dk <= dkm1 && dk <= dkm2)
                 {
-                    y = yk;
+                    ykp1 = yk;
                 }
                 else if (dkm1 <= dk && dkm1 <= dkm2)
                 {
-                    y = ykm1;
-                }
-                else
-                {
-                    y = ykm2;
+                    ykp1 = ykm1;
                 }
                 break;
             }
@@ -339,15 +352,12 @@ public partial struct BigDecimal
             ykm2 = ykm1;
             ykm1 = yk;
             yk = ykp1;
-
-            // Shift the differences back, too.
-            dkm2 = dkm1;
-            dkm1 = dk;
         }
 
-        // Restore the maximum number of significant figures, and round off.
-        MaxSigFigs = origMaxSigFigs;
-        return RoundSigFigs(y);
+        // Restore the maximum number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
+
+        return RoundSigFigs(ykp1);
     }
 
     /// <inheritdoc/>
@@ -398,9 +408,8 @@ public partial struct BigDecimal
         BigInteger nf = 1; // n!
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 3;
+        // Add guard digits to reduce errors due to rounding.
+        var prevMaxSigFigs = AddGuardDigits(3);
 
         // Add terms until the process ceases to affect the result.
         // The more significant figures wanted, the longer the process will take.
@@ -442,10 +451,11 @@ public partial struct BigDecimal
 
     #endregion Exponential functions
 
-    #region Logarithmic functions
+    #region Logarithm functions
 
     /// <inheritdoc/>
     /// <see href="https://en.wikipedia.org/wiki/Mercator_series"/>
+    /// <exception cref="ArgumentOutOfRangeException">If x is less than or equal to 0.</exception>
     public static BigDecimal Log(BigDecimal x)
     {
         // Guards.
@@ -453,23 +463,21 @@ public partial struct BigDecimal
         {
             throw new ArgumentOutOfRangeException(nameof(x), "The logarithm of 0 is undefined.");
         }
-
         if (x < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(x),
                 "Logarithm of a negative value is a complex number, which cannot be expressed using a BigDecimal.");
         }
 
-        // Optimization.
+        // Optimizations.
         if (x == 1)
         {
             return 0;
         }
-
-        // Shortcut for Log(10).
+        // For Log(10) use the cached value if possible.
         if (x == 10 && _ln10.NumSigFigs >= MaxSigFigs)
         {
-            return RoundSigFigs(_ln10);
+            return Ln10;
         }
 
         // Scale the value to the range (0..1) so the Taylor series converges quickly and to avoid
@@ -484,9 +492,8 @@ public partial struct BigDecimal
         var yn = y;
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
+        // Add guard digits to reduce accumulated errors due to rounding.
+        var prevMaxSigFigs = AddGuardDigits(2);
 
         // Add terms until the process ceases to affect the result.
         // The more significant figures wanted, the longer the process will take.
@@ -519,15 +526,21 @@ public partial struct BigDecimal
     }
 
     /// <inheritdoc/>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// If either parameter is less than or equal to 0, except for the special case where x is 1 and
+    /// b is 0.
+    /// </exception>
     public static BigDecimal Log(BigDecimal x, BigDecimal b)
     {
+        // Guard.
         if (b == 1)
         {
             throw new ArgumentOutOfRangeException(nameof(b),
                 "Logarithms are undefined for a base of 1.");
         }
 
-        // 0^0 == 1. Mimics Math.Log().
+        // Log(1, 0) == 0 means 0^0 == 1. 0^0 is defined as 1 or undefined.
+        // Using 1 mimics Math.Log().
         if (x == 1 && b == 0)
         {
             return 0;
@@ -549,5 +562,5 @@ public partial struct BigDecimal
         return Log(x, 10);
     }
 
-    #endregion Logarithmic functions
+    #endregion Logarithm functions
 }

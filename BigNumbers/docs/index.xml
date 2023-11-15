@@ -1539,23 +1539,15 @@
             <returns>
             The result of the calculation, rounded off to the current value of MaxSigFigs.
             </returns>
-            <exception cref="T:System.DivideByZeroException">
+            <exception cref="T:System.ArithmeticException">
             If trying to raise 0 to a negative power.
             </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Pow(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
-            <summary>Calculate the value of x^y where x and y are both BigDecimal values.</summary>
-            <param name="x">The base.</param>
-            <param name="y">The exponent.</param>
-            <returns>
-            The result of the calculation, rounded off to the current value of MaxSigFigs.
-            </returns>
-            <exception cref="T:System.DivideByZeroException">
-            If trying to raise 0 to a negative power.
-            </exception>
             <exception cref="T:System.ArithmeticException">
-            If no real result can be computed.
+            1. If trying to raise 0 to a negative power.
+            2. If no real result can be computed.
             </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Pow(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigRational)">
@@ -1571,15 +1563,16 @@
             <code>
             BigDecimal y = BigDecimal.Pow(x, new BigRational(1, 3));
             </code>
+            This method is only really practical if the denominator of the rational is reasonably small,
+            even though in principle it can be any integer value.
             </summary>
             <param name="x">The base.</param>
             <param name="y">The exponent.</param>
             <returns>The result of x raised to the power of y.</returns>
-            <exception cref="T:System.DivideByZeroException">
-            If trying to raise 0 to a negative power.
-            </exception>
             <exception cref="T:System.ArithmeticException">
-            If the base is negative, the numerator of the exponent is odd, and the denominator of the
+            1. If trying to raise 0 to a negative power.
+            2. If the denominator is outside the valid range for int.
+            3. If the base is negative, the numerator of the exponent is odd, and the denominator of the
             exponent is even. In this case, no real result exists (although a complex result will).
             </exception>
         </member>
@@ -1593,9 +1586,6 @@
             <returns>The nth root of the BigDecimal value.</returns>
             <exception cref="T:System.ArgumentOutOfRangeException">
             If the degree is zero.
-            </exception>
-            <exception cref="T:System.DivideByZeroException">
-            If the radicand is 0 and the degree is negative.
             </exception>
             <exception cref="T:System.ArithmeticException">
             If the radicand is negative and the degree is even.
@@ -1623,9 +1613,14 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.Log(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
             <see href="https://en.wikipedia.org/wiki/Mercator_series"/>
+            <exception cref="T:System.ArgumentOutOfRangeException">If x is less than or equal to 0.</exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Log(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            If either parameter is less than or equal to 0, except for the special case where x is 1 and
+            b is 0.
+            </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Log2(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
@@ -1749,6 +1744,14 @@
             </summary>
             <see href="https://en.wikipedia.org/wiki/Arithmetic%E2%80%93geometric_mean"/>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.AddGuardDigits(System.Int32)">
+            <summary>
+            Add guard digits. This reduces errors due to rounding when performing a series of
+            calculations.
+            </summary>
+            <param name="nDigits">The number of guard digits to add.</param>
+            <returns>The previous number of guard digits.</returns>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_UnaryPlus(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
         </member>
@@ -1822,8 +1825,8 @@
             <summary>
             Generate a new significand, found by shifting the exponent of the BigDecimal to the provided
             new exponent.
-            The combination of the result significand and the new exponent parameter represent a new
-            BigDecimal value equal to the provided value.
+            The combination of the result significand and the provided exponent parameter represent a
+            new BigDecimal value equal to the provided value.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Align(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">

@@ -14,6 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\BigNumbers.Tests\BigNumbers.Tests.csproj" />
         <ProjectReference Include="..\BigNumbers\BigNumbers.csproj"/>
     </ItemGroup>
 

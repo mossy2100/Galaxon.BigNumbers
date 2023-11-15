@@ -1,3 +1,5 @@
+Check exceptions for Pow().
+
 Complete all unit tests for BigDecimal. Aim for parity with Python mpmath.
 
 For XDecimal, in Galaxon.Code, remove dependence on DecimalMath.

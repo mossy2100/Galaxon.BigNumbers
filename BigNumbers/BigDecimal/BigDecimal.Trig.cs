@@ -62,10 +62,8 @@ public partial struct BigDecimal
         BigInteger mFact = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct
-        // result.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
+        // Add guard digits to reduce round-off error.
+        var prevMaxSigFigs = AddGuardDigits(2);
 
         // Add terms until the process ceases to affect the result.
         // The more significant figures wanted, the longer the process will take.
@@ -241,9 +239,8 @@ public partial struct BigDecimal
         var xToM = Cube(x);
         var sum = x;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
+        // Add guard digits to reduce round-off error.
+        var prevMaxSigFigs = AddGuardDigits(2);
 
         // Add terms until the process ceases to affect the result.
         // The more significant figures wanted, the longer the process will take.
@@ -320,7 +317,7 @@ public partial struct BigDecimal
         var sign = small ? 1 : -1;
         var sum = small ? 0 : HalfPi;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        // Add guard digits to reduce round-off error.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -464,7 +461,7 @@ public partial struct BigDecimal
         BigInteger mFact = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        // Add guard digits to reduce round-off error.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -513,7 +510,7 @@ public partial struct BigDecimal
         BigInteger mFact = 1;
         BigDecimal sum = 0;
 
-        // Temporarily increase the maximum number of significant figures to ensure a correct result.
+        // Add guard digits to reduce round-off error.
         var prevMaxSigFigs = MaxSigFigs;
         MaxSigFigs += 2;
 
@@ -647,7 +644,23 @@ public partial struct BigDecimal
     /// <returns>A tuple containing the x and y coordinates.</returns>
     public static (BigDecimal x, BigDecimal y) PolarToCartesian(BigDecimal r, BigDecimal theta)
     {
-        return r == 0 ? (0, 0) : (r * Cos(theta), r * Sin(theta));
+        // Shortcut.
+        if (r == 0)
+        {
+            return (0, 0);
+        }
+
+        // Add guard digits.
+        var prevMaxSigFigs = AddGuardDigits(2);
+
+        // Calculate.
+        var (x, y) = (r * Cos(theta), r * Sin(theta));
+
+        // Restore the number of significant figures.
+        MaxSigFigs = prevMaxSigFigs;
+
+        // Round off and return.
+        return (RoundSigFigs(x), RoundSigFigs(y));
     }
 
     /// <summary>Find the equivalent angle in the interval [0, 𝞃).</summary>
