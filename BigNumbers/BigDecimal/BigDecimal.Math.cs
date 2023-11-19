@@ -122,7 +122,7 @@ public partial struct BigDecimal
         BigDecimal result;
 
         // Add guard digits to reduce accumulated errors due to rounding.
-        var prevMaxSigFigs = AddGuardDigits(2);
+        var sf = AddGuardDigits(2);
 
         while (true)
         {
@@ -137,8 +137,8 @@ public partial struct BigDecimal
             }
 
             // Test for equality post-rounding.
-            var a1R = RoundSigFigs(a1, prevMaxSigFigs);
-            var g1R = RoundSigFigs(g1, prevMaxSigFigs);
+            var a1R = RoundSigFigs(a1, sf);
+            var g1R = RoundSigFigs(g1, sf);
             if (a1R == g1R)
             {
                 result = a1R;
@@ -150,9 +150,7 @@ public partial struct BigDecimal
         }
 
         // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(result);
+        return RemoveGuardDigits(result, sf);
     }
 
     /// <summary>
@@ -163,9 +161,32 @@ public partial struct BigDecimal
     /// <returns>The previous number of guard digits.</returns>
     public static int AddGuardDigits(int nDigits)
     {
-        var prevMaxSigFigs = MaxSigFigs;
+        var sigFigs = MaxSigFigs;
         MaxSigFigs += nDigits;
-        return prevMaxSigFigs;
+        return sigFigs;
+    }
+
+    /// <summary>Remove guard digits and round off the BigDecimal value.</summary>
+    /// <param name="x">The BigDecimal value to round off.</param>
+    /// <param name="sigFigs">The previous maximum number of significant figures to restore.</param>
+    /// <returns>
+    /// The BigDecimal value rounded off to the specified number of significant figures.
+    /// </returns>
+    public static BigDecimal RemoveGuardDigits(BigDecimal x, int sigFigs)
+    {
+        MaxSigFigs = sigFigs;
+        return RoundSigFigs(x);
+    }
+
+    /// <summary>Run a computation with guard digits.</summary>
+    /// <param name="func">A function that returns a BigDecimal value.</param>
+    /// <param name="nGuardDigits">The number of guard digits to add before the method.</param>
+    /// <returns>The result of the calculation.</returns>
+    public static BigDecimal DoWithGuardDigits(Func<BigDecimal> func, int nGuardDigits)
+    {
+        var sf = AddGuardDigits(nGuardDigits);
+        var result = func();
+        return RemoveGuardDigits(result, sf);
     }
 
     #endregion Numeric methods
@@ -259,6 +280,9 @@ public partial struct BigDecimal
             return 1;
         }
 
+        // Add guard digits to ensure a correct result.
+        var sf = AddGuardDigits(7);
+
         // Find f ~= 1/y as an initial estimate of the multiplication factor.
         // We can quickly get a very good initial estimate by leveraging the decimal type.
         // In other places we've used the double type for calculating estimates, both for speed and
@@ -269,9 +293,6 @@ public partial struct BigDecimal
         var yRounded = RoundSigFigs(y, _DECIMAL_PRECISION);
         BigDecimal f = 1 / (decimal)(yRounded.Significand);
         f.Exponent -= yRounded.Exponent;
-
-        // Add guard digits to reduce round-off error.
-        var prevMaxSigFigs = AddGuardDigits(2);
 
         while (true)
         {
@@ -294,10 +315,8 @@ public partial struct BigDecimal
             }
         }
 
-        // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(x);
+        // Restore maximum sig figs and round off.
+        return RemoveGuardDigits(x, sf);
     }
 
     /// <inheritdoc/>
@@ -311,7 +330,9 @@ public partial struct BigDecimal
     /// <exception cref="DivideByZeroException">if the divisor is 0.</exception>
     public static BigDecimal operator %(BigDecimal x, BigDecimal y)
     {
-        return x - Truncate(x / y) * y;
+        var sf = AddGuardDigits(10);
+        var mod = x - Truncate(x / y) * y;
+        return RemoveGuardDigits(mod, sf);
     }
 
     /// <summary>Exponentiation operator.</summary>

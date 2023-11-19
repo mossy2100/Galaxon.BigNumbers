@@ -739,6 +739,15 @@
             </code>
             </summary>
         </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestBinaryFunctionWithGuardDigits(System.Func{Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal})">
+            <summary>
+            TODO
+            There's an issue here in that this method is running with the default number of sig figs of
+            50. The result might be different with different initial number of sig figs.
+            </summary>
+            <param name="fn"></param>
+            <returns></returns>
+        </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalNumericMethodsTests.TestRoundingMethods">
             <summary>
             Compare BigDecimal.Round() matches decimal.Round() for all rounding methods.
@@ -826,10 +835,19 @@
             <returns></returns>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.PythonRunner.CallMathFunction(System.String,Galaxon.BigNumbers.BigDecimal,System.Int32)">
-            <summary>Call a Python mpmath function.</summary>
+        <member name="M:Galaxon.BigNumbers.Tests.PythonRunner.CallUnaryMathFunction(System.String,Galaxon.BigNumbers.BigDecimal,System.Int32)">
+            <summary>Call a unary Python mpmath function.</summary>
             <param name="functionName">The function to call. e.g. "exp", "sin", etc.</param>
             <param name="x">The argument.</param>
+            <param name="precision">The number of decimal places.</param>
+            <returns>The result, converted to a BigDecimal.</returns>
+            <exception cref="T:System.InvalidOperationException">If something goes wrong.</exception>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.PythonRunner.CallBinaryMathFunction(System.String,Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,System.Int32)">
+            <summary>Call a binary Python mpmath function.</summary>
+            <param name="functionName">The function to call. e.g. "exp", "sin", etc.</param>
+            <param name="x">The first argument.</param>
+            <param name="y">The second argument.</param>
             <param name="precision">The number of decimal places.</param>
             <returns>The result, converted to a BigDecimal.</returns>
             <exception cref="T:System.InvalidOperationException">If something goes wrong.</exception>

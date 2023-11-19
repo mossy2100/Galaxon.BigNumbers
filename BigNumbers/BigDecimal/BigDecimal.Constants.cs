@@ -60,7 +60,7 @@ public partial struct BigDecimal
     {
         // Add guard digits to reduce round-off error.
         // Tests have revealed 3 extra decimal places are needed.
-        var prevMaxSigFigs = AddGuardDigits(3);
+        var sf = AddGuardDigits(3);
 
         // Chudnovsky algorithm.
         var q = 0;
@@ -96,9 +96,7 @@ public partial struct BigDecimal
         var pi = 426_880 * Sqrt(10_005) / sum;
 
         // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(pi);
+        return RemoveGuardDigits(pi, sf);
     }
 
     #endregion Pi
@@ -128,15 +126,13 @@ public partial struct BigDecimal
     public static BigDecimal ComputeTau()
     {
         // Add guard digits to reduce round-off error.
-        var prevMaxSigFigs = AddGuardDigits(2);
+        var sf = AddGuardDigits(2);
 
         // τ = 2π
         var tau = 2 * Pi;
 
         // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(tau);
+        return RemoveGuardDigits(tau, sf);
     }
 
     #endregion Tau
@@ -188,15 +184,13 @@ public partial struct BigDecimal
     public static BigDecimal ComputePhi()
     {
         // Add guard digits to ensure a correct result.
-        var prevMaxSigFigs = AddGuardDigits(2);
+        var sf = AddGuardDigits(2);
 
         // Calculate phi.
         var phi = (1 + Sqrt(5)) / 2;
 
         // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(phi);
+        return RemoveGuardDigits(phi, sf);
     }
 
     #endregion Phi

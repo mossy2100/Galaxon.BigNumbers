@@ -269,7 +269,7 @@ public partial struct BigDecimal
         // Use Newton's method to find the root.
 
         // Add guard digits to reduce round-off error.
-        var prevMaxSigFigs = AddGuardDigits(2);
+        var sf = AddGuardDigits(2);
 
         // Set the initial estimate. In the absence of a better method, since we know the solution
         // will be in the range 0..x because both x and n are positive at this point, let's just
@@ -355,9 +355,7 @@ public partial struct BigDecimal
         }
 
         // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(ykp1);
+        return RemoveGuardDigits(ykp1, sf);
     }
 
     /// <inheritdoc/>
@@ -409,7 +407,7 @@ public partial struct BigDecimal
         BigDecimal sum = 0;
 
         // Add guard digits to reduce errors due to rounding.
-        var prevMaxSigFigs = AddGuardDigits(3);
+        var sf = AddGuardDigits(3);
 
         // Add terms until the process ceases to affect the result.
         // The more significant figures wanted, the longer the process will take.
@@ -432,9 +430,7 @@ public partial struct BigDecimal
         }
 
         // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(sum);
+        return RemoveGuardDigits(sum, sf);
     }
 
     /// <inheritdoc/>
@@ -493,7 +489,7 @@ public partial struct BigDecimal
         BigDecimal sum = 0;
 
         // Add guard digits to reduce accumulated errors due to rounding.
-        var prevMaxSigFigs = AddGuardDigits(2);
+        var sf = AddGuardDigits(2);
 
         // Add terms until the process ceases to affect the result.
         // The more significant figures wanted, the longer the process will take.
@@ -519,10 +515,7 @@ public partial struct BigDecimal
         var result = x == 10 ? -sum : sum + scale * Ln10;
 
         // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        // Scale back.
-        return RoundSigFigs(result);
+        return RemoveGuardDigits(result, sf);
     }
 
     /// <inheritdoc/>

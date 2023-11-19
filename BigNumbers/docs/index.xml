@@ -1482,7 +1482,7 @@
             This not only helps control memory usage by controlling the size of the significand, but
             also determines when to halt numerical methods, e.g. for calculating a square root or
             logarithm.
-            If this property is modified, only new objects and calculations are affected by it.
+            If this property is modified, only new values will be affected by it.
             If you want to reduce the number of significant figures in an existing value, use
             RoundSigFigs().
             </summary>
@@ -1752,6 +1752,20 @@
             <param name="nDigits">The number of guard digits to add.</param>
             <returns>The previous number of guard digits.</returns>
         </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.RemoveGuardDigits(Galaxon.BigNumbers.BigDecimal,System.Int32)">
+            <summary>Remove guard digits and round off the BigDecimal value.</summary>
+            <param name="x">The BigDecimal value to round off.</param>
+            <param name="sigFigs">The previous maximum number of significant figures to restore.</param>
+            <returns>
+            The BigDecimal value rounded off to the specified number of significant figures.
+            </returns>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.DoWithGuardDigits(System.Func{Galaxon.BigNumbers.BigDecimal},System.Int32)">
+            <summary>Run a computation with guard digits.</summary>
+            <param name="func">A function that returns a BigDecimal value.</param>
+            <param name="nGuardDigits">The number of guard digits to add before the method.</param>
+            <returns>The result of the calculation.</returns>
+        </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_UnaryPlus(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
         </member>
@@ -1776,7 +1790,8 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Division(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
             <remarks>
-            Computes division using the Goldschmidt algorithm:
+            Divide one BigDecimal by another.
+            Uses the Goldschmidt algorithm:
             <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division"/>
             </remarks>
             <exception cref="T:System.DivideByZeroException">If y == 0</exception>
@@ -1961,7 +1976,11 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.FormatRegex">
             <remarks>
-            Pattern explanation:<br/>
+            Pattern:<br/>
+            <code>^(?&lt;format&gt;[DEFGNPR])(?&lt;precision&gt;\\d*)(?&lt;unicode&gt;U?)$</code><br/>
+            Options:<br/>
+            <code>RegexOptions.IgnoreCase</code><br/>
+            Explanation:<br/>
             <code>
             ○ Match if at the beginning of the string.<br/>
             ○ "format" capture group.<br/>
@@ -2494,6 +2513,14 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.IsSubnormal(Galaxon.BigNumbers.BigRational)">
             <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigRational.IsDyadic(Galaxon.BigNumbers.BigRational)">
+            <summary>
+            Check if a BigRational is a dyadic rational, which means the denominator is a power of 2.
+            <see href="https://en.wikipedia.org/wiki/Dyadic_rational"/>
+            </summary>
+            <param name="value">The BigRational value to inspect.</param>
+            <returns>If the value is a dyadic rational.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigRational.Reduce(System.Numerics.BigInteger,System.Numerics.BigInteger)">
             <summary>Reduce a rational given as a numerator and denominator.</summary>

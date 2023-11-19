@@ -1,4 +1,5 @@
 using System.Numerics;
+using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers;
 
@@ -109,5 +110,16 @@ public partial struct BigRational
     public static bool IsSubnormal(BigRational value)
     {
         return false;
+    }
+
+    /// <summary>
+    /// Check if a BigRational is a dyadic rational, which means the denominator is a power of 2.
+    /// <see href="https://en.wikipedia.org/wiki/Dyadic_rational"/>
+    /// </summary>
+    /// <param name="value">The BigRational value to inspect.</param>
+    /// <returns>If the value is a dyadic rational.</returns>
+    public static bool IsDyadic(BigRational value)
+    {
+        return XBigInteger.IsPowerOf2(value.Denominator);
     }
 }

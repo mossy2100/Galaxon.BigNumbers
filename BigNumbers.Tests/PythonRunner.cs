@@ -90,15 +90,38 @@ public static class PythonRunner
         return (output, error);
     }
 
-    /// <summary>Call a Python mpmath function.</summary>
+    /// <summary>Call a unary Python mpmath function.</summary>
     /// <param name="functionName">The function to call. e.g. "exp", "sin", etc.</param>
     /// <param name="x">The argument.</param>
     /// <param name="precision">The number of decimal places.</param>
     /// <returns>The result, converted to a BigDecimal.</returns>
     /// <exception cref="InvalidOperationException">If something goes wrong.</exception>
-    public static BigDecimal CallMathFunction(string functionName, BigDecimal x, int precision = 50)
+    public static BigDecimal CallUnaryMathFunction(string functionName, BigDecimal x,
+        int precision = 50)
     {
-        var (output, error) = RunPythonScript("call_math_function.py", functionName, x, precision);
+        var (output, error) =
+            RunPythonScript("call_unary_math_function.py", functionName, x, precision);
+
+        if (!string.IsNullOrEmpty(error))
+        {
+            throw new InvalidOperationException($"Error running Python script: {error}");
+        }
+
+        return BigDecimal.Parse(output);
+    }
+
+    /// <summary>Call a binary Python mpmath function.</summary>
+    /// <param name="functionName">The function to call. e.g. "exp", "sin", etc.</param>
+    /// <param name="x">The first argument.</param>
+    /// <param name="y">The second argument.</param>
+    /// <param name="precision">The number of decimal places.</param>
+    /// <returns>The result, converted to a BigDecimal.</returns>
+    /// <exception cref="InvalidOperationException">If something goes wrong.</exception>
+    public static BigDecimal CallBinaryMathFunction(string functionName, BigDecimal x, BigDecimal y,
+        int precision = 50)
+    {
+        var (output, error) =
+            RunPythonScript("call_binary_math_function.py", functionName, x, y, precision);
 
         if (!string.IsNullOrEmpty(error))
         {

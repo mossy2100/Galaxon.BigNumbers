@@ -109,7 +109,7 @@ public partial struct BigDecimal :
     /// This not only helps control memory usage by controlling the size of the significand, but
     /// also determines when to halt numerical methods, e.g. for calculating a square root or
     /// logarithm.
-    /// If this property is modified, only new objects and calculations are affected by it.
+    /// If this property is modified, only new values will be affected by it.
     /// If you want to reduce the number of significant figures in an existing value, use
     /// RoundSigFigs().
     /// </summary>

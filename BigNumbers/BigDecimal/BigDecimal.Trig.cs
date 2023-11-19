@@ -63,7 +63,7 @@ public partial struct BigDecimal
         BigDecimal sum = 0;
 
         // Add guard digits to reduce round-off error.
-        var prevMaxSigFigs = AddGuardDigits(2);
+        var sf = AddGuardDigits(2);
 
         // Add terms until the process ceases to affect the result.
         // The more significant figures wanted, the longer the process will take.
@@ -87,9 +87,7 @@ public partial struct BigDecimal
         }
 
         // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(sum);
+        return RemoveGuardDigits(sum, sf);
     }
 
     /// <inheritdoc/>
@@ -240,7 +238,7 @@ public partial struct BigDecimal
         var sum = x;
 
         // Add guard digits to reduce round-off error.
-        var prevMaxSigFigs = AddGuardDigits(2);
+        var sf = AddGuardDigits(2);
 
         // Add terms until the process ceases to affect the result.
         // The more significant figures wanted, the longer the process will take.
@@ -265,9 +263,7 @@ public partial struct BigDecimal
         }
 
         // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(sum);
+        return RemoveGuardDigits(sum, sf);
     }
 
     /// <inheritdoc/>
@@ -291,60 +287,9 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Atan(BigDecimal x)
     {
-        return Asin(x / Sqrt(1 + Sqr(x)));
-
-        // Handle negative arguments.
-        if (x < 0)
-        {
-            return -Atan(-x);
-        }
-
-        // Optimization.
-        if (x == 0)
-        {
-            return 0;
-        }
-        if (x == 1)
-        {
-            return Pi / 4;
-        }
-
-        // Taylor series.
-        var m = 1;
-        var xToM = x;
-        var xSqr = Sqr(x);
-        var small = x < 1;
-        var sign = small ? 1 : -1;
-        var sum = small ? 0 : HalfPi;
-
-        // Add guard digits to reduce round-off error.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
-
-        // Add terms until the process ceases to affect the result.
-        // The more significant figures wanted, the longer the process will take.
-        while (true)
-        {
-            // Add the next term in the series.
-            var newSum = sum + sign * (small ? xToM / m : 1 / (m * xToM));
-
-            // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum)
-            {
-                break;
-            }
-
-            // Prepare for next iteration.
-            sum = newSum;
-            sign = -sign;
-            m += 2;
-            xToM *= xSqr;
-        }
-
-        // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(sum);
+        var sf = AddGuardDigits(10);
+        var atan = Asin(x / Sqrt(1 + Sqr(x)));
+        return RemoveGuardDigits(atan, sf);
     }
 
     /// <inheritdoc/>
@@ -446,106 +391,35 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Sinh(BigDecimal x)
     {
+        var sf = AddGuardDigits(10);
         var ex = Exp(x);
-        return (ex - 1 / ex) / 2;
-
-        // Optimization.
-        if (x == 0)
-        {
-            return 0;
-        }
-
-        // Taylor series.
-        var m = 1;
-        var xm = x;
-        BigInteger mFact = 1;
-        BigDecimal sum = 0;
-
-        // Add guard digits to reduce round-off error.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
-
-        // Add terms until the process ceases to affect the result.
-        // The more significant figures wanted, the longer the process will take.
-        while (true)
-        {
-            // Add the next term in the series.
-            var newSum = sum + xm / mFact;
-
-            // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum)
-            {
-                break;
-            }
-
-            // Prepare for next iteration.
-            m += 2;
-            xm *= x * x;
-            mFact *= m * (m - 1);
-            sum = newSum;
-        }
-
-        // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(sum);
+        var sinh = (ex - 1 / ex) / 2;
+        return RemoveGuardDigits(sinh, sf);
     }
 
     /// <inheritdoc/>
     public static BigDecimal Cosh(BigDecimal x)
     {
-        var ex = Exp(x);
-        return (ex + 1 / ex) / 2;
-
-        // Optimization.
+        // Shortcut.
         if (x == 0)
         {
             return 1;
         }
 
-        // Taylor series.
-        var m = 0;
-        BigDecimal xm = 1;
-        var x2 = x * x;
-        BigInteger mFact = 1;
-        BigDecimal sum = 0;
-
-        // Add guard digits to reduce round-off error.
-        var prevMaxSigFigs = MaxSigFigs;
-        MaxSigFigs += 2;
-
-        // Add terms until the process ceases to affect the result.
-        // The more significant figures wanted, the longer the process will take.
-        while (true)
-        {
-            // Add the next term in the series.
-            var newSum = sum + xm / mFact;
-
-            // If adding the new term hasn't affected the result, we're done.
-            if (sum == newSum)
-            {
-                break;
-            }
-
-            // Prepare for next iteration.
-            m += 2;
-            xm *= x2;
-            mFact *= m * (m - 1);
-            sum = newSum;
-        }
-
-        // Restore the maximum number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
-
-        return RoundSigFigs(sum);
+        // Calculate.
+        var sf = AddGuardDigits(10);
+        var ex = Exp(x);
+        var cosh = (ex + 1 / ex) / 2;
+        return RemoveGuardDigits(cosh, sf);
     }
 
     /// <inheritdoc/>
     public static BigDecimal Tanh(BigDecimal x)
     {
+        var sf = AddGuardDigits(10);
         var e2x = Exp(2 * x);
-        return (e2x - 1) / (e2x + 1);
-        // return Sinh(x) / Cosh(x);
+        var tanh = (e2x - 1) / (e2x + 1);
+        return RemoveGuardDigits(tanh, sf);
     }
 
     /// <summary>Calculate the hyperbolic cotangent of a BigDecimal value.</summary>
@@ -553,8 +427,10 @@ public partial struct BigDecimal
     /// <returns>The hyperbolic cotangent.</returns>
     public static BigDecimal Coth(BigDecimal x)
     {
+        var sf = AddGuardDigits(10);
         var e2x = Exp(2 * x);
-        return (e2x + 1) / (e2x - 1);
+        var coth = (e2x + 1) / (e2x - 1);
+        return RemoveGuardDigits(coth, sf);
     }
 
     /// <summary>Calculate the hyperbolic secant of a BigDecimal value.</summary>
@@ -562,8 +438,10 @@ public partial struct BigDecimal
     /// <returns>The hyperbolic secant.</returns>
     public static BigDecimal Sech(BigDecimal x)
     {
+        var sf = AddGuardDigits(10);
         var ex = Exp(x);
-        return 2 / (ex + 1 / ex);
+        var sech = 2 / (ex + 1 / ex);
+        return RemoveGuardDigits(sech, sf);
     }
 
     /// <summary>Calculate the hyperbolic cosecant of a BigDecimal value.</summary>
@@ -571,8 +449,10 @@ public partial struct BigDecimal
     /// <returns>The hyperbolic cosecant.</returns>
     public static BigDecimal Csch(BigDecimal x)
     {
+        var sf = AddGuardDigits(10);
         var ex = Exp(x);
-        return 2 / (ex - 1 / ex);
+        var csch = 2 / (ex - 1 / ex);
+        return RemoveGuardDigits(csch, sf);
     }
 
     #endregion Hyperbolic methods
@@ -651,13 +531,13 @@ public partial struct BigDecimal
         }
 
         // Add guard digits.
-        var prevMaxSigFigs = AddGuardDigits(2);
+        var sf = AddGuardDigits(2);
 
         // Calculate.
         var (x, y) = (r * Cos(theta), r * Sin(theta));
 
         // Restore the number of significant figures.
-        MaxSigFigs = prevMaxSigFigs;
+        MaxSigFigs = sf;
 
         // Round off and return.
         return (RoundSigFigs(x), RoundSigFigs(y));

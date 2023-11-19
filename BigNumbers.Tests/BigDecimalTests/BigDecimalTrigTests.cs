@@ -63,7 +63,7 @@ public class BigDecimalTrigTests
         var t4 = DateTime.Now;
         Console.WriteLine($"Time for method 2: {(t4 - t3).Ticks} ticks.");
 
-        var sinPy = PythonRunner.CallMathFunction("sin", theta);
+        var sinPy = PythonRunner.CallUnaryMathFunction("sin", theta);
         Console.WriteLine(sin1);
         Console.WriteLine(sin2);
         Console.WriteLine(sinPy);
@@ -240,40 +240,10 @@ public class BigDecimalTrigTests
     [DynamicData(nameof(Numerators))]
     public void TestSinh(int i)
     {
+        BigDecimal.MaxSigFigs = 50;
         var theta = i * BigDecimal.Tau / Denominator;
         var actual = BigDecimal.Sinh(theta);
-
-        // var sResult = i switch
-        // {
-        //     -12 => "-267.74489404101651425711744968805617722370618739915",
-        //     -11 => "-158.60699505697111480028788990902014567957642767811",
-        //     -10 => "-93.954653468459854428317163719906921644545595924175",
-        //     -9 => "-55.654397599417548299475671490540458958762668652846",
-        //     -8 => "-32.963900290099934045275522901848260063063549799021",
-        //     -7 => "-19.519007046411157303381825036119245844267899005756",
-        //     -6 => "-11.548739357257748377977334315388409684495189066395",
-        //     -5 => "-6.8176233041265434457647982706360936516329068863285",
-        //     -4 => "-3.9986913427998215911027319848134239068556975310555",
-        //     -3 => "-2.3012989023072948734630400234344271781781465165164",
-        //     -2 => "-1.2493670505239752649541953019279756678007164745801",
-        //     -1 => "-0.54785347388803980847571564771743140335278352177586",
-        //     0 => "0.0",
-        //     1 => "0.54785347388803980847571564771743140335278352177586",
-        //     2 => "1.2493670505239752649541953019279756678007164745801",
-        //     3 => "2.3012989023072948734630400234344271781781465165164",
-        //     4 => "3.9986913427998215911027319848134239068556975310555",
-        //     5 => "6.8176233041265434457647982706360936516329068863285",
-        //     6 => "11.548739357257748377977334315388409684495189066395",
-        //     7 => "19.519007046411157303381825036119245844267899005756",
-        //     8 => "32.963900290099934045275522901848260063063549799021",
-        //     9 => "55.654397599417548299475671490540458958762668652846",
-        //     10 => "93.954653468459854428317163719906921644545595924175",
-        //     11 => "158.60699505697111480028788990902014567957642767811",
-        //     12 => "267.74489404101651425711744968805617722370618739915"
-        // };
-        // var expected = BigDecimal.Parse(sResult);
-
-        var expected = PythonRunner.CallMathFunction("sinh", theta, 50);
+        var expected = PythonRunner.CallUnaryMathFunction("sinh", theta, 50);
 
         Console.WriteLine($"       i = {i}");
         Console.WriteLine($"   theta = {theta}");
@@ -281,7 +251,7 @@ public class BigDecimalTrigTests
         Console.WriteLine($"expected = {expected}");
         Console.WriteLine(actual.Equals(expected) ? "SUCCESS!" : "FAIL :(");
 
-        // BigDecimalAssert.AreFuzzyEqual(expected, actual);
+        BigDecimalAssert.AreFuzzyEqual(expected, actual);
     }
 
     [TestMethod]
