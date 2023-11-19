@@ -402,15 +402,15 @@ public partial struct BigDecimal
     /// <remarks>
     /// This method is useful for converting a value expressed in scientific notation to a
     /// BigDecimal.
-    /// e.g. Avogadro's number = 6.02214 * 10^23
+    /// e.g. Avogadro's number, equal to  6.02214 * 10^23, could be converted to a BigDecimal like:
     /// <code>
-    /// var a = BigDecimal.FromDecimal(6.02214m, 23);
+    /// var avnum = BigDecimal.FromSciNotation(6.02214m, 23);
     /// </code>
     /// </remarks>
     /// <param name="significand">The significand or mantissa.</param>
     /// <param name="exponent">The exponent (defaults to 0).</param>
     /// <returns>The equivalent BigDecimal value.</returns>
-    public static BigDecimal FromDecimal(decimal significand, int exponent = 0)
+    public static BigDecimal FromSciNotation(decimal significand, int exponent = 0)
     {
         BigDecimal x = significand;
         x.Exponent += exponent;

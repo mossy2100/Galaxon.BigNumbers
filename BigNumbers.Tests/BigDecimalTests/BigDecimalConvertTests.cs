@@ -1890,12 +1890,12 @@ public class BigDecimalConvertTests
     public void TestFromDecimal()
     {
         // Avogadro's number.
-        var a = BigDecimal.FromDecimal(6.02214m, 23);
+        var a = BigDecimal.FromSciNotation(6.02214m, 23);
         Assert.AreEqual(602214, a.Significand);
         Assert.AreEqual(18, a.Exponent);
 
         // Gravitational constant.
-        var g = BigDecimal.FromDecimal(6.6743m, -11);
+        var g = BigDecimal.FromSciNotation(6.6743m, -11);
         Assert.AreEqual(66743, g.Significand);
         Assert.AreEqual(-15, g.Exponent);
     }

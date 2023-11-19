@@ -739,14 +739,13 @@
             </code>
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestBinaryFunctionWithGuardDigits(System.Func{Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal})">
-            <summary>
-            TODO
-            There's an issue here in that this method is running with the default number of sig figs of
-            50. The result might be different with different initial number of sig figs.
-            </summary>
-            <param name="fn"></param>
-            <returns></returns>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestUnaryFunction(System.Func{Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal})">
+            <summary>Test a unary function for rounding errors using random values.</summary>
+            <param name="fn">The function to test.</param>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestBinaryFunction(System.Func{Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal})">
+            <summary>Test a binary function for rounding errors using random values.</summary>
+            <param name="fn">The function to test.</param>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalNumericMethodsTests.TestRoundingMethods">
             <summary>

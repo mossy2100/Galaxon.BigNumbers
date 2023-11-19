@@ -16,7 +16,7 @@ public partial struct BigDecimal
     public static BigDecimal Sin(BigDecimal x)
     {
         // Find the equivalent angle in the interval [0, 𝞃).
-        x = NormalizeAngle(in x);
+        x = NormalizeAngle(x);
 
         // Make use of identities to reduce x to the interval [0, π/2].
         if (x > Tau - HalfPi)
@@ -287,6 +287,23 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Atan(BigDecimal x)
     {
+        // Handle negative x.
+        if (x < 0)
+        {
+            return -Atan(-x);
+        }
+
+        // Shortcuts.
+        if (x == 0)
+        {
+            return 0;
+        }
+        if (x == 1)
+        {
+            return Pi / 4;
+        }
+
+        // Calculate.
         var sf = AddGuardDigits(10);
         var atan = Asin(x / Sqrt(1 + Sqr(x)));
         return RemoveGuardDigits(atan, sf);
@@ -391,6 +408,13 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Sinh(BigDecimal x)
     {
+        // Shortcut.
+        if (x == 0)
+        {
+            return 0;
+        }
+
+        // Calculate.
         var sf = AddGuardDigits(10);
         var ex = Exp(x);
         var sinh = (ex - 1 / ex) / 2;
@@ -417,8 +441,8 @@ public partial struct BigDecimal
     public static BigDecimal Tanh(BigDecimal x)
     {
         var sf = AddGuardDigits(10);
-        var e2x = Exp(2 * x);
-        var tanh = (e2x - 1) / (e2x + 1);
+        var e2X = Exp(2 * x);
+        var tanh = (e2X - 1) / (e2X + 1);
         return RemoveGuardDigits(tanh, sf);
     }
 
@@ -428,8 +452,8 @@ public partial struct BigDecimal
     public static BigDecimal Coth(BigDecimal x)
     {
         var sf = AddGuardDigits(10);
-        var e2x = Exp(2 * x);
-        var coth = (e2x + 1) / (e2x - 1);
+        var e2X = Exp(2 * x);
+        var coth = (e2X + 1) / (e2X - 1);
         return RemoveGuardDigits(coth, sf);
     }
 
@@ -544,7 +568,7 @@ public partial struct BigDecimal
     }
 
     /// <summary>Find the equivalent angle in the interval [0, 𝞃).</summary>
-    public static BigDecimal NormalizeAngle(in BigDecimal theta)
+    public static BigDecimal NormalizeAngle(BigDecimal theta)
     {
         // Use floored division here instead of the mod operator (which uses truncated division).
         // This will ensure an answer in the desired range.

@@ -1367,16 +1367,16 @@
             <param name="values">The tuple.</param>
             <returns>The equivalent BigDecimal value.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.FromDecimal(System.Decimal,System.Int32)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.FromSciNotation(System.Decimal,System.Int32)">
             <summary>
             Construct a BigDecimal from a decimal significand and an integer exponent.
             </summary>
             <remarks>
             This method is useful for converting a value expressed in scientific notation to a
             BigDecimal.
-            e.g. Avogadro's number = 6.02214 * 10^23
+            e.g. Avogadro's number, equal to  6.02214 * 10^23, could be converted to a BigDecimal like:
             <code>
-            var a = BigDecimal.FromDecimal(6.02214m, 23);
+            var avnum = BigDecimal.FromScientificNotation(6.02214m, 23);
             </code>
             </remarks>
             <param name="significand">The significand or mantissa.</param>
@@ -1753,18 +1753,13 @@
             <returns>The previous number of guard digits.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.RemoveGuardDigits(Galaxon.BigNumbers.BigDecimal,System.Int32)">
-            <summary>Remove guard digits and round off the BigDecimal value.</summary>
+            <summary>
+            Restore the maximum number of significant figures to a former value guard, and round off a
+            BigDecimal value to the new maximum number of significant figures.
+            </summary>
             <param name="x">The BigDecimal value to round off.</param>
             <param name="sigFigs">The previous maximum number of significant figures to restore.</param>
-            <returns>
-            The BigDecimal value rounded off to the specified number of significant figures.
-            </returns>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.DoWithGuardDigits(System.Func{Galaxon.BigNumbers.BigDecimal},System.Int32)">
-            <summary>Run a computation with guard digits.</summary>
-            <param name="func">A function that returns a BigDecimal value.</param>
-            <param name="nGuardDigits">The number of guard digits to add before the method.</param>
-            <returns>The result of the calculation.</returns>
+            <returns>The BigDecimal value rounded off.</returns>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_UnaryPlus(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
@@ -1790,8 +1785,7 @@
         <member name="M:Galaxon.BigNumbers.BigDecimal.op_Division(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
             <remarks>
-            Divide one BigDecimal by another.
-            Uses the Goldschmidt algorithm:
+            Computes division using the Goldschmidt algorithm:
             <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division"/>
             </remarks>
             <exception cref="T:System.DivideByZeroException">If y == 0</exception>
@@ -2172,7 +2166,7 @@
             <param name="theta">The phase angle.</param>
             <returns>A tuple containing the x and y coordinates.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.NormalizeAngle(Galaxon.BigNumbers.BigDecimal@)">
+        <member name="M:Galaxon.BigNumbers.BigDecimal.NormalizeAngle(Galaxon.BigNumbers.BigDecimal)">
             <summary>Find the equivalent angle in the interval [0, 𝞃).</summary>
         </member>
         <member name="T:Galaxon.BigNumbers.BigRational">

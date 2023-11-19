@@ -14,6 +14,7 @@ public partial struct BigDecimal
     /// <returns>The square of the BigDecimal.</returns>
     public static BigDecimal Sqr(BigDecimal x)
     {
+        // No guard digits needed.
         var result = x * x;
         return RoundSigFigs(result);
     }
@@ -23,8 +24,9 @@ public partial struct BigDecimal
     /// <returns>The cube of the BigDecimal.</returns>
     public static BigDecimal Cube(BigDecimal x)
     {
+        var sf = AddGuardDigits(7);
         var result = x * x * x;
-        return RoundSigFigs(result);
+        return RemoveGuardDigits(result, sf);
     }
 
     /// <summary>

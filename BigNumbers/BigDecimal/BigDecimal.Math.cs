@@ -166,28 +166,29 @@ public partial struct BigDecimal
         return sigFigs;
     }
 
-    /// <summary>Remove guard digits and round off the BigDecimal value.</summary>
+    /// <summary>
+    /// Restore the maximum number of significant figures to a former value guard, and round off a
+    /// BigDecimal value to the new maximum number of significant figures.
+    /// </summary>
     /// <param name="x">The BigDecimal value to round off.</param>
     /// <param name="sigFigs">The previous maximum number of significant figures to restore.</param>
-    /// <returns>
-    /// The BigDecimal value rounded off to the specified number of significant figures.
-    /// </returns>
+    /// <returns>The BigDecimal value rounded off.</returns>
     public static BigDecimal RemoveGuardDigits(BigDecimal x, int sigFigs)
     {
         MaxSigFigs = sigFigs;
         return RoundSigFigs(x);
     }
 
-    /// <summary>Run a computation with guard digits.</summary>
-    /// <param name="func">A function that returns a BigDecimal value.</param>
-    /// <param name="nGuardDigits">The number of guard digits to add before the method.</param>
-    /// <returns>The result of the calculation.</returns>
-    public static BigDecimal DoWithGuardDigits(Func<BigDecimal> func, int nGuardDigits)
-    {
-        var sf = AddGuardDigits(nGuardDigits);
-        var result = func();
-        return RemoveGuardDigits(result, sf);
-    }
+    // /// <summary>Run a computation with guard digits.</summary>
+    // /// <param name="func">A function that returns a BigDecimal value.</param>
+    // /// <param name="nGuardDigits">The number of guard digits to add before the method.</param>
+    // /// <returns>The result of the calculation.</returns>
+    // public static BigDecimal DoWithGuardDigits(Func<BigDecimal> func, int nGuardDigits)
+    // {
+    //     var sf = AddGuardDigits(nGuardDigits);
+    //     var result = func();
+    //     return RemoveGuardDigits(result, sf);
+    // }
 
     #endregion Numeric methods
 
@@ -330,7 +331,7 @@ public partial struct BigDecimal
     /// <exception cref="DivideByZeroException">if the divisor is 0.</exception>
     public static BigDecimal operator %(BigDecimal x, BigDecimal y)
     {
-        var sf = AddGuardDigits(10);
+        var sf = AddGuardDigits(5);
         var mod = x - Truncate(x / y) * y;
         return RemoveGuardDigits(mod, sf);
     }
