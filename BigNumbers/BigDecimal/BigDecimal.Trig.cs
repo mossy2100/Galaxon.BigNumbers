@@ -32,7 +32,7 @@ public partial struct BigDecimal
             return Sin(Pi - x);
         }
 
-        // Optimizations.
+        // Shortcuts.
         if (x == 0)
         {
             return 0;
@@ -196,7 +196,7 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Asin(BigDecimal x)
     {
-        // Optimization.
+        // Shortcut.
         if (x == 0)
         {
             return 0;
@@ -214,7 +214,7 @@ public partial struct BigDecimal
             throw new ArgumentOutOfRangeException(nameof(x), "Must be in the range -1..1.");
         }
 
-        // Optimization.
+        // Shortcut.
         if (x == 1)
         {
             return HalfPi;

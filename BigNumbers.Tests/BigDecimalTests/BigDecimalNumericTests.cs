@@ -1,9 +1,10 @@
 using Galaxon.BigNumbers.TestTools;
+using Galaxon.Core.Numbers;
 
 namespace Galaxon.BigNumbers.Tests;
 
 [TestClass]
-public class BigDecimalNumericMethodsTests
+public class BigDecimalNumericTests
 {
     /// <summary>
     /// Compare BigDecimal.Round() matches decimal.Round() for all rounding methods.
@@ -359,6 +360,33 @@ public class BigDecimalNumericMethodsTests
             BigDecimal expected = double.Truncate(value);
             var actual = BigDecimal.Truncate(value);
             BigDecimalAssert.AreEqual(expected, actual);
+        }
+    }
+
+    /// <summary>
+    /// Compare BigDecimal.Truncate() matches double.Truncate() for some random numbers.
+    /// </summary>
+    [TestMethod]
+    public void TestTruncateRandom()
+    {
+        var nTests = 10;
+        var count = 0;
+        var rnd = new Random();
+        while (count < nTests)
+        {
+            var d = rnd.GetDecimal();
+            var bd = d;
+            BigDecimal expected = decimal.Truncate(d);
+            BigDecimal actual = BigDecimal.Truncate(bd);
+
+            Console.WriteLine($"{d:F10}");
+            Console.WriteLine($"{bd:F10}");
+            Console.WriteLine($"{expected:F10}");
+            Console.WriteLine();
+
+            BigDecimalAssert.AreEqual(expected, actual);
+
+            count++;
         }
     }
 }

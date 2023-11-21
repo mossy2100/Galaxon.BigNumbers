@@ -22,7 +22,7 @@ public partial struct BigDecimal
                 "Logarithm of a negative value is a complex number, which cannot be expressed using a BigDecimal.");
         }
 
-        // Optimization.
+        // Shortcut.
         if (a == 1)
         {
             return 0;
@@ -115,7 +115,7 @@ public partial struct BigDecimal
                 "Logarithm of a negative value is a complex number, which cannot be expressed using a BigDecimal.");
         }
 
-        // Optimization.
+        // Shortcut.
         if (x == 1)
         {
             return 0;

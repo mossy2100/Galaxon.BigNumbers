@@ -739,32 +739,95 @@
             </code>
             </summary>
         </member>
+        <member name="T:Galaxon.BigNumbers.Tests.BigDecimalMathTests">
+            <summary>
+            Test class for checking the number of guard digits used by each operator and method is correct.
+            </summary>
+        </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestUnaryFunction(System.Func{Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal})">
             <summary>Test a unary function for rounding errors using random values.</summary>
             <param name="fn">The function to test.</param>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestBinaryFunction(System.Func{Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal})">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestBinaryFunction(System.Func{Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal},System.Int32)">
             <summary>Test a binary function for rounding errors using random values.</summary>
             <param name="fn">The function to test.</param>
+            <param name="nTests">The number of tests to run.</param>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalNumericMethodsTests.TestRoundingMethods">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestGuardDigitsForIncrement">
+            <summary>Test guard digits for the increment operator.</summary>
+            <remarks>DONE</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestGuardDigitsForDecrement">
+            <summary>Test guard digits for the decrement operator.</summary>
+            <remarks>DONE</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestGuardDigitsForSqr">
+            <summary>Test guard digits for the Sqr method.</summary>
+            <remarks>DONE</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestGuardDigitsForCube">
+            <summary>Test guard digits for the Cube method.</summary>
+            <remarks>DONE</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestGuardDigitsForTruncate">
+            <summary>Test guard digits for Truncate().</summary>
+            <remarks>DONE</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestGuardDigitsForAdd">
+            <summary>Test guard digits for the add operator.</summary>
+            <remarks>DONE</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestGuardDigitsForSubtract">
+            <summary>Test guard digits for the subtract operator.</summary>
+            <remarks>DONE</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestGuardDigitsForMultiply">
+            <summary>Test guard digits for the multiply operator.</summary>
+            <remarks>DONE</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestGuardDigitsForDivide">
+            <summary>Test guard digits for the divide operator.</summary>
+            <remarks>DONE</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestGuardDigitsForModulo">
+            <summary>Test guard digits for the modulo operator.</summary>
+            <remarks>
+            This one fails regardless of the number of guard digits used. I think it's because
+            Truncate() works with decimal places but the results of methods and operations are
+            constrained by the number of significant figures.
+            </remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestGuardDigitsForExponentiation">
+            <summary>Test guard digits for the exponentiation operator.</summary>
+            <remarks>TODO</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalMathTests.TestGuardDigitsForPow">
+            <summary>Test guard digits for the Pow() method.</summary>
+            <remarks>TODO</remarks>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalNumericTests.TestRoundingMethods">
             <summary>
             Compare BigDecimal.Round() matches decimal.Round() for all rounding methods.
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalNumericMethodsTests.TestFloor">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalNumericTests.TestFloor">
             <summary>
             Compare BigDecimal.Floor() matches double.Floor().
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalNumericMethodsTests.TestCeiling">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalNumericTests.TestCeiling">
             <summary>
             Compare BigDecimal.Ceiling() matches double.Ceiling().
             </summary>
         </member>
-        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalNumericMethodsTests.TestTruncate">
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalNumericTests.TestTruncate">
             <summary>
             Compare BigDecimal.Truncate() matches double.Truncate().
+            </summary>
+        </member>
+        <member name="M:Galaxon.BigNumbers.Tests.BigDecimalNumericTests.TestTruncateRandom">
+            <summary>
+            Compare BigDecimal.Truncate() matches double.Truncate() for some random numbers.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.Tests.BigDecimalPowTests.Pow_BaseNegExponentRationalEvenDenominator_UnsolvableThrows">

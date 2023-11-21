@@ -954,6 +954,7 @@
             <summary>
             Power, root, exponential, and logarithm methods for BigDecimal.
             </summary>
+            <summary>Struct members relating to BigDecimal numerical methods.</summary>
             <summary>
             Trigonometric methods for BigDecimal.
             </summary>
@@ -1376,7 +1377,7 @@
             BigDecimal.
             e.g. Avogadro's number, equal to  6.02214 * 10^23, could be converted to a BigDecimal like:
             <code>
-            var avnum = BigDecimal.FromScientificNotation(6.02214m, 23);
+            var avnum = BigDecimal.FromSciNotation(6.02214m, 23);
             </code>
             </remarks>
             <param name="significand">The significand or mantissa.</param>
@@ -1619,7 +1620,7 @@
             <inheritdoc/>
             <exception cref="T:System.ArgumentOutOfRangeException">
             If either parameter is less than or equal to 0, except for the special case where x is 1 and
-            b is 0.
+            y is 0.
             </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Log2(Galaxon.BigNumbers.BigDecimal)">
@@ -1684,6 +1685,65 @@
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.IsSubnormal(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.op_UnaryPlus(Galaxon.BigNumbers.BigDecimal)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.op_UnaryNegation(Galaxon.BigNumbers.BigDecimal)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Addition(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Subtraction(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Increment(Galaxon.BigNumbers.BigDecimal)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Decrement(Galaxon.BigNumbers.BigDecimal)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Multiply(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Division(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
+            <inheritdoc/>
+            <remarks>
+            Computes division using the Goldschmidt algorithm:
+            <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division"/>
+            </remarks>
+            <exception cref="T:System.DivideByZeroException">If y == 0</exception>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Modulus(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
+            <inheritdoc/>
+            <remarks>
+            There are various ways to implement the modulo operator:
+            <see href="https://en.wikipedia.org/wiki/Modulo"/>
+            This method uses truncated division, to match the behaviour of the operator as used with the
+            standard number types in .NET.
+            It means the result (the remainder) will have the same sign as the dividend (x).
+            </remarks>
+            <exception cref="T:System.DivideByZeroException">if the divisor is 0.</exception>
+        </member>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.op_ExclusiveOr(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
+            <summary>Exponentiation operator.</summary>
+            <remarks>
+            Overloads the ^ operator to perform exponentiation, consistent with common mathematical
+            usage.
+            While C-based languages traditionally use ^ for bitwise XOR, operator overloading in C#
+            allows for a more intuitive use in the context of custom numerical types like BigDecimal,
+            BigRational, and BigComplex.
+            Many C-inspired languages use ** for the exponentiation operator, but this hasn't been done
+            in C# (yet) and isn't possible with operator overloading, as only a small set of standard
+            operator tokens can be overloaded.
+            </remarks>
+            <param name="x">The base.</param>
+            <param name="y">The exponent.</param>
+            <returns>The first operand raised to the power of the second.</returns>
+            <exception cref="T:System.ArithmeticException">
+            If the base is 0 and the exponent is negative.
+            </exception>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal.Abs(Galaxon.BigNumbers.BigDecimal)">
             <inheritdoc/>
@@ -1761,64 +1821,10 @@
             <param name="sigFigs">The previous maximum number of significant figures to restore.</param>
             <returns>The BigDecimal value rounded off.</returns>
         </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_UnaryPlus(Galaxon.BigNumbers.BigDecimal)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_UnaryNegation(Galaxon.BigNumbers.BigDecimal)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Addition(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Subtraction(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Increment(Galaxon.BigNumbers.BigDecimal)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Decrement(Galaxon.BigNumbers.BigDecimal)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Multiply(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Division(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <inheritdoc/>
-            <remarks>
-            Computes division using the Goldschmidt algorithm:
-            <see href="https://en.wikipedia.org/wiki/Division_algorithm#Goldschmidt_division"/>
-            </remarks>
-            <exception cref="T:System.DivideByZeroException">If y == 0</exception>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_Modulus(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <inheritdoc/>
-            <remarks>
-            There are various ways to implement the modulo operator:
-            <see href="https://en.wikipedia.org/wiki/Modulo"/>
-            This method uses truncated division, to match the behaviour of the operator as used with the
-            standard number types in .NET.
-            It means the result (the remainder) will have the same sign as the dividend (x).
-            </remarks>
-            <exception cref="T:System.DivideByZeroException">if the divisor is 0.</exception>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.op_ExclusiveOr(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <summary>Exponentiation operator.</summary>
-            <remarks>
-            Overloads the ^ operator to perform exponentiation, consistent with common mathematical
-            usage.
-            While C-based languages traditionally use ^ for bitwise XOR, operator overloading in C#
-            allows for a more intuitive use in the context of custom numerical types like BigDecimal,
-            BigRational, and BigComplex.
-            Many C-inspired languages use ** for the exponentiation operator, but this hasn't been done
-            in C# (yet) and isn't possible with operator overloading, as only a small set of standard
-            operator tokens can be overloaded.
-            </remarks>
-            <param name="x">The base.</param>
-            <param name="y">The exponent.</param>
-            <returns>The first operand raised to the power of the second.</returns>
-            <exception cref="T:System.ArithmeticException">
-            If the base is 0 and the exponent is negative.
-            </exception>
+        <member name="M:Galaxon.BigNumbers.BigDecimal.Align(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
+            <summary>
+            Adjust the significand and exponent of one of the values so both have the same exponent.
+            </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal._CutDigits(Galaxon.BigNumbers.BigDecimal,System.Int32,System.MidpointRounding)">
             <summary>
@@ -1836,11 +1842,6 @@
             new exponent.
             The combination of the result significand and the provided exponent parameter represent a
             new BigDecimal value equal to the provided value.
-            </summary>
-        </member>
-        <member name="M:Galaxon.BigNumbers.BigDecimal.Align(Galaxon.BigNumbers.BigDecimal,Galaxon.BigNumbers.BigDecimal)">
-            <summary>
-            Adjust the significand and exponent of one of the values so both have the same exponent.
             </summary>
         </member>
         <member name="M:Galaxon.BigNumbers.BigDecimal._MakeCanonical(System.Numerics.BigInteger,System.Int32)">

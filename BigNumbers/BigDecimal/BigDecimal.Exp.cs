@@ -44,6 +44,8 @@ public partial struct BigDecimal
     /// </exception>
     public static BigDecimal Pow(BigDecimal x, BigInteger y)
     {
+        BigDecimal result;
+
         // Handle negative y.
         if (y < 0)
         {
@@ -54,27 +56,30 @@ public partial struct BigDecimal
             }
 
             // x^y = 1/(x^(-y))
-            var result = 1 / Pow(x, -y);
+            result = 1 / Pow(x, -y);
             return RoundSigFigs(result);
         }
 
-        // Optimizations.
+        // Shortcuts.
         if (y == 0)
         {
             // x^0 == 1
             return 1;
         }
+
         if (y == 1)
         {
             // x^1 == x
             return x;
         }
+
         if (x == 0 || x == 1)
         {
             // 0^y == 0 for all y > 0
             // 1^y == 1 for all y
             return x;
         }
+
         if (x == 10 && y >= int.MinValue && y <= int.MaxValue)
         {
             // 10 raised to an integer power is easy, given the structure of the BigDecimal type.
@@ -82,23 +87,29 @@ public partial struct BigDecimal
         }
 
         // Exponentiation by squaring.
+        // Console.WriteLine($"x = {x}, y = {y}");
         if (y == 2)
         {
             return Sqr(x);
         }
+
         if (y == 3)
         {
             return Cube(x);
         }
+
+        var sf = AddGuardDigits(2);
         if (IsEvenInteger(y))
         {
             // y is even: x^y = (x^2)^(y/2)
-            var result = Pow(Sqr(x), y / 2);
-            return RoundSigFigs(result);
+            result = Pow(Sqr(x), y / 2);
         }
-        // y is odd: x^y = x * (x^2)^((y-1)/2)
-        var result2 = x * Pow(Sqr(x), (y - 1) / 2);
-        return RoundSigFigs(result2);
+        else
+        {
+            // y is odd: x^y = x * x^(y-1) = x * (x^2)^((y-1)/2)
+            result = x * Pow(Sqr(x), (y - 1) / 2);
+        }
+        return RemoveGuardDigits(result, sf);
     }
 
     /// <inheritdoc/>
@@ -111,8 +122,7 @@ public partial struct BigDecimal
         // Defer to the BigInteger version of the method if possible.
         if (IsInteger(y))
         {
-            var result = Pow(x, (BigInteger)y);
-            return RoundSigFigs(result);
+            return Pow(x, (BigInteger)y);
         }
 
         // Handle negative y.
@@ -125,11 +135,10 @@ public partial struct BigDecimal
             }
 
             // x^y = 1/(x^(-y))
-            var result = 1 / Pow(x, -y);
-            return RoundSigFigs(result);
+            return 1 / Pow(x, -y);
         }
 
-        // Optimizations.
+        // Shortcuts.
         if (x == 0 || x == 1)
         {
             // 0 raised to any positive value is 0.
@@ -145,8 +154,7 @@ public partial struct BigDecimal
             // BigRational and call that version of Pow().
             try
             {
-                var result = Pow(x, (BigRational)y);
-                return RoundSigFigs(result);
+                return Pow(x, (BigRational)y);
             }
             catch (ArithmeticException ex)
             {
@@ -158,8 +166,7 @@ public partial struct BigDecimal
         // We can compute the result using Exp() and Log().
         // We could use the same method as used above for x < 0 (Pow with BigRational) but
         // I suspect that would be slower. TODO Test that assumption.
-        var result2 = Exp(y * Log(x));
-        return RoundSigFigs(result2);
+        return Exp(y * Log(x));
     }
 
     /// <summary>
@@ -196,8 +203,7 @@ public partial struct BigDecimal
         }
 
         // Do the calculation.
-        var result = RootN(Pow(x, y.Numerator), (int)y.Denominator);
-        return RoundSigFigs(result);
+        return RootN(Pow(x, y.Numerator), (int)y.Denominator);
     }
 
     #endregion Power functions
@@ -229,8 +235,7 @@ public partial struct BigDecimal
                 throw new ArithmeticException("Cannot compute the nth root of 0 if n is negative.");
             }
             // n√x = 1/((-n)√x)
-            var result = 1 / RootN(x, -n);
-            return RoundSigFigs(result);
+            return 1 / RootN(x, -n);
         }
         if (n == 0)
         {
@@ -239,7 +244,7 @@ public partial struct BigDecimal
                 "The 0th root is undefined since any number to the power of 0 is 1.");
         }
 
-        // Optimizations.
+        // Shortcuts.
         if (x == 0 || x == 1)
         {
             // If x == 0 the root will be 0, since 0^n = 0 for all n > 0.
@@ -263,8 +268,7 @@ public partial struct BigDecimal
             }
 
             // n is odd. Calculate the only real root, which will be negative.
-            var result = -RootN(-x, n);
-            return RoundSigFigs(result);
+            return -RootN(-x, n);
         }
 
         // At this point we know x > 0 and n > 1.
@@ -386,7 +390,7 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     public static BigDecimal Exp(BigDecimal x)
     {
-        // Optimizations.
+        // Shortcuts.
         if (x < 0)
         {
             // If the exponent is negative, inverse the result of the positive exponent.
@@ -467,11 +471,12 @@ public partial struct BigDecimal
                 "Logarithm of a negative value is a complex number, which cannot be expressed using a BigDecimal.");
         }
 
-        // Optimizations.
+        // Shortcut.
         if (x == 1)
         {
             return 0;
         }
+
         // For Log(10) use the cached value if possible.
         if (x == 10 && _ln10.NumSigFigs >= MaxSigFigs)
         {
@@ -523,26 +528,28 @@ public partial struct BigDecimal
     /// <inheritdoc/>
     /// <exception cref="ArgumentOutOfRangeException">
     /// If either parameter is less than or equal to 0, except for the special case where x is 1 and
-    /// b is 0.
+    /// y is 0.
     /// </exception>
-    public static BigDecimal Log(BigDecimal x, BigDecimal b)
+    public static BigDecimal Log(BigDecimal x, BigDecimal y)
     {
         // Guard.
-        if (b == 1)
+        if (y == 1)
         {
-            throw new ArgumentOutOfRangeException(nameof(b),
+            throw new ArgumentOutOfRangeException(nameof(y),
                 "Logarithms are undefined for a base of 1.");
         }
 
-        // Log(1, 0) == 0 means 0^0 == 1. 0^0 is defined as 1 or undefined.
-        // Using 1 mimics Math.Log().
-        if (x == 1 && b == 0)
+        // Log(1, 0) == 0, same as Math.Log().
+        // NB: 0^0 can be undefined or 1. Many programming languages, including C#, use 1.
+        // Thus, Math.Pow(0, 0) == 1 and Math.Log(1, 0) == 0. We replicate that here.
+        // We also need this clause to avoid an ArgumentOutOfRangeException.
+        if (x == 1 && y == 0)
         {
             return 0;
         }
 
-        // This will throw if x <= 0 || b <= 0.
-        return Log(x) / Log(b);
+        // This will throw if either parameter is less than or equal to 0.
+        return Log(x) / Log(y);
     }
 
     /// <inheritdoc/>
